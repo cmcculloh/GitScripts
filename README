@@ -1,0 +1,7 @@
+To initialize repo:
+
+1. Download createRepo.sh
+
+2. Enter the following in the shell wherever you downloaded that:
+
+source createRepo.sh

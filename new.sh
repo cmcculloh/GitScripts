@@ -1,7 +1,8 @@
-branch="fl/master"
-if [ -n $3 ]
+if [ -n $3 -a "$3" -ne "" -a "$3" -ne " " ]
 	then
 	branch=$3
+else
+	branch="fl/master"
 fi
 
 echo "##########################################"
@@ -15,10 +16,10 @@ echo
 echo
 
 echo Type the number of the choice you want and hit enter
-echo 1. Create branch $1
-echo 2. Stash Changes and create branch $1
-echo 3. Revert all changes to tracked files \(ignores untracked files\), and create branch $1
-echo 4. Abort creation of branch $1
+echo 1. Create branch $1 from $branch
+echo 2. Stash Changes and create branch $1 from $branch
+echo 3. Revert all changes to tracked files \(ignores untracked files\), and create branch $1 from $branch
+echo 4. Abort creation of branch $1 from $branch
 read decision
 echo You chose: $decision
 if [ $decision -eq 1 ]
