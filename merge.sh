@@ -9,10 +9,10 @@ echo
 echo
 
 echo Type the number of the choice you want and hit enter
-echo 1. Continue
-echo 2. Stash Changes and continue
-echo 3. Revert all changes to tracked files \(ignores untracked files\), and continue
-echo 4. Abort
+echo 1. Continue with merging of $1 into $3
+echo 2. Stash Changes and continue with merging of $1 into $3
+echo 3. Revert all changes to tracked files \(ignores untracked files\), and continue with merging of $1 into $3
+echo 4. Abort merging of $1 into $3
 read decision
 echo You chose: $decision
 if [ $decision -eq 1 ]
