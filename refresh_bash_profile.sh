@@ -11,7 +11,7 @@ fi
 
 command=$direction$destination
 
-if [ $command = "fromlocal" -o $command = "togit" ]
+if [ "$command" = "fromlocal" -o "$command" = "togit" ]
 	then
 	cp /c/Program\ Files/Git/etc/bash_profile /d/automata/flgitscripts/bash_profile
 else

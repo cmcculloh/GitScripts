@@ -1,1 +1,5 @@
-Copy bash_profile to C:\Program Files\Git\etc\bash_profile
+the first time you pull down this repo, run:
+source refresh_bash_profile.sh to local
+
+After that, each time you pull, do it by typing this:
+pullscripts
