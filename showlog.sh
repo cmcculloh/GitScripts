@@ -1,5 +1,5 @@
-log1=$(git show --format=%h master)
-log2=$(git show --format=%h $1)
+log1=$(git rev-parse --short master)
+log2=$(git rev-parse --short $1)
 
 echo git diff $log1..$log2
 
