@@ -1,3 +1,5 @@
+source environment.sh
+
 direction="to"
 destination="local"
 if [ -n $1 ]
@@ -13,9 +15,11 @@ command=$direction$destination
 
 if [ "$command" = "fromlocal" -o "$command" = "togit" ]
 	then
-	cp /c/Program\ Files/Git/etc/bash_profile /d/automata/flgitscripts/bash_profile
+	cp "${git_install}environment.sh" "${gitscripts_path}environment.sh"
+	cp "${git_install}bash_profile" "${gitscripts_path}bash_profile"
 else
-	cp /d/automata/flgitscripts/bash_profile /c/Program\ Files/Git/etc/bash_profile
+	cp "${gitscripts_path}environment.sh" "${git_install}environment.sh"
+	cp "${gitscripts_path}bash_profile" "${git_install}bash_profile"
 fi
 
-source /c/Program\ Files/Git/etc/bash_profile
+source "${git_install}bash_profile"

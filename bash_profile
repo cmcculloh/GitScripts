@@ -1,3 +1,5 @@
+source environment.sh
+
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
@@ -34,3 +36,4 @@ alias refresh_bash_profile="source ${gitscripts_path}refresh_bash_profile.sh"
 alias refreshSource="source ${native_bash_profile_path}"
 alias showlog="${gitscripts_path}showlog.sh"
 alias getdiff="${gitscripts_path}showlog.sh"
+alias test="echo this is a test: ${gitscripts_path}"

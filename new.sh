@@ -69,7 +69,7 @@ if [ "$branch" = "fl/master" ]
 	echo git checkout --no-track -b $1 fl/master
 	git checkout --no-track -b $1 fl/master
 else
-	/d/automata/flgitscripts/checkout.sh $branch
+	${gitscripts_path}checkout.sh $branch
 
 	echo "You are about to branch $branch to create a new branch named $1"
 	echo 'YOU SHOULD PROBABLY NOT BE DOING THIS!!!!'
