@@ -5,3 +5,8 @@ To initialize repo:
 2. Enter the following in the shell wherever you downloaded that:
 
 source createRepo.sh
+
+
+3. Copy environment.sh.template to environment.sh and customize it
+
+4. Run refresh_bash_profile.sh

@@ -4,5 +4,4 @@
 # source createRepo.sh
 
 git clone -o origin ssh://git@flgit.finishline.com/git/flgitscripts.git flgitscripts
-source flgitscripts/environment.sh
-source flgitscripts/pullscripts.sh
+
