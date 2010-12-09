@@ -1,6 +1,7 @@
 automata_path="/d/automata/"
 gitscripts_path="${automata_path}flgitscripts/"
 fl_workspace="/d/workspaces/fl_git/finishline"
+webappwar="${fl_workspace}/modules/base/j2ee-apps/base/web-app.war/"
 firefox_home=/c/Program\ Files/Mozilla\ Firefox/firefox.exe
 git_install=/c/Program\ Files/Git/etc/
 native_bash_profile_path="${git_install}bash_profile"
