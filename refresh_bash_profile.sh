@@ -1,27 +1,10 @@
-source environment.sh
+source environment_template
 
-direction="to"
-destination="local"
-if [ -n $1 ]
-	then
-	direction=$1
-fi
-if [ -n $2 ]
-	then
-	destination=$2
-fi
+cat environment_template bash_profile_template > bash_profile
 
-command=$direction$destination
+cp "${gitscripts_path}bash_profile" "${git_install}bash_profile"
+cp "${gitscripts_path}motd" "${git_install}motd"
 
-if [ "$command" = "fromlocal" -o "$command" = "togit" ]
-	then
-	cp "${git_install}environment.sh" "${gitscripts_path}environment.sh"
-	cp "${git_install}bash_profile" "${gitscripts_path}bash_profile"
-	cp "${git_install}motd" "${gitscripts_path}motd"
-else
-	cp "${gitscripts_path}environment.sh" "${git_install}environment.sh"
-	cp "${gitscripts_path}bash_profile" "${git_install}bash_profile"
-	cp "${gitscripts_path}motd" "${git_install}motd"
-fi
+rm bash_profile
 
 source "${git_install}bash_profile"
