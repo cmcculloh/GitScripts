@@ -57,8 +57,8 @@ alias sshgit="ssh git@10.0.2.160"
 
 
 #webpage launches
-alias gitwiki="${firefox_home} http://10.0.2.160/wiki/index.php/Git_Commands"
-alias local="${firefox_home} http://local.finishline.com/store"
+alias gitwiki="\"${default_browser}\" http://10.0.2.160/wiki/index.php/Git_Commands"
+alias local="\"${default_browser}\" http://local.finishline.com/store"
 
 
 #home directories
