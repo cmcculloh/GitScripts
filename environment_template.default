@@ -1,7 +1,9 @@
-automata_path="/d/automata/"
+automata_path="/d/development/helios_workspace/"
 gitscripts_path="${automata_path}flgitscripts/"
-fl_workspace="/d/workspaces/fl_git/finishline"
-webappwar="${fl_workspace}/modules/base/j2ee-apps/base/web-app.war/"
-firefox_home=/c/Program\ Files/Mozilla\ Firefox/firefox.exe
-git_install=/c/Program\ Files/Git/etc/
+default_workspace="/d/development/helios_workspace/"
+fl_project="${default_workspace}finishline"
+webappwar="${fl_project}/modules/base/j2ee-apps/base/web-app.war/"
+programs_install="/c/Program\ Files/"
+firefox_home="${programs_install}Mozilla\ Firefox/firefox.exe"
+git_install="${programs_install}Git/etc/"
 native_bash_profile_path="${git_install}bash_profile"
