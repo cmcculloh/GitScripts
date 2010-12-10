@@ -1,1 +1,1 @@
-git commit -m "$(__git_ps1) $1"
+git commit -m "$1 $2"
