@@ -20,6 +20,8 @@ alias ll="ls -l"
 alias lla="ls -la"
 alias cd..="cd .."
 alias cls="clear"
+alias llcoolj="echo \"I'm BAAAD\""
+alias hammer="${gitscripts_path}hammertime.sh"
 
 
 #automated deploys
