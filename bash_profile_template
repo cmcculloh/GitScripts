@@ -31,8 +31,6 @@ alias prodDeploy="/d/deploys/SCRIPTS/prodDeploy.sh"
 alias g="git"
 alias reset="git reset --hard"
 alias move="git mv"
-
-alias commit="git commit -m \"$(__git_ps1)\""
 alias add="git add"
 alias push="git push $1 $2"
 alias branch="git branch -a"
@@ -41,6 +39,7 @@ alias fetch="git fetch --all --prune"
 alias pull="git pull $1 $2"
 
 ##advanced
+alias commit="${gitscripts_path}commit.sh"
 alias showlog="${gitscripts_path}showlog.sh"
 alias gitdiff="${gitscripts_path}showlog.sh"
 alias checkout="${gitscripts_path}checkout.sh"
