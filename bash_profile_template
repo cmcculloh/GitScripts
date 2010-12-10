@@ -28,6 +28,7 @@ alias prodDeploy="/d/deploys/SCRIPTS/prodDeploy.sh"
 
 #git stuff
 ##basic
+alias addall="git add -A"
 alias g="git"
 alias reset="git reset --hard"
 alias move="git mv"
