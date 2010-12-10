@@ -1,6 +1,4 @@
-Welcome to Git (version 1.7.0.2-preview20100309)
-MOTD defined in C:\Program Files\Git\etc\motd
-
+Welcome to
   ________.______________ __________    _____    _________ ___ ___
  /  _____/|   \__    ___/ \______   \  /  _  \  /   _____//   |   \
 /   \  ___|   | |    |     |    |  _/ /  /_\  \ \_____  \/    ~    \
@@ -13,4 +11,4 @@ Run 'git help <command>' to display help for specific commands.
 
 Type "alias" and hit Enter to see all current aliases
 
-Remember to prepend all commit comments with your ticket number.
+PREPEND ALL COMMITS COMMENTS WITH TICKET NUMBER!
