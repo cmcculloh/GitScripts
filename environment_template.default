@@ -1,12 +1,21 @@
-automata_path="/d/development/helios_workspace/"
-gitscripts_path="${automata_path}flgitscripts/"
-default_workspace="/d/development/helios_workspace/"
-fl_project="${default_workspace}finishline"
-media_project="${default_workspace}finishline_media"
-webappwar="${fl_project}/modules/base/j2ee-apps/base/web-app.war/"
-programs_install=/c/Program\ Files\ \(x86\)/
-firefox_home="${programs_install}"Mozilla\ Firefox/firefox.exe
+#program specific
+programs_root=/c/Program\ Files\ \(x86\)/
+firefox_home="${programs_root}"Mozilla\ Firefox/firefox.exe
 chrome_home="C:\Users\pjc\AppData\Local\Google\Chrome\Application\chrome.exe"
-git_install="${programs_install}"Git/etc/
-native_bash_profile_path="${git_install}bash_profile"
+git_install="${programs_root}"Git/etc/
 default_browser="${chrome_home}"
+native_bash_profile_path="${git_install}bash_profile"
+
+
+#workspace specific
+development_root="/d/development/"
+workspace_path="${development_root}helios_workspace/"
+media_path="${workspace_path}finishline_media/"
+finishline_path="${workspace_path}finishline/"
+gitscripts_path="${workspace_path}gitscripts/"
+deploys_path="${workspace_path}deploys/"
+builds_path="${workspace_path}deploys/"
+
+
+#project specific
+webappwar="${finishline_path}modules/base/j2ee-apps/base/web-app.war/"
