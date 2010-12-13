@@ -63,6 +63,9 @@ alias local="\"${default_browser}\" http://local.finishline.com/store"
 
 #home directories
 alias flhome="cd ${finishline_path}"
-alias mediahome="cd ${media_project}"
+alias mediahome="cd ${media_path}"
 alias gitscriptshome="cd ${gitscripts_path}"
+alias deployhome="cd ${deploys_path}"
+alias buildhome="cd ${builds_path}"
 alias storehome="cd ${webappwar}"
+
