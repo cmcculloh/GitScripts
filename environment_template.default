@@ -5,6 +5,7 @@ chrome_home="C:\Users\pjc\AppData\Local\Google\Chrome\Application\chrome.exe"
 git_install="${programs_root}"Git/etc/
 default_browser="${chrome_home}"
 native_bash_profile_path="${git_install}bash_profile"
+eclipse_home="/c/eclipse/"
 
 
 #workspace specific

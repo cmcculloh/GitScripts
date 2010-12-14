@@ -61,6 +61,10 @@ alias gitwiki="\"${default_browser}\" http://10.0.2.160/wiki/index.php/Git_Comma
 alias local="\"${default_browser}\" http://local.finishline.com/store"
 
 
+#programs
+alias eclipse="${eclipse_home}eclipse.exe"
+
+
 #home directories
 alias flhome="cd ${finishline_path}"
 alias mediahome="cd ${media_path}"
