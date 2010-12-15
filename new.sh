@@ -2,7 +2,7 @@ if [ -n $3 -a "$3" -ne "" -a "$3" -ne " " ]
 	then
 	branch=$3
 else
-	branch="fl/master"
+	branch="master"
 fi
 
 echo "##########################################"
@@ -62,12 +62,24 @@ git fetch --all --prune
 echo
 echo
 
-if [ "$branch" = "fl/master" ]
+if [ "$branch" = "master" ]
 	then
-	echo This branches fl/master to create a new branch named $1
+	echo This branches master to create a new branch named $1
 	echo and then checks out the $1 branch
-	echo git checkout --no-track -b $1 fl/master
-	git checkout --no-track -b $1 fl/master
+	echo git checkout master
+	git checkout master
+
+  git status
+
+	echo git pull fl master
+	git pull fl master
+
+  git status
+
+	echo git checkout -b $1
+	git checkout -b $1
+
+	git status
 else
 	${gitscripts_path}checkout.sh $branch
 
