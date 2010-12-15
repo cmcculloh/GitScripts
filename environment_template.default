@@ -1,21 +1,21 @@
 #program specific
 programs_root=/c/Program\ Files\ \(x86\)/
 firefox_home="${programs_root}"Mozilla\ Firefox/firefox.exe
-chrome_home="C:\Users\pjc\AppData\Local\Google\Chrome\Application\chrome.exe"
-git_install="${programs_root}"Git/etc/
+chrome_home="${HOME}\AppData\Local\Google\Chrome\Application\chrome.exe"
+git_install=/d/Git/etc/
 default_browser="${chrome_home}"
 native_bash_profile_path="${git_install}bash_profile"
-eclipse_home="/c/eclipse/"
+eclipse_home="/d/java_dev/eclipse/"
 
 
 #workspace specific
-development_root="/d/development/"
-workspace_path="${development_root}helios_workspace/"
+development_root="/d/workspaces/"
+workspace_path="${development_root}FL_Main/"
 media_path="${workspace_path}finishline_media/"
 finishline_path="${workspace_path}finishline/"
 gitscripts_path="${workspace_path}gitscripts/"
 deploys_path="${workspace_path}deploys/"
-builds_path="${workspace_path}deploys/"
+builds_path="${workspace_path}builds/"
 
 
 #project specific
