@@ -1,4 +1,15 @@
-To initialize repo:
+When creating a new user account on a clone PC:
+
+Move into the /d/wokspaces/helios_workspace/gitscripts/ directory
+
+Run "source refresh_bash_profile.sh"
+
+
+
+
+
+
+If you are starting from scratch:
 
 1. Download createRepo.sh into the directory you want to create the repo under
 
@@ -10,3 +21,8 @@ source createRepo.sh
 3. Copy environment.sh.template to environment.sh and customize it
 
 4. Run refresh_bash_profile.sh
+
+
+
+
+
