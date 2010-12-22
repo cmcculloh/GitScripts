@@ -16,6 +16,7 @@ finishline_path="${workspace_path}finishline/"
 gitscripts_path="${workspace_path}gitscripts/"
 deploys_path="${workspace_path}deploys/"
 builds_path="${workspace_path}builds/"
+imagescripts_path="${workspace_path}image_scripts/"
 
 
 #project specific

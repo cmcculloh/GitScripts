@@ -74,4 +74,5 @@ alias gitscriptshome="cd ${gitscripts_path}"
 alias deployhome="cd ${deploys_path}"
 alias buildhome="cd ${builds_path}"
 alias storehome="cd ${webappwar}"
+alias imagescriptshome="cd ${imagescripts_path}"
 
