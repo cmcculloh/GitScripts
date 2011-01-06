@@ -33,5 +33,4 @@ if matchdata
 else
 	puts status
 	send_email("102", "102", "Christopher McCulloh", "cmcculloh@finishline.com", "Nike Track Club has changed", status)
-
 end
