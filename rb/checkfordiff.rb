@@ -153,7 +153,7 @@ puts "sending email"
 if matchdata
 	`echo "Nike Track Club is NOT changed" | mail -s "[NTC] NO CHANGES to Nike Track Club" cmcculloh@finishline.com`
 else
-	`echo "Nike Track Club files HAVE CHANGED #{stage_status}" | mail -s "[NTC] CHANGES to Nike Track Club!!!!" cmcculloh@finishline.com`
+	`echo "Nike Track Club files HAVE CHANGED" | mail -s "[NTC] CHANGES to Nike Track Club!!!!" cmcculloh@finishline.com`
 end
 puts "sent email"
 puts "``````````````````````````````````````````````````````````````````````````"
