@@ -56,7 +56,7 @@ puts ""
 puts ".........................................................................."
 puts "copying files down from server"
 #copy files down from 102
-system( "scp -r dynuser@172.17.2.102:/opt/jboss/server/04finishline/deploy/finishline.ear/web-app.war/global/promos/nike-track-club/* /workspaces/nike-track-club/" )
+`scp -r dynuser@172.17.2.102:/opt/jboss/server/04finishline/deploy/finishline.ear/web-app.war/global/promos/nike-track-club/* /workspaces/nike-track-club/`
 `expect ssword:`
 `send "dynuser\r"`
 #copy_files = system( "scp -r dynuser@172.17.2.102:/opt/jboss/server/04finishline/deploy/finishline.ear/web-app.war/global/promos/nike-track-club/* /d/workspaces/fl_git/nike-track-club/" )
