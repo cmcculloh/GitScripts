@@ -1,21 +1,5 @@
 require 'fileutils'
 include FileUtils
-require 'net/smtp'
-
-#define the send_email function
-def send_email(from, from_alias, to, to_alias, subject, message)
-	msg = <<END_OF_MESSAGE
-From: #{from_alias} <#{from}>
-To: #{to_alias} <#{to}>
-Subject: #{subject}
-
-#{message}
-END_OF_MESSAGE
-
-	Net::SMTP.start('localhost') do |smtp|
-		smtp.send_message msg, from, to
-	end
-end
 
 puts <<-eot
 vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
@@ -167,9 +151,9 @@ puts "..........................................................................
 puts "sending email"
 #send e-mail indicating whether changes occured
 if matchdata
-	send_email("102", "102", "Christopher McCulloh", "cmcculloh@finishline.com", "Nike Track Club Unchanged", stage_status)
+	`echo "Nike Track Club is NOT changed" | mail -s "[NTC] NO CHANGES to Nike Track Club" cmcculloh@finishline.com`
 else
-	send_email("102", "102", "Christopher McCulloh", "cmcculloh@finishline.com", "Nike Track Club has changed", stage_status)
+	`echo "Nike Track Club files HAVE CHANGED #{stage_status}" | mail -s "[NTC] CHANGES to Nike Track Club!!!!" cmcculloh@finishline.com`
 end
 puts "sent email"
 puts "``````````````````````````````````````````````````````````````````````````"
