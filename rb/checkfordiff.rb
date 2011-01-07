@@ -38,7 +38,8 @@ puts ""
 puts ".........................................................................."
 puts "moving into nike-track-club repo"
 #move into the Nike Track Club repository
-Dir.chdir("/workspaces/fl_git/nike-track-club")
+Dir.chdir("/workspaces/nike-track-club")
+#Dir.chdir("/workspaces/fl_git/nike-track-club")
 puts "moved into nike-track-club repo"
 puts "``````````````````````````````````````````````````````````````````````````"
 puts ""
@@ -71,7 +72,8 @@ puts ""
 puts ".........................................................................."
 puts "copying files down from server"
 #copy files down from 102
-copy_files = system( "scp -r dynuser@172.17.2.102:/opt/jboss/server/04finishline/deploy/finishline.ear/web-app.war/global/promos/nike-track-club/* /d/workspaces/fl_git/nike-track-club/" )
+copy_files = system( "scp -r dynuser@172.17.2.102:/opt/jboss/server/04finishline/deploy/finishline.ear/web-app.war/global/promos/nike-track-club/* /workspaces/nike-track-club/" )
+#copy_files = system( "scp -r dynuser@172.17.2.102:/opt/jboss/server/04finishline/deploy/finishline.ear/web-app.war/global/promos/nike-track-club/* /d/workspaces/fl_git/nike-track-club/" )
 puts "copied files down from server"
 puts "``````````````````````````````````````````````````````````````````````````"
 puts ""
@@ -92,10 +94,11 @@ puts ""
 
 
 puts ".........................................................................."
-puts "moving into /workspace/fl_git/finishline"
+puts "moving into finishline repo"
 #Move into the finishline repository
-Dir.chdir("/workspaces/fl_git/finishline/")
-puts "moved into /workspace/fl_git/finishline"
+Dir.chdir("/workspaces/nike-track-club-fl/")
+#Dir.chdir("/workspaces/fl_git/finishline/")
+puts "moved into finishline repo"
 puts "``````````````````````````````````````````````````````````````````````````"
 puts ""
 
@@ -132,7 +135,8 @@ puts ""
 puts ".........................................................................."
 #Copy contents of nike-track-club repo into stage nike-track-club spot
 puts "copying files from ntc to stage branch"
-cp_r "/workspaces/fl_git/nike-track-club/", "/workspaces/fl_git/finishline/modules/base/j2ee-apps/base/web-app.war/global/promos/"
+cp_r "/workspaces/nike-track-club/", "/workspaces/nike-track-club-fl/modules/base/j2ee-apps/base/web-app.war/global/promos/"
+#cp_r "/workspaces/fl_git/nike-track-club/", "/workspaces/fl_git/finishline/modules/base/j2ee-apps/base/web-app.war/global/promos/"
 puts "copied files"
 puts "``````````````````````````````````````````````````````````````````````````"
 puts ""
