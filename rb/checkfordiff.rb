@@ -4,9 +4,9 @@ include FileUtils
 puts <<-eot
 vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
- ______              __     _______      __     _______          __
+______              __     _______      __     _______          __
 /_  __/_______ _____/ /__  / ___/ /__ __/ /    / ___/ / ___ ____/ /_____ ____
- / /  / __/ _ `/ __/  '_/ / /__/ // // / _ \\  / /__/ _ | -_) __/  '_/ -_) __/
+/ /  / __/ _ `/ __/  '_/ / /__/ // // / _ \\  / /__/ _ | -_) __/  '_/ -_) __/
 /_/  /_/  \\_,_/\\__/_/\\_\\  \\___/_/ \\_,_/_.__/  \\___/_//_|__/\\__/_/\\_\\\\__/_/
 
 ================================================================================
@@ -64,9 +64,35 @@ puts ""
 
 puts ".........................................................................."
 puts "running git status"
-#get the status
-status = system( "git status" )
+system( "git status ")
+#look for changes
+status_201 = `git status`
 puts "ran git status"
+puts "``````````````````````````````````````````````````````````````````````````"
+puts ""
+
+puts ".........................................................................."
+puts "running regex on git status to determine if changes occured"
+#determine if changes occurred.
+regex = Regexp.new(/nothing to commit \(working directory clean\)/);
+matchdata = regex.match(status_201)
+if matchdata
+	puts "No changes detected"
+else
+	puts "CHANGES WERE MADE!"
+end
+puts "``````````````````````````````````````````````````````````````````````````"
+puts ""
+
+puts ".........................................................................."
+puts "sending email"
+#send e-mail indicating whether changes occured
+if matchdata
+	`echo "Nike Track Club on 201 is NOT changed" | mail -s "[NTC] NO CHANGES to Nike Track Club on 201" cmcculloh@finishline.com`
+else
+	`echo "Nike Track Club files on 201 HAVE CHANGED" | mail -s "[NTC] CHANGES to Nike Track Club on 201!!!!" cmcculloh@finishline.com`
+end
+puts "sent email"
 puts "``````````````````````````````````````````````````````````````````````````"
 puts ""
 
@@ -88,9 +114,9 @@ puts ""
 
 puts ".........................................................................."
 #check out stage
-puts "checking out stage"
-checkout = system( "git checkout stage" )
-puts "checked out stage"
+puts "checking out current_nike_track_club"
+checkout = system( "git checkout nike-track-club-litmus" )
+puts "checked out current_nike_track_club"
 puts "``````````````````````````````````````````````````````````````````````````"
 puts ""
 
@@ -117,11 +143,41 @@ puts "``````````````````````````````````````````````````````````````````````````
 puts ""
 
 puts ".........................................................................."
-#Copy contents of nike-track-club repo into stage nike-track-club spot
-puts "copying files from ntc to stage branch"
-cp_r "/workspaces/nike-track-club/", "/workspaces/nike-track-club-fl/modules/base/j2ee-apps/base/web-app.war/global/promos/"
-#cp_r "/workspaces/fl_git/nike-track-club/", "/workspaces/fl_git/finishline/modules/base/j2ee-apps/base/web-app.war/global/promos/"
-puts "copied files"
+puts "running git status"
+system( "git status ")
+#look for changes
+stage_status = `git status`
+puts "ran git status"
+puts "``````````````````````````````````````````````````````````````````````````"
+puts ""
+
+puts ".........................................................................."
+puts "running regex on git status to determine if changes occured"
+#determine if changes occurred.
+regex = Regexp.new(/nothing to commit \(working directory clean\)/);
+stagematchdata = regex.match(stage_status)
+stagematches = false
+if stagematchdata
+	puts "STAGE MATCHES LITMUS BRANCH"
+	stagematches = true
+else
+	puts "STAGE DOES NOT MATCH LITMUS BRANCH"
+end
+puts "``````````````````````````````````````````````````````````````````````````"
+puts ""
+
+puts ".........................................................................."
+puts "resetting"
+reset = system( "git reset --hard" )
+puts "reset"
+puts "``````````````````````````````````````````````````````````````````````````"
+puts ""
+
+puts ".........................................................................."
+#Pull stage to make sure it is up to date with last prod deploy
+puts "pulling fl stage"
+pull_stage = system( "git pull fl master" )
+puts "pulled stage"
 puts "``````````````````````````````````````````````````````````````````````````"
 puts ""
 
@@ -138,11 +194,13 @@ puts "..........................................................................
 puts "running regex on git status to determine if changes occured"
 #determine if changes occurred.
 regex = Regexp.new(/nothing to commit \(working directory clean\)/);
-matchdata = regex.match(stage_status)
-if matchdata
-	puts "No changes detected"
+prodmatchdata = regex.match(stage_status)
+prodmatches = false
+if prodmatchdata
+	puts "PROD MATCHES LITMUS BRANCH"
+	prodmatches = true
 else
-	puts "CHANGES WERE MADE!"
+	puts "PROD DOES NOT MATCH LITMUS BRANCH"
 end
 puts "``````````````````````````````````````````````````````````````````````````"
 puts ""
@@ -150,10 +208,10 @@ puts ""
 puts ".........................................................................."
 puts "sending email"
 #send e-mail indicating whether changes occured
-if matchdata
-	`echo "Nike Track Club is NOT changed" | mail -s "[NTC] NO CHANGES to Nike Track Club" cmcculloh@finishline.com`
+if stagematches && prodmatches
+	`echo "Nike Track Club has probably not reverted" | mail -s "[NTC] Nike Track Club OK" cmcculloh@finishline.com`
 else
-	`echo "Nike Track Club files HAVE CHANGED" | mail -s "[NTC] CHANGES to Nike Track Club!!!!" cmcculloh@finishline.com`
+	`echo "Nike Track Club MIGHT HAVE REVERTED ON PROD" | mail -s "[NTC] Nike Track Club MIGHT HAVE REVERTED!!!!" cmcculloh@finishline.com`
 end
 puts "sent email"
 puts "``````````````````````````````````````````````````````````````````````````"
