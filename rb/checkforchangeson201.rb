@@ -57,8 +57,7 @@ puts ""
 puts ".........................................................................."
 puts "copying files down from server"
 #copy files down from 102
-#system( "scp -r dynuser@172.17.2.102:/opt/jboss/server/04finishline/deploy/finishline.ear/web-app.war/global/promos/nike-track-club/* /workspaces/nike-track-club/" )
-#system( "scp -r dynuser@172.17.2.102:/opt/jboss/server/03finishline/deploy/finishline.ear/web-app.war/global/promos/nike-track-club/* /d/workspaces/nike-track-club/" )
+system( "scp -r dynuser@172.17.2.102:/opt/jboss/server/03finishline/deploy/finishline.ear/web-app.war/global/promos/nike-track-club/* /d/workspaces/nike-track-club/" )
 puts "copied files down from server"
 puts "``````````````````````````````````````````````````````````````````````````"
 puts ""
