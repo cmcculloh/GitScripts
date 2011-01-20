@@ -1,4 +1,5 @@
-source "${gitscripts_path}environment_template"
+source "${gitscripts_path}environment_template.default"
+source "${gitscripts_path}environment_template.overrides"
 
 cat "${gitscripts_path}environment_template.default" "${gitscripts_path}line_break" "${gitscripts_path}environment_template.overrides" "${gitscripts_path}line_break" "${gitscripts_path}bash_profile_template" > "${gitscripts_path}bash_profile"
 
