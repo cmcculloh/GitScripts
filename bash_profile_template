@@ -80,3 +80,5 @@ alias imagescriptshome="cd ${imagescripts_path}"
 
 #automation of grunt work
 alias check-nike-track-club="${gitscripts_path}check-nike-track-club.sh"
+
+alias npp="notepad++"
