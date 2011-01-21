@@ -1,3 +1,5 @@
+echo "preparing to refresh your bash profile"
+
 source "${gitscripts_path}environment_config.default"
 source "${gitscripts_path}environment_config.overrides"
 
@@ -9,3 +11,5 @@ cp "${gitscripts_path}motd" "${git_install}motd"
 rm "${gitscripts_path}bash_profile"
 
 source "${git_install}bash_profile"
+
+echo "refreshed your bash profile"
