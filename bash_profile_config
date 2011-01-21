@@ -68,6 +68,7 @@ alias eclipse="eclipse.exe"
 alias npp="notepad++.exe"
 alias sublime="sublime.exe"
 alias textpad="TextPad.exe"
+alias ant="${ANT_HOME}ant"
 
 
 #home directories
@@ -83,4 +84,16 @@ alias imagescriptshome="cd ${imagescripts_path}"
 
 #automation of grunt work
 alias check-nike-track-club="${gitscripts_path}check-nike-track-club.sh"
+
+
+# ANT scripts for front end builds automation
+alias snapshot-all="ant take-changed-files-snapshot -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}; ant take-changed-files-snapshot -buildfile  ${builds_path}qa-front-end.build.xml -Dmyenvironment=${myenvironment}; ant take-changed-files-snapshot -buildfile  ${builds_path}dev-front-end.build.xml -Dmyenvironment=${myenvironment}"
+alias snapshot-staging="ant -quiet take-changed-files-snapshot -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment};"
+
+alias initpromos="ant initpromos -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}"
+alias rev="ant git-obtain-revision -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}"
+alias remergelite="ant git-checkout-mergey-thing-lite -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}"
+alias remerge="ant remerge -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}"
+alias promospush="ant push-todays-promos -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}"
+
 

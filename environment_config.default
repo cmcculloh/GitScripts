@@ -22,8 +22,26 @@ builds_path="${workspace_path}builds/"
 imagescripts_path="${workspace_path}image_scripts/"
 
 
+# Java and ANT Settings
+JAVA_DEV_HOME="/d/java_dev/"
+JDK_VERSION="jdk1.5.0_14"
+JAVA_HOME="${JAVA_DEV_HOME}jdk/${JDK_VERSION}/"
+ANT_HOME="${JAVA_DEV_HOME}apache-ant-1.8.1/bin/"
+ANT_CONTRIB_HOME="${JAVA_DEV_HOME}ant-contrib/"
+YUI_COMPRESSOR_HOME="${JAVA_DEV_HOME}yuicompressor-2.4.2/build"
+CLASSPATH="${JAVA_HOME}lib;${ANT_CONTRIB_HOME};"
+ANT_OPTS="-Xms128m\ -Xmx512m\ -Duser.language=en\ -XX:PermSize=128M\ -XX:MaxPermSize=256M"
+ANT_ARGS="-logger\ org.apache.tools.ant.DefaultLogger"
+PATH="${PATH};${JAVA_HOME}bin;${ANT_HOME}bin;${YUI_COMPRESSOR_HOME}build;"
+
+
+
+
+
 #project specific
 webappwar="${finishline_path}modules/base/j2ee-apps/base/web-app.war/"
+myenvironment="workstation-windows"
 
 
-PATH="${PATH}:${sublime_home}:${notepad_pp_home}:${eclipse_home}:${textpad_home}"
+
+PATH="${PATH}:${sublime_home}:${notepad_pp_home}:${eclipse_home}:${textpad_home};"
