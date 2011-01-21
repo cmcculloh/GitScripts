@@ -64,7 +64,10 @@ alias local="\"${default_browser}\" http://local.finishline.com/store"
 
 
 #programs
-alias eclipse="${eclipse_home}eclipse.exe"
+alias eclipse="eclipse.exe"
+alias npp="notepad++.exe"
+alias sublime="sublime.exe"
+alias textpad="TextPad.exe"
 
 
 #home directories
@@ -81,4 +84,3 @@ alias imagescriptshome="cd ${imagescripts_path}"
 #automation of grunt work
 alias check-nike-track-club="${gitscripts_path}check-nike-track-club.sh"
 
-alias npp="notepad++"

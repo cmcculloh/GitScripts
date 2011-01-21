@@ -1,11 +1,14 @@
 #program specific
 programs_root=/c/Program\ Files\ \(x86\)/
-firefox_home="${programs_root}"Mozilla\ Firefox/firefox.exe
-chrome_home="${HOME}\AppData\Local\Google\Chrome\Application\chrome.exe"
+firefox="${programs_root}"Mozilla\ Firefox/firefox.exe
+chrome="${HOME}\AppData\Local\Google\Chrome\Application\chrome.exe"
 git_install="${programs_root}"Git/etc/
-default_browser="${chrome_home}"
+default_browser="${chrome}"
 native_bash_profile_path="${git_install}bash_profile"
 eclipse_home="/c/eclipse/"
+sublime_home="${programs_root}Sublime Text/"
+notepad_pp_home="${programs_root}Notepad++/"
+textpad_home="${programs_root}TextPad 5/"
 
 
 #workspace specific
@@ -21,3 +24,6 @@ imagescripts_path="${workspace_path}image_scripts/"
 
 #project specific
 webappwar="${finishline_path}modules/base/j2ee-apps/base/web-app.war/"
+
+
+PATH="${PATH}:${sublime_home}:${notepad_pp_home}:${eclipse_home}:${textpad_home}"
