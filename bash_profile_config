@@ -25,7 +25,7 @@ alias hammer="${gitscripts_path}hammertime.sh"
 
 
 #automated deploys
-alias prodDeploy="/d/deploys/SCRIPTS/prodDeploy.sh"
+alias prodDeploy="${deploys_path}prodDeploy.sh"
 
 
 #git stuff
