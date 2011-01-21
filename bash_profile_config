@@ -88,14 +88,17 @@ alias check-nike-track-club="${gitscripts_path}check-nike-track-club.sh"
 
 # ANT scripts for front end builds automation
 
-alias promos-init="ant initpromos -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}"
-alias promos-literemerge="ant git-checkout-mergey-thing-lite -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}"
-alias promos-remerge="ant remerge -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}"
-alias promos-push="ant push-todays-promos -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}"
+alias promosinit="ant initpromos -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}"
+alias promosliteremerge="ant git-checkout-mergey-thing-lite -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}"
+alias promosremerge="ant remerge -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}"
+alias promospush="ant push-todays-promos -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}"
 
-alias snapback="ant -quiet snap-to-master-and-back -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};ant -quiet export-changed-by-day -buildfile  ${builds_path}qa-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};ant -quiet export-changed-by-day -buildfile  ${builds_path}dev-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
-alias uploadexports="ant -quiet upload-all-exports -buildfile  ${builds_path}all-remotes.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
-alias exportchanges="ant -quiet export-changes -buildfile  ${builds_path}all-remotes.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
+alias allsnapbackexportchanges="ant -quiet snap-to-master-and-back -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};ant -quiet export-changed-by-day -buildfile  ${builds_path}qa-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};ant -quiet export-changed-by-day -buildfile  ${builds_path}dev-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
+alias alluploadexports="ant -quiet upload-all-exports -buildfile  ${builds_path}all-remotes.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
+alias devexportchanges="ant -quiet export-changed-by-day -buildfile  ${builds_path}dev-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
+alias qaexportchanges="ant -quiet export-changed-by-day -buildfile  ${builds_path}qa-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
+alias stagingexportchanges="ant -quiet export-changed-by-day -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
+alias allexportchanges="ant -quiet export-changes -buildfile  ${builds_path}all-remotes.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
 
 
 
