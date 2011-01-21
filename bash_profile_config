@@ -84,6 +84,8 @@ alias imagescriptshome="cd ${imagescripts_path}"
 
 #automation of grunt work
 alias check-nike-track-club="${gitscripts_path}check-nike-track-club.sh"
+alias createrepositories="source ${gitscripts_path}createRepositories.sh"
+
 
 
 # ANT scripts for front end builds automation
