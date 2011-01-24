@@ -67,7 +67,7 @@ alias local="\"${default_browser}\" http://local.finishline.com/store"
 #programs
 alias eclipse="eclipse.exe"
 alias npp="notepad++.exe"
-alias sublime="sublime.exe"
+alias sublime="sublimetext.exe"
 alias textpad="TextPad.exe"
 alias ant="${ANT_HOME}ant"
 
