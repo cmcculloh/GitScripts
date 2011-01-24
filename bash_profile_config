@@ -46,6 +46,7 @@ alias commit="source ${gitscripts_path}commit.sh"
 
 alias showlog="${gitscripts_path}showlog.sh"
 alias gitdiff="${gitscripts_path}showlog.sh"
+alias gitdifftool="${gitscripts_path}gitdifftool.sh"
 alias checkout="${gitscripts_path}checkout.sh"
 alias merge="${gitscripts_path}merge.sh"
 alias mergemaster="${gitscripts_path}mergemaster.sh"
@@ -88,10 +89,10 @@ alias check-nike-track-club="${gitscripts_path}check-nike-track-club.sh"
 
 # ANT scripts for front end builds automation
 
-alias promosinit="ant initpromos -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}"
-alias promosliteremerge="ant git-checkout-mergey-thing-lite -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}"
-alias promosremerge="ant remerge -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}"
-alias promospush="ant push-todays-promos -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}"
+alias promosinit="ant initpromos -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
+alias promosliteremerge="ant git-checkout-mergey-thing-lite -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
+alias promosremerge="ant remerge -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
+alias promospush="ant push-todays-promos -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
 
 alias allsnapbackexportchanges="ant -quiet snap-to-master-and-back -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};ant -quiet export-changed-by-day -buildfile  ${builds_path}qa-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};ant -quiet export-changed-by-day -buildfile  ${builds_path}dev-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
 alias alluploadexports="ant -quiet upload-all-exports -buildfile  ${builds_path}all-remotes.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
