@@ -83,7 +83,7 @@ puts "``````````````````````````````````````````````````````````````````````````
 puts ""
 
 puts ".........................................................................."
-#check out stage
+#check out master
 puts "checking out master"
 checkout = system( "git checkout master" )
 puts "checked out master"
@@ -152,6 +152,14 @@ puts "..........................................................................
 puts "resetting"
 reset = system( "git reset --hard" )
 puts "reset"
+puts "``````````````````````````````````````````````````````````````````````````"
+puts ""
+
+puts ".........................................................................."
+#check out stage
+puts "checking out stage"
+checkout = system( "git checkout stage" )
+puts "checked out stage"
 puts "``````````````````````````````````````````````````````````````````````````"
 puts ""
 
