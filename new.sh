@@ -1,8 +1,7 @@
-if [ -n $3 -a "$3" -ne "" -a "$3" -ne " " ]
+branch="master"
+if [ -n $3 ] && [ "$3" != " " ] && [ "$3" != "" ]
 	then
 	branch=$3
-else
-	branch="master"
 fi
 
 echo "##########################################"
