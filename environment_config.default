@@ -32,7 +32,7 @@ YUI_COMPRESSOR_HOME="${JAVA_DEV_HOME}yuicompressor-2.4.2/build"
 CLASSPATH="${JAVA_HOME}lib;${ANT_CONTRIB_HOME};"
 ANT_OPTS="-Xms128m\ -Xmx512m\ -Duser.language=en\ -XX:PermSize=128M\ -XX:MaxPermSize=256M"
 ANT_ARGS="-logger\ org.apache.tools.ant.DefaultLogger"
-PATH="${PATH};${JAVA_HOME}bin;${ANT_HOME}bin;${YUI_COMPRESSOR_HOME}build;"
+PATH="${PATH}:${JAVA_HOME}bin:${ANT_HOME}bin:${YUI_COMPRESSOR_HOME}"
 
 
 
@@ -44,7 +44,4 @@ myenvironment="workstation-windows"
 
 
 
-export PATH=$PATH:${sublime_home}:${notepad_pp_home}:${eclipse_home}:${textpad_home}
-
-#default path for cdm...
-#PATH="/c/Users/cdm.FINISHLINE.COM/bin:.:/usr/local/bin:/mingw/bin:/bin:/c/Windows/system32:/c/Windows:/c/Windows/System32/Wbem:/c/Windows/System32/WindowsPowerShell/v1.0/:e/development/share/java:e/development/share/java:e/development/share/java/jdk:e/development/share/java/jdk/bin:/c/Program Files (x86)/QuickTime/QTSystem/:/c/Program Files (x86)/Tealeaf:/c/Program Files/TortoiseGit/bin:/c/Program Files (x86)/Microsoft SQL Server/90/Tools/binn/:/c/Program Files (x86)/Microsoft SQLServer/80/Tools/BINN:/c/Program Files/Java/jdk1.6.0_23/bin:/c/Ruby192/bin:/d/java_dev/jdk/jdk1.5.0_14/bin:/d/java_dev/apache-ant-1.8.1/bin/bin:/d/java_dev/yuicompressor-2.4.2/build"
+export PATH="${PATH}:${sublime_home}:${notepad_pp_home}:${eclipse_home}:${textpad_home}"
