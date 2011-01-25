@@ -22,6 +22,7 @@ alias cd..="cd .."
 alias cls="clear"
 alias llcoolj="echo \"I'm BAAAD\""
 alias hammer="${gitscripts_path}hammertime.sh"
+alias aliases="cat ${gitscripts_path}aliases.txt"
 
 
 #automated deploys
@@ -103,6 +104,4 @@ alias devexportchanges="ant -quiet export-changed-by-day -buildfile  ${builds_pa
 alias qaexportchanges="ant -quiet export-changed-by-day -buildfile  ${builds_path}qa-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
 alias stagingexportchanges="ant -quiet export-changed-by-day -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
 alias allexportchanges="ant -quiet export-changes -buildfile  ${builds_path}all-remotes.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
-
-
 

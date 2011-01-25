@@ -8,6 +8,7 @@ git pull origin master
 
 refresh_bash_profile
 
+
 git status
 git add -A
 git status
