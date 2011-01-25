@@ -97,6 +97,7 @@ alias promosinit="ant initpromos -buildfile  ${builds_path}staging-front-end.bui
 alias promosliteremerge="ant git-checkout-mergey-thing-lite -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
 alias promosremerge="ant git-checkout-mergey-thing -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
 alias promospush="ant push-todays-promos -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
+alias promosimportstouch="ant set-mod-dates-of-imports-to-now -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
 
 alias allsnapbackexportchanges="ant -quiet snap-to-master-and-back -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};ant -quiet export-changed-by-day -buildfile  ${builds_path}qa-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};ant -quiet export-changed-by-day -buildfile  ${builds_path}dev-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
 alias alluploadexports="ant -quiet upload-all-exports -buildfile  ${builds_path}all-remotes.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
