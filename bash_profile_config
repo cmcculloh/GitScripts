@@ -22,6 +22,7 @@ alias cd..="cd .."
 alias cls="clear"
 alias llcoolj="echo \"I'm BAAAD\""
 alias hammer="${gitscripts_path}hammertime.sh"
+alias aliases="cat ${gitscripts_path}aliases.txt"
 
 
 #automated deploys
@@ -105,3 +106,4 @@ alias allexportchanges="ant -quiet export-changes -buildfile  ${builds_path}all-
 
 
 
+flhome

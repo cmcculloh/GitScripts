@@ -8,6 +8,9 @@ git pull origin master
 
 refresh_bash_profile
 
+#put you back in the right spot since refresh_bash_profile switches your directories...
+cd ${gitscripts_path}
+
 git status
 git add -A
 git status
