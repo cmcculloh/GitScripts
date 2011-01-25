@@ -44,4 +44,4 @@ myenvironment="workstation-windows"
 
 
 
-export PATH="${PATH}:${sublime_home}:${notepad_pp_home}:${eclipse_home}:${textpad_home}"
+export PATH="${PATH}:${sublime_home}:${notepad_pp_home}:${eclipse_home}:${textpad_home}:${gitscripts_path}"

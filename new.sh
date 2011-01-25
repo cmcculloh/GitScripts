@@ -80,7 +80,7 @@ if [ "$branch" = "master" ]
 
 	git status
 else
-	${gitscripts_path}checkout.sh $branch
+	checkout.sh $branch
 
 	echo "You are about to branch $branch to create a new branch named $1"
 	echo 'YOU SHOULD PROBABLY NOT BE DOING THIS!!!!'

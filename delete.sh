@@ -37,7 +37,7 @@ elif [ $choice -eq 3 ]
 	then
 	echo checking out master before deleting branch $1
 
-	${gitscripts_path}checkout.sh master
+	checkout.sh master
 elif [ $choice -eq 4 ]
 	then
 	echo please specify the branch you wish to check out,
@@ -51,7 +51,7 @@ elif [ $choice -eq 4 ]
 	fi
 	echo checking out $branchName before deleting branch $1
 
-	${gitscripts_path}checkout.sh $branchName
+	checkout.sh $branchName
 elif [ $choice -eq 5 ]
 	then
 	exit 1
@@ -76,7 +76,7 @@ if [ $? -ne 1 ]
 		then
 		echo aborting and checking out branch $1
 
-		${gitscripts_path}checkout.sh $1
+		checkout.sh $1
 	else
 		exit
 	fi
