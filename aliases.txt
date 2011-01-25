@@ -15,5 +15,10 @@ merge this into that
 
 
 createrepositories [where username useremail]
-	Creates all of the default FinishLine repositories. You can optionally specify a directory to create them under. Otherwise they will be created in a default location. You can also specify your name and your email address.
+	Creates all of the default FinishLine repositories. You can optionally specify a directory to create them under. Otherwise they will be created in a default location. You can also specify your name and your email address. Here are some examples of this alias in use:
+
+	createrepositories
+	createrepositories /d/workspaces/galileo_workspace/
+	createrepositories /d/workspaces/helios_workspace/ "Christopher McCulloh" cmcculloh@gmail.com
+
 	
