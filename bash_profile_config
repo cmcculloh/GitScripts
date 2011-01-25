@@ -104,6 +104,3 @@ alias qaexportchanges="ant -quiet export-changed-by-day -buildfile  ${builds_pat
 alias stagingexportchanges="ant -quiet export-changed-by-day -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
 alias allexportchanges="ant -quiet export-changes -buildfile  ${builds_path}all-remotes.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
 
-
-
-flhome
