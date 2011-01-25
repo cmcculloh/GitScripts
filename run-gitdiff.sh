@@ -9,11 +9,11 @@ fi
 log1=$(git rev-parse --short $branch)
 log2=$(git rev-parse --short head)
 
-echo Git diff:
+echo About to run:
 echo =========================
 echo git diff $log1..$log2
 echo -------------------------
-echo "Run it? (y) n "
+echo "Do it? (y) n "
 read decision
 if [ -z $decision ]
     then
