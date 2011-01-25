@@ -1,3 +1,7 @@
+#!/bin/sh
+
+current_location=$(pwd)
+
 cd ${gitscripts_path}
 
 git pull origin master
@@ -11,3 +15,5 @@ git commit -m "auto commit: $1"
 git status
 
 git push origin master
+
+cd $current_location
