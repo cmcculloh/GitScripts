@@ -55,7 +55,7 @@ fi
 
 echo
 echo
-echo This tells your local git about all changes on fl remote
+echo This tells your local git about all changes on the remote
 echo git fetch --all --prune
 git fetch --all --prune
 echo

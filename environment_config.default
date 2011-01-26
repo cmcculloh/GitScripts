@@ -21,6 +21,7 @@ deploys_path="${workspace_path}deploys/"
 builds_path="${workspace_path}builds/"
 imagescripts_path="${workspace_path}image_scripts/"
 csr_path="${workspace_path}finishline_csr/"
+promo_editor_path="${workspace_path}promo_editor/"
 
 
 # Java and ANT Settings
