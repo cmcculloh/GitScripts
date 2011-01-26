@@ -20,6 +20,7 @@ gitscripts_path="${workspace_path}gitscripts/"
 deploys_path="${workspace_path}deploys/"
 builds_path="${workspace_path}builds/"
 imagescripts_path="${workspace_path}image_scripts/"
+csr_path="${workspace_path}finishline_csr/"
 
 
 # Java and ANT Settings
