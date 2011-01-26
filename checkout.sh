@@ -63,10 +63,12 @@ echo
 echo
 
 
+remote=$(git remote)
+
 echo This makes sure the $1 branch is up to date
 echo \(if it doesn't exist on the remote yet, don't worry about the warnings\)
-echo git pull fl $1
-git pull fl $1
+echo git pull $remote $1
+git pull $remote $1
 
 echo
 echo

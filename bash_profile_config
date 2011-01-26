@@ -36,11 +36,11 @@ alias g="git"
 alias reset="git reset --hard"
 alias move="git mv"
 alias add="git add"
-alias push="git push $1 $2"
+#alias push="git push $1 $2"
 alias branch="git branch -a"
 alias status="git status"
 alias fetch="git fetch --all --prune"
-alias pull="git pull $1 $2"
+#alias pull="git pull $1 $2"
 
 ##advanced
 alias commit="source ${gitscripts_path}commit.sh"

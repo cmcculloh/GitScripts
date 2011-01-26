@@ -70,8 +70,10 @@ if [ "$branch" = "master" ]
 
   git status
 
-	echo git pull fl master
-	git pull fl master
+  	remote=$(git remote)
+
+	echo git pull $remote master
+	git pull $remote master
 
   git status
 
