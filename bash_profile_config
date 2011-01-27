@@ -84,6 +84,7 @@ alias storehome="cd ${webappwar}"
 alias imagescriptshome="cd ${imagescripts_path}"
 alias csrhome="cd ${csr_path}"
 alias promoeditorhome="cd ${promo_editor_path}"
+alias naturaldocshome="cd ${naturaldocs_path}"
 
 
 

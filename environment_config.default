@@ -9,6 +9,7 @@ eclipse_home="/c/eclipse/"
 sublime_home="${programs_root}Sublime Text/"
 notepad_pp_home="${programs_root}Notepad++/"
 textpad_home="${programs_root}TextPad 5/"
+natural_docs_home="/d/java_dev/NaturalDocs-1.5"
 
 
 #workspace specific
@@ -22,6 +23,7 @@ builds_path="${workspace_path}builds/"
 imagescripts_path="${workspace_path}image_scripts/"
 csr_path="${workspace_path}finishline_csr/"
 promo_editor_path="${workspace_path}promo_editor/"
+naturaldocs_path="${workspace_path}naturaldocs/"
 
 
 # Java and ANT Settings
@@ -46,4 +48,4 @@ myenvironment="workstation-windows"
 
 
 
-export PATH="${PATH}:${sublime_home}:${notepad_pp_home}:${eclipse_home}:${textpad_home}:${gitscripts_path}"
+export PATH="${PATH}:${sublime_home}:${notepad_pp_home}:${eclipse_home}:${textpad_home}:${gitscripts_path}:${natural_docs_home}"
