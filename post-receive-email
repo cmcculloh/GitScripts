@@ -316,8 +316,6 @@ announce()
 		MIME-Version: 1.0
 		Content-type: text/html; charset=iso-8859-1
 		To: $recipients
-		From: cmcculloh@finishline.com
-		Return-Path: cmcculloh@finishline.com
 		Subject: ${emailprefix} blurb: $projectdesc/$short_refname ${change_type}d.
 		X-Git-Refname: $refname
 		X-Git-Reftype: $refname_type
@@ -998,6 +996,6 @@ else
 	while read oldrev newrev refname
 	do
 		generate_email $oldrev $newrev $refname | send_mail
-		announce $oldrev $newrev $refname | send_mail -f cmcculloh@finishline.com
+		announce $oldrev $newrev $refname | send_mail
 	done
 fi
