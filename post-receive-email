@@ -326,7 +326,7 @@ announce()
 
 		<p>You can see a diff of all changes by issuing the following command:<br />
 		git diff $oldrev..$newrev<br />
-		or going to the <a href="http://10.0.2.160/blog/">blog (http://10.0.2.160/blog/)</a></p>
+		or by <a href="http://10.0.2.160/blog/">going to the blog (http://10.0.2.160/blog/)</a></p>
 
 		<p>summary of changes:<br />
 		EOF
