@@ -325,7 +325,8 @@ announce()
 		<p>Project "$projectdesc" received a push. $(git log --pretty=format:"%cn" -1 $describe) ${change_type}d $refname_type: $short_refname.</p>
 
 		<p>You can see a diff of all changes by issuing the following command:<br />
-		git diff $oldrev..$newrev</p>
+		git diff $oldrev..$newrev<br />
+		or going to the <a href="http://10.0.2.160/blog/">blog (http://10.0.2.160/blog/)</a></p>
 
 		<p>summary of changes:<br />
 		EOF
