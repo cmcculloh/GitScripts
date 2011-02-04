@@ -322,13 +322,11 @@ announce()
 		X-Git-Oldrev: $oldrev
 		X-Git-Newrev: $newrev
 
-		<p>Project "$projectdesc" received a push. $(git log --pretty=format:"%cn" -1 $describe) ${change_type}d $refname_type: $short_refname.</p>
+		<p>"$projectdesc" received a push. $(git log --pretty=format:"%cn" -1 $describe) ${change_type}d $refname_type: $short_refname.</p>
 
-		<p>You can see a diff of all changes by issuing the following command:<br />
-		git diff $oldrev..$newrev<br />
-		or by <a href="http://10.0.2.160/blog/">going to the blog (http://10.0.2.160/blog/)</a></p>
+		<p>git diff $oldrev..$newrev</p>
 
-		<p>summary of changes:<br />
+		<p>
 		EOF
 		#lists only the number of files changed, not any sensitive data
 		echo $(git diff-tree --shortstat $oldrev..$newrev)
@@ -336,7 +334,7 @@ announce()
 		cat <<-EOF
 		</p>
 
-		<p>Rev list:<br />
+		<p>
 		<pre>
 		EOF
 
@@ -345,6 +343,8 @@ announce()
 		cat <<-EOF
 		</pre>
 		</p>
+
+		<p><a href="http://10.0.2.160/blog/">http://10.0.2.160/blog/</a></p>
 		EOF
 	fi
 }
