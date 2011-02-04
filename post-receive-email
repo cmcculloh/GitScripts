@@ -316,7 +316,7 @@ announce()
 		MIME-Version: 1.0
 		Content-type: text/html; charset=iso-8859-1
 		To: $recipients
-		Subject: ${emailprefix} blurb: $projectdesc/$short_refname ${change_type}d.
+		Subject: ${emailprefix} $projectdesc/$short_refname ${change_type}d.
 		X-Git-Refname: $refname
 		X-Git-Reftype: $refname_type
 		X-Git-Oldrev: $oldrev
