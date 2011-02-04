@@ -997,6 +997,6 @@ else
 	while read oldrev newrev refname
 	do
 		generate_email $oldrev $newrev $refname | send_mail
-		announce $oldrev $newrev $refname | send_mail
+		announce $oldrev $newrev $refname | send_mail -f cmcculloh@finishline.com
 	done
 fi
