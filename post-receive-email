@@ -336,11 +336,6 @@ announce()
 		cat <<-EOF
 		</pre>
 		</p>
-
-		<p>this email was generated because of /git/your-repo.git/hooks/post-receive by the file /git-core/contrib/hooks/post-receive-email<br />
-		For more info, see <a href="http://blog.chomperstomp.com/?p=630">http://blog.chomperstomp.com/?p=630</a>
-		-- <br />
-		$projectdesc</p>
 		EOF
 	fi
 }
