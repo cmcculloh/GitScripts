@@ -322,6 +322,8 @@ announce()
 		X-Git-Oldrev: $oldrev
 		X-Git-Newrev: $newrev
 
+		<p>Summary: (GIT ${projectdesc}) $(git log --pretty=format:"%cn" -1 $describe) ${change_type}d $refname_type: $projectdesc/$short_refname.</p>
+
 		<p>Project "$projectdesc" received a push.</p>
 
 		<p>$refname_type: $short_refname ${change_type}d</p>
