@@ -343,8 +343,6 @@ announce()
 		cat <<-EOF
 		</pre>
 		</p>
-
-		<p><a href="http://10.0.2.160/blog/">http://10.0.2.160/blog/</a></p>
 		EOF
 	fi
 }
