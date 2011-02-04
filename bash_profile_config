@@ -44,7 +44,6 @@ alias fetch="git fetch --all --prune"
 
 ##advanced
 alias commit="source ${gitscripts_path}commit.sh"
-
 alias showlog="${gitscripts_path}showlog.sh"
 alias gitdiff="${gitscripts_path}showlog.sh"
 alias rungitdiff="${gitscripts_path}run-gitdiff.sh"
