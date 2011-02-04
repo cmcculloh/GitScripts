@@ -330,7 +330,7 @@ announce()
 		<p>summary of changes:<br />
 		EOF
 		#lists only the number of files changed, not any sensitive data
-		$(git diff-tree --shortstat $oldrev..$newrev)
+		echo $(git diff-tree --shortstat $oldrev..$newrev)
 
 		cat <<-EOF
 		</p>
