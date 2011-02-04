@@ -317,6 +317,7 @@ announce()
 		Content-type: text/html; charset=iso-8859-1
 		To: $recipients
 		From: cmcculloh@finishline.com
+		Return-Path: cmcculloh@finishline.com
 		Subject: ${emailprefix} blurb: $projectdesc/$short_refname ${change_type}d.
 		X-Git-Refname: $refname
 		X-Git-Reftype: $refname_type
