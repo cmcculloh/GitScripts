@@ -327,6 +327,16 @@ announce()
 		<p>You can see a diff of all changes by issuing the following command:<br />
 		git diff $oldrev..$newrev</p>
 
+		<p>summary of changes:<br />
+		<pre>
+		EOF
+
+		$(git diff-tree --stat --summary --find-copies-harder $oldrev..$newrev)
+
+		cat <<-EOF
+		</pre>
+		</p>
+
 		<p>Rev list:<br />
 		<pre>
 		EOF
