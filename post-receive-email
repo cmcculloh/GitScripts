@@ -195,22 +195,308 @@ generate_email()
 	generate_email_footer
 }
 
+announce()
+{
+	# --- Arguments
+	oldrev=$(git rev-parse $1)
+	newrev=$(git rev-parse $2)
+	refname="$3"
+
+	# --- Interpret
+	# 0000->1234 (create)
+	# 1234->2345 (update)
+	# 2345->0000 (delete)
+	if expr "$oldrev" : '0*$' >/dev/null
+	then
+		change_type="create"
+	else
+		if expr "$newrev" : '0*$' >/dev/null
+		then
+			change_type="delete"
+		else
+			change_type="update"
+		fi
+	fi
+
+	# --- Get the revision types
+	newrev_type=$(git cat-file -t $newrev 2> /dev/null)
+	oldrev_type=$(git cat-file -t "$oldrev" 2> /dev/null)
+	case "$change_type" in
+	create|update)
+		rev="$newrev"
+		rev_type="$newrev_type"
+		;;
+	delete)
+		rev="$oldrev"
+		rev_type="$oldrev_type"
+		;;
+	esac
+
+	# The revision type tells us what type the commit is, combined with
+	# the location of the ref we can decide between
+	#  - working branch
+	#  - tracking branch
+	#  - unannoted tag
+	#  - annotated tag
+	case "$refname","$rev_type" in
+		refs/tags/*,commit)
+			# un-annotated tag
+			refname_type="tag"
+			short_refname=${refname##refs/tags/}
+			;;
+		refs/tags/*,tag)
+			# annotated tag
+			refname_type="annotated tag"
+			short_refname=${refname##refs/tags/}
+			# change recipients
+			if [ -n "$announcerecipients" ]; then
+				recipients="$announcerecipients"
+			fi
+			;;
+		refs/heads/*,commit)
+			# branch
+			refname_type="branch"
+			short_refname=${refname##refs/heads/}
+			;;
+		refs/remotes/*,commit)
+			# tracking branch
+			refname_type="tracking branch"
+			short_refname=${refname##refs/remotes/}
+			echo >&2 "*** Push-update of tracking branch, $refname"
+			echo >&2 "***  - no email generated."
+			exit 0
+			;;
+		*)
+			# Anything else (is there anything else?)
+			echo >&2 "*** Unknown type of update to $refname ($rev_type)"
+			echo >&2 "***  - no email generated"
+			exit 1
+			;;
+	esac
+
+	# Check if we've got anyone to send to
+	if [ -z "$recipients" ]; then
+		case "$refname_type" in
+			"annotated tag")
+				config_name="hooks.announcelist"
+				;;
+			*)
+				config_name="hooks.mailinglist"
+				;;
+		esac
+		echo >&2 "*** $config_name is not set so no email will be sent"
+		echo >&2 "*** for $refname update $oldrev->$newrev"
+		exit 0
+	fi
+
+	# Email parameters
+	# The email subject will contain the best description of the ref
+	# that we can build from the parameters
+	describe=$(git describe $rev 2>/dev/null)
+	if [ -z "$describe" ]; then
+		describe=$rev
+	fi
+
+	sendblurb="false"
+	if [ $short_refname = "master" ]
+		then
+		recipients="${blurbrecipients}"
+		sendblurb="true"
+	elif [ $short_refname = "stage" ]
+		then
+		recipients="${blurbrecipients}"
+		sendblurb="true"
+	fi	
+
+	if [ $sendblurb = "true" ]
+		then
+		
+		# --- Email (all stdout will be the email)
+		cat <<-EOF
+		MIME-Version: 1.0
+		Content-type: text/html; charset=iso-8859-1
+		To: $recipients
+		Subject: Summary: (GIT ${projectdesc}) $(git log --pretty=format:"%cn" -1 $describe) ${change_type}d $refname_type: $projectdesc/$short_refname.
+		X-Git-Refname: $refname
+		X-Git-Reftype: $refname_type
+		X-Git-Oldrev: $oldrev
+		X-Git-Newrev: $newrev
+
+		<p>Project "$projectdesc" received a push.</p>
+
+		<p>$refname_type: $short_refname ${change_type}d</p>
+
+		<p>You can see a diff of all changes by issuing the following command:<br />
+		git diff $oldrev..$newrev</p>
+
+		<p>Rev list:<br />
+		<pre>
+		EOF
+
+		blurb_safe_content
+
+		cat <<-EOF
+		</pre>
+		</p>
+
+		<p>this email was generated because of /git/your-repo.git/hooks/post-receive by the file /git-core/contrib/hooks/post-receive-email<br />
+		For more info, see <a href="http://blog.chomperstomp.com/?p=630">http://blog.chomperstomp.com/?p=630</a>
+		-- <br />
+		$projectdesc</p>
+		EOF
+	fi
+}
+
+blurb_safe_content()
+{
+	# Consider this:
+	#   1 --- 2 --- O --- X --- 3 --- 4 --- N
+	#
+	# O is $oldrev for $refname
+	# N is $newrev for $refname
+	# X is a revision pointed to by some other ref, for which we may
+	#   assume that an email has already been generated.
+	# In this case we want to issue an email containing only revisions
+	# 3, 4, and N.  Given (almost) by
+	#
+	#  git rev-list N ^O --not --all
+	#
+	# The reason for the "almost", is that the "--not --all" will take
+	# precedence over the "N", and effectively will translate to
+	#
+	#  git rev-list N ^O ^X ^N
+	#
+	# So, we need to build up the list more carefully.  git rev-parse
+	# will generate a list of revs that may be fed into git rev-list.
+	# We can get it to make the "--not --all" part and then filter out
+	# the "^N" with:
+	#
+	#  git rev-parse --not --all | grep -v N
+	#
+	# Then, using the --stdin switch to git rev-list we have effectively
+	# manufactured
+	#
+	#  git rev-list N ^O ^X
+	#
+	# This leaves a problem when someone else updates the repository
+	# while this script is running.  Their new value of the ref we're
+	# working on would be included in the "--not --all" output; and as
+	# our $newrev would be an ancestor of that commit, it would exclude
+	# all of our commits.  What we really want is to exclude the current
+	# value of $refname from the --not list, rather than N itself.  So:
+	#
+	#  git rev-parse --not --all | grep -v $(git rev-parse $refname)
+	#
+	# Get's us to something pretty safe (apart from the small time
+	# between refname being read, and git rev-parse running - for that,
+	# I give up)
+	#
+	#
+	# Next problem, consider this:
+	#   * --- B --- * --- O ($oldrev)
+	#          \
+	#           * --- X --- * --- N ($newrev)
+	#
+	# That is to say, there is no guarantee that oldrev is a strict
+	# subset of newrev (it would have required a --force, but that's
+	# allowed).  So, we can't simply say rev-list $oldrev..$newrev.
+	# Instead we find the common base of the two revs and list from
+	# there.
+	#
+	# As above, we need to take into account the presence of X; if
+	# another branch is already in the repository and points at some of
+	# the revisions that we are about to output - we don't want them.
+	# The solution is as before: git rev-parse output filtered.
+	#
+	# Finally, tags: 1 --- 2 --- O --- T --- 3 --- 4 --- N
+	#
+	# Tags pushed into the repository generate nice shortlog emails that
+	# summarise the commits between them and the previous tag.  However,
+	# those emails don't include the full commit messages that we output
+	# for a branch update.  Therefore we still want to output revisions
+	# that have been output on a tag email.
+	#
+	# Luckily, git rev-parse includes just the tool.  Instead of using
+	# "--all" we use "--branches"; this has the added benefit that
+	# "remotes/" will be ignored as well.
+
+	# List all of the revisions that were removed by this update, in a
+	# fast-forward update, this list will be empty, because rev-list O
+	# ^N is empty.  For a non-fast-forward, O ^N is the list of removed
+	# revisions
+	fast_forward=""
+	rev=""
+	for rev in $(git rev-list $newrev..$oldrev)
+	do
+		revtype=$(git cat-file -t "$rev")
+		echo "  discards  $rev ($revtype)"
+	done
+	if [ -z "$rev" ]; then
+		fast_forward=1
+	fi
+
+	# List all the revisions from baserev to newrev in a kind of
+	# "table-of-contents"; note this list can include revisions that
+	# have already had notification emails and is present to show the
+	# full detail of the change from rolling back the old revision to
+	# the base revision and then forward to the new revision
+	for rev in $(git rev-list $oldrev..$newrev)
+	do
+		revtype=$(git cat-file -t "$rev")
+		echo "       via: $rev ($revtype)"
+	done
+
+	if [ "$fast_forward" ]; then
+		echo "      from: $oldrev ($oldrev_type)"
+	else
+		#  1. Existing revisions were removed.  In this case newrev
+		#     is a subset of oldrev - this is the reverse of a
+		#     fast-forward, a rewind
+		#  2. New revisions were added on top of an old revision,
+		#     this is a rewind and addition.
+
+		# (1) certainly happened, (2) possibly.  When (2) hasn't
+		# happened, we set a flag to indicate that no log printout
+		# is required.
+
+		echo ""
+
+		# Find the common ancestor of the old and new revisions and
+		# compare it with newrev
+		baserev=$(git merge-base $oldrev $newrev)
+		rewind_only=""
+		if [ "$baserev" = "$newrev" ]; then
+			echo "This update discarded existing revisions and left the branch pointing at"
+			echo "a previous point in the repository history."
+			echo ""
+			echo " * -- * -- N ($newrev)"
+			echo "            \\"
+			echo "             O -- O -- O ($oldrev)"
+			echo ""
+			echo "The removed revisions are not necessarilly gone - if another reference"
+			echo "still refers to them they will stay in the repository."
+			rewind_only=1
+		else
+			echo "This update added new revisions after undoing existing revisions.  That is"
+			echo "to say, the old revision is not a strict subset of the new revision.  This"
+			echo "situation occurs when you --force push a change and generate a repository"
+			echo "containing something like this:"
+			echo ""
+			echo " * -- * -- B -- O -- O -- O ($oldrev)"
+			echo "            \\"
+			echo "             N -- N -- N ($newrev)"
+			echo ""
+			echo "When this happens we assume that you've already had alert emails for all"
+			echo "of the O revisions, and so we here report only the revisions in the N"
+			echo "branch from the common base, B."
+		fi
+	fi
+}
+
 generate_email_header()
 {
 
-if [ $short_refname = "master" ] && [ $projectdesc = "fl" ]
-	then
-	recipients="${recipients}, flwppostbyemail@gmail.com"
-elif [ $short_refname = "stage" ] && [ $projectdesc = "fl" ]
-	then
-	recipients="${recipients}, flwppostbyemail@gmail.com"
-elif [ $short_refname = "master" ] && [ $projectdesc = "flmedia" ]
-	then
-	recipients="${recipients}, flwppostbyemail@gmail.com"
-elif [ $short_refname = "stage" ] && [ $projectdesc = "flmedia" ]
-	then
-	recipients="${recipients}, flwppostbyemail@gmail.com"
-fi
+
 
 	# --- Email (all stdout will be the email)
 	# Generate header
@@ -689,6 +975,8 @@ then
 fi
 
 recipients=$(git config hooks.mailinglist)
+#blurbrecipients is a list of email addresses to e-mail with non-sensitive info, such as an announcement of what branch received a commit and what the commit hashes were. This is for services such as chatterous
+blurbrecipients=$(git config hooks.blurblist)
 announcerecipients=$(git config hooks.announcelist)
 envelopesender=$(git config hooks.envelopesender)
 emailprefix=$(git config hooks.emailprefix || echo '[GIT] ')
@@ -706,5 +994,6 @@ else
 	while read oldrev newrev refname
 	do
 		generate_email $oldrev $newrev $refname | send_mail
+		announce $oldrev $newrev $refname | send_mail
 	done
 fi
