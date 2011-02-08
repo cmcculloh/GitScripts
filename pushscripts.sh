@@ -1,6 +1,8 @@
 #!/bin/sh
 
+echo before pullscripts
 source $(pullscripts)
+echo after pullscripts
 
 current_location=$(pwd)
 cd ${gitscripts_path}
