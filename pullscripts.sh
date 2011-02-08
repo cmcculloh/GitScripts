@@ -10,6 +10,8 @@ git checkout master
 git pull origin master
 git checkout $current_branch
 
+echo running refresh_bash_profile
 source refresh_bash_profile.sh
+echo ran refresh_bash_profile
 
 cd $current_location
