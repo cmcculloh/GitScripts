@@ -94,8 +94,8 @@ if [ $decision -eq 1 ]
 	echo
 	echo Merging $remote\/master into $1
 	echo
-	echo git merge $remote\/master $1
-	git merge $remote\/master $1
+	echo git merge $remote\/master
+	git merge $remote\/master
 
 elif [ $decision -eq 2 ]
 	then
