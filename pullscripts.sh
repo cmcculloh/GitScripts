@@ -1,7 +1,12 @@
 #!/bin/sh
 
+echo "test"
+
 current_location=$(pwd)
 cd ${gitscripts_path}
+
+
+echo "test 2"
 
 current_branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
 
