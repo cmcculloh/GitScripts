@@ -85,7 +85,7 @@ if [ $current_branch -eq "master" ]
 	then
 	#do nothing, already on master
 	
-elif
+else
 	then
 
 	echo Type the number of the choice you want and hit enter
