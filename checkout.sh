@@ -86,8 +86,6 @@ if [ $current_branch -eq "master" ]
 	#do nothing, already on master
 	
 else
-	then
-
 	echo Type the number of the choice you want and hit enter
 	echo
 	echo It is recommended that you merge the current version of master into your
