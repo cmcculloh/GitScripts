@@ -1,12 +1,6 @@
 #!/bin/sh
 
-current_location=$(pwd)
-
-cd ${gitscripts_path}
-
-git pull origin master
-
-refresh_bash_profile
+source $(pullscripts)
 
 
 git status
