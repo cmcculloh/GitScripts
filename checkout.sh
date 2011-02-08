@@ -81,7 +81,7 @@ echo
 
 current_branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
 
-if [ $current_branch -eq "master" ]
+if [ $current_branch = "master" ]
 	then
 	#do nothing, already on master
 	echo "done"
