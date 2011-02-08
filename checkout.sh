@@ -84,7 +84,7 @@ current_branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* 
 if [ $current_branch = "master" ]
 	then
 	#do nothing, already on master
-	echo "done"
+	echo
 else
 	echo Type the number of the choice you want and hit enter
 	echo
