@@ -5,7 +5,9 @@ cd ${gitscripts_path}
 
 current_branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
 
+echo before fetch
 git fetch --all --prune
+echo after fetch
 git checkout master
 git pull origin master
 git checkout $current_branch
