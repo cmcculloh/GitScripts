@@ -15,6 +15,8 @@ echo 2. Stash Changes and then checkout $1
 echo 3. Revert all changes to tracked files \(ignores untracked files\), and then checkout $1
 echo 4. Abort checkout of $1
 read decision
+
+
 if [ $decision -eq 1 ]
 	then
 	echo continuing...
@@ -75,4 +77,39 @@ echo
 echo git status
 git status
 echo
+echo
+
+echo Type the number of the choice you want and hit enter
+echo
+echo It is recommended that you merge the current version of master into your
+echo branch to make future merges with dev, qa, and master easier. If you
+echo have not yet pushed your branch to remote, you can rebase \(whic is best\!\)
+echo 1. merge master into $1
+echo 2. rebase $1 to master
+echo 3. do neither \(not recommended\)
+read decision
+
+if [ $decision -eq 1 ]
+	then
+	echo
+	echo Merging $remote\/master into $1
+	echo
+	echo git merge $remote\/master into $1
+	git merge $remote\/master into $1
+
+elif [ $decision -eq 2 ]
+	then
+	echo
+	echo Rebasing $1 onto $remote\/master
+	echo
+	echo git rebase $remote\/master
+	git rebase $remote\/master
+fi
+
+
+echo
+echo
+echo git status
+git status
+echo 
 echo
