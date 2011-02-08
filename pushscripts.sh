@@ -2,6 +2,8 @@
 
 source $(pullscripts)
 
+current_location=$(pwd)
+cd ${gitscripts_path}
 
 git status
 git add -A
