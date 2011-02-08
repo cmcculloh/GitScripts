@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo before pullscripts
-source $(pullscripts)
+source pullscripts
 echo after pullscripts
 
 current_location=$(pwd)
