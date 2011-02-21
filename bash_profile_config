@@ -6,6 +6,49 @@ PS1='\[\033]0;$MSYSTEM:\w\007
 \033[32m\]\u@\h \[\033[33m\w$(__git_ps1)\033[0m\]
 \d \t $ '
 
+
+# This sets up "bookmarks" for your directories.  
+# When in a directory, type "s <name>" to store the current path as a bookmark with that name. 
+# To move to a bookmark, type "g <name>". Tab completion also works! 
+# To list all bookmarks, type "l".
+#
+# Credit to: Karthick from http://www.huyng.com/archives/quick-bash-tip-directory-bookmarks/492/
+
+function s {
+cat ~/.sdirs | grep -v "export DIR_$1=" > ~/.sdirs1
+mv ~/.sdirs1 ~/.sdirs
+echo "export DIR_$1=\"$PWD\"" >> ~/.sdirs
+}
+function l {
+source ~/.sdirs
+env | grep "^DIR_" | cut -c5- | grep "^.*="
+}
+# enable custom tab completion
+shopt -s progcomp
+# jump to bookmark
+function g {
+source ~/.sdirs
+cd "$(eval $(echo echo $(echo \$DIR_$1)))"
+}
+# list bookmarks without dirname
+function _l {
+source ~/.sdirs
+env | grep "^DIR_" | cut -c5- | grep "^.*=" | cut -f1 -d "="
+}
+# completion command for g
+function _gcomp {
+local curw
+COMPREPLY=()
+curw=${COMP_WORDS[COMP_CWORD]}
+COMPREPLY=($(compgen -W '`_l`' -- $curw))
+return 0
+}
+# bind completion command for g to _gcomp
+complete -F _gcomp g
+# Usage: g [TAB]
+
+
+
 alias test="echo this is a test: ${gitscripts_path}"
 
 
