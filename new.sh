@@ -63,25 +63,39 @@ echo
 
 if [ "$branch" = "master" ]
 	then
+	echo
+	echo
 	echo This branches master to create a new branch named $1
 	echo and then checks out the $1 branch
 	echo git checkout master
 	git checkout master
 
-  git status
+	echo
+	echo
+	git status
 
   	remote=$(git remote)
 
+	echo
+	echo
 	echo git pull $remote master
 	git pull $remote master
 
-  git status
+	echo
+	echo
+	git status
 
+	echo
+	echo
 	echo git checkout -b $1
 	git checkout -b $1
 
+	echo
+	echo
 	git status
 else
+	echo
+	echo
 	checkout.sh $branch
 
 	echo "You are about to branch $branch to create a new branch named $1"
