@@ -59,20 +59,28 @@ fi
 
 if [ $? -ne 1 ]
 	then
+	echo $branchName has been checked out. Ready to continue...
 	echo
 	echo Type the number of the choice you want and hit enter
-	echo 1. Continue with deletion of branch $1
-	echo 2. Abort Deletion and check branch $1 back out
-	echo 3. Abort and stay on branch $branchName
+	echo 1. Delete branch $1
+	echo 2. Force Delete branch $1
+	echo 3. Abort Deletion and check branch $1 back out
+	echo 4. Abort and stay on branch $branchName
 	read decision
 	echo You chose: $decision
 	if [ $decision -eq 1 ]
 		then
-		echo continuing...
+		echo deleting branch $1
 		echo git branch -d $1
 
 		git branch -d $1
 	elif [ $decision -eq 2 ]
+		then
+		echo Force deleting branch $1
+		echo git branch -D $1
+
+		git branch -D $1
+	elif [ $decision -eq 3 ]
 		then
 		echo aborting and checking out branch $1
 

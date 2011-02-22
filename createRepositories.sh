@@ -33,6 +33,8 @@ git clone -o origin ssh://git@flgit.finishline.com/git/finishline_etc.git etc
 
 git config --global color.status auto
 git config --global color.branch auto
+git config --global color.diff auto
+git config --global color.ui auto
 
 if [ -n "$2" ] && [ "$2" != " " ] && [ "$2" != "" ]
 	then
