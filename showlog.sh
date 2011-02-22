@@ -11,3 +11,9 @@ log2=$(git rev-parse --short head)
 
 echo git diff $log1..$log2
 
+echo "Do it? y (n) "
+read decision
+if [ $decision = "y" ]
+    then
+    git diff $log1..$log2
+fi
