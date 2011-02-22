@@ -6,3 +6,16 @@ echo
 
 
 git status
+
+
+
+echo
+echo
+
+echo "Would you like to push? (Y or N)"
+read YorN
+if [ "$YorN" = "Y" ]
+	then
+	git push fl head
+fi
+
