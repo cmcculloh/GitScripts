@@ -29,6 +29,7 @@ git clone -o origin ssh://git@flgit.finishline.com/git/image_scripts.git image_s
 git clone -o origin ssh://git@flgit.finishline.com/git/promo_editor.git promo_editor
 git clone -o origin ssh://git@flgit.finishline.com/git/finishline_csr.git finishline_csr
 git clone -o origin ssh://git@flgit.finishline.com/git/naturaldocs.git naturaldocs
+git clone -o origin ssh://git@flgit.finishline.com/git/finishline_etc.git etc
 
 git config --global color.status auto
 git config --global color.branch auto
