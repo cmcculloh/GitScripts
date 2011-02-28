@@ -12,10 +12,11 @@ git status
 echo
 echo
 
-echo "Would you like to push? (Y or N)"
+echo "Would you like to push? y (n)"
 read YorN
-if [ "$YorN" = "Y" ]
+if [ "$YorN" = "y" ]
 	then
-	git push fl head
+	remote=$(git remote)
+	git push $remote head
 fi
 
