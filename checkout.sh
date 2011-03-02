@@ -10,14 +10,14 @@ echo
 echo
 
 echo Type the number of the choice you want and hit enter
-echo 1. Checkout $1
+echo (1). Checkout $1
 echo 2. Stash Changes and then checkout $1
 echo 3. Revert all changes to tracked files \(ignores untracked files\), and then checkout $1
 echo 4. Abort checkout of $1
 read decision
 
 
-if [ $decision -eq 1 ]
+if [ -z "$decision" ] || [ $decision -eq 1 ]
 	then
 	echo continuing...
 elif [ $decision -eq 2 ]
@@ -91,7 +91,7 @@ else
 	echo It is recommended that you merge the current version of master into your
 	echo branch to make future merges with dev, qa, and master easier. If you
 	echo have not yet pushed your branch to remote, you can rebase \(whic is best\!\)
-	echo 1. merge master into $1
+	echo (1). merge master into $1
 	echo 2. rebase $1 to master
 	echo 3. do neither \(not recommended\)
 	echo "defaults to 1"
