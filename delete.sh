@@ -91,3 +91,20 @@ if [ $? -ne 1 ]
 else
 	exit 1
 fi
+
+echo
+echo
+
+echo "Would you like to delete from the remote as well? y (n)"
+read YorN
+if [ "$YorN" = "y" ]
+	then
+	
+	if [ $branchName = "master" ]
+		then
+		echo "sorry, not deleting master!"
+	else
+		remote=$(git remote)
+		git push $remote :$branchName
+	fi
+fi
