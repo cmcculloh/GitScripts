@@ -90,3 +90,14 @@ echo git status
 git status
 echo
 echo
+
+echo
+echo
+
+echo "Would you like to push? y (n)"
+read YorN
+if [ "$YorN" = "y" ]
+	then
+	remote=$(git remote)
+	git push $remote head
+fi
