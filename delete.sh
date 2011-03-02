@@ -11,7 +11,7 @@ echo
 
 echo Preparing to delete branch $1,
 echo please enter the number of your choice below and hit enter
-echo (1). Delete branch $1
+echo "(1). Delete branch $1"
 echo 2. Force Delete branch $1 \(if you tried once already and it didn\'t work\)
 echo 3. Checkout master and then delete branch $1 \(You cannot delete a branch you are currently on\)
 echo 4. Specify a branch to checkout and then delete branch $1
@@ -62,7 +62,7 @@ if [ $? -ne 1 ]
 	echo $branchName has been checked out. Ready to continue...
 	echo
 	echo Type the number of the choice you want and hit enter
-	echo (1). Delete branch $1
+	echo "(1). Delete branch $1"
 	echo 2. Force Delete branch $1
 	echo 3. Abort Deletion and check branch $1 back out
 	echo 4. Abort and stay on branch $branchName
