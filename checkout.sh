@@ -94,9 +94,10 @@ else
 	echo 1. merge master into $1
 	echo 2. rebase $1 to master
 	echo 3. do neither \(not recommended\)
+	echo "defaults to 1"
 	read decision
 
-	if [ $decision -eq 1 ]
+	if [ -z "$decision" ] || [ $decision -eq 1 ]
 		then
 		echo
 		echo Merging $remote\/master into $1
