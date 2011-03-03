@@ -1,5 +1,5 @@
 echo "##########################################"
-echo Merging from $1 into $3
+echo Merging from $(cb) into $currentbranch
 echo "##########################################"
 echo
 echo
@@ -8,11 +8,13 @@ git status
 echo
 echo
 
+currentbranch = $(cb)
+
 echo Type the number of the choice you want and hit enter
-echo "(1). Continue with merging from $1 into $3"
-echo 2. Stash Changes and continue with merging from $1 into $3
-echo 3. Revert all changes to tracked files \(ignores untracked files\), and continue with merging from $1 into $3
-echo 4. Abort merging from $1 into $3
+echo "(1). Continue with merging from $currentbranch into $3"
+echo 2. Stash Changes and continue with merging from $currentbranch into $3
+echo 3. Revert all changes to tracked files \(ignores untracked files\), and continue with merging from $currentbranch into $3
+echo 4. Abort merging from $currentbranch into $3
 read decision
 echo You chose: $decision
 if [ -z "$decision" ] || [ $decision -eq 1 ]
@@ -53,17 +55,10 @@ git fetch --all --prune
 echo
 echo
 
-
-echo This checks out the $1 branch
-echo git checkout $1
-git checkout $1
-echo
-echo
-
-echo This makes sure the $1 branch is up to date
+echo This makes sure the $currentbranch branch is up to date
 echo \(if it doesn't exist on the remote yet, don't worry about the warnings\)
-echo git pull fl $1
-git pull fl $1
+echo git pull fl $currentbranch
+git pull fl $currentbranch
 
 
 echo This checks out the $3 branch
@@ -79,9 +74,9 @@ git pull fl $3
 
 echo
 echo
-echo This merges from $1 into $3
-echo git merge $1
-git merge $1
+echo This merges from $currentbranch into $3
+echo git merge $currentbranch
+git merge $currentbranch
 
 
 echo
