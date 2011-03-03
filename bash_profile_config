@@ -7,6 +7,13 @@ PS1='\[\033]0;$MSYSTEM:\w\007
 \d \t $ '
 
 
+
+function __parse_git_branch {
+  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+}
+
+
+
 # This sets up "bookmarks" for your directories.
 # When in a directory, type "s <name>" to store the current path as a bookmark with that name.
 # To move to a bookmark, type "g <name>". Tab completion also works!
