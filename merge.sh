@@ -83,6 +83,11 @@ echo This merges from $1 into $3
 echo git merge $1
 git merge $1
 
+if [ $? < 0 ]
+	then
+	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	exit -1
+fi
 
 echo
 echo
