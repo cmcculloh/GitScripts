@@ -102,7 +102,6 @@ alias checkout="${gitscripts_path}checkout.sh"
 alias merge="${gitscripts_path}merge.sh"
 alias mergemaster="${gitscripts_path}mergemaster.sh"
 alias mergemasterinto="${gitscripts_path}mergemaster.sh"
-alias mergeinto="${gitscripts_path}merge.sh $(__parse_git_branch) into $1"
 alias new="${gitscripts_path}new.sh"
 alias delete="${gitscripts_path}delete.sh"
 
