@@ -7,9 +7,9 @@ PS1='\[\033]0;$MSYSTEM:\w\007
 \d \t $ '
 
 
-# This sets up "bookmarks" for your directories.  
-# When in a directory, type "s <name>" to store the current path as a bookmark with that name. 
-# To move to a bookmark, type "g <name>". Tab completion also works! 
+# This sets up "bookmarks" for your directories.
+# When in a directory, type "s <name>" to store the current path as a bookmark with that name.
+# To move to a bookmark, type "g <name>". Tab completion also works!
 # To list all bookmarks, type "l".
 #
 # Credit to: Karthick from http://www.huyng.com/archives/quick-bash-tip-directory-bookmarks/492/
@@ -141,7 +141,7 @@ alias createrepositories="source ${gitscripts_path}createRepositories.sh"
 alias promosinit="ant initpromos -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
 alias promosliteremerge="ant git-checkout-mergey-thing-lite -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
 alias promosremerge="ant git-checkout-mergey-thing -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
-alias promospush="ant push-todays-promos -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
+alias promospush="ant git-push-todays-promos -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
 alias promosimportstouch="ant set-mod-dates-of-imports-to-now -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
 
 alias allsnapbackexportchanges="ant -quiet snap-to-master-and-back -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};ant -quiet export-changed-by-day -buildfile  ${builds_path}qa-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};ant -quiet export-changed-by-day -buildfile  ${builds_path}dev-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
