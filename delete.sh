@@ -19,7 +19,7 @@ echo 5. Abort
 read choice
 
 branchName='master'
-if [ -z "$decision" ] || [ $choice -eq 1 ]
+if [ -z "$choice" ] || [ $choice -eq 1 ]
 	then
 	echo deleting branch $1
 	echo git branch -d $1
