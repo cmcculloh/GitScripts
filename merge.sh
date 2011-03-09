@@ -59,12 +59,28 @@ else
 	exit 1
 fi
 
+if [ $? < 0 ]
+	then
+	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	git status
+	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	exit -1
+fi
+
 echo This tells your local git about all changes on fl remote
 echo git fetch --all --prune
 git fetch --all --prune
 echo
 echo
 
+if [ $? < 0 ]
+	then
+	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	git status
+	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	echo "git fetch --all --prune failed"
+	exit -1
+fi
 
 echo This checks out the $1 branch
 echo git checkout $1
@@ -72,11 +88,28 @@ git checkout $1
 echo
 echo
 
+if [ $? < 0 ]
+	then
+	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	git status
+	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	echo "checkout of branch $1 failed"
+	exit -1
+fi
+
 echo This makes sure the $1 branch is up to date
 echo \(if it doesn't exist on the remote yet, don't worry about the warnings\)
 echo git pull fl $1
 git pull fl $1
 
+if [ $? < 0 ]
+	then
+	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	git status
+	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	echo "git pull fl $1 failed"
+	exit -1
+fi
 
 echo This checks out the $3 branch
 echo git checkout $3
@@ -84,10 +117,28 @@ git checkout $3
 echo
 echo
 
+if [ $? < 0 ]
+	then
+	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	git status
+	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	echo "git checkout $3 failed"
+	exit -1
+fi
+
 echo This makes sure the $3 branch is up to date
 echo \(if it doesn't exist on the remote yet, don't worry about the warnings\)
 echo git pull fl $3
 git pull fl $3
+
+if [ $? < 0 ]
+	then
+	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	git status
+	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	echo "git pull fl $3 failed"
+	exit -1
+fi
 
 echo
 echo
@@ -98,6 +149,9 @@ git merge $1
 if [ $? < 0 ]
 	then
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	git status
+	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	echo "git merge $1 failed"
 	exit -1
 fi
 
@@ -117,4 +171,13 @@ if [ "$YorN" = "y" ]
 	then
 	remote=$(git remote)
 	git push $remote head
+fi
+
+if [ $? < 0 ]
+	then
+	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	git status
+	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	echo "git push $remote $3 failed"
+	exit -1
 fi

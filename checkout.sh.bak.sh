@@ -9,48 +9,46 @@ git status
 echo
 echo
 
-if [ "$1" = "dev" ] || [ $1 = "qa" ]
+
+echo "delete your local copy and pull down new version to protect against forced updates? (y) n"
+read deletelocal
+if [ -z "$deletelocal" ] || [ "$decision" = "y" ]
 	then
-	echo "delete your local copy and pull down new version to protect against forced updates? (y) n"
-	read deletelocal
-	if [ -z "$deletelocal" ] || [ "$decision" = "y" ]
+	trydelete=`git branch -d $1 2>&1 | grep "error"`
+	echo "$trydelete"
+	echo
+	if [ -n "$trydelete" ]
 		then
-		trydelete=`git branch -d $1 2>&1 | grep "error"`
-		echo "$trydelete"
-		echo
-		if [ -n "$trydelete" ]
+		echo "Delete failed!"
+		echo "force delete? y (n)"
+		read forcedelete
+		if [ "$forcedelete" = "y" ]
 			then
-			echo "Delete failed!"
-			echo "force delete? y (n)"
-			read forcedelete
-			if [ "$forcedelete" = "y" ]
+			trydelete=`git branch -D $1 2>&1 | grep "error"`
+			echo "$trydelete"
+			echo
+			if [ -n "$trydelete" ]
 				then
-				trydelete=`git branch -D $1 2>&1 | grep "error"`
-				echo "$trydelete"
-				echo
-				if [ -n "$trydelete" ]
-					then
-					echo "force delete failed! continue anyways? y (n)"
-					read continueanyways
-					if [ -z "$continueanyways" ] || [ "$continueanyways" = "n" ]
-						then
-						exit -1
-					fi
-				else
-					echo "force delete succeeded!"
-				fi
-			else
-				echo "continue checking out $1? y (n)"
+				echo "force delete failed! continue anyways? y (n)"
 				read continueanyways
 				if [ -z "$continueanyways" ] || [ "$continueanyways" = "n" ]
 					then
 					exit -1
 				fi
+			else
+				echo "force delete succeeded!"
 			fi
 		else
-			echo "delete succeeded!"
-			echo
+			echo "continue checking out $1? y (n)"
+			read continueanyways
+			if [ -z "$continueanyways" ] || [ "$continueanyways" = "n" ]
+				then
+				exit -1
+			fi
 		fi
+	else
+		echo "delete succeeded!"
+		echo
 	fi
 fi
 
