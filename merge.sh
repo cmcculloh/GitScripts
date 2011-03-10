@@ -59,7 +59,7 @@ else
 	exit 1
 fi
 
-if [ $? < 0 ]
+if [ $? -lt 0 ]
 	then
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 	git status
@@ -73,7 +73,7 @@ git fetch --all --prune
 echo
 echo
 
-if [ $? < 0 ]
+if [ $? -lt 0 ]
 	then
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 	git status
@@ -88,7 +88,7 @@ git checkout $1
 echo
 echo
 
-if [ $? < 0 ]
+if [ $? -lt 0 ]
 	then
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 	git status
@@ -102,7 +102,7 @@ echo \(if it doesn't exist on the remote yet, don't worry about the warnings\)
 echo git pull fl $1
 git pull fl $1
 
-if [ $? < 0 ]
+if [ $? -lt 0 ]
 	then
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 	git status
@@ -117,7 +117,7 @@ git checkout $3
 echo
 echo
 
-if [ $? < 0 ]
+if [ $? -lt 0 ]
 	then
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 	git status
@@ -131,7 +131,7 @@ echo \(if it doesn't exist on the remote yet, don't worry about the warnings\)
 echo git pull fl $3
 git pull fl $3
 
-if [ $? < 0 ]
+if [ $? -lt 0 ]
 	then
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 	git status
@@ -146,7 +146,7 @@ echo This merges from $1 into $3
 echo git merge $1
 git merge $1
 
-if [ $? < 0 ]
+if [ $? -lt 0 ]
 	then
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 	git status
@@ -173,7 +173,7 @@ if [ "$YorN" = "y" ]
 	git push $remote head
 fi
 
-if [ $? < 0 ]
+if [ $? -lt 0 ]
 	then
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 	git status
