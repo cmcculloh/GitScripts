@@ -76,6 +76,7 @@ if [ -n "$trydelete" ]
 			exit -1
 		else
 			echo "force delete succeeded!"
+			echo
 		fi
 	fi
 else
@@ -83,20 +84,23 @@ else
 	echo
 fi
 
-
-echo
-echo
-echo "delete remote copy of branch? y (n)"
-read deleteremote
-
-if [ -n $deleteremote ] && [ $deleteremote = "y" ]
+#if it is master or stage, don't even prompt them to delete remote...
+if [ "$1" -ne "master" ] && [ "$1" -ne "stage" ]
 	then
 	echo
-	echo "deleting remote!"
 	echo
-	remote=$(git remote)
-	echo "git push $remote :$1"
-	git push $remote :$1
+	echo "delete remote copy of branch? y (n)"
+	read deleteremote
+
+	if [ -n $deleteremote ] && [ $deleteremote = "y" ]
+		then
+		echo
+		echo "deleting remote!"
+		echo
+		remote=$(git remote)
+		echo "git push $remote :$1"
+		git push $remote :$1
+	fi
 fi
 
 exit 1
