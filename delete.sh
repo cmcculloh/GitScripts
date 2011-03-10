@@ -85,7 +85,7 @@ else
 fi
 
 #if it is master or stage, don't even prompt them to delete remote...
-if [ "$1" != "master" ] && [ "$1" != "stage" ]
+if [ "$1" != "master" ] && [ "$1" != "stage" ] && [ "$1" != "dev" ] && [ "$1" != "qa" ]
 	then
 	echo
 	echo
