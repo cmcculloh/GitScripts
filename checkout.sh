@@ -72,33 +72,37 @@ if [ -z "$checkbranch" ]
 	echo
 
 	echo "You appear to have uncommited changes."
-	echo "(1). Stash Changes and then checkout $1"
-	echo "2. Revert all changes to tracked files \(ignores untracked files\), and then checkout $1"
-	echo "3. Abort checkout of $1"
+	echo "(1). Continue with checkout anyways"
+	echo "2. Stash Changes and then checkout $1"
+	echo "3. Revert all changes to tracked files (ignores untracked files), and then checkout $1"
+	echo "4. Abort checkout of $1"
 	read decision
 
 	if [ -z "$decision" ] || [ $decision -eq 1 ]
 		then
-		echo This stashes any local changes you might have made and forgot to commit
-		echo git stash
+		echo "continuing..."
+	elif [ $decision -eq 2 ]
+		then
+		echo "This stashes any local changes you might have made and forgot to commit"
+		echo "git stash"
 		git stash
 		echo
 		echo
 
-		echo git status
+		echo "git status"
 		git status
 		echo
 		echo
-	elif [ $decision -eq 2 ]
+	elif [ $decision -eq 3 ]
 		then
-		echo This attempts to reset your current branch to the last checkin
-		echo if you have made changes to untracked files, this will not affect those
-		echo git reset --hard
+		echo "This attempts to reset your current branch to the last checkin"
+		echo "if you have made changes to untracked files, this will not affect those"
+		echo "git reset --hard"
 		git reset --hard
 		echo
 		echo
 
-		echo git status
+		echo "git status"
 		git status
 		echo
 		echo
@@ -107,16 +111,16 @@ if [ -z "$checkbranch" ]
 	fi
 fi
 
-echo This tells your local git about all changes on fl remote
-echo git fetch --all --prune
+echo "This tells your local git about all changes on fl remote"
+echo "git fetch --all --prune"
 git fetch --all --prune
 echo
 echo
 
 
 
-echo This checks out the $1 branch
-echo git checkout $1
+echo "This checks out the $1 branch"
+echo "git checkout $1"
 git checkout $1
 echo
 echo
@@ -127,7 +131,7 @@ onremote=`git branch -r | grep "$1"`
 
 if [ -n "$onremote" ]
 	then
-	echo git pull $remote $1
+	echo "git pull $remote $1"
 	git pull $remote $1
 fi
 
@@ -151,10 +155,10 @@ else
 		if [ -z "$decision" ] || [ "$decision" = "y" ]
 			then
 			echo
-			echo Merging $remote\/master into $1
+			echo "Merging $remote/master into $1"
 			echo
-			echo git merge $remote\/master
-			git merge $remote\/master
+			echo "git merge $remote/master"
+			git merge $remote/master
 		fi
 	else
 		echo "rebase $1 onto master? (y) n"
@@ -162,10 +166,10 @@ else
 		if [ -z "$decision" ] || [ "$decision" = "y" ]
 			then
 			echo
-			echo Rebasing $1 onto $remote\/master
+			echo "Rebasing $1 onto $remote/master"
 			echo
-			echo git rebase $remote\/master
-			git rebase $remote\/master
+			echo "git rebase $remote/master"
+			git rebase $remote/master
 		fi
 	fi
 
