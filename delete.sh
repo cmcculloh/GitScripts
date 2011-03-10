@@ -87,19 +87,23 @@ fi
 #if it is master or stage, don't even prompt them to delete remote...
 if [ "$1" != "master" ] && [ "$1" != "stage" ] && [ "$1" != "dev" ] && [ "$1" != "qa" ]
 	then
-	echo
-	echo
-	echo "delete remote copy of branch? y (n)"
-	read deleteremote
 
-	if [ -n "$deleteremote" ] && [ "$deleteremote" = "y" ]
+	onremote=`git branch -r | grep "$1"`
+	if [ -n "$onremote" ]
 		then
 		echo
-		echo "deleting remote!"
-		echo
-		remote=$(git remote)
-		echo "git push $remote :$1"
-		git push $remote :$1
+		echo "delete remote copy of branch? y (n)"
+		read deleteremote
+
+		if [ -n "$deleteremote" ] && [ "$deleteremote" = "y" ]
+			then
+			echo
+			echo "deleting remote!"
+			echo
+			remote=$(git remote)
+			echo "git push $remote :$1"
+			git push $remote :$1
+		fi
 	fi
 fi
 

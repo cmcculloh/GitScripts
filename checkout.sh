@@ -6,7 +6,7 @@ echo
 
 branchexists=`git branch | grep "$1"`
 
-if [ -n $branchexists ]
+if [ -n "$branchexists" ]
 	then
 	if [ "$1" = "dev" ] || [ $1 = "qa" ]
 		then
@@ -123,11 +123,13 @@ echo
 
 
 remote=$(git remote)
+onremote=`git branch -r | grep "$1"`
 
-echo This makes sure the $1 branch is up to date
-echo \(if it doesn't exist on the remote yet, don't worry about the warnings\)
-echo git pull $remote $1
-git pull $remote $1
+if [ -n "$onremote" ]
+	then
+	echo git pull $remote $1
+	git pull $remote $1
+fi
 
 echo
 echo
@@ -136,41 +138,36 @@ git status
 echo
 echo
 
-current_branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
-
-if [ $current_branch = "master" ]
+if [ $1 = "master" ]
 	then
 	#do nothing, already on master
 	echo
 else
-	echo Type the number of the choice you want and hit enter
-	echo
-	echo It is recommended that you merge the current version of master into your
-	echo branch to make future merges with dev, qa, and master easier. If you
-	echo have not yet pushed your branch to remote, you can rebase \(whic is best\!\)
-	echo "(1). merge master into $1"
-	echo 2. rebase $1 to master
-	echo 3. do neither \(not recommended\)
-	echo "defaults to 1"
-	read decision
-
-	if [ -z "$decision" ] || [ $decision -eq 1 ]
+	if [ -n "$onremote" ]
 		then
-		echo
-		echo Merging $remote\/master into $1
-		echo
-		echo git merge $remote\/master
-		git merge $remote\/master
+		echo "merge master into $1? (y) n"
+		read decision
 
-	elif [ $decision -eq 2 ]
-		then
-		echo
-		echo Rebasing $1 onto $remote\/master
-		echo
-		echo git rebase $remote\/master
-		git rebase $remote\/master
+		if [ -z "$decision" ] || [ "$decision" = "y" ]
+			then
+			echo
+			echo Merging $remote\/master into $1
+			echo
+			echo git merge $remote\/master
+			git merge $remote\/master
+		fi
+	else
+		echo "rebase $1 onto master? (y) n"
+		read decision
+		if [ -z "$decision" ] || [ "$decision" = "y" ]
+			then
+			echo
+			echo Rebasing $1 onto $remote\/master
+			echo
+			echo git rebase $remote\/master
+			git rebase $remote\/master
+		fi
 	fi
-
 
 	echo
 	echo
