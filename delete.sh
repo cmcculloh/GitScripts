@@ -92,7 +92,7 @@ if [ "$1" != "master" ] && [ "$1" != "stage" ]
 	echo "delete remote copy of branch? y (n)"
 	read deleteremote
 
-	if [ -n $deleteremote ] && [ $deleteremote = "y" ]
+	if [ -n "$deleteremote" ] && [ "$deleteremote" = "y" ]
 		then
 		echo
 		echo "deleting remote!"
