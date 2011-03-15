@@ -12,11 +12,8 @@ _tab_branches()
 #tab completion for the checkout command
 complete -F _tab_branches checkout
 
-
 #tab completion for the merge command
 complete -F _tab_branches merge
-
-
 
 #tab completion for the delete command
 complete -F _tab_branches delete
