@@ -9,8 +9,9 @@ echo
 
 if [ -z "$1" ] || [ "$1" = " " ]
 	then
-	echo "You did not enter a branch name to checkout"
-	echo "Please select the number associated with one below"
+	echo "Please specify a branch to check out"
+	git branch
+	exit -1
 fi
 
 
