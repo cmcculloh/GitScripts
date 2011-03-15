@@ -14,8 +14,7 @@ echo "Do name-status only diff? y (n) "
 read decision
 if [ "$decision" ] && [ $decision = "y" ]
     then
-	echo "to exit, hit q"
-    git diff --summary $log1..$log2
+    echo `git diff --name-status $log1..$log2`
 fi
 
 echo

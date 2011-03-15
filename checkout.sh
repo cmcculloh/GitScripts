@@ -1,8 +1,18 @@
+#!/bin/bash
+# checkout
+# checks out a git branch
 echo "##########################################"
 echo Checking out branch $1
 echo "##########################################"
 echo
 echo
+
+if [ -z "$1" ] || [ "$1" = " " ]
+	then
+	echo "You did not enter a branch name to checkout"
+	echo "Please select the number associated with one below"
+fi
+
 
 branchexists=`git branch | grep "$1"`
 
