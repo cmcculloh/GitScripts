@@ -145,18 +145,21 @@ alias createrepositories="source ${gitscripts_path}createRepositories.sh"
 
 # ANT scripts for front end builds automation
 
-alias promosinit="ant initpromos -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
-alias promosliteremerge="ant git-checkout-mergey-thing-lite -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
-alias promosremerge="ant git-checkout-mergey-thing -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
-alias promospush="ant git-push-todays-promos -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
-alias promosimportstouch="ant set-mod-dates-of-imports-to-now -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
+alias build="ant build -buildfile  ${finishline_path}${myenvironment}.build.xml  -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
+alias cleanbuild="ant clean-build -buildfile  ${finishline_path}${myenvironment}.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
+alias min="ant min -buildfile  ${finishline_path}${myenvironment}.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
+alias promosinit="ant initpromos -buildfile  ${builds_path}staging-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
+alias promosliteremerge="ant git-checkout-mergey-thing-lite -buildfile  ${builds_path}staging-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
+alias promosremerge="ant git-checkout-mergey-thing -buildfile  ${builds_path}staging-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
+alias promospush="ant git-push-todays-promos -buildfile  ${builds_path}staging-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
+alias promosimportstouch="ant set-mod-dates-of-imports-to-now -buildfile  ${builds_path}staging-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  -Dpath.git-exec=${GIT_EXEC};"
 
-alias allsnapbackexportchanges="ant -quiet snap-to-master-and-back -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};ant -quiet export-changed-by-day -buildfile  ${builds_path}qa-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};ant -quiet export-changed-by-day -buildfile  ${builds_path}dev-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
-alias alluploadexports="ant -quiet upload-all-exports -buildfile  ${builds_path}all-remotes.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
-alias devexportchanges="ant -quiet export-changed-by-day -buildfile  ${builds_path}dev-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
-alias qaexportchanges="ant -quiet export-changed-by-day -buildfile  ${builds_path}qa-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
-alias stagingexportchanges="ant -quiet export-changed-by-day -buildfile  ${builds_path}staging-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
-alias allexportchanges="ant -quiet export-changes -buildfile  ${builds_path}all-remotes.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
+alias allsnapbackexportchanges="ant -quiet snap-to-master-and-back -buildfile  ${builds_path}staging-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};ant -quiet export-changed-by-day -buildfile  ${builds_path}qa-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};ant -quiet export-changed-by-day -buildfile  ${builds_path}dev-front-end.build.xml -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
+alias alluploadexports="ant -quiet upload-all-exports -buildfile  ${builds_path}all-remotes.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
+alias devexportchanges="ant -quiet export-changed-by-day -buildfile  ${builds_path}dev-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
+alias qaexportchanges="ant -quiet export-changed-by-day -buildfile  ${builds_path}qa-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
+alias stagingexportchanges="ant -quiet export-changed-by-day -buildfile  ${builds_path}staging-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
+alias allexportchanges="ant -quiet export-changes -buildfile  ${builds_path}all-remotes.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment} -Dpath.git-exec=${GIT_EXEC};"
 
 
 
