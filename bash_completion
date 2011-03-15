@@ -1,8 +1,7 @@
 #enabe custom tab completion
 shopt -s progcomp
 
-
-_checkout()
+_tab_branches()
 {
 	COMPREPLY=()
 	curw=${COMP_WORDS[COMP_CWORD]}
@@ -10,15 +9,14 @@ _checkout()
 	return 0
 }
 
-complete -F _checkout checkout
+#tab completion for the checkout command
+complete -F _tab_branches checkout
 
 
-_merge()
-{
-	COMPREPLY=()
-	curw=${COMP_WORDS[COMP_CWORD]}
-	COMPREPLY=($(compgen -W '$(git branch)' -- $curw))
-	return 0
-}
+#tab completion for the merge command
+complete -F _tab_branches merge
 
-complete -F _merge merge
+
+
+#tab completion for the delete command
+complete -F _tab_branches delete
