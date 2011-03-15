@@ -13,17 +13,26 @@ natural_docs_home="/d/java_dev/NaturalDocs-1.5"
 
 
 #workspace specific
+buildsprojectname="builds"
+mainprojectname="finishline"
+mediaprojectname="finishline_media"
 development_root="/d/workspaces/"
 workspace_path="${development_root}helios_workspace/"
-media_path="${workspace_path}finishline_media/"
-finishline_path="${workspace_path}finishline/"
+project_workspace="${development_root}helios_workspace"
+media_path="${workspace_path}${mediaprojectname}/"
+finishline_path="${workspace_path}${mainprojectname}/"
 gitscripts_path="${workspace_path}gitscripts/"
 deploys_path="${workspace_path}deploys/"
-builds_path="${workspace_path}builds/"
+builds_path="${workspace_path}${buildsprojectname}/"
 imagescripts_path="${workspace_path}image_scripts/"
 csr_path="${workspace_path}finishline_csr/"
 promo_editor_path="${workspace_path}promo_editor/"
 naturaldocs_path="${workspace_path}naturaldocs/"
+
+
+# Git settings
+GIT_HOME="/c/Program\ Files\ \(x86\)/Git/bin/"
+GIT_EXEC="${GIT_HOME}git.exe"
 
 
 # Java and ANT Settings
@@ -38,14 +47,13 @@ ANT_ARGS="-logger\ org.apache.tools.ant.DefaultLogger"
 PATH="${PATH}:${JAVA_HOME}bin:${ANT_HOME}bin:${YUI_COMPRESSOR_HOME}"
 CLASSPATH="${JAVA_HOME}lib;${ANT_CONTRIB_HOME};${YUI_COMPRESSOR_HOME}/;"
 ANT_LIB="${YUI_COMPRESSOR_HOME}/"
-
+ANT_ARGS=" -Dproject.workspace=${project_workspace} -Dmainprojectname=${mainprojectname} -Dmediaprojectname=${mediaprojectname} -Dbuildsprojectname=${buildsprojectname} -Dpath.git-exec=${GIT_EXEC} "
 
 
 
 #project specific
 webappwar="${finishline_path}modules/base/j2ee-apps/base/web-app.war/"
 myenvironment="workstation-windows"
-
 
 
 export PATH="${PATH}:${sublime_home}:${notepad_pp_home}:${eclipse_home}:${textpad_home}:${gitscripts_path}:${natural_docs_home}"
