@@ -109,6 +109,7 @@ alias mergemaster="${gitscripts_path}mergemaster.sh"
 alias mergemasterinto="${gitscripts_path}mergemaster.sh"
 alias new="${gitscripts_path}new.sh"
 alias delete="${gitscripts_path}delete.sh"
+alias updatecore="${gitscripts_path}update-core-branches.sh"
 
 
 #ssh shortcuts
@@ -160,6 +161,7 @@ alias promosliteremerge="ant git-checkout-mergey-thing-lite -buildfile  ${builds
 alias promosremerge="ant git-checkout-mergey-thing -buildfile  ${builds_path}staging-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  ${ANT_ARGS};"
 alias promospush="ant git-push-todays-promos -buildfile  ${builds_path}staging-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  ${ANT_ARGS};"
 alias promosimportstouch="ant set-mod-dates-of-imports-to-now -buildfile  ${builds_path}staging-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  ${ANT_ARGS};"
+alias zipexports="ant promos-zip-up-exports -buildfile  ${builds_path}staging-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  ${ANT_ARGS};"
 
 alias wipeoutallexports="ant -quiet all-wipeout-exports -buildfile  ${builds_path}all-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment} ${ANT_ARGS};"
 alias allsnapbackexportchanges="ant -quiet snap-to-master-and-back -buildfile  ${builds_path}staging-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment} ${ANT_ARGS};ant -quiet export-changed-by-day -buildfile  ${builds_path}qa-front-end.build.xml -Dmyenvironment=${myenvironment} ${ANT_ARGS};ant -quiet export-changed-by-day -buildfile  ${builds_path}dev-front-end.build.xml -Dmyenvironment=${myenvironment} ${ANT_ARGS};"
