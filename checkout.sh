@@ -1,16 +1,34 @@
 #!/bin/bash
 # checkout
 # checks out a git branch
+
+
+TEXT_BRIGHT=$'\033[1m'
+TEXT_DIM=$'\033[2m'
+TEXT_NORM=$'\033[0m'
+COL_RED=$'\033[31m'
+COL_GREEN=$'\033[32m'
+COL_VIOLET=$'\033[34m'
+COL_YELLOW=$'\033[33m'
+COL_MAG=$'\033[35m'
+COL_CYAN=$'\033[36m'
+COL_WHITE=$'\033[37m'
+COL_NORM=$'\033[39m'
+
+
+
 echo "##########################################"
-echo Checking out branch $1
+echo "Checking out branch ${COL_CYAN}$1${COL_NORM}"
 echo "##########################################"
 echo
 echo
 
+echo
+
 if [ -z "$1" ] || [ "$1" = " " ]
 	then
-	echo "Please specify a branch to check out"
 	git branch
+	echo "${COL_RED}WARNING:${COL_NORM} You must specify a branch to check out."
 	exit -1
 fi
 
@@ -51,7 +69,7 @@ if [ -n "$branchexists" ]
 						echo "force delete succeeded!"
 					fi
 				else
-					echo "continue checking out $1? y (n)"
+					echo "continue checking out ${COL_CYAN}$1${COL_NORM}? y (n)"
 					read continueanyways
 					if [ -z "$continueanyways" ] || [ "$continueanyways" = "n" ]
 						then
@@ -63,7 +81,7 @@ if [ -n "$branchexists" ]
 				echo
 			fi
 		else
-			echo "not deleteing your local copy of $1"
+			echo "not deleteing your local copy of ${COL_CYAN}$1${COL_NORM}"
 			echo
 		fi
 	fi
@@ -83,42 +101,54 @@ if [ -z "$checkbranch" ]
 	echo
 
 	echo "You appear to have uncommited changes."
-	echo "(1). Continue with checkout anyways"
-	echo "2. Stash Changes and then checkout $1"
-	echo "3. Revert all changes to tracked files (ignores untracked files), and then checkout $1"
-	echo "4. Abort checkout of $1"
+	echo " (1) -  Abort checkout of ${COL_CYAN}$1${COL_NORM}, so you can add/commit these unsaved changes."
+	echo "  2  -  Commit changes and continue checkout of ${COL_CYAN}$1${COL_NORM}"
+	echo "  3  -  Stash Changes and continue with checkout of ${COL_CYAN}$1${COL_NORM}"
+	echo "  4  -  Revert (reset) all changes to tracked files (ignores untracked files), and continue with checkout of branch ${COL_CYAN}$1${COL_NORM}"
+	echo "  5  -  I know what I'm doing, continue with checking out ${COL_CYAN}$1${COL_NORM} anyways"
 	read decision
-
+	echo You chose: $decision
+	echo
 	if [ -z "$decision" ] || [ $decision -eq 1 ]
 		then
-		echo "continuing..."
+		echo "Aborting checkout."
+		echo
+		exit -1
+	elif [ -z "$decision" ] || [ $decision -eq 5 ]
+		then
+		echo continuing...
 	elif [ $decision -eq 2 ]
 		then
-		echo "This stashes any local changes you might have made and forgot to commit"
-		echo "git stash"
+		echo "please enter a commit message"
+		read commitmessage
+		${gitscripts_path}commit.sh "$commitmessage" -a
+	elif [ $decision -eq 3 ]
+		then
+		echo This stashes any local changes you might have made and forgot to commit
+		echo git stash
 		git stash
 		echo
 		echo
 
-		echo "git status"
+		echo git status
 		git status
 		echo
 		echo
-	elif [ $decision -eq 3 ]
+	elif [ $decision -eq 4 ]
 		then
-		echo "This attempts to reset your current branch to the last checkin"
-		echo "if you have made changes to untracked files, this will not affect those"
-		echo "git reset --hard"
+		echo This attempts to reset your current branch to the last checkin
+		echo if you have made changes to untracked files, this will not affect those
+		echo git reset --hard
 		git reset --hard
 		echo
 		echo
 
-		echo "git status"
+		echo git status
 		git status
 		echo
 		echo
 	else
-		exit -1
+		exit 1
 	fi
 fi
 
@@ -130,7 +160,7 @@ echo
 
 
 
-echo "This checks out the $1 branch"
+echo "This checks out the ${COL_CYAN}$1${COL_NORM} branch"
 echo "git checkout $1"
 git checkout $1
 echo
@@ -160,24 +190,24 @@ if [ $1 = "master" ]
 else
 	if [ -n "$onremote" ]
 		then
-		echo "merge master into $1? (y) n"
+		echo "merge master into ${COL_CYAN}$1${COL_NORM}? (y) n"
 		read decision
 
 		if [ -z "$decision" ] || [ "$decision" = "y" ]
 			then
 			echo
-			echo "Merging $remote/master into $1"
+			echo "Merging $remote/master into ${COL_CYAN}$1${COL_NORM}"
 			echo
 			echo "git merge $remote/master"
 			git merge $remote/master
 		fi
 	else
-		echo "rebase $1 onto master? (y) n"
+		echo "rebase ${COL_CYAN}$1${COL_NORM} onto master? (y) n"
 		read decision
 		if [ -z "$decision" ] || [ "$decision" = "y" ]
 			then
 			echo
-			echo "Rebasing $1 onto $remote/master"
+			echo "Rebasing ${COL_CYAN}$1${COL_NORM} onto $remote/master"
 			echo
 			echo "git rebase $remote/master"
 			git rebase $remote/master
@@ -188,6 +218,6 @@ else
 	echo
 	echo git status
 	git status
-	echo 
+	echo
 	echo
 fi
