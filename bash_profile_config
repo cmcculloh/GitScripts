@@ -19,7 +19,7 @@ COL_NORM=$'\033[39m'
 #custom console
 ###############################################################################
 PS1='\[\033]0;$MSYSTEM:\w\007
-${COL_GREEN}\u@\h${COL_YELLOW} \d \t ${TEXT_BRIGHT}${COL_RED}$(__git_ps1)
+${COL_GREEN}\u@\h${COL_YELLOW} \d \t ${TEXT_BRIGHT}${COL_MAG}$(__git_ps1)
 ${COL_CYAN}\w${COL_NORM}
 ${TEXT_NORM}$ '
 
