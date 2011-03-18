@@ -3,10 +3,6 @@ echo Merging from $1 into $3
 echo "##########################################"
 echo
 echo
-echo git status
-git status
-echo
-echo
 
 if [ "$1" = "dev" ] || [ "$1" = "qa" ]
 	then
@@ -20,44 +16,77 @@ if [ "$3" = "stage" ] || [ "$3" = "master" ]
 	exit -1
 fi
 
-echo Type the number of the choice you want and hit enter
-echo "(1). Continue with merging from $1 into $3"
-echo 2. Stash Changes and continue with merging from $1 into $3
-echo 3. Revert all changes to tracked files \(ignores untracked files\), and continue with merging from $1 into $3
-echo 4. Abort merging from $1 into $3
-read decision
-echo You chose: $decision
-if [ -z "$decision" ] || [ $decision -eq 1 ]
+if [ "$3" = "dev" ] || [ "$3" = "qa" ]
 	then
-	echo continuing...
-elif [ $decision -eq 2 ]
-	then
-	echo This stashes any local changes you might have made and forgot to commit
-	echo git stash
-	git stash
-	echo
-	echo
-
-	echo git status
-	git status
-	echo
-	echo
-elif [ $decision -eq 3 ]
-	then
-	echo This attempts to reset your current branch to the last checkin
-	echo if you have made changes to untracked files, this will not affect those
-	echo git reset --hard
-	git reset --hard
-	echo
-	echo
-
-	echo git status
-	git status
-	echo
-	echo
-else
-	exit 1
+	echo "Delete $3 before merging into it? (y) n"
+	read decision
+	if [ -z "$decision" ] || [ "$decision" = "y" ]
+		then
+		${gitscripts_path}delete.sh $3
+	fi
 fi
+
+echo
+echo
+checkbranch=`git status | grep "nothing to commit (working directory clean)"`
+echo "$checkbranch"
+
+if [ -z "$checkbranch" ]
+	then
+	echo
+	echo "git status"
+	git status
+	echo
+	echo
+
+	echo "You appear to have uncommited changes."
+	echo "(1). Continue with merging from $1 into $3 anyways"
+	echo "2. Commit changes and continue with merging from $1 into $3"
+	echo 3. Stash Changes and continue with merging from $1 into $3
+	echo 4. Revert all changes to tracked files \(ignores untracked files\), and continue with merging from $1 into $3
+	echo 5. Abort merging from $1 into $3
+	read decision
+	echo You chose: $decision
+	if [ -z "$decision" ] || [ $decision -eq 1 ]
+		then
+		echo continuing...
+	elif [ $decision -eq 2 ]
+		then
+		echo "please enter a commit message"
+		read commitmessage
+		${gitscripts_path}commit.sh "$commitmessage" -a
+	elif [ $decision -eq 3 ]
+		then
+		echo This stashes any local changes you might have made and forgot to commit
+		echo git stash
+		git stash
+		echo
+		echo
+
+		echo git status
+		git status
+		echo
+		echo
+	elif [ $decision -eq 4 ]
+		then
+		echo This attempts to reset your current branch to the last checkin
+		echo if you have made changes to untracked files, this will not affect those
+		echo git reset --hard
+		git reset --hard
+		echo
+		echo
+
+		echo git status
+		git status
+		echo
+		echo
+	else
+		exit 1
+	fi
+fi
+
+
+
 
 if [ $? -lt 0 ]
 	then
