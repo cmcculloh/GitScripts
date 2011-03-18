@@ -54,7 +54,7 @@ if [ $result -lt 0 ]
 	exit -1
 elif [ $result -eq 255 ]
 	then
-	echo aborting merge...
+	echo "Checking out the branch $1 was unsuccessful, aborting merge attempt..."
 	exit -1
 fi
 
@@ -74,7 +74,7 @@ if [ $result -lt 0 ]
 	exit -1
 elif [ $result -eq 255 ]
 	then
-	echo aborting merge...
+	echo "Checking out the branch $3 was unsuccessful, aborting merge attempt..."
 	exit -1
 fi
 

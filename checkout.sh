@@ -83,42 +83,54 @@ if [ -z "$checkbranch" ]
 	echo
 
 	echo "You appear to have uncommited changes."
-	echo "(1). Continue with checkout anyways"
-	echo "2. Stash Changes and then checkout $1"
-	echo "3. Revert all changes to tracked files (ignores untracked files), and then checkout $1"
-	echo "4. Abort checkout of $1"
+	echo " (1) -  Abort checkout of $1, so you can add/commit these unsaved changes."
+	echo "  2  -  Commit changes and continue checkout of $3"
+	echo "  3  -  Stash Changes and continue with checkout of $3"
+	echo "  4  -  Revert (reset) all changes to tracked files (ignores untracked files), and continue with checkout of branch $3"
+	echo "  5  -  I know what I'm doing, continue with checking out $3 anyways"
 	read decision
-
+	echo You chose: $decision
+	echo
 	if [ -z "$decision" ] || [ $decision -eq 1 ]
 		then
-		echo "continuing..."
+		echo "Aborting checkout."
+		echo
+		exit -1
+	elif [ -z "$decision" ] || [ $decision -eq 5 ]
+		then
+		echo continuing...
 	elif [ $decision -eq 2 ]
 		then
-		echo "This stashes any local changes you might have made and forgot to commit"
-		echo "git stash"
+		echo "please enter a commit message"
+		read commitmessage
+		${gitscripts_path}commit.sh "$commitmessage" -a
+	elif [ $decision -eq 3 ]
+		then
+		echo This stashes any local changes you might have made and forgot to commit
+		echo git stash
 		git stash
 		echo
 		echo
 
-		echo "git status"
+		echo git status
 		git status
 		echo
 		echo
-	elif [ $decision -eq 3 ]
+	elif [ $decision -eq 4 ]
 		then
-		echo "This attempts to reset your current branch to the last checkin"
-		echo "if you have made changes to untracked files, this will not affect those"
-		echo "git reset --hard"
+		echo This attempts to reset your current branch to the last checkin
+		echo if you have made changes to untracked files, this will not affect those
+		echo git reset --hard
 		git reset --hard
 		echo
 		echo
 
-		echo "git status"
+		echo git status
 		git status
 		echo
 		echo
 	else
-		exit -1
+		exit 1
 	fi
 fi
 
@@ -188,6 +200,6 @@ else
 	echo
 	echo git status
 	git status
-	echo 
+	echo
 	echo
 fi
