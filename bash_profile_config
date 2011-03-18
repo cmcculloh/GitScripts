@@ -2,30 +2,54 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
-PS1='\[\033]0;$MSYSTEM:\w\007
-\033[32m\]\u@\h \[\033[33m\w$(__git_ps1)\033[0m\]
-\d \t $ '
+TEXT_BRIGHT=$'\033[1m'
+TEXT_DIM=$'\033[2m'
+TEXT_NORM=$'\033[0m'
+COL_RED=$'\033[31m'
+COL_GREEN=$'\033[32m'
+COL_VIOLET=$'\033[34m'
+COL_YELLOW=$'\033[33m'
+COL_MAG=$'\033[35m'
+COL_CYAN=$'\033[36m'
+COL_WHITE=$'\033[37m'
+COL_NORM=$'\033[39m'
 
+
+###############################################################################
+#custom console
+###############################################################################
+PS1='\[\033]0;$MSYSTEM:\w\007
+${COL_GREEN}\u@\h${COL_YELLOW} \d \t ${TEXT_BRIGHT}${COL_RED}$(__parse_git_branch)
+${COL_CYAN}\w${COL_NORM}
+${TEXT_NORM}$ '
+
+
+
+
+###############################################################################
+#custom __parse_git_branch function
+###############################################################################
 function __parse_git_branch {
   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
 }
 
 
-
+###############################################################################
 #bring in the bash completion stuff
+###############################################################################
 source ${gitscripts_path}bash_completion
 
 
 
 
-
+###############################################################################
 # This sets up "bookmarks" for your directories.
 # When in a directory, type "s <name>" to store the current path as a bookmark with that name.
 # To move to a bookmark, type "g <name>". Tab completion also works!
 # To list all bookmarks, type "l".
 #
 # Credit to: Karthick from http://www.huyng.com/archives/quick-bash-tip-directory-bookmarks/492/
-
+###############################################################################
 function s {
 cat ~/.sdirs | grep -v "export DIR_$1=" > ~/.sdirs1
 mv ~/.sdirs1 ~/.sdirs
@@ -63,14 +87,16 @@ complete -F _gcomp g
 
 alias test="echo this is a test: ${gitscripts_path}"
 
-
+###############################################################################
 #gitscripts
+###############################################################################
 alias pullscripts="source ${gitscripts_path}pullscripts.sh"
 alias pushscripts="source ${gitscripts_path}pushscripts.sh"
 alias refresh_bash_profile="source ${gitscripts_path}refresh_bash_profile.sh"
 
-
+###############################################################################
 #shell convenience
+###############################################################################
 alias ll="ls -l"
 alias lla="ls -la"
 alias cd..="cd .."
@@ -79,13 +105,19 @@ alias llcoolj="echo \"I'm BAAAD\""
 alias hammer="${gitscripts_path}hammertime.sh"
 alias aliases="cat ${gitscripts_path}aliases.txt"
 
-
+###############################################################################
 #automated deploys
-alias prodDeploy="${deploys_path}prodDeploy.sh"
+###############################################################################
+#not verified to be working right now, commented out just in case...
+#alias prodDeploy="${deploys_path}prodDeploy.sh"
 
-
+###############################################################################
+#vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv#
 #git stuff
+
+###############################################################################
 ##basic
+###############################################################################
 alias addall="git add -A"
 alias g="git"
 alias reset="git reset --hard"
@@ -97,7 +129,9 @@ alias status="git status"
 alias fetch="git fetch --all --prune"
 #alias pull="git pull $1 $2"
 
+###############################################################################
 ##advanced
+###############################################################################
 alias commit="source ${gitscripts_path}commit.sh"
 alias showlog="${gitscripts_path}showlog.sh"
 alias gitdiff="${gitscripts_path}showlog.sh"
@@ -111,25 +145,33 @@ alias new="${gitscripts_path}new.sh"
 alias delete="${gitscripts_path}delete.sh"
 alias updatecore="${gitscripts_path}update-core-branches.sh"
 
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^#
+###############################################################################
 
+
+###############################################################################
 #ssh shortcuts
+###############################################################################
 alias sshgit="ssh git@10.0.2.160"
 
-
+###############################################################################
 #webpage launches
+###############################################################################
 alias gitwiki="\"${default_browser}\" http://10.0.2.160/wiki/index.php/Git_Commands"
 alias local="\"${default_browser}\" http://local.finishline.com/store"
 
-
+###############################################################################
 #programs
+###############################################################################
 alias eclipse="eclipse.exe"
 alias npp="notepad++.exe"
 alias sublime="sublimetext.exe"
 alias textpad="TextPad.exe"
 alias ant="${ANT_HOME}ant"
 
-
+###############################################################################
 #home directories
+###############################################################################
 alias flhome="cd ${finishline_path}"
 alias mediahome="cd ${media_path}"
 alias gitscriptshome="cd ${gitscripts_path}"
@@ -148,9 +190,9 @@ alias check-nike-track-club="${gitscripts_path}check-nike-track-club.sh"
 alias createrepositories="source ${gitscripts_path}createRepositories.sh"
 
 
-
+###############################################################################
 # ANT scripts for front end builds automation
-
+###############################################################################
 alias build="ant build -buildfile  ${finishline_path}${myenvironment}.build.xml  -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  ${ANT_ARGS};"
 alias cleanbuild="ant clean-build -buildfile  ${finishline_path}${myenvironment}.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  ${ANT_ARGS};"
 alias min="ant min -buildfile  ${finishline_path}${myenvironment}.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  ${ANT_ARGS};"
