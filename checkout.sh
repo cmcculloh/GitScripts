@@ -118,7 +118,7 @@ if [ -z "$checkbranch" ]
 		echo
 		echo
 	else
-		exit 0
+		exit -1
 	fi
 fi
 
