@@ -1,16 +1,34 @@
 #!/bin/bash
 # checkout
 # checks out a git branch
+
+
+TEXT_BRIGHT=$'\033[1m'
+TEXT_DIM=$'\033[2m'
+TEXT_NORM=$'\033[0m'
+COL_RED=$'\033[31m'
+COL_GREEN=$'\033[32m'
+COL_VIOLET=$'\033[34m'
+COL_YELLOW=$'\033[33m'
+COL_MAG=$'\033[35m'
+COL_CYAN=$'\033[36m'
+COL_WHITE=$'\033[37m'
+COL_NORM=$'\033[39m'
+
+
+
 echo "##########################################"
-echo Checking out branch $1
+echo "Checking out branch ${COL_CYAN}$1${COL_NORM}"
 echo "##########################################"
 echo
 echo
 
+echo
+
 if [ -z "$1" ] || [ "$1" = " " ]
 	then
-	echo "Please specify a branch to check out"
 	git branch
+	echo "${COL_RED}WARNING:${COL_NORM} You must specify a branch to check out."
 	exit -1
 fi
 
@@ -51,7 +69,7 @@ if [ -n "$branchexists" ]
 						echo "force delete succeeded!"
 					fi
 				else
-					echo "continue checking out $1? y (n)"
+					echo "continue checking out ${COL_CYAN}$1${COL_NORM}? y (n)"
 					read continueanyways
 					if [ -z "$continueanyways" ] || [ "$continueanyways" = "n" ]
 						then
@@ -63,7 +81,7 @@ if [ -n "$branchexists" ]
 				echo
 			fi
 		else
-			echo "not deleteing your local copy of $1"
+			echo "not deleteing your local copy of ${COL_CYAN}$1${COL_NORM}"
 			echo
 		fi
 	fi
@@ -83,11 +101,11 @@ if [ -z "$checkbranch" ]
 	echo
 
 	echo "You appear to have uncommited changes."
-	echo " (1) -  Abort checkout of $1, so you can add/commit these unsaved changes."
-	echo "  2  -  Commit changes and continue checkout of $3"
-	echo "  3  -  Stash Changes and continue with checkout of $3"
-	echo "  4  -  Revert (reset) all changes to tracked files (ignores untracked files), and continue with checkout of branch $3"
-	echo "  5  -  I know what I'm doing, continue with checking out $3 anyways"
+	echo " (1) -  Abort checkout of ${COL_CYAN}$1${COL_NORM}, so you can add/commit these unsaved changes."
+	echo "  2  -  Commit changes and continue checkout of ${COL_CYAN}$1${COL_NORM}"
+	echo "  3  -  Stash Changes and continue with checkout of ${COL_CYAN}$1${COL_NORM}"
+	echo "  4  -  Revert (reset) all changes to tracked files (ignores untracked files), and continue with checkout of branch ${COL_CYAN}$1${COL_NORM}"
+	echo "  5  -  I know what I'm doing, continue with checking out ${COL_CYAN}$1${COL_NORM} anyways"
 	read decision
 	echo You chose: $decision
 	echo
@@ -142,7 +160,7 @@ echo
 
 
 
-echo "This checks out the $1 branch"
+echo "This checks out the ${COL_CYAN}$1${COL_NORM} branch"
 echo "git checkout $1"
 git checkout $1
 echo
@@ -172,24 +190,24 @@ if [ $1 = "master" ]
 else
 	if [ -n "$onremote" ]
 		then
-		echo "merge master into $1? (y) n"
+		echo "merge master into ${COL_CYAN}$1${COL_NORM}? (y) n"
 		read decision
 
 		if [ -z "$decision" ] || [ "$decision" = "y" ]
 			then
 			echo
-			echo "Merging $remote/master into $1"
+			echo "Merging $remote/master into ${COL_CYAN}$1${COL_NORM}"
 			echo
 			echo "git merge $remote/master"
 			git merge $remote/master
 		fi
 	else
-		echo "rebase $1 onto master? (y) n"
+		echo "rebase ${COL_CYAN}$1${COL_NORM} onto master? (y) n"
 		read decision
 		if [ -z "$decision" ] || [ "$decision" = "y" ]
 			then
 			echo
-			echo "Rebasing $1 onto $remote/master"
+			echo "Rebasing ${COL_CYAN}$1${COL_NORM} onto $remote/master"
 			echo
 			echo "git rebase $remote/master"
 			git rebase $remote/master
