@@ -50,6 +50,9 @@ ANT_LIB="${YUI_COMPRESSOR_HOME}/"
 ANT_ARGS=" -Dproject.workspace=${project_workspace} -Dmainprojectname=${mainprojectname} -Dmediaprojectname=${mediaprojectname} -Dbuildsprojectname=${buildsprojectname} -Dpath.git-exec=${GIT_EXEC} "
 
 
+# JBoss Settings
+JBOSS_HOME="/d/opt/jboss-4.0.5.GA/bin/"
+
 
 #project specific
 webappwar="${finishline_path}modules/base/j2ee-apps/base/web-app.war/"

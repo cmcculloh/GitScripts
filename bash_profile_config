@@ -105,16 +105,18 @@ alias llcoolj="echo \"I'm BAAAD\""
 alias hammer="${gitscripts_path}hammertime.sh"
 alias aliases="cat ${gitscripts_path}aliases.txt"
 
+
+
 ###############################################################################
 #automated deploys
 ###############################################################################
 #not verified to be working right now, commented out just in case...
 #alias prodDeploy="${deploys_path}prodDeploy.sh"
 
-###############################################################################
+
+
 #vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv#
 #git stuff
-
 ###############################################################################
 ##basic
 ###############################################################################
@@ -144,9 +146,8 @@ alias mergemasterinto="${gitscripts_path}mergemaster.sh"
 alias new="${gitscripts_path}new.sh"
 alias delete="${gitscripts_path}delete.sh"
 alias updatecore="${gitscripts_path}update-core-branches.sh"
-
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^#
-###############################################################################
+
 
 
 ###############################################################################
@@ -184,10 +185,18 @@ alias promoeditorhome="cd ${promo_editor_path}"
 alias naturaldocshome="cd ${naturaldocs_path}"
 
 
-
+###############################################################################
 #automation of grunt work
+###############################################################################
 alias check-nike-track-club="${gitscripts_path}check-nike-track-club.sh"
 alias createrepositories="source ${gitscripts_path}createRepositories.sh"
+
+
+###############################################################################
+# Server interaction
+###############################################################################
+alias startserver="${JBOSS_HOME}run.sh --configuration=finishline --host=localhost"
+alias stopserver="${JBOSS_HOME}shutdown.sh --shutdown"
 
 
 ###############################################################################

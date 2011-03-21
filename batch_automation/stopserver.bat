@@ -1,0 +1,1 @@
+D:\opt\jboss-4.0.5.GA\bin\shutdown.bat --shutdown
