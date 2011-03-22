@@ -101,11 +101,13 @@ if [ -z "$checkbranch" ]
 	echo
 
 	echo "You appear to have uncommited changes."
-	echo " (1) -  Abort checkout of ${COL_CYAN}$1${COL_NORM}, so you can add/commit these unsaved changes."
-	echo "  2  -  Commit changes and continue checkout of ${COL_CYAN}$1${COL_NORM}"
-	echo "  3  -  Stash Changes and continue with checkout of ${COL_CYAN}$1${COL_NORM}"
-	echo "  4  -  Revert (reset) all changes to tracked files (ignores untracked files), and continue with checkout of branch ${COL_CYAN}$1${COL_NORM}"
-	echo "  5  -  I know what I'm doing, continue with checking out ${COL_CYAN}$1${COL_NORM} anyways"
+	echo " (1) -  ${COL_YELLOW}Abort${COL_NORM} checkout of ${COL_CYAN}$1${COL_NORM}"
+	echo "  2  -  ${COL_YELLOW}Commit${COL_NORM} changes and continue checkout of ${COL_CYAN}$1${COL_NORM}"
+	echo "  3  -  ${COL_YELLOW}Stash${COL_NORM} Changes and continue with checkout of ${COL_CYAN}$1${COL_NORM}"
+	echo "  4  -  ${COL_YELLOW}Reset${COL_NORM} (revert) all changes to tracked files (ignores untracked files), and continue with checkout of branch ${COL_CYAN}$1${COL_NORM}"
+	echo "  5  -  ${COL_YELLOW}Clean${COL_NORM} (delete) untracked files, and continue with checkout of branch ${COL_CYAN}$1${COL_NORM}"
+	echo "  6  -  ${COL_YELLOW}Reset${COL_NORM} & ${COL_YELLOW}Clean${COL_NORM} (revert & delete) all changes, and continue with checkout of branch ${COL_CYAN}$1${COL_NORM}"
+	echo "  7  -  I know what I'm doing, continue with checking out ${COL_CYAN}$1${COL_NORM} anyways"
 	read decision
 	echo You chose: $decision
 	echo
@@ -114,7 +116,7 @@ if [ -z "$checkbranch" ]
 		echo "Aborting checkout."
 		echo
 		exit -1
-	elif [ -z "$decision" ] || [ $decision -eq 5 ]
+	elif [ -z "$decision" ] || [ $decision -eq 7 ]
 		then
 		echo continuing...
 	elif [ $decision -eq 2 ]
@@ -147,6 +149,34 @@ if [ -z "$checkbranch" ]
 		git status
 		echo
 		echo
+	elif [ $decision -eq 5 ]
+		then
+		echo This attempts to clean your current branch of all untracked files
+		echo git clean -f
+		git clean -f
+		echo
+		echo
+
+		echo git status
+		git status
+		echo
+		echo
+	elif [ $decision -eq 6 ]
+		then
+		echo This attempts to reset your current branch to the last checkin
+		echo and attempts to clean your current branch of all untracked files
+		echo git reset --hard
+		git reset --hard
+		echo
+		echo
+		echo git clean -f
+		git clean -f
+		echo
+		echo
+		echo git status
+		git status
+		echo
+		echo
 	else
 		exit 1
 	fi
@@ -163,8 +193,13 @@ echo
 echo "This checks out the ${COL_CYAN}$1${COL_NORM} branch"
 echo "git checkout $1"
 git checkout $1
+trycheckout=`git checkout $1 2>&1 | grep "error"`
 echo
-echo
+if [ -n "$trycheckout" ]
+	then
+	echo "Checkout failed!"
+	exit -1
+fi
 
 
 remote=$(git remote)

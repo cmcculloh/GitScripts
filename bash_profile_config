@@ -195,7 +195,7 @@ alias createrepositories="source ${gitscripts_path}createRepositories.sh"
 ###############################################################################
 # Server interaction
 ###############################################################################
-alias startserver="${JBOSS_HOME}run.sh --configuration=finishline --host=localhost"
+alias startserver="${JBOSS_HOME}run.sh --configuration=finishline -b localhost"
 alias stopserver="${JBOSS_HOME}shutdown.sh --shutdown"
 
 
