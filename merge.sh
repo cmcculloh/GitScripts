@@ -2,6 +2,7 @@
 # merge
 # merges one git branch into another
 
+. /etc/git-completion.bash
 
 
 TEXT_BRIGHT=$'\033[1m'
@@ -129,6 +130,8 @@ if [[ "$statusofmerge" == "# Unmerged paths:" ]];
 		echo
 		git status
 		echo
+
+		echo
 		echo "${COL_YELLOW}WARNING: You have unmerged paths!${COL_NORM}"
 		echo
 		echo "Please ${COL_RED}resolve your merge conflicts${COL_NORM} , then ${COL_YELLOW}run a build and test your build before pushing${COL_NORM} back out.${TEXT_NORM}"
@@ -151,6 +154,7 @@ if [[ "$statusofmerge" == "# Changes to be committed:" ]];
 		echo
 		git status
 		echo
+
 		echo "${COL_YELLOW}WARNING: You have uncommitted changes!${COL_NORM}"
 		echo
 		echo "Please ${COL_RED}add/commit${COL_NORM} any changes you have.${TEXT_NORM}"
@@ -160,7 +164,9 @@ if [[ "$statusofmerge" == "# Changes to be committed:" ]];
 			then
 				echo "please enter a commit message"
 				read commitmessage
-				${gitscripts_path}commit.sh "$commitmessage" -a
+
+				source ${gitscripts_path}commit.sh "$commitmessage" -a
+
 			else
 				exit -1
 		fi
