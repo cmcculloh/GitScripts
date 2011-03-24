@@ -85,7 +85,7 @@ else
 fi
 
 #if it is master or stage, don't even prompt them to delete remote...
-if [ "$1" != "master" ] && [ "$1" != "stage" ] && [ "$1" != "dev" ] && [ "$1" != "qa" ]
+if [ "$1" != "master" ] && [ "$1" != "stage" ] && [ "$1" != "dev" ] && [ "$1" != "qa" ] && [ "$1" != "dev2" ]
 	then
 
 	onremote=`git branch -r | grep "$1"`
