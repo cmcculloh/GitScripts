@@ -37,7 +37,7 @@ branchexists=`git branch | grep "$1"`
 
 if [ -n "$branchexists" ]
 	then
-	if [ "$1" = "dev" ] || [ $1 = "qa" ]
+	if [ "$1" = "dev" ] || [ $1 = "qa" ] || [ $1 = "stage" ] || [ $1 = "dev2" ]
 		then
 		echo "delete your local copy of $1,"
 		echo "and pull down new version to protect against forced updates? (y) n"
@@ -193,7 +193,7 @@ echo
 echo "This checks out the ${COL_CYAN}$1${COL_NORM} branch"
 echo "git checkout $1"
 git checkout $1
-trycheckout=`git checkout $1 2>&1 | grep "error"`
+trycheckout=`git checkout $1 2>&1 | grep "error: "`
 echo
 if [ -n "$trycheckout" ]
 	then
