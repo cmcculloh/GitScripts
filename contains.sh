@@ -15,18 +15,38 @@ COL_CYAN=$'\033[36m'
 COL_WHITE=$'\033[37m'
 COL_NORM=$'\033[39m'
 
-branch=$1
-if [ -z "$branch" ]
+branchtocheck=$1
+if [ -z "$branchtocheck" ]
 	then
 	#use current branch if none specifid
-	branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+	branchtocheck=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
 fi
 
 echo "##########################################"
-echo "Running contains on ${COL_CYAN}$branch${COL_NORM}"
+echo "Running contains on ${COL_CYAN}$branchtocheck${COL_NORM}"
 echo "##########################################"
 echo
 echo
 
-echo "git branch --contains \"$branch\""
-git branch --contains $1
+echo "git branch --contains \"$branchtocheck\""
+git branch --contains $branchtocheck
+
+echo
+echo
+echo "the following branches do not contain $branchtocheck..."
+echo "----------------------------------------------"
+allbranches=`git branch`
+for branch in $allbranches
+do
+	wellformed=`git branch | grep "${branch}"`
+	if [ -n "$wellformed" ]
+		then
+		branchcontains=`git branch --contains ${branchtocheck} | grep "${branch}"`
+		if [ -z "$branchcontains" ]
+			then
+			echo "$branch"
+		fi
+	fi
+done
+echo "----------------------------------------------"
+
