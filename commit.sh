@@ -7,7 +7,7 @@ git status
 echo
 
 
-
+echo "git commit -q -m \"$(__git_ps1) $1\" $2"
 git commit -q -m "$(__git_ps1) $1" $2
 
 git diff-tree --stat HEAD
