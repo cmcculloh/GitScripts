@@ -16,7 +16,7 @@ COL_WHITE=$'\033[37m'
 COL_NORM=$'\033[39m'
 
 branch=$1
-if [ "$branch" -z ]
+if [ -z "$branch" ]
 	then
 	#use current branch if none specifid
 	branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')

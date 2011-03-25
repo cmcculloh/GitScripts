@@ -67,7 +67,7 @@ if [ -n "$trydelete" ]
 	read forcedelete
 	if [ "$forcedelete" = "y" ]
 		then
-		trydelete=`git branch -D $1 2>&1 | grep "error"`
+		trydelete=`git branch -D $1 2>&1 | grep "error:"`
 		echo "$trydelete"
 		echo
 		if [ -n "$trydelete" ]
