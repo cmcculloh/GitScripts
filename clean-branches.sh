@@ -1,8 +1,4 @@
-git fetch --all --prune
-
-git checkout master
-
-git pull fl master
+${gitscripts_path}checkout.sh master
 
 for branch in `git branch`
 do
@@ -22,7 +18,7 @@ do
 				if [ -z $decision ] || [ "$decision" = "y" ]
 					then
 					echo "git branch -d $branch"
-					git branch -d $branch
+					${gitscripts_path}delete.sh $branch
 				fi
 			fi
 		fi

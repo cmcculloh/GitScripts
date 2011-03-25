@@ -21,7 +21,7 @@ if [ -n "$checkbranch" ]
 		then
 		echo
 		echo "git checkout master"
-		checkout.sh master
+		${gitscripts_path}checkout.sh master
 		echo
 		echo
 	elif [ $choice -eq 2 ]
@@ -38,7 +38,7 @@ if [ -n "$checkbranch" ]
 		echo
 		echo
 
-		checkout.sh $enteredBranchName
+		${gitscripts_path}checkout.sh $enteredBranchName
 	elif [ $choice -eq 3 ]
 		then
 		exit 0
