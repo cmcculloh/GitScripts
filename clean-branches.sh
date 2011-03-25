@@ -11,8 +11,10 @@ do
 			if [ "$branch" != "master" ]
 				then
 				echo
-				echo "the following branches appear to have this branch merged into them:"
+				echo "git branch --contains \"${branch}\""
+				echo "indicates the following branches appear to have this branch merged into them:"
 				git branch --contains "${branch}"
+				echo
 				echo "  delete $branch? (y) n"
 				read decision
 				if [ -z $decision ] || [ "$decision" = "y" ]
