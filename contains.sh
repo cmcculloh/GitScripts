@@ -28,12 +28,12 @@ echo "##########################################"
 echo
 echo
 
-echo "git branch --contains \"$branchtocheck\""
+echo "The following branches contain the lateset version of ${COL_CYAN}$branchtocheck${COL_NORM}"
 git branch --contains $branchtocheck
 
 echo
 echo
-echo "the following branches do not contain ${COL_CYAN}$branchtocheck${COL_NORM}..."
+echo "the following branches ${COL_CYAN}do not${COL_NORM} contain the latest version of ${COL_CYAN}$branchtocheck${COL_NORM}"
 echo "----------------------------------------------"
 allbranches=`git branch`
 for branch in $allbranches
@@ -44,7 +44,7 @@ do
 		branchcontains=`git branch --contains ${branchtocheck} | grep "${branch}"`
 		if [ -z "$branchcontains" ]
 			then
-			echo "${COL_CYAN}$branch${COL_NORM}"
+			echo "${COL_RED}$branch${COL_NORM}"
 		fi
 	fi
 done
