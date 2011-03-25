@@ -140,6 +140,7 @@ alias gitdiff="${gitscripts_path}showlog.sh"
 alias rungitdiff="${gitscripts_path}run-gitdiff.sh"
 alias gitdifftool="${gitscripts_path}gitdifftool.sh"
 alias checkout="${gitscripts_path}checkout.sh"
+alias fastcheckout="${gitscripts_path}checkout-fast.sh"
 alias merge="${gitscripts_path}merge.sh"
 alias mergemaster="${gitscripts_path}mergemaster.sh"
 alias mergemasterinto="${gitscripts_path}mergemaster.sh"
@@ -148,6 +149,8 @@ alias delete="${gitscripts_path}delete.sh"
 alias updatecore="${gitscripts_path}update-core-branches.sh"
 alias clean-branches="${gitscripts_path}clean-branches.sh"
 alias contains="${gitscripts_path}contains.sh"
+alias snap="source ${gitscripts_path}snapback.sh"
+alias exports="source ${gitscripts_path}exportchanges.sh"
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^#
 
 
