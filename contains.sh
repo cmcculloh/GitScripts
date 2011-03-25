@@ -33,7 +33,7 @@ git branch --contains $branchtocheck
 
 echo
 echo
-echo "the following branches do not contain $branchtocheck..."
+echo "the following branches do not contain ${COL_CYAN}$branchtocheck${COL_NORM}..."
 echo "----------------------------------------------"
 allbranches=`git branch`
 for branch in $allbranches
@@ -44,7 +44,7 @@ do
 		branchcontains=`git branch --contains ${branchtocheck} | grep "${branch}"`
 		if [ -z "$branchcontains" ]
 			then
-			echo "$branch"
+			echo "${COL_CYAN}$branch${COL_NORM}"
 		fi
 	fi
 done
