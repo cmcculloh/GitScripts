@@ -17,6 +17,7 @@ COL_CYAN=$'\033[36m'
 COL_WHITE=$'\033[37m'
 COL_NORM=$'\033[39m'
 
+current_branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
 
 echo "##########################################"
 echo "Merging from ${COL_YELLOW}$1${COL_NORM} into ${COL_CYAN}$3${COL_NORM}"
@@ -24,10 +25,10 @@ echo "##########################################"
 echo
 echo
 
-if [ "$1" = "dev" ] || [ "$1" = "qa" ]
+if [ "$1" = "dev" ] || [ "$1" = "qa" ] || [ "$1" = "dev2" ]
 	then
 	echo
-	echo "${COL_RED}WARNING: merging ${COL_YELLOW}from${COL_RED} $1 not allowed. You may only merge ${COL_YELLOW}INTO ${COL_YELLOW}$1${COL_NORM}."
+	echo "${COL_RED}WARNING: merging ${COL_YELLOW}from${COL_RED} ${COL_CYAN}$1${COL_RED} not allowed. You may only merge ${COL_YELLOW}INTO ${COL_CYAN}$1${COL_NORM}."
 	echo
 	echo
 	exit -1
@@ -36,8 +37,8 @@ fi
 if [ "$3" = "stage" ] || [ "$3" = "master" ]
 	then
 	echo
-	echo "${COL_RED}WARNING: merging ${COL_YELLOW}into${COL_RED} $3 not allowed.${COL_NORM}"
-	echo "${COL_RED}You may only merge ${COL_YELLOW}FROM${COL_RED} $3.${COL_NORM}"
+	echo "${COL_RED}WARNING: merging ${COL_YELLOW}into${COL_RED} ${COL_CYAN}$3${COL_NORM} not allowed.${COL_NORM}"
+	echo "${COL_RED}You may only merge ${COL_YELLOW}FROM${COL_RED} ${COL_CYAN}$3${COL_NORM}.${COL_NORM}"
 	echo
 	echo
 	exit -1
@@ -183,6 +184,45 @@ if [ "$YorN" = "y" ]
 	then
 	remote=$(git remote)
 	git push $remote head
+
+	#offer to delete dev/dev2/qa for them if they push since they may no longer need it
+	if [ "$3" = "dev" ] || [ "$3" = "qa" ] || [ "$3" = "dev2" ]
+	then
+		if [ "$3" != "$current_branch" ]
+			then
+			echo
+			echo
+			echo "Would you like to delete ${COL_CYAN}$3${COL_NORM} and check ${COL_CYAN}$current_branch${COL_NORM} back out? y (n)"
+			read decision
+			if [ "$decision" = "y" ]
+				then
+				echo
+				echo
+				echo "checking out ${COL_CYAN}$current_branch${COL_NORM}"
+				${gitscripts_path}checkout.sh $current_branch
+
+				echo
+				echo
+				echo "deleting ${COL_CYAN}$3${COL_NORM}"
+				${gitscripts_path}delete.sh $3
+			fi
+		fi
+	fi
+else
+	if [ "$3" != "$current_branch" ]
+		then
+		echo
+		echo
+		echo "Would you like to check ${COL_CYAN}$current_branch${COL_NORM} back out? y (n)"
+		read decision
+		if [ "$decision" = "y" ]
+			then
+			echo
+			echo
+			echo "checking out ${COL_CYAN}$current_branch${COL_NORM}"
+			${gitscripts_path}checkout.sh $current_branch
+		fi
+	fi
 fi
 
 if [ $? -lt 0 ]
@@ -190,6 +230,9 @@ if [ $? -lt 0 ]
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 	git status
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	echo "git push $remote $3 failed"
+	echo "git push ${COL_CYAN}$remote $3${COL_NORM} failed"
 	exit -1
 fi
+
+
+
