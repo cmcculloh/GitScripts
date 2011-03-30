@@ -1,3 +1,5 @@
+current_branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+
 ${gitscripts_path}checkout.sh master
 
 for branch in `git branch`
@@ -26,3 +28,5 @@ do
 		fi
 	fi
 done
+
+git checkout $current_branch
