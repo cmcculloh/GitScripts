@@ -74,15 +74,19 @@ if [ -z $createRepos ] || [ $createRepos = "y" ]
 	echo "cloned naturaldocs"
 fi
 
-echo	
-echo "Go to D:/ and clone the etc project? y (n)"
-read doEtc
 echo
-if [ -z $doEtc ]
+echo "The etc project is available for cloning as well"
+echo "(1) Do not clone etc"
+echo " 2  Clone etc to D:/"
+echo " 3  Clone etc to the current directory"
+echo " 4  Clone etc to the directory of my choice"
+read decision
+echo
+if [ -z $decision ] || [ $decision -eq 1 ]
 	then
 	echo
 	#do nothing
-elif [ $doEtc = "y" ]
+elif [ $decision -eq 2 ]
     then
 	cd /d/
 	git clone -o origin ssh://git@flgit.finishline.com/git/finishline_etc.git etc
@@ -90,19 +94,23 @@ elif [ $doEtc = "y" ]
 	cd etc
 	git config core.autocrlf input
 	cd $location
-else
-	echo "Clone etc here instead? y (n)"
-	read doEtcHere
-	echo
-	if [ -z $doEtcHere ]
+elif [ $decision -eq 3 ]
+	then
+	git clone -o origin ssh://git@flgit.finishline.com/git/finishline_etc.git etc
+	echo "cloned etc"
+	git config core.autocrlf input
+elif [ $decision -eq 4 ]
+	then
+	echo "please enter the directory you would like to clone the etc project to"
+	read directory
+	if [ $directory -n ]
 		then
-		echo
-		#do nothing
-	elif [ $doEtcHere = "y" ]
-		then
+		cd $directory
 		git clone -o origin ssh://git@flgit.finishline.com/git/finishline_etc.git etc
 		echo "cloned etc"
 		git config core.autocrlf input
+	else
+		echo "you did not enter a directory, aborting cloning of etc"
 	fi
 fi
 echo
