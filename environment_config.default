@@ -1,64 +1,71 @@
 #program specific
-programs_root=/c/Program\ Files\ \(x86\)/
-firefox="${programs_root}"Mozilla\ Firefox/firefox.exe
-chrome="${HOME}\AppData\Local\Google\Chrome\Application\chrome.exe"
-git_install="${programs_root}"Git/etc/
-default_browser="${chrome}"
-native_bash_profile_path="${git_install}bash_profile"
-eclipse_home="/c/eclipse/"
-sublime_home="${programs_root}Sublime Text/"
-notepad_pp_home="${programs_root}Notepad++/"
-textpad_home="${programs_root}TextPad 5/"
-natural_docs_home="/d/java_dev/NaturalDocs-1.5"
+#[ -n "$VAR_NAME" ] || VAR_NAME="value"
+[ -n "$programs_root" ] || programs_root=/c/Program\ Files\ \(x86\)/
+[ -n "$firefox" ] || firefox="${programs_root}"Mozilla\ Firefox/firefox.exe
+[ -n "$chrome" ] || chrome="${HOME}\AppData\Local\Google\Chrome\Application\chrome.exe"
+[ -n "$git_install" ] || ="${programs_root}"Git/etc/
+[ -n "$default_browser" ] || default_browser="${chrome}"
+[ -n "$native_bash_profile_path" ] || native_bash_profile_path="${git_install}bash_profile"
+[ -n "$native_bash_profile_extras_path" ] || native_bash_profile_extras_path="~/.bash_extras.d/"
+[ -n "$native_gitscripts_bash_profile_path" ] || native_gitscripts_bash_profile_path="${native_bash_profile_extras_path}gitscripts_profile"
+[ -n "$native_gitscripts_bash_motd_path" ] || native_gitscripts_bash_motd_path="${native_bash_profile_extras_path}motd"
+[ -n "$eclipse_home" ] || eclipse_home="/c/eclipse/"
+[ -n "$sublime_home" ] || sublime_home="${programs_root}Sublime Text/"
+[ -n "$notepad_pp_home" ] || notepad_pp_home="${programs_root}Notepad++/"
+[ -n "$textpad_home" ] || textpad_home="${programs_root}TextPad 5/"
+[ -n "$natural_docs_home" ] || natural_docs_home="/d/java_dev/NaturalDocs-1.5"
 
 
 #workspace specific
-buildsprojectname="builds"
-mainprojectname="finishline"
-mediaprojectname="finishline_media"
-development_root="/d/workspaces/"
-workspace_path="${development_root}helios_workspace/"
-project_workspace="${development_root}helios_workspace"
-media_path="${workspace_path}${mediaprojectname}/"
-finishline_path="${workspace_path}${mainprojectname}/"
-gitscripts_path="${workspace_path}gitscripts/"
-deploys_path="${workspace_path}deploys/"
-builds_path="${workspace_path}${buildsprojectname}/"
-imagescripts_path="${workspace_path}image_scripts/"
-csr_path="${workspace_path}finishline_csr/"
-promo_editor_path="${workspace_path}promo_editor/"
-naturaldocs_path="${workspace_path}naturaldocs/"
+[ -n "$buildsprojectname" ] || buildsprojectname="builds"
+[ -n "$mainprojectname" ] || mainprojectname="finishline"
+[ -n "$mediaprojectname" ] || mediaprojectname="finishline_media"
+[ -n "$development_root" ] || development_root="/d/workspaces/"
+[ -n "$workspace_path" ] || workspace_path="${development_root}helios_workspace/"
+[ -n "$project_workspace" ] || project_workspace="${development_root}helios_workspace"
+[ -n "$media_path" ] || media_path="${workspace_path}${mediaprojectname}/"
+[ -n "$finishline_path" ] || finishline_path="${workspace_path}${mainprojectname}/"
+[ -n "$gitscripts_path" ] || gitscripts_path="${workspace_path}gitscripts/"
+[ -n "$deploys_path" ] || deploys_path="${workspace_path}deploys/"
+[ -n "$builds_path" ] || builds_path="${workspace_path}${buildsprojectname}/"
+[ -n "$imagescripts_path" ] || imagescripts_path="${workspace_path}image_scripts/"
+[ -n "$csr_path" ] || csr_path="${workspace_path}finishline_csr/"
+[ -n "$promo_editor_path" ] || promo_editor_path="${workspace_path}promo_editor/"
+[ -n "$naturaldocs_path" ] || naturaldocs_path="${workspace_path}naturaldocs/"
 
 
 # Git settings
-GIT_HOME="/c/Program\ Files\ \(x86\)/Git/bin/"
-GIT_EXEC="${GIT_HOME}git.exe"
-
+[ -n "$GIT_HOME" ] || GIT_HOME="/c/Program\ Files\ \(x86\)/Git/bin/"
+[ -n "$GIT_EXEC" ] || GIT_EXEC="${GIT_HOME}git.exe"
+[ -n "$gitscripts_temp_bash_profile_path" ] || gitscripts_temp_bash_profile_path="${gitscripts_path}gitscripts_bash_profile"
 
 # Java and ANT Settings
-JAVA_DEV_HOME="/d/java_dev/"
-JDK_VERSION="jdk1.5.0_14"
-JAVA_HOME="${JAVA_DEV_HOME}jdk/${JDK_VERSION}/"
-ANT_HOME="${JAVA_DEV_HOME}apache-ant-1.8.1/bin/"
-ANT_CONTRIB_HOME="${JAVA_DEV_HOME}ant-contrib/"
-YUI_COMPRESSOR_HOME="${JAVA_DEV_HOME}yuicompressor-2.4.2/build"
-ANT_OPTS="-Xms128m\ -Xmx512m\ -Duser.language=en\ -XX:PermSize=128M\ -XX:MaxPermSize=256M"
-ANT_ARGS="-logger\ org.apache.tools.ant.DefaultLogger"
+[ -n "$JAVA_DEV_HOME" ] || JAVA_DEV_HOME="/d/java_dev/"
+[ -n "$JDK_VERSION" ] || JDK_VERSION="jdk1.5.0_14"
+[ -n "$JAVA_HOME" ] || JAVA_HOME="${JAVA_DEV_HOME}jdk/${JDK_VERSION}/"
+[ -n "$ANT_HOME" ] || ANT_HOME="${JAVA_DEV_HOME}apache-ant-1.8.1/bin/"
+[ -n "$ANT_CONTRIB_HOME" ] || ANT_CONTRIB_HOME="${JAVA_DEV_HOME}ant-contrib/"
+[ -n "$YUI_COMPRESSOR_HOME" ] || YUI_COMPRESSOR_HOME="${JAVA_DEV_HOME}yuicompressor-2.4.2/build"
+[ -n "$ANT_OPTS" ] || ANT_OPTS="-Xms128m\ -Xmx512m\ -Duser.language=en\ -XX:PermSize=128M\ -XX:MaxPermSize=256M"
+[ -n "$ANT_ARGS" ] || ANT_ARGS="-logger\ org.apache.tools.ant.DefaultLogger"
+
 PATH="${PATH}:${JAVA_HOME}bin:${ANT_HOME}bin:${YUI_COMPRESSOR_HOME}"
-CLASSPATH="${JAVA_HOME}lib;${ANT_CONTRIB_HOME};${YUI_COMPRESSOR_HOME}/;"
-ANT_LIB="${YUI_COMPRESSOR_HOME}/"
-ANT_ARGS=" -Dproject.workspace=${project_workspace} -Dmainprojectname=${mainprojectname} -Dmediaprojectname=${mediaprojectname} -Dbuildsprojectname=${buildsprojectname} -Dpath.git-exec=${GIT_EXEC} "
+CLASSPATH="${CLASSPATH};${JAVA_HOME}lib;${ANT_CONTRIB_HOME};${YUI_COMPRESSOR_HOME}/;"
+[ -n "$ANT_LIB" ] || ANT_LIB="${YUI_COMPRESSOR_HOME}/"
+[ -n "$ANT_ARGS" ] || ANT_ARGS=" -Dproject.workspace=${project_workspace} -Dmainprojectname=${mainprojectname} -Dmediaprojectname=${mediaprojectname} -Dbuildsprojectname=${buildsprojectname} -Dpath.git-exec=${GIT_EXEC} "
 
 
 # JBoss Settings
-JBOSS_HOME="/d/opt/jboss-4.0.5.GA/bin/"
+[ -n "$JBOSS_HOME" ] || JBOSS_HOME="/d/opt/jboss-4.0.5.GA/bin/"
 
 
 #project specific
 webappwar="${finishline_path}modules/base/j2ee-apps/base/web-app.war/"
-myenvironment="workstation-windows"
+[ -n "$myenvironment" ] || myenvironment="workstation-windows"
 
 
 export PATH="${PATH}:${sublime_home}:${notepad_pp_home}:${eclipse_home}:${textpad_home}:${gitscripts_path}:${natural_docs_home}"
 export CLASSPATH="${CLASSPATH}"
 export ANT_LIB="${ANT_LIB}"
+
+

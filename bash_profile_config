@@ -1,6 +1,6 @@
-if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
-fi
+#if [ -f /etc/bashrc ]; then
+#	. /etc/bashrc
+#fi
 
 TEXT_BRIGHT=$'\033[1m'
 TEXT_DIM=$'\033[2m'
@@ -15,13 +15,24 @@ COL_WHITE=$'\033[37m'
 COL_NORM=$'\033[39m'
 
 
+
+
+
+
 ###############################################################################
 #custom console
 ###############################################################################
+#PS1='\[\033]0;$MSYSTEM:\w\007
+#${COL_GREEN}\u@\h${COL_YELLOW} \d \t ${TEXT_BRIGHT}${COL_MAG}$(__git_ps1)
+#${COL_CYAN}\w${COL_NORM}
+#${TEXT_NORM}$ '
+
 PS1='\[\033]0;$MSYSTEM:\w\007
-${COL_GREEN}\u@\h${COL_YELLOW} \d \t ${TEXT_BRIGHT}${COL_MAG}$(__git_ps1)
-${COL_CYAN}\w${COL_NORM}
-${TEXT_NORM}$ '
+${COL_VIOLET}\d \t${COL_NORM}
+${COL_CYAN}\w${COL_NORM}${COL_GREEN}$(__git_ps1)${COL_NORM}
+${COL_YELLOW}$(__parse_git_branch)${COL_NORM}
+${COL_RED}\u@\h${COL_NORM}
+$ '
 
 
 
@@ -37,55 +48,104 @@ function __parse_git_branch {
 ###############################################################################
 #bring in the bash completion stuff
 ###############################################################################
-source ${gitscripts_path}bash_completion
+#source ${gitscripts_path}bash_completion
 
 
 
 
 ###############################################################################
-# This sets up "bookmarks" for your directories.
-# When in a directory, type "s <name>" to store the current path as a bookmark with that name.
-# To move to a bookmark, type "g <name>". Tab completion also works!
-# To list all bookmarks, type "l".
-#
-# Credit to: Karthick from http://www.huyng.com/archives/quick-bash-tip-directory-bookmarks/492/
+#bring in the bashmarks stuff
 ###############################################################################
-function s {
-cat ~/.sdirs | grep -v "export DIR_$1=" > ~/.sdirs1
-mv ~/.sdirs1 ~/.sdirs
-echo "export DIR_$1=\"$PWD\"" >> ~/.sdirs
-}
-function l {
-source ~/.sdirs
-env | grep "^DIR_" | cut -c5- | grep "^.*="
-}
-# enable custom tab completion
-shopt -s progcomp
-# jump to bookmark
-function g {
-source ~/.sdirs
-cd "$(eval $(echo echo $(echo \$DIR_$1)))"
-}
-# list bookmarks without dirname
-function _l {
-source ~/.sdirs
-env | grep "^DIR_" | cut -c5- | grep "^.*=" | cut -f1 -d "="
-}
-# completion command for g
-function _gcomp {
-local curw
-COMPREPLY=()
-curw=${COMP_WORDS[COMP_CWORD]}
-COMPREPLY=($(compgen -W '`_l`' -- $curw))
-return 0
-}
-# bind completion command for g to _gcomp
-complete -F _gcomp g
-# Usage: g [TAB]
+#source ${gitscripts_path}bashmarks.sh
+
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+# don't put duplicate lines in the history. See bash(1) for more options
+# ... or force ignoredups and ignorespace
+HISTCONTROL=ignoredups:ignorespace
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+#force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 
 
-alias test="echo this is a test: ${gitscripts_path}"
+# the word test is reserved
+alias testecho="echo this is a test: ${gitscripts_path}"
 
 ###############################################################################
 #gitscripts
@@ -94,16 +154,6 @@ alias pullscripts="source ${gitscripts_path}pullscripts.sh"
 alias pushscripts="source ${gitscripts_path}pushscripts.sh"
 alias refresh_bash_profile="source ${gitscripts_path}refresh_bash_profile.sh"
 
-###############################################################################
-#shell convenience
-###############################################################################
-alias ll="ls -l"
-alias lla="ls -la"
-alias cd..="cd .."
-alias cls="clear"
-alias llcoolj="echo \"I'm BAAAD\""
-alias hammer="${gitscripts_path}hammertime.sh"
-alias aliases="cat ${gitscripts_path}aliases.txt"
 
 
 
@@ -121,7 +171,13 @@ alias aliases="cat ${gitscripts_path}aliases.txt"
 ##basic
 ###############################################################################
 alias addall="git add -A"
-alias g="git"
+
+
+
+# this is interfering with bashmarks
+#alias g="git"
+
+
 alias reset="git reset --hard"
 alias move="git mv"
 alias add="git add"
