@@ -51,7 +51,9 @@ ANT_ARGS=" -Dproject.workspace=${project_workspace} -Dmainprojectname=${mainproj
 
 
 # JBoss Settings
-JBOSS_HOME="/d/opt/jboss-4.0.5.GA/bin/"
+JBOSS="/d/opt/jboss-4.0.5.GA/"
+JBOSS_HOME="${JBOSS}bin/"
+JBOSS_LOGS="${JBOSS}server/finishline/log/"
 
 
 #project specific

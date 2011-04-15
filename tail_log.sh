@@ -1,0 +1,1 @@
+tail -f ${JBOSS_LOGS}genericinfo.log
