@@ -19,7 +19,7 @@ fi
 
 echo
 echo
-echo git diff $log1..$log2
+echo git diff -w $log1..$log2
 
 echo "Do diff? y (n) "
 read decision
