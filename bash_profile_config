@@ -2,6 +2,11 @@
 #	. /etc/bashrc
 #fi
 
+
+# If not running interactively, don't do anything
+#[ -z "$PS1" ] && return
+
+
 TEXT_BRIGHT=$'\033[1m'
 TEXT_DIM=$'\033[2m'
 TEXT_NORM=$'\033[0m'
@@ -19,36 +24,20 @@ COL_NORM=$'\033[39m'
 
 
 
-###############################################################################
-#custom console
-###############################################################################
-#PS1='\[\033]0;$MSYSTEM:\w\007
-#${COL_GREEN}\u@\h${COL_YELLOW} \d \t ${TEXT_BRIGHT}${COL_MAG}$(__git_ps1)
-#${COL_CYAN}\w${COL_NORM}
-#${TEXT_NORM}$ '
-
-PS1='\[\033]0;$MSYSTEM:\w\007
-${COL_VIOLET}\d \t${COL_NORM}
-${COL_CYAN}\w${COL_NORM}${COL_GREEN}$(__git_ps1)${COL_NORM}
-${COL_YELLOW}$(__parse_git_branch)${COL_NORM}
-${COL_RED}\u@\h${COL_NORM}
-$ '
-
-
 
 
 ###############################################################################
 #custom __parse_git_branch function
 ###############################################################################
 function __parse_git_branch {
-  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+ git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
 }
 
 
 ###############################################################################
 #bring in the bash completion stuff
 ###############################################################################
-#source ${gitscripts_path}bash_completion
+source ${gitscripts_path}bash_completion
 
 
 
@@ -57,9 +46,6 @@ function __parse_git_branch {
 #bring in the bashmarks stuff
 ###############################################################################
 #source ${gitscripts_path}bashmarks.sh
-
-# If not running interactively, don't do anything
-[ -z "$PS1" ] && return
 
 # don't put duplicate lines in the history. See bash(1) for more options
 # ... or force ignoredups and ignorespace
@@ -81,12 +67,12 @@ shopt -s checkwinsize
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
+ debian_chroot=$(cat /etc/debian_chroot)
 fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    xterm-color) color_prompt=yes;;
+ xterm-color) color_prompt=yes;;
 esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
@@ -95,42 +81,42 @@ esac
 #force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+ if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 	# We have color support; assume it's compliant with Ecma-48
 	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
 	# a case would tend to support setf rather than setaf.)
 	color_prompt=yes
-    else
+ else
 	color_prompt=
-    fi
+ fi
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+ PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+ PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
+ PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+ ;;
 *)
-    ;;
+ ;;
 esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
+ test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+ alias ls='ls --color=auto'
+ #alias dir='dir --color=auto'
+ #alias vdir='vdir --color=auto'
 
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+ alias grep='grep --color=auto'
+ alias fgrep='fgrep --color=auto'
+ alias egrep='egrep --color=auto'
 fi
 
 # some more ls aliases
@@ -138,14 +124,41 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-
 
 # the word test is reserved
 alias testecho="echo this is a test: ${gitscripts_path}"
+
+
+
+alias cd..="cd .."
+alias cls="clear"
+alias llcoolj="echo \"I'm BAAAD\""
+alias hammer="${gitscripts_path}hammertime.sh"
+alias aliases="cat ${gitscripts_path}aliases.txt"
+
+
+
+
+
+
+
+###############################################################################
+#custom console
+###############################################################################
+#PS1='\[\033]0;$MSYSTEM:\w\007
+#${COL_GREEN}\u@\h${COL_YELLOW} \d \t ${TEXT_BRIGHT}${COL_MAG}$(__git_ps1)
+#${COL_CYAN}\w${COL_NORM}
+#${TEXT_NORM}$ '
+PS1='\[\033]0;$MSYSTEM:\w\007
+${COL_VIOLET}\d \t${COL_NORM}
+${COL_CYAN}\w${COL_NORM}${COL_GREEN}$(__git_ps1)${COL_NORM}
+${COL_YELLOW}$(__parse_git_branch)${COL_NORM}
+${COL_RED}\u@\h${COL_NORM}
+$ '
+
+
+
+
 
 ###############################################################################
 #gitscripts
@@ -207,6 +220,8 @@ alias clean-branches="${gitscripts_path}clean-branches.sh"
 alias contains="${gitscripts_path}contains.sh"
 alias snap="source ${gitscripts_path}snapback.sh"
 alias exports="source ${gitscripts_path}exportchanges.sh"
+alias gitscripts="${gitscripts_path}gitscripts.sh"
+
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^#
 
 
@@ -219,17 +234,17 @@ alias sshgit="ssh git@10.0.2.160"
 ###############################################################################
 #webpage launches
 ###############################################################################
-alias gitwiki="\"${default_browser}\" http://10.0.2.160/wiki/index.php/Git_Commands"
-alias local="\"${default_browser}\" http://local.finishline.com/store"
+#alias gitwiki="\"${default_browser}\" http://10.0.2.160/wiki/index.php/Git_Commands"
+#alias local="\"${default_browser}\" http://local.finishline.com/store"
 
 ###############################################################################
-#programs
+#programs -- make windows bash see them
 ###############################################################################
-alias eclipse="eclipse.exe"
-alias npp="notepad++.exe"
-alias sublime="sublimetext.exe"
-alias textpad="TextPad.exe"
-alias ant="${ANT_HOME}ant"
+type -P eclipse &>/dev/null && echo "Found eclipse" 			|| alias eclipse="eclipse.exe"
+type -P npp &>/dev/null     && echo "Found npp (notepad++) "	|| alias npp="notepad++.exe"
+type -P sublime &>/dev/null && echo "Found sublime" 			|| alias sublime="sublimetext.exe"
+type -P textpad &>/dev/null && echo "Found textpad" 			|| alias textpad="TextPad.exe"
+type -P ant &>/dev/null     && echo "Found ANT"     			|| alias ant="${ANT_HOME}ant"
 
 ###############################################################################
 #home directories
@@ -263,25 +278,29 @@ alias stopserver="${JBOSS_HOME}shutdown.sh --shutdown"
 ###############################################################################
 # ANT scripts for front end builds automation
 ###############################################################################
-alias build="ant build -buildfile  ${finishline_path}${myenvironment}.build.xml  -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  ${ANT_ARGS};"
-alias cleanbuild="ant clean-build -buildfile  ${finishline_path}${myenvironment}.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  ${ANT_ARGS};"
-alias min="ant min -buildfile  ${finishline_path}${myenvironment}.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  ${ANT_ARGS};"
-alias webapprefresh="ant webapprefresh -buildfile  ${finishline_path}${myenvironment}.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  ${ANT_ARGS};"
-alias webapprefreshminmerge="ant webapprefreshminmerge -buildfile  ${finishline_path}${myenvironment}.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  ${ANT_ARGS};"
-alias promosinit="ant initpromos -buildfile  ${builds_path}staging-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  ${ANT_ARGS};"
-alias promosliteremerge="ant git-checkout-mergey-thing-lite -buildfile  ${builds_path}staging-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  ${ANT_ARGS};"
-alias promosremerge="ant git-checkout-mergey-thing -buildfile  ${builds_path}staging-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  ${ANT_ARGS};"
-alias promospush="ant git-push-todays-promos -buildfile  ${builds_path}staging-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  ${ANT_ARGS};"
-alias promosimportstouch="ant set-mod-dates-of-imports-to-now -buildfile  ${builds_path}staging-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  ${ANT_ARGS};"
-alias zipexports="ant promos-zip-up-exports -buildfile  ${builds_path}staging-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment}  ${ANT_ARGS};"
+alias min="ant ${ANT_ARGS} min -buildfile ${finishline_path}${myenvironment}.build.xml;"
+alias build="ant build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
+alias cleanbuild="ant ${ANT_ARGS} clean-build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
+alias webapprefresh="ant ${ANT_ARGS} webapprefresh -buildfile ${finishline_path}${myenvironment}.build.xml ;"
+alias webapprefreshminmerge="ant ${ANT_ARGS} webapprefreshminmerge -buildfile ${finishline_path}${myenvironment}.build.xml ;"
+alias promosinit="ant ${ANT_ARGS} initpromos -buildfile ${builds_path}staging-front-end.build.xml ;"
+alias promosliteremerge="ant ${ANT_ARGS} git-checkout-mergey-thing-lite -buildfile ${builds_path}staging-front-end.build.xml ;"
+alias promosremerge="ant ${ANT_ARGS} git-checkout-mergey-thing -buildfile ${builds_path}staging-front-end.build.xml ;"
+alias promospush="ant ${ANT_ARGS} git-push-todays-promos -buildfile ${builds_path}staging-front-end.build.xml ;"
+alias promosimportstouch="ant ${ANT_ARGS} set-mod-dates-of-imports-to-now -buildfile ${builds_path}staging-front-end.build.xml ;"
+alias zipexports="ant ${ANT_ARGS} promos-zip-up-exports -buildfile ${builds_path}staging-front-end.build.xml ;"
 
-alias wipeoutallexports="ant -quiet all-wipeout-exports -buildfile  ${builds_path}all-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment} ${ANT_ARGS};"
-alias allsnapbackexportchanges="ant -quiet snap-to-master-and-back -buildfile  ${builds_path}staging-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment} ${ANT_ARGS};ant -quiet export-changed-by-day -buildfile  ${builds_path}qa-front-end.build.xml -Dmyenvironment=${myenvironment} ${ANT_ARGS};ant -quiet export-changed-by-day -buildfile  ${builds_path}dev-front-end.build.xml -Dmyenvironment=${myenvironment} ${ANT_ARGS};"
-alias alluploadexports="ant -quiet upload-all-exports -buildfile  ${builds_path}all-remotes.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment} ${ANT_ARGS};"
-alias devexportchanges="ant -quiet export-changed-by-day -buildfile  ${builds_path}dev-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment} ${ANT_ARGS};"
-alias qaexportchanges="ant -quiet export-changed-by-day -buildfile  ${builds_path}qa-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment} ${ANT_ARGS};"
-alias stagingexportchanges="ant -quiet export-changed-by-day -buildfile  ${builds_path}staging-front-end.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment} ${ANT_ARGS};"
-alias allexportchanges="ant -quiet export-changes -buildfile  ${builds_path}all-remotes.build.xml -lib ${ANT_LIB} -Dmyenvironment=${myenvironment} ${ANT_ARGS};"
+alias wipeoutallexports="ant ${ANT_ARGS} all-wipeout-exports -buildfile ${builds_path}all-front-end.build.xml ;"
+alias allsnapbackexportchanges=" \
+	ant ${ANT_ARGS} snap-to-master-and-back	-buildfile ${builds_path}staging-front-end.build.xml ${ANT_ARGS}; \
+	ant ${ANT_ARGS} export-changed-by-day	-buildfile ${builds_path}qa-front-end.build.xml ${ANT_ARGS}; \
+	ant ${ANT_ARGS} export-changed-by-day	-buildfile ${builds_path}dev-front-end.build.xml ${ANT_ARGS};\ 
+"
+alias alluploadexports="ant ${ANT_ARGS} upload-all-exports -buildfile ${builds_path}all-remotes.build.xml ;"
+alias devexportchanges="ant ${ANT_ARGS} export-changed-by-day -buildfile ${builds_path}dev-front-end.build.xml ;"
+alias qaexportchanges="ant ${ANT_ARGS} export-changed-by-day -buildfile ${builds_path}qa-front-end.build.xml ;"
+alias stagingexportchanges="ant ${ANT_ARGS} export-changed-by-day -buildfile ${builds_path}staging-front-end.build.xml ;"
+alias allexportchanges="ant ${ANT_ARGS} export-changes -buildfile ${builds_path}all-remotes.build.xml ;"
 
 
 

@@ -6,7 +6,7 @@
 [ -n "$git_install" ] || ="${programs_root}"Git/etc/
 [ -n "$default_browser" ] || default_browser="${chrome}"
 [ -n "$native_bash_profile_path" ] || native_bash_profile_path="${git_install}bash_profile"
-[ -n "$native_bash_profile_extras_path" ] || native_bash_profile_extras_path="~/.bash_extras.d/"
+[ -n "$native_bash_profile_extras_path" ] || native_bash_profile_extras_path="~/.bash_extras/"
 [ -n "$native_gitscripts_bash_profile_path" ] || native_gitscripts_bash_profile_path="${native_bash_profile_extras_path}gitscripts_profile"
 [ -n "$native_gitscripts_bash_motd_path" ] || native_gitscripts_bash_motd_path="${native_bash_profile_extras_path}motd"
 [ -n "$eclipse_home" ] || eclipse_home="/c/eclipse/"
@@ -39,33 +39,45 @@
 [ -n "$GIT_EXEC" ] || GIT_EXEC="${GIT_HOME}git.exe"
 [ -n "$gitscripts_temp_bash_profile_path" ] || gitscripts_temp_bash_profile_path="${gitscripts_path}gitscripts_bash_profile"
 
+#project specific
+[ -n "$webappwar" ] || webappwar="${finishline_path}modules/base/j2ee-apps/base/web-app.war/"
+[ -n "$myenvironment" ] || myenvironment="workstation-windows"
+
+
+[ -n "$ANT_LIB" ] || ANT_LIB="${YUI_COMPRESSOR_HOME}/"
+
+
 # Java and ANT Settings
 [ -n "$JAVA_DEV_HOME" ] || JAVA_DEV_HOME="/d/java_dev/"
 [ -n "$JDK_VERSION" ] || JDK_VERSION="jdk1.5.0_14"
 [ -n "$JAVA_HOME" ] || JAVA_HOME="${JAVA_DEV_HOME}jdk/${JDK_VERSION}/"
-[ -n "$ANT_HOME" ] || ANT_HOME="${JAVA_DEV_HOME}apache-ant-1.8.1/bin/"
+[ -n "$ANT_HOME" ] || ANT_HOME="${JAVA_DEV_HOME}apache-ant-1.8.1"
 [ -n "$ANT_CONTRIB_HOME" ] || ANT_CONTRIB_HOME="${JAVA_DEV_HOME}ant-contrib/"
 [ -n "$YUI_COMPRESSOR_HOME" ] || YUI_COMPRESSOR_HOME="${JAVA_DEV_HOME}yuicompressor-2.4.2/build"
-[ -n "$ANT_OPTS" ] || ANT_OPTS="-Xms128m\ -Xmx512m\ -Duser.language=en\ -XX:PermSize=128M\ -XX:MaxPermSize=256M"
-[ -n "$ANT_ARGS" ] || ANT_ARGS="-logger\ org.apache.tools.ant.DefaultLogger"
 
-PATH="${PATH}:${JAVA_HOME}bin:${ANT_HOME}bin:${YUI_COMPRESSOR_HOME}"
-CLASSPATH="${CLASSPATH};${JAVA_HOME}lib;${ANT_CONTRIB_HOME};${YUI_COMPRESSOR_HOME}/;"
-[ -n "$ANT_LIB" ] || ANT_LIB="${YUI_COMPRESSOR_HOME}/"
-[ -n "$ANT_ARGS" ] || ANT_ARGS=" -Dproject.workspace=${project_workspace} -Dmainprojectname=${mainprojectname} -Dmediaprojectname=${mediaprojectname} -Dbuildsprojectname=${buildsprojectname} -Dpath.git-exec=${GIT_EXEC} "
+
+
+
+[ -n "$ANT_OPTS" ] || ANT_OPTS=" -Xms128m -Xmx512m -Duser.language=en -XX:PermSize=128M -XX:MaxPermSize=256M "
+[ -n "$ANT_ARGS" ] || ANT_ARGS=" -lib ${ANT_LIB} -quiet -Dmyenvironment=${myenvironment} -Dproject.workspace=${project_workspace} -Dmainprojectname=${mainprojectname} -Dmediaprojectname=${mediaprojectname} -Dbuildsprojectname=${buildsprojectname} -Dpath.git-exec=${GIT_EXEC} -DANT_HOME=${ANT_HOME}"
+
+
+
+
 
 
 # JBoss Settings
 [ -n "$JBOSS_HOME" ] || JBOSS_HOME="/d/opt/jboss-4.0.5.GA/bin/"
 
+PATH="${PATH}:${JAVA_HOME}bin:${ANT_HOME}/bin:${YUI_COMPRESSOR_HOME}"
+CLASSPATH="${CLASSPATH};${JAVA_HOME}lib;${ANT_CONTRIB_HOME};${YUI_COMPRESSOR_HOME}/;${ANT_HOME}"
 
-#project specific
-webappwar="${finishline_path}modules/base/j2ee-apps/base/web-app.war/"
-[ -n "$myenvironment" ] || myenvironment="workstation-windows"
 
 
 export PATH="${PATH}:${sublime_home}:${notepad_pp_home}:${eclipse_home}:${textpad_home}:${gitscripts_path}:${natural_docs_home}"
 export CLASSPATH="${CLASSPATH}"
 export ANT_LIB="${ANT_LIB}"
+export ANT_ARGS="${ANT_ARGS}"
+export ANT_OPTS="${ANT_OPTS}"
 
 

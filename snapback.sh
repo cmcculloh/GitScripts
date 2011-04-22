@@ -86,7 +86,7 @@ function __parse_git_branch {
 currentBranch="$(__parse_git_branch)"
 
 
-NOW=$(date +"%m-%d-%Y")
+NOW=$(date +"%Y-%m-%d")
 
 min
 
@@ -118,9 +118,25 @@ cp -fr "${targetpath}" "${targetpathqa}"
 cp -fr "${targetpath}" "${targetpathdev}"
 
 
-cd "${targetpath}"
+rm -f -r "${targetpathqa}assets/"
+rm -f -r "${targetpathdev}assets/"
 
+
+cd "${targetpath}"
+pwd
 ls -la
+
+
+
+cd "${targetpath}assets/"
+pwd
+ls -la
+
+
+cd "${targetpath}global/promos/"
+pwd
+ls -la
+
 
 #tar  cvf "${zippath}$NOW.tar"  "${targetpath}"
 #gzip "${zippath}$NOW.tar"
@@ -129,7 +145,9 @@ ls -la
 
 
 cd "${finishline_path}"
+pwd
 
+git status
 
 
 
