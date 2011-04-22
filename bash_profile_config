@@ -202,7 +202,7 @@ alias createrepositories="source ${gitscripts_path}createRepositories.sh"
 ###############################################################################
 alias startserver="source ${gitscripts_path}startserver.sh"
 alias stopserver="${JBOSS_HOME}shutdown.sh --shutdown"
-alias taillogs="source ${gitscripts_path}tail_log.sh $1"
+alias taillogs="source ${gitscripts_path}tail_log.sh"
 
 
 ###############################################################################
