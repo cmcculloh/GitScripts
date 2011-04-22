@@ -25,5 +25,5 @@ echo "Do diff? y (n) "
 read decision
 if [ "$decision" ] && [ $decision = "y" ]
     then
-    git diff $log1..$log2
+    git diff -w $log1..$log2
 fi
