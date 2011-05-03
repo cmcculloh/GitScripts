@@ -12,10 +12,10 @@
 
 #tar contents of D:\Applications\Endeca\Deploy\new\Dev\*
 
-#copy tar to remote server /usr/local/endeca/finishline/config/pipeline
+#copy tar to root@172.17.2.203 /usr/local/endeca/finishline/config/pipeline
 
 
-#connect to dev endeca
+#connect to root@172.17.2.203 (dev endeca)
 
 #untar tar
 
