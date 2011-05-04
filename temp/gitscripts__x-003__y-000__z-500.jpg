@@ -1,0 +1,310 @@
+#if [ -f /etc/bashrc ]; then
+#	. /etc/bashrc
+#fi
+
+
+# If not running interactively, don't do anything
+#[ -z "$PS1" ] && return
+
+
+TEXT_BRIGHT=$'\033[1m'
+TEXT_DIM=$'\033[2m'
+TEXT_NORM=$'\033[0m'
+COL_RED=$'\033[31m'
+COL_GREEN=$'\033[32m'
+COL_VIOLET=$'\033[34m'
+COL_YELLOW=$'\033[33m'
+COL_MAG=$'\033[35m'
+COL_CYAN=$'\033[36m'
+COL_WHITE=$'\033[37m'
+COL_NORM=$'\033[39m'
+
+
+
+
+
+
+
+
+###############################################################################
+#custom __parse_git_branch function
+###############################################################################
+function __parse_git_branch {
+ git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+}
+
+
+###############################################################################
+#bring in the bash completion stuff
+###############################################################################
+source ${gitscripts_path}bash_completion
+
+
+
+
+###############################################################################
+#bring in the bashmarks stuff
+###############################################################################
+#source ${gitscripts_path}bashmarks.sh
+
+# don't put duplicate lines in the history. See bash(1) for more options
+# ... or force ignoredups and ignorespace
+HISTCONTROL=ignoredups:ignorespace
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+ debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+ xterm-color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+#force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+ if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+ else
+	color_prompt=
+ fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+ PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+ PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+ PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+ ;;
+*)
+ ;;
+esac
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+ test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+ alias ls='ls --color=auto'
+ #alias dir='dir --color=auto'
+ #alias vdir='vdir --color=auto'
+
+ alias grep='grep --color=auto'
+ alias fgrep='fgrep --color=auto'
+ alias egrep='egrep --color=auto'
+fi
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+
+# the word test is reserved
+alias testecho="echo this is a test: ${gitscripts_path}"
+
+
+
+alias cd..="cd .."
+alias cls="clear"
+alias llcoolj="echo \"I'm BAAAD\""
+alias hammer="${gitscripts_path}hammertime.sh"
+alias aliases="cat ${gitscripts_path}aliases.txt"
+
+
+
+
+
+
+
+###############################################################################
+#custom console
+###############################################################################
+#PS1='\[\033]0;$MSYSTEM:\w\007
+#${COL_GREEN}\u@\h${COL_YELLOW} \d \t ${TEXT_BRIGHT}${COL_MAG}$(__git_ps1)
+#${COL_CYAN}\w${COL_NORM}
+#${TEXT_NORM}$ '
+PS1='\[\033]0;$MSYSTEM:\w\007
+${COL_VIOLET}\d \t${COL_NORM}
+${COL_CYAN}\w${COL_NORM}${COL_GREEN}$(__git_ps1)${COL_NORM}
+${COL_YELLOW}$(__parse_git_branch)${COL_NORM}
+${COL_RED}\u@\h${COL_NORM}
+$ '
+
+
+
+
+
+###############################################################################
+#gitscripts
+###############################################################################
+alias pullscripts="source ${gitscripts_path}pullscripts.sh"
+alias pushscripts="source ${gitscripts_path}pushscripts.sh"
+alias refresh_bash_profile="source ${gitscripts_path}refresh_bash_profile.sh"
+
+
+
+
+###############################################################################
+#automated deploys
+###############################################################################
+#not verified to be working right now, commented out just in case...
+#alias prodDeploy="${deploys_path}prodDeploy.sh"
+
+
+
+#vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv#
+#git stuff
+###############################################################################
+##basic
+###############################################################################
+alias addall="git add -A"
+
+
+
+# this is interfering with bashmarks
+#alias g="git"
+
+
+alias reset="git reset --hard"
+alias move="git mv"
+alias add="git add"
+#alias push="git push $1 $2"
+alias branch="git branch"
+alias status="git status"
+alias fetch="git fetch --all --prune"
+#alias pull="git pull $1 $2"
+
+###############################################################################
+##advanced
+###############################################################################
+alias commit="source ${gitscripts_path}commit.sh"
+alias showlog="${gitscripts_path}showlog.sh"
+alias gitdiff="${gitscripts_path}showlog.sh"
+alias rungitdiff="${gitscripts_path}run-gitdiff.sh"
+alias gitdifftool="${gitscripts_path}gitdifftool.sh"
+alias checkout="${gitscripts_path}checkout.sh"
+alias fastcheckout="${gitscripts_path}checkout-fast.sh"
+alias merge="${gitscripts_path}merge.sh"
+alias mergemaster="${gitscripts_path}mergemaster.sh"
+alias mergemasterinto="${gitscripts_path}mergemaster.sh"
+alias new="${gitscripts_path}new.sh"
+alias delete="${gitscripts_path}delete.sh"
+alias updatecore="${gitscripts_path}update-core-branches.sh"
+alias clean-branches="${gitscripts_path}clean-branches.sh"
+alias contains="${gitscripts_path}contains.sh"
+alias snap="source ${gitscripts_path}snapback.sh"
+alias exports="source ${gitscripts_path}exportchanges.sh"
+alias gitscripts="${gitscripts_path}gitscripts.sh"
+
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^#
+
+
+
+###############################################################################
+#ssh shortcuts
+###############################################################################
+alias sshgit="ssh git@10.0.2.160"
+
+###############################################################################
+#webpage launches
+###############################################################################
+#alias gitwiki="\"${default_browser}\" http://10.0.2.160/wiki/index.php/Git_Commands"
+#alias local="\"${default_browser}\" http://local.finishline.com/store"
+
+###############################################################################
+#programs -- make windows bash see them
+###############################################################################
+type -P eclipse &>/dev/null && echo "Found eclipse" 			|| alias eclipse="eclipse.exe"
+type -P npp &>/dev/null     && echo "Found npp (notepad++) "	|| alias npp="notepad++.exe"
+type -P sublime &>/dev/null && echo "Found sublime" 			|| alias sublime="sublimetext.exe"
+type -P textpad &>/dev/null && echo "Found textpad" 			|| alias textpad="TextPad.exe"
+type -P ant &>/dev/null     && echo "Found ANT"     			|| alias ant="${ANT_HOME}ant"
+
+###############################################################################
+#home directories
+###############################################################################
+alias flhome="cd ${finishline_path}"
+alias mediahome="cd ${media_path}"
+alias gitscriptshome="cd ${gitscripts_path}"
+alias deployhome="cd ${deploys_path}"
+alias buildhome="cd ${builds_path}"
+alias storehome="cd ${webappwar}"
+alias imagescriptshome="cd ${imagescripts_path}"
+alias csrhome="cd ${csr_path}"
+alias promoeditorhome="cd ${promo_editor_path}"
+alias naturaldocshome="cd ${naturaldocs_path}"
+
+
+###############################################################################
+#automation of grunt work
+###############################################################################
+alias check-nike-track-club="${gitscripts_path}check-nike-track-club.sh"
+alias createrepositories="source ${gitscripts_path}createRepositories.sh"
+
+
+###############################################################################
+# Server interaction
+###############################################################################
+alias startserver="source ${gitscripts_path}startserver.sh"
+alias stopserver="${JBOSS_HOME}shutdown.sh --shutdown"
+alias taillogs="source ${gitscripts_path}tail_log.sh $1"
+
+
+###############################################################################
+# ANT scripts for front end builds automation
+###############################################################################
+alias min="ant ${ANT_ARGS} min -buildfile ${finishline_path}${myenvironment}.build.xml;"
+alias build="ant build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
+alias cleanbuild="ant ${ANT_ARGS} clean-build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
+alias webapprefresh="ant ${ANT_ARGS} webapprefresh -buildfile ${finishline_path}${myenvironment}.build.xml ;"
+alias webapprefreshminmerge="ant ${ANT_ARGS} webapprefreshminmerge -buildfile ${finishline_path}${myenvironment}.build.xml ;"
+alias promosinit="ant ${ANT_ARGS} initpromos -buildfile ${builds_path}staging-front-end.build.xml ;"
+alias promosliteremerge="ant ${ANT_ARGS} git-checkout-mergey-thing-lite -buildfile ${builds_path}staging-front-end.build.xml ;"
+alias promosremerge="ant ${ANT_ARGS} git-checkout-mergey-thing -buildfile ${builds_path}staging-front-end.build.xml ;"
+alias promospush="ant ${ANT_ARGS} git-push-todays-promos -buildfile ${builds_path}staging-front-end.build.xml ;"
+alias promosimportstouch="ant ${ANT_ARGS} set-mod-dates-of-imports-to-now -buildfile ${builds_path}staging-front-end.build.xml ;"
+alias zipexports="ant ${ANT_ARGS} promos-zip-up-exports -buildfile ${builds_path}staging-front-end.build.xml ;"
+
+alias wipeoutallexports="ant ${ANT_ARGS} all-wipeout-exports -buildfile ${builds_path}all-front-end.build.xml ;"
+alias allsnapbackexportchanges=" \
+	ant ${ANT_ARGS} snap-to-master-and-back	-buildfile ${builds_path}staging-front-end.build.xml ${ANT_ARGS}; \
+	ant ${ANT_ARGS} export-changed-by-day	-buildfile ${builds_path}qa-front-end.build.xml ${ANT_ARGS}; \
+	ant ${ANT_ARGS} export-changed-by-day	-buildfile ${builds_path}dev-front-end.build.xml ${ANT_ARGS};\ 
+"
+alias alluploadexports="ant ${ANT_ARGS} upload-all-exports -buildfile ${builds_path}all-remotes.build.xml ;"
+alias devexportchanges="ant ${ANT_ARGS} export-changed-by-day -buildfile ${builds_path}dev-front-end.build.xml ;"
+alias qaexportchanges="ant ${ANT_ARGS} export-changed-by-day -buildfile ${builds_path}qa-front-end.build.xml ;"
+alias stagingexportchanges="ant ${ANT_ARGS} export-changed-by-day -buildfile ${builds_path}staging-front-end.build.xml ;"
+alias allexportchanges="ant ${ANT_ARGS} export-changes -buildfile ${builds_path}all-remotes.build.xml ;"
+
+
+
+alias cb=__parse_git_branch
+
+

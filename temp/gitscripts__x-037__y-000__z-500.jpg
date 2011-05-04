@@ -1,0 +1,18 @@
+This project attempts to make your life easier.
+
+The basic components are:
+
+bash_profile_config - This file holds all aliases and bash customizations
+environment_config.default - This file holds all default paths for different workspaces/programs/directories
+environment_config.overrides - This file is the one you should change if something in environment_config.default needs changed
+
+These three files are "cat"ed together to become your "bash_profile" file.
+
+
+The rest of the files in this project are little programs that were written to make it easier to use git and to automate certain tasks.
+
+A basic run-down of the most commonly used tasks is listed in aliases.txt
+
+
+
+

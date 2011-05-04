@@ -1,0 +1,62 @@
+programs_root=/usr/bin/
+firefox="${programs_root}"firefox
+chrome="${programs_root}"google-chrome
+chromium="${programs_root}"chromium-browser
+rekonq="${programs_root}"rekonq
+git_install="${programs_root}"git
+default_browser="${rekonq}"
+native_bash_profile_path="${HOME}/.bashrc"
+native_gitscripts_bash_profile_path="${HOME}/.bash_extras/gitscripts_profile"
+
+
+native_bash_profile_path="${HOME}/.bashrc"
+native_bash_profile_extras_path="${HOME}/.bash_extras.d/"
+native_gitscripts_bash_profile_path="${native_bash_profile_extras_path}gitscripts_profile"
+native_gitscripts_bash_motd_path="${native_bash_profile_extras_path}gitscripts_motd"
+
+
+
+myenvironment="workstation-ubuntu"
+
+
+
+
+eclipse_home="${programs_root}"eclipse
+
+
+# Ruby settings
+#RUBY_HOME="/d/Applications/Ruby192/bin/"
+#RUBY_HOME="/d/Applications/Ruby192/bin/"
+#GEM_HOME="/d/Applications/rubygems-1.4.2/bin/"
+#PATH="${PATH}:${RUBY_HOME}:${GEM_HOME}"
+
+
+
+development_root="${HOME}/Development/workspaces/"
+
+
+workspace_path="${development_root}"ubuntu_galileo_workspace/
+project_workspace="${development_root}"ubuntu_galileo_workspace
+
+gitscripts_temp_bash_profile_path="${gitscripts_path}gitscripts_bash_profile"
+
+# Git settings
+GIT_HOME=/usr/lib/git-core/
+GIT_EXEC="${git_install}"
+
+# Java and ANT Settings
+JAVA_DEV_HOME="${HOME}/Development/java_dev/"
+ANT_HOME="/usr/share/ant"
+
+#ANT_LIB="${YUI_COMPRESSOR_HOME}/;/usr/share/ant/lib/"
+ANT_LIB="${YUI_COMPRESSOR_HOME}/"
+
+ANT_OPTS=" -Xms128m -Xmx512m -Duser.language=en -XX:PermSize=128M -XX:MaxPermSize=256M "
+ANT_ARGS=" -lib ${ANT_LIB} -quiet -Dmyenvironment=${myenvironment} -Dproject.workspace=${project_workspace} -Dmainprojectname=${mainprojectname} -Dmediaprojectname=${mediaprojectname} -Dbuildsprojectname=${buildsprojectname} -Dpath.git-exec=${GIT_EXEC} -DANT_HOME=${ANT_HOME}"
+
+
+
+
+JBOSS_HOME="${HOME}/Development/opt/jboss-4.0.5.GA/bin/"
+
+

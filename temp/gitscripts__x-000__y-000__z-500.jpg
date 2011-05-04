@@ -1,0 +1,28 @@
+new ticket_name
+    Creates a new branch named "ticket_name" from master
+
+new ticket_name from some_branch
+    Creates a new branch named "ticket_name" from the "some_branch" branch
+
+checkout some_branch
+    Checks out the branch "some_branch"
+
+commit "blah"
+    Commits with the commit message "blah"
+    Shows a git diff-tree --name-status HEAD (shows you what your current sha is as well as what files were committed)
+
+merge this into that
+    Merges the branch "this" into the branch "that"
+
+delete some_branch
+	Deletes the "some_branch" branch
+
+
+createrepositories [where username useremail]
+	Creates all of the default FinishLine repositories. You can optionally specify a directory to create them under. Otherwise they will be created in a default location. You can also specify your name and your email address. Here are some examples of this alias in use:
+
+	createrepositories
+	createrepositories /d/workspaces/galileo_workspace/
+	createrepositories /d/workspaces/helios_workspace/ "Christopher McCulloh" cmcculloh@gmail.com
+
+	
