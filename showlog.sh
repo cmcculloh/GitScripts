@@ -7,7 +7,7 @@ if [ -n $1 ] && [ "$1" != " " ] && [ "$1" != "" ]
 fi
 
 log1=$(git rev-parse --short $branch)
-log2=$(git rev-parse --short head)
+log2=$(git rev-parse --short HEAD)
 
 echo git diff --name-status $log1..$log2
 echo "Do name-status only diff? y (n) "
