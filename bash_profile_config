@@ -7,9 +7,22 @@
 #[ -z "$PS1" ] && return
 
 
+
+
+# The simplest, and perhaps most useful ANSI escape sequence
+# is bold text:
+# 
+# \033[1m ... \033[0m.
+# 
+# The \033 represents an escape, the "[1" turns on the bold
+# attribute, while the "[0" switches it off.
+# 
+# The "m" terminates each term of the escape sequence.
+STYLE_NORM=$'\033[0;30;39m'
 TEXT_BRIGHT=$'\033[1m'
-TEXT_DIM=$'\033[2m'
 TEXT_NORM=$'\033[0m'
+TEXT_DIM=$'\033[2m'
+
 COL_RED=$'\033[31m'
 COL_GREEN=$'\033[32m'
 COL_VIOLET=$'\033[34m'
@@ -19,6 +32,28 @@ COL_CYAN=$'\033[36m'
 COL_WHITE=$'\033[37m'
 COL_NORM=$'\033[39m'
 
+STYLE_ERROR=$'\033[1;37;41m'
+STYLE_H1=$'\033[1;37;42m'
+STYLE_H2=$'\033[0;37;42m'
+STYLE_OUTPUT=$'\033[0;37;45m'
+
+H1=${STYLE_NORM}${STYLE_H1}
+H2=${STYLE_NORM}${STYLE_H2}
+O=${STYLE_NORM}${STYLE_OUTPUT}
+E=${STYLE_NORM}${STYLE_ERROR}
+X=${STYLE_NORM}
+
+
+echo ${H1}"##########################################"
+echo "         Configuring bash profile         "
+echo "##########################################"
+echo ${H2}"Setting default bash profile vars now..."
+echo ${X}
+echo ${E}"TEST: This should output in such a way that it looks like an error has occored (it is just a test, no error has actually occured) really)."
+echo ${STYLE_NORM}
+echo
+echo
+echo
 
 
 
