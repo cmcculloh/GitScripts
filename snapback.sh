@@ -88,7 +88,7 @@ currentBranch="$(__parse_git_branch)"
 
 NOW=$(date +"%Y-%m-%d")
 
-min
+# min
 
 
 targetpath="${builds_path}build/front-end/exports/staging/code-exports/"

@@ -333,6 +333,9 @@ alias allsnapbackexportchanges=" \
 	ant ${ANT_ARGS} export-changed-by-day	-buildfile ${builds_path}dev-front-end.build.xml ${ANT_ARGS};\ 
 "
 alias alluploadexports="ant ${ANT_ARGS} upload-all-exports -buildfile ${builds_path}all-remotes.build.xml ;"
+alias devuploadexports="ant ${ANT_ARGS} upload-code-and-media-exports-to-remote -buildfile ${builds_path}dev-front-end.build.xml ;"
+alias qauploadexports="ant ${ANT_ARGS} upload-code-and-media-exports-to-remote -buildfile ${builds_path}qa-front-end.build.xml ;"
+alias staginguploadexports="ant ${ANT_ARGS} upload-code-and-media-exports-to-remote -buildfile ${builds_path}staging-front-end.build.xml ;"
 alias devexportchanges="ant ${ANT_ARGS} export-changed-by-day -buildfile ${builds_path}dev-front-end.build.xml ;"
 alias qaexportchanges="ant ${ANT_ARGS} export-changed-by-day -buildfile ${builds_path}qa-front-end.build.xml ;"
 alias stagingexportchanges="ant ${ANT_ARGS} export-changed-by-day -buildfile ${builds_path}staging-front-end.build.xml ;"
