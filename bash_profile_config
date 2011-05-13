@@ -121,7 +121,6 @@ alias aliases="cat ${gitscripts_path}aliases.txt"
 ##basic
 ###############################################################################
 alias addall="git add -A"
-alias g="git"
 alias reset="git reset --hard"
 alias move="git mv"
 alias add="git add"
