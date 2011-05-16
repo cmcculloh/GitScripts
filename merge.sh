@@ -58,6 +58,7 @@ if [ "$3" = "qa" ]
 		echo "abort? (y) n"
 		read abort
 		if [ -z "$secondarycodereviewdone" ] || [ "$secondcodereviewdone" = "y" ]
+			then
 			exit -1
 		fi
 	fi
