@@ -50,7 +50,7 @@ if [ "$3" = "qa" ]
 	echo "Has this ticket undergone secondary code review? y (n)"
 	read secondcodereviewdone
 
-	if [ -z "$secondarycodereviewdone" ] || [ "$secondcodereviewdone" = "n" ]
+	if [ -z "$secondcodereviewdone" ] || [ "$secondcodereviewdone" = "n" ]
 		then
 		echo "Make sure you have a secondary code review done!"
 		echo
