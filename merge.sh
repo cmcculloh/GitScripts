@@ -202,7 +202,7 @@ read YorN
 if [ "$YorN" = "y" ]
 	then
 	remote=$(git remote)
-	git push $remote head
+	git push $remote HEAD
 
 	#offer to delete dev/dev2/qa for them if they push since they may no longer need it
 	if [ "$3" = "dev" ] || [ "$3" = "qa" ] || [ "$3" = "dev2" ]
