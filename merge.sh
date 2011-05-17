@@ -44,6 +44,25 @@ if [ "$3" = "stage" ] || [ "$3" = "master" ]
 	exit -1
 fi
 
+if [ "$3" = "qa" ]
+	then
+	echo 
+	echo "Has this ticket undergone secondary code review? y (n)"
+	read secondcodereviewdone
+
+	if [ -z "$secondcodereviewdone" ] || [ "$secondcodereviewdone" = "n" ]
+		then
+		echo "Make sure you have a secondary code review done!"
+		echo
+		echo
+		echo "abort? (y) n"
+		read abort
+		if [ -z "$secondarycodereviewdone" ] || [ "$secondcodereviewdone" = "y" ]
+			then
+			exit -1
+		fi
+	fi
+fi
 
 
 
