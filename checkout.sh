@@ -3,34 +3,107 @@
 # checks out a git branch
 
 
-TEXT_BRIGHT=$'\033[1m'
-TEXT_DIM=$'\033[2m'
-TEXT_NORM=$'\033[0m'
-COL_RED=$'\033[31m'
-COL_GREEN=$'\033[32m'
-COL_VIOLET=$'\033[34m'
-COL_YELLOW=$'\033[33m'
-COL_MAG=$'\033[35m'
-COL_CYAN=$'\033[36m'
-COL_WHITE=$'\033[37m'
-COL_NORM=$'\033[39m'
 
-
-
-echo "##########################################"
-echo "Checking out branch ${COL_CYAN}$1${COL_NORM}"
-echo "##########################################"
-echo
-echo
 
 echo
 
 if [ -z "$1" ] || [ "$1" = " " ]
 	then
-	git branch
-	echo "${COL_RED}WARNING:${COL_NORM} You must specify a branch to check out."
+
+
+	echo ${H2}"####################################################################################"
+	echo "WARNING: Checkout requires a branch name                                            "
+	echo "####################################################################################"${X}
+
+	echo ${O}"------------------------------------------------------------------------------------"
+	echo "Choose a branch (or just hit enter to abort):"
+	echo "------------------------------------------------------------------------------------"
+	branches=()
+	eval "$(git for-each-ref --shell --format='branches+=(%(refname:short))' refs/heads/)"
+	#eval "$(git for-each-ref --shell --format='branches+=(%(refname:short))' refs/remotes/)"
+	for (( i = 0 ; i < ${#branches[@]} ; i++ ))
+	do
+		if [ $i -le "9" ] ; then
+			index="  "$i
+		elif [ $i -le "99" ] ; then
+			index=" "$i
+		else
+			index=$i
+		fi
+		echo "$index: " ${branches[$i]}
+		# yadda yadda
+	done
+	echo "------------------------------------------------------------------------------------"
+	echo "  R:  View remote branches"
+	echo "------------------------------------------------------------------------------------"${X}
+	echo ${I}"Choose a branch (or just hit enter to abort):"
+	read decision
+	echo ${X}
+	chosenbranchexists=`git branch | grep "${branches[$decision]}"`
+	if [ -z "$decision" ] || [ "$decision" = "" ] ; then
+		echo ${E}"####################################################################################"
+		echo "ABORTING: checkout requires a branch name to continue                               "
+		echo "####################################################################################"
+		echo ${X}
+		exit 0
+	elif [ "$decision" = "r" ] || [ "$decision" = "R" ] ; then
+		echo ${O}"------------------------------------------------------------------------------------"
+		echo "Choose a remote branch (or just hit enter to abort):"
+		echo "------------------------------------------------------------------------------------"			
+		remotebranches=()
+		eval "$(git for-each-ref --shell --format='remotebranches+=(%(refname:short))' refs/remotes/)"
+		for (( i = 0 ; i < ${#remotebranches[@]} ; i++ ))
+		do
+			if [ $i -le "9" ] ; then
+				index="  "$i
+			elif [ $i -le "99" ] ; then
+				index=" "$i
+			else
+				index=$i
+			fi
+			echo "$index: " ${remotebranches[$i]}
+		done
+		echo "------------------------------------------------------------------------------------"${X}
+		echo ${I}"------------------------------------------------------------------------------------"
+		echo "Choose a remote branch (or just hit enter to abort):"
+		echo "------------------------------------------------------------------------------------"			
+		read decision2
+		echo ${X}
+		chosenBranchName2=${remotebranches[$decision2]}
+		chosenBranchName2=${chosenBranchName2/#fl\//}
+		chosenbranchexists2=`git branch -r | grep "${remotebranches[$decision2]}"`
+		if [ -n "$chosenbranchexists2" ] ; then
+			echo ${h2}"You chose: ${COL_CYAN}${chosenBranchName2}${h2}"
+			echo ${X}
+			eval "${gitscripts_path}checkout.sh ${chosenBranchName2}"
+		fi
+	elif [ -n "$chosenbranchexists" ] ; then
+		echo ${h2}"You chose: ${COL_CYAN}${branches[$decision]}${h2}"
+		echo ${X}
+		eval "${gitscripts_path}checkout.sh ${branches[$decision]}"
+
+	else
+		echo ${E}"You chose: ${COL_CYAN}${branches[$decision]}${E}"
+		echo "Not sure what to do, as that does not appear to be a valid branch. Aborting."
+		echo ${X}
+	fi
+		
+
+	echo ${X}
 	exit -1
 fi
+
+
+
+echo ${H1}
+echo "####################################################################################"
+echo "Checking out branch ${COL_CYAN}$1${H1}"
+echo "####################################################################################"
+echo ${X}
+
+echo
+
+
 
 
 branchexists=`git branch | grep "$1"`

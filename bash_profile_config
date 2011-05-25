@@ -18,39 +18,19 @@
 # attribute, while the "[0" switches it off.
 # 
 # The "m" terminates each term of the escape sequence.
-STYLE_NORM=$'\033[0;30;39m'
-TEXT_BRIGHT=$'\033[1m'
-TEXT_NORM=$'\033[0m'
-TEXT_DIM=$'\033[2m'
 
-COL_RED=$'\033[31m'
-COL_GREEN=$'\033[32m'
-COL_VIOLET=$'\033[34m'
-COL_YELLOW=$'\033[33m'
-COL_MAG=$'\033[35m'
-COL_CYAN=$'\033[36m'
-COL_WHITE=$'\033[37m'
-COL_NORM=$'\033[39m'
-
-STYLE_ERROR=$'\033[1;37;41m'
-STYLE_H1=$'\033[1;37;42m'
-STYLE_H2=$'\033[0;37;42m'
-STYLE_OUTPUT=$'\033[0;37;45m'
-
-H1=${STYLE_NORM}${STYLE_H1}
-H2=${STYLE_NORM}${STYLE_H2}
-O=${STYLE_NORM}${STYLE_OUTPUT}
-E=${STYLE_NORM}${STYLE_ERROR}
-X=${STYLE_NORM}
+source ${gitscripts_path}set-bash-colors.sh
 
 
-echo ${H1}"##########################################"
+echo ${H1}"####################################################################################"
 echo "         Configuring bash profile         "
-echo "##########################################"
-echo ${H2}"Setting default bash profile vars now..."
+echo "####################################################################################"
+echo ${H2}
+echo "Setting default bash profile vars now..."
 echo ${X}
-echo ${E}"TEST: This should output in such a way that it looks like an error has occored (it is just a test, no error has actually occured) really)."
-echo ${STYLE_NORM}
+echo ${E}
+echo "TEST: This should output in such a way that it looks like an error has occored (it is just a test, no error has actually occured) really)."
+echo ${X}
 echo
 echo
 echo
@@ -61,25 +41,25 @@ echo
 
 
 
-###############################################################################
+#########################################################################################################################
 #custom __parse_git_branch function
-###############################################################################
+#########################################################################################################################
 function __parse_git_branch {
  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
 }
 
 
-###############################################################################
+#########################################################################################################################
 #bring in the bash completion stuff
-###############################################################################
+#########################################################################################################################
 source ${gitscripts_path}bash_completion
 
 
 
 
-###############################################################################
+#########################################################################################################################
 #bring in the bashmarks stuff
-###############################################################################
+#########################################################################################################################
 #source ${gitscripts_path}bashmarks.sh
 
 # don't put duplicate lines in the history. See bash(1) for more options
@@ -177,9 +157,9 @@ alias aliases="cat ${gitscripts_path}aliases.txt"
 
 
 
-###############################################################################
+#########################################################################################################################
 #custom console
-###############################################################################
+#########################################################################################################################
 #PS1='\[\033]0;$MSYSTEM:\w\007
 #${COL_GREEN}\u@\h${COL_YELLOW} \d \t ${TEXT_BRIGHT}${COL_MAG}$(__git_ps1)
 #${COL_CYAN}\w${COL_NORM}
@@ -195,9 +175,9 @@ $ '
 
 
 
-###############################################################################
+#########################################################################################################################
 #gitscripts
-###############################################################################
+#########################################################################################################################
 alias pullscripts="source ${gitscripts_path}pullscripts.sh"
 alias pushscripts="source ${gitscripts_path}pushscripts.sh"
 alias refresh_bash_profile="source ${gitscripts_path}refresh_bash_profile.sh"
@@ -205,9 +185,9 @@ alias refresh_bash_profile="source ${gitscripts_path}refresh_bash_profile.sh"
 
 
 
-###############################################################################
+#########################################################################################################################
 #automated deploys
-###############################################################################
+#########################################################################################################################
 #not verified to be working right now, commented out just in case...
 #alias prodDeploy="${deploys_path}prodDeploy.sh"
 
@@ -215,9 +195,9 @@ alias refresh_bash_profile="source ${gitscripts_path}refresh_bash_profile.sh"
 
 #vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv#
 #git stuff
-###############################################################################
+#########################################################################################################################
 ##basic
-###############################################################################
+#########################################################################################################################
 alias addall="git add -A"
 
 
@@ -235,10 +215,16 @@ alias status="git status"
 alias fetch="git fetch --all --prune"
 #alias pull="git pull $1 $2"
 
-###############################################################################
+
+
+alias cb=__parse_git_branch
+export cb=$(cb)
+#export cb=$(currentbranch)
+
+#########################################################################################################################
 ##advanced
-###############################################################################
-alias commit="source ${gitscripts_path}commit.sh"
+#########################################################################################################################
+alias commit="${gitscripts_path}commit.sh"
 alias showlog="${gitscripts_path}showlog.sh"
 alias gitdiff="${gitscripts_path}showlog.sh"
 alias rungitdiff="${gitscripts_path}run-gitdiff.sh"
@@ -253,37 +239,37 @@ alias delete="${gitscripts_path}delete.sh"
 alias updatecore="${gitscripts_path}update-core-branches.sh"
 alias clean-branches="${gitscripts_path}clean-branches.sh"
 alias contains="${gitscripts_path}contains.sh"
-alias snap="source ${gitscripts_path}snapback.sh"
-alias exports="source ${gitscripts_path}exportchanges.sh"
+alias snap="${gitscripts_path}snapback.sh"
+alias exports="${gitscripts_path}exportchanges.sh"
 alias gitscripts="${gitscripts_path}gitscripts.sh"
 
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^#
 
 
 
-###############################################################################
+#########################################################################################################################
 #ssh shortcuts
-###############################################################################
+#########################################################################################################################
 alias sshgit="ssh git@10.0.2.160"
 
-###############################################################################
+#########################################################################################################################
 #webpage launches
-###############################################################################
+#########################################################################################################################
 #alias gitwiki="\"${default_browser}\" http://10.0.2.160/wiki/index.php/Git_Commands"
 #alias local="\"${default_browser}\" http://local.finishline.com/store"
 
-###############################################################################
+#########################################################################################################################
 #programs -- make windows bash see them
-###############################################################################
+#########################################################################################################################
 type -P eclipse &>/dev/null && echo "Found eclipse" 			|| alias eclipse="eclipse.exe"
 type -P npp &>/dev/null     && echo "Found npp (notepad++) "	|| alias npp="notepad++.exe"
 type -P sublime &>/dev/null && echo "Found sublime" 			|| alias sublime="sublimetext.exe"
 type -P textpad &>/dev/null && echo "Found textpad" 			|| alias textpad="TextPad.exe"
 type -P ant &>/dev/null     && echo "Found ANT"     			|| alias ant="${ANT_HOME}ant"
 
-###############################################################################
+#########################################################################################################################
 #home directories
-###############################################################################
+#########################################################################################################################
 alias flhome="cd ${finishline_path}"
 alias mediahome="cd ${media_path}"
 alias gitscriptshome="cd ${gitscripts_path}"
@@ -296,24 +282,24 @@ alias promoeditorhome="cd ${promo_editor_path}"
 alias naturaldocshome="cd ${naturaldocs_path}"
 
 
-###############################################################################
+#########################################################################################################################
 #automation of grunt work
-###############################################################################
+#########################################################################################################################
 alias check-nike-track-club="${gitscripts_path}check-nike-track-club.sh"
 alias createrepositories="source ${gitscripts_path}createRepositories.sh"
 
 
-###############################################################################
+#########################################################################################################################
 # Server interaction
-###############################################################################
+#########################################################################################################################
 alias startserver="source ${gitscripts_path}startserver.sh"
 alias stopserver="${JBOSS_HOME}shutdown.sh --shutdown"
 alias taillogs="source ${gitscripts_path}tail_log.sh"
 
 
-###############################################################################
+#########################################################################################################################
 # ANT scripts for front end builds automation
-###############################################################################
+#########################################################################################################################
 alias min="ant ${ANT_ARGS} min -buildfile ${finishline_path}${myenvironment}.build.xml;"
 alias build="ant build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
 alias cleanbuild="ant ${ANT_ARGS} clean-build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
@@ -341,8 +327,5 @@ alias qaexportchanges="ant ${ANT_ARGS} export-changed-by-day -buildfile ${builds
 alias stagingexportchanges="ant ${ANT_ARGS} export-changed-by-day -buildfile ${builds_path}staging-front-end.build.xml ;"
 alias allexportchanges="ant ${ANT_ARGS} export-changes -buildfile ${builds_path}all-remotes.build.xml ;"
 
-
-
-alias cb=__parse_git_branch
 
 

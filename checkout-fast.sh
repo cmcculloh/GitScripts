@@ -3,34 +3,29 @@
 # checks out a git branch
 
 
-TEXT_BRIGHT=$'\033[1m'
-TEXT_DIM=$'\033[2m'
-TEXT_NORM=$'\033[0m'
-COL_RED=$'\033[31m'
-COL_GREEN=$'\033[32m'
-COL_VIOLET=$'\033[34m'
-COL_YELLOW=$'\033[33m'
-COL_MAG=$'\033[35m'
-COL_CYAN=$'\033[36m'
-COL_WHITE=$'\033[37m'
-COL_NORM=$'\033[39m'
-
-
-
-echo "##########################################"
-echo "Checking out branch ${COL_CYAN}$1${COL_NORM}"
-echo "##########################################"
-echo
-echo
-
-echo
-
 if [ -z "$1" ] || [ "$1" = " " ]
 	then
-	git branch
-	echo "${COL_RED}WARNING:${COL_NORM} You must specify a branch to check out."
+
+	echo ${E}"####################################################################################"
+	echo "Error: checkout expects a branch name, but none was provided.                           "
+	echo "####################################################################################"${X}
+	echo ${O}"------------------------------------------------------------------------------------"
+	echo "Your current branch names:"
+	echo "------------------------------------------------------------------------------------"
+	git branch --no-color
+	echo "------------------------------------------------------------------------------------"${X}
 	exit -1
 fi
+
+
+
+echo ${H1}
+echo "####################################################################################"
+echo "Checking out branch ${COL_CYAN}$1${H1}"
+echo "####################################################################################"
+echo ${X}
+
+echo
 
 
 branchexists=`git branch | grep "$1"`
@@ -165,3 +160,4 @@ else
 	echo
 	echo
 fi
+

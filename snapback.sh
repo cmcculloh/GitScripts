@@ -3,29 +3,17 @@
 # merges one git branch into another
 
 
-TEXT_BRIGHT=$'\033[1m'
-TEXT_DIM=$'\033[2m'
-TEXT_NORM=$'\033[0m'
-COL_RED=$'\033[31m'
-COL_GREEN=$'\033[32m'
-COL_VIOLET=$'\033[34m'
-COL_YELLOW=$'\033[33m'
-COL_MAG=$'\033[35m'
-COL_CYAN=$'\033[36m'
-COL_WHITE=$'\033[37m'
-COL_NORM=$'\033[39m'
+startingBranch="${cb}"
 
-function __parse_git_branch {
-  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
-}
 
-currentBranch="$(__parse_git_branch)"
 
-echo "##########################################"
-echo "Shoot from ${COL_CYAN}${currentBranch}${COL_NORM} into ${COL_CYAN}master${COL_NORM} and back"
-echo "##########################################"
-echo
-echo
+
+echo ${H1}
+echo "####################################################################################"
+echo "SNAPBACK: shoot from ${COL_CYAN}${startingBranch}${H1} to ${COL_CYAN}master${H1}, take a snapshot, export diffs    "
+echo "####################################################################################"
+echo ${X}
+
 
 
 
@@ -38,14 +26,25 @@ result=$?
 
 if [ $result -lt 0 ]
 	then
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	echo ${E}"####################################################################################"
+	echo "Error: could not check out ${COL_CYAN}master${COL_NORM}, aborting snap attempt      "
+	echo "####################################################################################"${X}
+	echo ${O}
+	echo "------------------------------------------------------------------------------------"
+	echo "# git status"
 	git status
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	echo "git checkout master failed"
+	echo ${X}
 	exit -1
 elif [ $result -eq 255 ]
 	then
-	echo "Checking out the branch ${COL_CYAN}master${COL_NORM} was unsuccessful, aborting snap attempt..."
+	echo ${E}"####################################################################################"
+	echo "Error: could not check out ${COL_CYAN}master${COL_NORM}, aborting snap attempt      "
+	echo "####################################################################################"${X}
+	echo ${O}
+	echo "------------------------------------------------------------------------------------"
+	echo "# git status"
+	git status
+	echo ${X}
 	exit -1
 fi
 
@@ -60,30 +59,36 @@ find "$touchpath" -type f -print0 | xargs -0 touch  -m -d '1974-01-05 13:31:00'
 echo
 echo
 
-echo "Now we will check out the ${currentBranch} branch"
-${gitscripts_path}checkout-fast.sh ${currentBranch}
+echo "Now we will check out the ${startingBranch} branch"
+${gitscripts_path}checkout-fast.sh ${startingBranch}
 result=$?
 
 if [ $result -lt 0 ]
 	then
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	echo ${E}"####################################################################################"
+	echo "Error: could not check out ${COL_CYAN}${startingBranch}${COL_NORM}, aborting snap attempt "
+	echo "####################################################################################"${X}
+	echo ${O}
+	echo "------------------------------------------------------------------------------------"
+	echo "# git status"
 	git status
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	echo "checkout of branch ${currentBranch} failed"
+	echo ${X}
 	exit -1
 elif [ $result -eq 255 ]
 	then
-	echo "Checking out the branch ${currentBranch} was unsuccessful, aborting snap attempt..."
+	echo ${E}"####################################################################################"
+	echo "Error: could not check out ${COL_CYAN}${startingBranch}${COL_NORM}, aborting snap attempt "
+	echo "####################################################################################"${X}
+	echo ${O}
+	echo "------------------------------------------------------------------------------------"
+	echo "# git status"
+	git status
+	echo ${X}
 	exit -1
 fi
 
 
 
-function __parse_git_branch {
-  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
-}
-
-currentBranch="$(__parse_git_branch)"
 
 
 NOW=$(date +"%Y-%m-%d")
@@ -98,7 +103,7 @@ echo "Going to wipeout export files in  ${COL_YELLOW}${target_path}${COL_NORM}"
 rm -f -r "${targetpath}"
 
 
-echo "Going to export files that are different in ${COL_CYAN}${currentBranch}${COL_NORM} from ${COL_CYAN}master${COL_NORM}"
+echo "Going to export files that are different in ${COL_CYAN}${startingBranch}${COL_NORM} from ${COL_CYAN}master${COL_NORM}"
 echo "...to ${COL_YELLOW}${targetpath}${COL_NORM}"
 
 ${gitscripts_path}cpafter.sh -f -a $NOW -s "${touchpath}" -t "${targetpath}"
@@ -124,18 +129,19 @@ rm -f -r "${targetpathdev}assets/"
 
 cd "${targetpath}"
 pwd
-ls -la
+ls -RC
 
 
 
 cd "${targetpath}assets/"
 pwd
-ls -la
+ls -RC
 
 
 cd "${targetpath}global/promos/"
 pwd
-ls -la
+ls -RC
+
 
 
 #tar  cvf "${zippath}$NOW.tar"  "${targetpath}"
@@ -144,10 +150,59 @@ ls -la
 
 
 
-cd "${finishline_path}"
+cd ${finishline_path}
 pwd
 
+
+
+echo ${O}
+echo "------------------------------------------------------------------------------------"
+echo "# git status"
 git status
+echo ${X}
+
+
+
+
+
+echo ${O}
+echo "------------------------------------------------------------------------------------"
+echo "# git status"
+git status
+echo ${X}
+
+
+
+echo ${I}"####################################################################################"
+echo "Upload to dev, qa, and staging? ${COL_CYAN}(y)${I} n "
+echo "####################################################################################"${X}
+read YorN
+if [ "$YorN" = "y" ] || [ "$YorN" = "Y" ] || [ "$YorN" = "" ]
+	then
+	echo ""
+	echo "builds_path; // " ${builds_path}
+	echo ""
+	echo ${O}"------------------------------------------------------------------------------------"
+	echo "Uplading..."
+	echo "------------------------------------------------------------------------------------"
+	ant ${ANT_ARGS} upload-all-exports -buildfile ${builds_path}"all-remotes.build.xml" ;
+	echo "------------------------------------------------------------------------------------"${X}
+fi
+
+
+echo ${I}"####################################################################################"
+echo "Zip code and media exports for handoff? ${COL_CYAN}(y)${I} n "
+echo "####################################################################################"${X}
+read YorN
+if [ "$YorN" = "y" ] || [ "$YorN" = "Y" ] || [ "$YorN" = "" ]
+	then
+	echo ${O}"------------------------------------------------------------------------------------"
+	echo "Zipping exports now..."
+	echo "------------------------------------------------------------------------------------"
+	ant ${ANT_ARGS} promos-zip-up-exports -buildfile ${builds_path}"staging-front-end.build.xml" ;
+	echo "------------------------------------------------------------------------------------"${X}
+fi
+
 
 
 

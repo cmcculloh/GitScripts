@@ -17,21 +17,21 @@
 
 
 #workspace specific
-[ -n "$buildsprojectname" ] || buildsprojectname="builds"
-[ -n "$mainprojectname" ] || mainprojectname="finishline"
-[ -n "$mediaprojectname" ] || mediaprojectname="finishline_media"
-[ -n "$development_root" ] || development_root="/d/workspaces/"
-[ -n "$workspace_path" ] || workspace_path="${development_root}helios_workspace/"
-[ -n "$project_workspace" ] || project_workspace="${development_root}helios_workspace"
-[ -n "$media_path" ] || media_path="${workspace_path}${mediaprojectname}/"
-[ -n "$finishline_path" ] || finishline_path="${workspace_path}${mainprojectname}/"
-[ -n "$gitscripts_path" ] || gitscripts_path="${workspace_path}gitscripts/"
-[ -n "$deploys_path" ] || deploys_path="${workspace_path}deploys/"
-[ -n "$builds_path" ] || builds_path="${workspace_path}${buildsprojectname}/"
-[ -n "$imagescripts_path" ] || imagescripts_path="${workspace_path}image_scripts/"
-[ -n "$csr_path" ] || csr_path="${workspace_path}finishline_csr/"
-[ -n "$promo_editor_path" ] || promo_editor_path="${workspace_path}promo_editor/"
-[ -n "$naturaldocs_path" ] || naturaldocs_path="${workspace_path}naturaldocs/"
+[ -n "$buildsprojectname" ] || export buildsprojectname="builds"
+[ -n "$mainprojectname" ] || export mainprojectname="finishline"
+[ -n "$mediaprojectname" ] || export mediaprojectname="finishline_media"
+[ -n "$development_root" ] || export development_root="/d/workspaces/"
+[ -n "$workspace_path" ] || export workspace_path="${development_root}helios_workspace/"
+[ -n "$project_workspace" ] || export project_workspace="${development_root}helios_workspace"
+[ -n "$media_path" ] || export media_path="${workspace_path}${mediaprojectname}/"
+[ -n "$finishline_path" ] || export finishline_path="${workspace_path}${mainprojectname}/"
+[ -n "$gitscripts_path" ] || export gitscripts_path="${workspace_path}gitscripts/"
+[ -n "$deploys_path" ] || export deploys_path="${workspace_path}deploys/"
+[ -n "$builds_path" ] || export builds_path="${workspace_path}${buildsprojectname}/"
+[ -n "$imagescripts_path" ] || export imagescripts_path="${workspace_path}image_scripts/"
+[ -n "$csr_path" ] || export csr_path="${workspace_path}finishline_csr/"
+[ -n "$promo_editor_path" ] || export promo_editor_path="${workspace_path}promo_editor/"
+[ -n "$naturaldocs_path" ] || export naturaldocs_path="${workspace_path}naturaldocs/"
 
 
 # Git settings
@@ -44,22 +44,22 @@
 [ -n "$myenvironment" ] || myenvironment="workstation-windows"
 
 
-[ -n "$ANT_LIB" ] || ANT_LIB="${YUI_COMPRESSOR_HOME}/"
+[ -n "$ANT_LIB" ] || export ANT_LIB="${YUI_COMPRESSOR_HOME}/"
 
 
 # Java and ANT Settings
 [ -n "$JAVA_DEV_HOME" ] || JAVA_DEV_HOME="/d/java_dev/"
 [ -n "$JDK_VERSION" ] || JDK_VERSION="jdk1.5.0_14"
 [ -n "$JAVA_HOME" ] || JAVA_HOME="${JAVA_DEV_HOME}jdk/${JDK_VERSION}/"
-[ -n "$ANT_HOME" ] || ANT_HOME="${JAVA_DEV_HOME}apache-ant-1.8.1"
-[ -n "$ANT_CONTRIB_HOME" ] || ANT_CONTRIB_HOME="${JAVA_DEV_HOME}ant-contrib/"
-[ -n "$YUI_COMPRESSOR_HOME" ] || YUI_COMPRESSOR_HOME="${JAVA_DEV_HOME}yuicompressor-2.4.2/build"
+[ -n "$ANT_HOME" ] || export ANT_HOME="${JAVA_DEV_HOME}apache-ant-1.8.1"
+[ -n "$ANT_CONTRIB_HOME" ] || export ANT_CONTRIB_HOME="${JAVA_DEV_HOME}ant-contrib/"
+[ -n "$YUI_COMPRESSOR_HOME" ] || export YUI_COMPRESSOR_HOME="${JAVA_DEV_HOME}yuicompressor-2.4.2/build"
 
 
 
 
-[ -n "$ANT_OPTS" ] || ANT_OPTS=" -Xms128m -Xmx512m -Duser.language=en -XX:PermSize=128M -XX:MaxPermSize=256M "
-[ -n "$ANT_ARGS" ] || ANT_ARGS=" -lib ${ANT_LIB} -quiet -Dmyenvironment=${myenvironment} -Dproject.workspace=${project_workspace} -Dmainprojectname=${mainprojectname} -Dmediaprojectname=${mediaprojectname} -Dbuildsprojectname=${buildsprojectname} -Dpath.git-exec=${GIT_EXEC} -DANT_HOME=${ANT_HOME}"
+[ -n "$ANT_OPTS" ] || export ANT_OPTS=" -Xms128m -Xmx512m -Duser.language=en -XX:PermSize=128M -XX:MaxPermSize=256M "
+[ -n "$ANT_ARGS" ] || export ANT_ARGS=" -lib ${ANT_LIB} -quiet -Dmyenvironment=${myenvironment} -Dproject.workspace=${project_workspace} -Dmainprojectname=${mainprojectname} -Dmediaprojectname=${mediaprojectname} -Dbuildsprojectname=${buildsprojectname} -Dpath.git-exec=${GIT_EXEC} -DANT_HOME=${ANT_HOME}"
 
 
 
@@ -82,5 +82,7 @@ export CLASSPATH="${CLASSPATH}"
 export ANT_LIB="${ANT_LIB}"
 export ANT_ARGS="${ANT_ARGS}"
 export ANT_OPTS="${ANT_OPTS}"
+export builds_path=${builds_path}
+export finishline_path=${finishline_path}
 
 
