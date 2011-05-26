@@ -218,7 +218,7 @@ alias fetch="git fetch --all --prune"
 
 
 alias cb=__parse_git_branch
-export cb=$(cb)
+export cbranch=$(cb)
 #export cb=$(currentbranch)
 
 #########################################################################################################################

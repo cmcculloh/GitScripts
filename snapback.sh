@@ -3,7 +3,17 @@
 # merges one git branch into another
 
 
-startingBranch="${cb}"
+
+
+#########################################################################################################################
+#custom __parse_git_branch function
+#########################################################################################################################
+function __parse_git_branch {
+ git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+}
+
+
+startingBranch="$(__parse_git_branch)"
 
 
 
