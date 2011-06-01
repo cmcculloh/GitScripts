@@ -1,0 +1,162 @@
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+TEXT_BRIGHT=$'\033[1m'
+TEXT_DIM=$'\033[2m'
+TEXT_NORM=$'\033[0m'
+COL_RED=$'\033[31m'
+COL_GREEN=$'\033[32m'
+COL_VIOLET=$'\033[34m'
+COL_YELLOW=$'\033[33m'
+COL_MAG=$'\033[35m'
+COL_CYAN=$'\033[36m'
+COL_WHITE=$'\033[37m'
+COL_NORM=$'\033[39m'
+
+
+###############################################################################
+#custom console
+###############################################################################
+PS1='\[\033]0;$MSYSTEM:\w\007
+${COL_GREEN}\u@\h${COL_YELLOW} \d \t ${TEXT_BRIGHT}${COL_MAG}$(__git_ps1)
+${COL_CYAN}\w${COL_NORM}
+${TEXT_NORM}$ '
+
+
+
+
+###############################################################################
+#custom __parse_git_branch function
+###############################################################################
+function __parse_git_branch {
+  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+}
+
+
+###############################################################################
+#bring in the bash completion stuff
+###############################################################################
+source ${gitscripts_path}bash_completion
+
+
+
+
+###############################################################################
+# This sets up "bookmarks" for your directories.
+# When in a directory, type "s <name>" to store the current path as a bookmark with that name.
+# To move to a bookmark, type "g <name>". Tab completion also works!
+# To list all bookmarks, type "l".
+#
+# Credit to: Karthick from http://www.huyng.com/archives/quick-bash-tip-directory-bookmarks/492/
+###############################################################################
+function s {
+cat ~/.sdirs | grep -v "export DIR_$1=" > ~/.sdirs1
+mv ~/.sdirs1 ~/.sdirs
+echo "export DIR_$1=\"$PWD\"" >> ~/.sdirs
+}
+function l {
+source ~/.sdirs
+env | grep "^DIR_" | cut -c5- | grep "^.*="
+}
+# enable custom tab completion
+shopt -s progcomp
+# jump to bookmark
+function g {
+source ~/.sdirs
+cd "$(eval $(echo echo $(echo \$DIR_$1)))"
+}
+# list bookmarks without dirname
+function _l {
+source ~/.sdirs
+env | grep "^DIR_" | cut -c5- | grep "^.*=" | cut -f1 -d "="
+}
+# completion command for g
+function _gcomp {
+local curw
+COMPREPLY=()
+curw=${COMP_WORDS[COMP_CWORD]}
+COMPREPLY=($(compgen -W '`_l`' -- $curw))
+return 0
+}
+# bind completion command for g to _gcomp
+complete -F _gcomp g
+# Usage: g [TAB]
+
+
+
+alias test="echo this is a test: ${gitscripts_path}"
+
+###############################################################################
+#gitscripts
+###############################################################################
+alias pullscripts="source ${gitscripts_path}pullscripts.sh"
+alias pushscripts="source ${gitscripts_path}pushscripts.sh"
+alias refresh_bash_profile="source ${gitscripts_path}refresh_bash_profile.sh"
+
+###############################################################################
+#shell convenience
+###############################################################################
+alias ll="ls -l"
+alias lla="ls -la"
+alias cd..="cd .."
+alias cls="clear"
+alias aliases="cat ${gitscripts_path}aliases.txt"
+
+
+
+#vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv#
+#git stuff
+###############################################################################
+##basic
+###############################################################################
+alias reset="git reset --hard"
+alias move="git mv"
+alias add="git add"
+#alias push="git push $1 $2"
+alias branch="git branch"
+alias status="git status"
+alias fetch="git fetch --all --prune"
+#alias pull="git pull $1 $2"
+
+###############################################################################
+##advanced
+###############################################################################
+alias commit="source ${gitscripts_path}commit.sh"
+alias showlog="${gitscripts_path}showlog.sh"
+alias gitdiff="${gitscripts_path}showlog.sh"
+alias rungitdiff="${gitscripts_path}run-gitdiff.sh"
+alias gitdifftool="${gitscripts_path}gitdifftool.sh"
+alias checkout="${gitscripts_path}checkout.sh"
+alias fastcheckout="${gitscripts_path}checkout-fast.sh"
+alias merge="${gitscripts_path}merge.sh"
+alias mergemaster="${gitscripts_path}mergemaster.sh"
+alias mergemasterinto="${gitscripts_path}mergemaster.sh"
+alias new="${gitscripts_path}new.sh"
+alias delete="${gitscripts_path}delete.sh"
+alias updatecore="${gitscripts_path}update-core-branches.sh"
+alias clean-branches="${gitscripts_path}clean-branches.sh"
+alias contains="${gitscripts_path}contains.sh"
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^#
+
+
+
+###############################################################################
+#programs
+###############################################################################
+alias eclipse="eclipse.exe"
+alias npp="notepad++.exe"
+alias sublime="sublimetext.exe"
+alias textpad="TextPad.exe"
+alias ant="${ANT_HOME}ant"
+
+###############################################################################
+#home directories
+###############################################################################
+alias gitscriptshome="cd ${gitscripts_path}"
+
+
+
+alias cb=__parse_git_branch
+
+
