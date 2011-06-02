@@ -119,8 +119,15 @@ git config --global color.status auto
 git config --global color.branch auto
 git config --global color.diff auto
 git config --global color.ui auto
-git config --global core.autocrlf true
-git config --global core.safecrlf true
+
+echo "Configure for windows? (y) n"
+read configure
+if [ -n "$configure" ] || [ "$configure" = "y" ]
+	then
+	git config --global core.autocrlf true
+	git config --global core.safecrlf true
+fi
+
 echo "set global git config options"
 
 if [ -n "$2" ] && [ "$2" != " " ] && [ "$2" != "" ]
