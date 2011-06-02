@@ -2,7 +2,8 @@ This project attempts to make your life easier.
 
 The basic components are:
 
-bash_profile_config - This file holds all aliases and bash customizations
+bash_profile_config - This file holds all default aliases and bash customizations
+bash_profile_config.overrides - This is an ignored file you can create to hold your personal bash aliases and customizations
 environment_config.default - This file is basically a template for environment_config.overrides
 environment_config.overrides - copy environment_config.default and rename it to environment_config.overrides. Uncomment everything and customize it in this file.
 
