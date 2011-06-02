@@ -3,8 +3,8 @@ This project attempts to make your life easier.
 The basic components are:
 
 bash_profile_config - This file holds all aliases and bash customizations
-environment_config.default - This file holds all default paths for different workspaces/programs/directories
-environment_config.overrides - This file is the one you should change if something in environment_config.default needs changed
+environment_config.default - This file is basically a template for environment_config.overrides
+environment_config.overrides - copy environment_config.default and rename it to environment_config.overrides. Uncomment everything and customize it in this file.
 
 These three files are "cat"ed together to become your "bash_profile" file.
 
@@ -19,10 +19,11 @@ The very first time you configure this project, you will need to:
 
 1. cp environment_config.default environment_config.overrides
 2a. Open the newly created environment_config.overrides
-2b. Delete all of the lines that you are not overriding
-2c. Change all of the lines you need changes
-3. Run the following command from inside gitscriptshome directory:
+2b. Uncomment all of the variables
+2c. Change all of the lines that need changes
+3. Run the following commands from inside gitscriptshome directory:
 
+source environment_config.overrides
 source refresh_bash_profile.sh
 
 
