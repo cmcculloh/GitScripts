@@ -1,1 +1,1 @@
-${gitscripts_path}merge.sh master into $1
+source ${gitscripts_path}merge.sh master into $1

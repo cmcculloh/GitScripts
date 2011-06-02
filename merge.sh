@@ -25,17 +25,17 @@ echo "##########################################"
 echo
 echo
 
-branchprotected_nomergefrom=`grep "$1" ${gitscripts_path}protected_branches_nomergefrom`
+branchprotected_nomergefrom=`grep "$1" ${gitscripts_path}../protected_branches_nomergefrom`
 if [ -n "$branchprotected_nomergefrom" ]
 	then
 	echo
 	echo "${COL_RED}WARNING: merging ${COL_YELLOW}from${COL_RED} ${COL_CYAN}$1${COL_RED} not allowed. You may only merge ${COL_YELLOW}INTO ${COL_CYAN}$1${COL_NORM}."
 	echo
 	echo
-	exit -1
+	return -1
 fi
 
-branchprotected_nomergeto=`grep "$1" ${gitscripts_path}protected_branches_nomergeto`
+branchprotected_nomergeto=`grep "$1" ${gitscripts_path}../protected_branches_nomergeto`
 if [ -n "$branchprotected_nomergeto" ]
 	then
 	echo
@@ -43,7 +43,7 @@ if [ -n "$branchprotected_nomergeto" ]
 	echo "${COL_RED}You may only merge ${COL_YELLOW}FROM${COL_RED} ${COL_CYAN}$3${COL_NORM}.${COL_NORM}"
 	echo
 	echo
-	exit -1
+	return -1
 fi
 
 
@@ -54,7 +54,7 @@ if [ $? -lt 0 ]
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 	git status
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	exit -1
+	return -1
 fi
 
 echo This tells your local git about all changes on fl remote
@@ -67,7 +67,7 @@ if [ $? -lt 0 ]
 	git status
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 	echo "git fetch --all --prune failed"
-	exit -1
+	return -1
 fi
 
 echo
@@ -83,11 +83,11 @@ if [ $result -lt 0 ]
 	git status
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 	echo "checkout of branch $1 failed"
-	exit -1
+	return -1
 elif [ $result -eq 255 ]
 	then
 	echo "Checking out the branch $1 was unsuccessful, aborting merge attempt..."
-	exit -1
+	return -1
 fi
 
 echo
@@ -103,11 +103,11 @@ if [ $result -lt 0 ]
 	git status
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 	echo "git checkout $3 failed"
-	exit -1
+	return -1
 elif [ $result -eq 255 ]
 	then
 	echo "Checking out the branch $3 was unsuccessful, aborting merge attempt..."
-	exit -1
+	return -1
 fi
 
 echo
@@ -122,7 +122,7 @@ if [ $? -lt 0 ]
 	git status
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 	echo "git merge $1 failed"
-	exit -1
+	return -1
 fi
 
 statusofmerge=`git status | grep "Unmerged paths"`
@@ -145,7 +145,7 @@ if [[ "$statusofmerge" == "# Unmerged paths:" ]];
 
 				git mergetool
 			else
-				exit -1
+				return -1
 		fi
 fi
 
@@ -170,7 +170,7 @@ if [[ "$statusofmerge" == "# Changes to be committed:" ]];
 				source ${gitscripts_path}commit.sh "$commitmessage" -a
 
 			else
-				exit -1
+				return -1
 		fi
 fi
 
@@ -232,7 +232,7 @@ if [ $? -lt 0 ]
 	git status
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 	echo "git push ${COL_CYAN}$remote $3${COL_NORM} failed"
-	exit -1
+	return -1
 fi
 
 

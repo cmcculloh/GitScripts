@@ -29,7 +29,7 @@ if [ -z "$1" ] || [ "$1" = " " ]
 	then
 	git branch
 	echo "${COL_RED}WARNING:${COL_NORM} You must specify a branch to check out."
-	exit -1
+	return -1
 fi
 
 #make sure branch exists
@@ -38,7 +38,7 @@ if [ -n "$branchexists" ]
 	then
 
 	#make sure the branch is not a protected branch (meaning, one you should always delete to protect against forced updates)
-	branchprotected=`grep "$1" ${gitscripts_path}protected_branches`
+	branchprotected=`grep "$1" ${gitscripts_path}../protected_branches_nomergefrom ${gitscripts_path}../protected_branches_nomergeto`
 	if [ -n "$branchprotected" ]
 		then
 		echo "delete your local copy of $1,"
@@ -65,7 +65,7 @@ if [ -n "$branchexists" ]
 						read continueanyways
 						if [ -z "$continueanyways" ] || [ "$continueanyways" = "n" ]
 							then
-							exit -1
+							return -1
 						fi
 					else
 						echo "force delete succeeded!"
@@ -75,7 +75,7 @@ if [ -n "$branchexists" ]
 					read continueanyways
 					if [ -z "$continueanyways" ] || [ "$continueanyways" = "n" ]
 						then
-						exit -1
+						return -1
 					fi
 				fi
 			else
@@ -117,7 +117,7 @@ if [ -z "$checkbranch" ]
 		then
 		echo "Aborting checkout."
 		echo
-		exit -1
+		return -1
 	elif [ -z "$decision" ] || [ $decision -eq 7 ]
 		then
 		echo continuing...
@@ -180,7 +180,7 @@ if [ -z "$checkbranch" ]
 		echo
 		echo
 	else
-		exit 1
+		return 1
 	fi
 fi
 
@@ -200,7 +200,7 @@ echo
 if [ -n "$trycheckout" ]
 	then
 	echo "Checkout failed!"
-	exit -1
+	return -1
 fi
 
 
