@@ -1,30 +1,14 @@
-#program specific
-programs_root=/c/Program\ Files/
-firefox="${programs_root}"Mozilla\ Firefox/firefox.exe
+# Copy this file and rename it environment_config.overrides, then uncomment the following and set it to the settings your environment requires
+# programs_root=/c/Program\ Files\ \(x86\)/
+# git_dir="Git/"
+# git_install="${programs_root}${git_dir}"etc/
+# GIT_HOME="${git_dir}bin/"
+# GIT_EXEC="${GIT_HOME}git.exe"
+
+
+
+
+
+
 chrome="${HOME}\AppData\Local\Google\Chrome\Application\chrome.exe"
-git_install=/c/Git/etc/
 default_browser="${chrome}"
-native_bash_profile_path="${git_install}bash_profile"
-eclipse_home="/c/eclipse/"
-sublime_home="${programs_root}Sublime Text/"
-notepad_pp_home="${programs_root}Notepad++/"
-textpad_home="${programs_root}TextPad 5/"
-natural_docs_home="/d/java_dev/NaturalDocs-1.5"
-
-
-#workspace specific
-development_root="/d/workspaces/"
-workspace_path="${development_root}helios_workspace/"
-project_workspace="${development_root}helios_workspace"
-media_path="${workspace_path}${mediaprojectname}/"
-gitscripts_path="/c/Projects/freelance/gitscripts/"
-
-
-# Git settings
-GIT_HOME="/c/Git/bin/"
-GIT_EXEC="${GIT_HOME}git.exe"
-
-
-
-export PATH="${PATH}:${sublime_home}:${notepad_pp_home}:${eclipse_home}:${textpad_home}:${gitscripts_path}:${natural_docs_home}"
-export CLASSPATH="${CLASSPATH}"
