@@ -7,6 +7,9 @@
 # GIT_EXEC="${GIT_HOME}git.exe"
 
 
+# This needs to point to wherever you installed gitscripts
+# gitscripts_path=${drive_root}Projects/tools/gitscripts/
+
 
 
 
