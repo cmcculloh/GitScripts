@@ -1,5 +1,6 @@
 # Copy this file and rename it environment_config.overrides, then uncomment the following and set it to the settings your environment requires
-# programs_root=/c/Program\ Files\ \(x86\)/
+# drive_root=/c/
+# programs_root=${drive_root}Program\ Files/
 # git_dir="${programs_root}Git/"
 # git_install="${git_dir}"etc/
 # GIT_HOME="${git_dir}bin/"
