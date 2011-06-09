@@ -136,7 +136,7 @@ alias mergemasterinto="source ${gitscripts_path}mergemaster.sh"
 alias new="${gitscripts_path}new.sh"
 alias delete="${gitscripts_path}delete.sh"
 alias updatecore="${gitscripts_path}update-core-branches.sh"
-alias clean-branches="${gitscripts_path}clean-branches.sh"
+alias clean-branches="source ${gitscripts_path}clean-branches.sh"
 alias contains="${gitscripts_path}contains.sh"
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^#
 
