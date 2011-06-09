@@ -83,6 +83,7 @@ return 0
 complete -F _gcomp g
 # Usage: g [TAB]
 
+alias cb=__parse_git_branch
 
 
 alias test="echo this is a test: ${gitscripts_path}"
@@ -117,7 +118,7 @@ alias add="git add"
 alias branch="git branch"
 alias status="git status"
 alias fetch="git fetch --all --prune"
-#alias pull="git pull $1 $2"
+alias pull="source ${gitscripts_path}pull.sh"
 
 ###############################################################################
 ##advanced
@@ -157,6 +158,5 @@ alias gitscriptshome="cd ${gitscripts_path}"
 
 
 
-alias cb=__parse_git_branch
 
 
