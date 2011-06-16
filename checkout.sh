@@ -72,6 +72,15 @@ if [ -z "$1" ] || [ "$1" = " " ]
 		chosenBranchName2=${remotebranches[$decision2]}
 		chosenBranchName2=${chosenBranchName2/#fl\//}
 		chosenbranchexists2=`git branch -r | grep "${remotebranches[$decision2]}"`
+
+		if [ -z "$decision2" ] || [ "$decision2" = "" ] ; then
+			echo ${E}"####################################################################################"
+			echo "ABORTING: checkout requires a branch name to continue                               "
+			echo "####################################################################################"
+			echo ${X}
+			exit 0
+		fi
+
 		if [ -n "$chosenbranchexists2" ] ; then
 			echo ${h2}"You chose: ${COL_CYAN}${chosenBranchName2}${h2}"
 			echo ${X}

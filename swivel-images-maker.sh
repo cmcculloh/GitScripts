@@ -1,5 +1,7 @@
 givenflag=""
 
+origDirectory=$(pwd)
+
 if [ -n $1 ] && [ "$1" != " " ] && [ "$1" != "" ]
 	then
 	givenflag=$1
@@ -90,7 +92,7 @@ do
 	new_file="$IMAGEBASENAME""__x-""$XindexPadded""__y-""$Yindex""__z-""$Zindex.jpg"
 	cp $file "$TEMPFILEDUMP/$new_file"
 	# gm convert -draw 'text 200,200 "'$Xindex'"' -pointsize 56 -fill "#000000" "$TEMPFILEDUMP/$new_file" "$TEMPFILEDUMP/$new_file" 
-	gm convert "$TEMPFILEDUMP/$new_file" "$TEMPFILEDUMP/$new_file"
+	gm convert -thumbnail 800x533 "$TEMPFILEDUMP/$new_file" "$TEMPFILEDUMP/$new_file"
  	Xindex=$(($Xindex+1))
 done
 lastImage="$TEMPFILEDUMP/$new_file"
@@ -127,5 +129,13 @@ echo "images.height=$lastImageHeight" >> $new_properties_file
 echo "" >> $new_properties_file
 
 
+cd $WORKINGDIR
+mkdir "$WORKINGDIR/z-500"
+mkdir "$WORKINGDIR/z-500/y-000"
+cd "$TEMPFILEDUMP"
+yes | cp -r  $TEMPFILEDUMP/* "$WORKINGDIR/z-500/y-000"
+
+
+cd $origDirectory
 
 
