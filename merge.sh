@@ -26,6 +26,7 @@ echo
 echo
 
 branchprotected_nomergefrom=`grep "$1" ${gitscripts_path}../protected_branches_nomergefrom`
+echo "branchprotected_nomergefrom: ${branchprotected_nomergefrom}"
 if [ -n "$branchprotected_nomergefrom" ]
 	then
 	echo
@@ -35,7 +36,8 @@ if [ -n "$branchprotected_nomergefrom" ]
 	return -1
 fi
 
-branchprotected_nomergeto=`grep "$1" ${gitscripts_path}../protected_branches_nomergeto`
+branchprotected_nomergeto=`grep "$3" ${gitscripts_path}../protected_branches_nomergeto`
+echo "branchprotected_nomergeto: ${branchprotected_nomergeto}"
 if [ -n "$branchprotected_nomergeto" ]
 	then
 	echo
@@ -113,15 +115,15 @@ fi
 echo
 echo
 echo This merges from $1 into $3
-echo git merge $1
-git merge $1
+echo git merge --no-ff $1
+git merge --no-ff $1
 
 if [ $? -lt 0 ]
 	then
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 	git status
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	echo "git merge $1 failed"
+	echo "git merge --no-ff $1 failed"
 	return -1
 fi
 
