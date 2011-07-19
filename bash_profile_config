@@ -242,6 +242,7 @@ alias contains="${gitscripts_path}contains.sh"
 alias snap="${gitscripts_path}snapback.sh"
 alias exports="${gitscripts_path}exportchanges.sh"
 alias gitscripts="${gitscripts_path}gitscripts.sh"
+alias copyit="${gitscripts_path}copy_it.sh"
 
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^#
 

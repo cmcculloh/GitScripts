@@ -43,7 +43,9 @@
 #project specific
 [ -n "$webappwar" ] || webappwar="${finishline_path}modules/base/j2ee-apps/base/web-app.war/"
 [ -n "$myenvironment" ] || myenvironment="workstation-windows"
-
+[ -n "$promosdir" ] || promosdir="${webappwar}global/promos/"
+[ -n "$buildsImportsPath" ] || buildsImportsPath="${buildsprom}global/promos/"
+[ -n "$mediaLandingPagesPath" ] || export mediaLandingPagesPath="${workspace_path}${mediaprojectname}/media/landing-pages/"
 
 [ -n "$ANT_LIB" ] || export ANT_LIB="${YUI_COMPRESSOR_HOME}/"
 
