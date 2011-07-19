@@ -1,11 +1,18 @@
 #!/bin/bash
 
 
+function __parse_git_branch {
+ git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+}
+
+
+startingBranch="$(__parse_git_branch)"
+
 
 
 echo ${H1}
 echo "####################################################################################"
-echo "Committing changes to branch ${COL_CYAN}${cb}${COL_NORM}"
+echo "Committing changes to branch ${COL_CYAN}${startingBranch}${COL_NORM}"
 echo "####################################################################################"
 echo ${X}
 echo ""
@@ -24,8 +31,8 @@ echo ${X}
 echo ""
 echo ${O}
 echo "------------------------------------------------------------------------------------"
-echo "# git commit -q -m \"$(__git_ps1) $1\" $2"
-git commit -q -m "$(__git_ps1) $1" $2
+echo "# git commit -q -m \"$(__parse_git_branch) $1\" $2"
+git commit -q -m "$(__parse_git_branch) $1" $2
 echo "------------------------------------------------------------------------------------"
 echo ${X}
 
