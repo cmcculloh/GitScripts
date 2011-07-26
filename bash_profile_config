@@ -60,7 +60,7 @@ source ${gitscripts_path}bash_completion
 #########################################################################################################################
 #bring in the bashmarks stuff
 #########################################################################################################################
-#source ${gitscripts_path}bashmarks.sh
+source ${gitscripts_path}bashmarks.sh
 
 # don't put duplicate lines in the history. See bash(1) for more options
 # ... or force ignoredups and ignorespace
