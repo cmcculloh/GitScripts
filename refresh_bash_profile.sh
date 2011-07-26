@@ -21,10 +21,12 @@ rm "${gitscripts_temp_bash_profile_path}"
 
 echo "Going to source: ${native_bash_profile_path}"
 
+source ${gitscripts_path}set-bash-colors.sh
+source ${gitscripts_path}bashmarks.sh
+
+
 source "${native_bash_profile_path}"
 
-${gitscripts_path}set-bash-colors.sh
-${gitscripts_path}bashmarks.sh
 
 #source "${native_gitscripts_bash_profile_path}"
 
