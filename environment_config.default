@@ -3,7 +3,7 @@
 [ -n "$programs_root" ] || programs_root=/c/Program\ Files\ \(x86\)/
 [ -n "$firefox" ] || firefox="${programs_root}"Mozilla\ Firefox/firefox.exe
 [ -n "$chrome" ] || chrome="${HOME}\AppData\Local\Google\Chrome\Application\chrome.exe"
-[ -n "$git_install" ] || ="${programs_root}"Git/etc/
+[ -n "$git_install" ] || git_install=/d/Applications/Git/etc/
 [ -n "$default_browser" ] || default_browser="${chrome}"
 [ -n "$native_bash_profile_path" ] || native_bash_profile_path="${git_install}bash_profile"
 [ -n "$native_bash_profile_extras_path" ] || native_bash_profile_extras_path="~/.bash_extras/"

@@ -24,8 +24,8 @@
 
 # USAGE: 
 # s bookmarkname - saves the curr dir as bookmarkname
-# g bookmarkname - jumps to the that bookmark
-# g b[TAB] - tab completion is available
+# go bookmarkname - jumps to the that bookmark
+# go b[TAB] - tab completion is available
 # p bookmarkname - prints the bookmark
 # p b[TAB] - tab completion is available
 # d bookmarkname - deletes the bookmark
@@ -50,7 +50,7 @@ function s {
 }
 
 # jump to bookmark
-function g {
+function go {
     check_help $1
     source $SDIRS
     cd "$(eval $(echo echo $(echo \$DIR_$1)))"
