@@ -31,8 +31,8 @@ echo ${X}
 echo ""
 echo ${O}
 echo "------------------------------------------------------------------------------------"
-echo "# git commit -q -m \"$(__parse_git_branch) $1\" $2"
-git commit -q -m "$(__parse_git_branch) $1" $2
+echo "# git commit -q -m \"($(__parse_git_branch)) $1\" $2"
+git commit -q -m "($(__parse_git_branch)) $1" $2
 echo "------------------------------------------------------------------------------------"
 echo ${X}
 
