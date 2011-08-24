@@ -131,15 +131,15 @@ fi
 echo
 echo
 echo This merges from $1 into $3
-echo git merge $1
-git merge  --no-ff $1
+echo git merge --no-ff $1
+git merge --no-ff $1
 
 if [ $? -lt 0 ]
 	then
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 	git status
 	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	echo "git merge $1 failed"
+	echo "git merge --no-ff $1 failed"
 	exit -1
 fi
 

@@ -262,9 +262,46 @@ alias sshgit="ssh git@10.0.2.160"
 #########################################################################################################################
 #programs -- make windows bash see them
 #########################################################################################################################
-type -P eclipse &>/dev/null && echo "Found eclipse" 			|| alias eclipse="eclipse.exe"
+
+type eclipse &>/dev/null && { 
+	echo "eclipse alias found."; echo "No need to re-set."; 
+} || { 
+	echo "eclipse alias was NOT found."; 
+	echo "Will check to see if command exists  and if not, we will set an alias."; 
+
+	type -P eclipse &>/dev/null && { 
+		echo "eclipse command found, no need to re-set."; 
+	} || { 
+		echo "eclipse command was NOT found."; echo "We need to set it."; 
+		alias eclipse="eclipse.exe";
+	}
+
+}
+#type -P eclipse &>/dev/null && echo "Found eclipse" 			|| alias eclipse="eclipse.exe"
+
 type -P npp &>/dev/null     && echo "Found npp (notepad++) "	|| alias npp="notepad++.exe"
-type -P sublime &>/dev/null && echo "Found sublime" 			|| alias sublime="sublimetext.exe"
+
+
+
+type sublime &>/dev/null && { 
+	echo "sublime alias found."; echo "No need to re-set."; 
+} || { 
+	echo "sublime alias was NOT found."; 
+	echo "Will check to see if command exists  and if not, we will set an alias."; 
+
+	type -P sublime &>/dev/null && { 
+		echo "sublime command found, no need to re-set."; 
+	} || { 
+		echo "sublime command was NOT found."; echo "We need to set it."; 
+		alias sublime="sublimetext.exe";
+	}
+
+}
+
+
+#type -P sublime &>/dev/null && echo "Found sublime command, not setting again." 			|| type sublime &>/dev/null && echo "Found sublime alias, not setting again." 			|| alias sublime="sublimetext.exe"
+
+
 type -P textpad &>/dev/null && echo "Found textpad" 			|| alias textpad="TextPad.exe"
 type -P ant &>/dev/null     && echo "Found ANT"     			|| alias ant="${ANT_HOME}ant"
 
@@ -303,7 +340,8 @@ alias modifygitexcludes="gedit .git/info/exclude"
 # ANT scripts for front end builds automation
 #########################################################################################################################
 alias min="ant ${ANT_ARGS} min -buildfile ${finishline_path}${myenvironment}.build.xml;"
-alias build="ant build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
+alias mincss="ant ${ANT_ARGS} merge-css-files -buildfile ${finishline_path}${myenvironment}.build.xml;"
+alias build="ant ${ANT_ARGS} build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
 alias cleanbuild="ant ${ANT_ARGS} clean-build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
 alias webapprefresh="ant ${ANT_ARGS} webapprefresh -buildfile ${finishline_path}${myenvironment}.build.xml ;"
 alias webapprefreshminmerge="ant ${ANT_ARGS} webapprefreshminmerge -buildfile ${finishline_path}${myenvironment}.build.xml ;"
