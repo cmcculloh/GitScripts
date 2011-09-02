@@ -115,7 +115,6 @@ alias reset="git reset --hard"
 alias move="git mv"
 alias add="git add"
 #alias push="git push $1 $2"
-alias branch="git branch"
 alias status="git status"
 alias fetch="git fetch --all --prune"
 alias pull="source ${gitscripts_path}pull.sh"
@@ -123,6 +122,7 @@ alias pull="source ${gitscripts_path}pull.sh"
 ###############################################################################
 ##advanced
 ###############################################################################
+alias branch="source ${gitscripts_path}grepbranch.sh"
 alias commit="source ${gitscripts_path}commit.sh"
 alias showlog="${gitscripts_path}showlog.sh"
 alias gitdiff="${gitscripts_path}showlog.sh"
