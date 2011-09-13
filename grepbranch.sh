@@ -2,7 +2,7 @@
 
 
 git branch -a | grep "$1"
-res=$(git branch -a | grep "$1" | head -1 | sed 's/fl\///')
+res=$(git branch -a | grep -i "$1" | head -1 | sed 's/fl\///')
 
 echo""
 echo "  Checkout ${res}? y (n)"
