@@ -86,27 +86,4 @@ fi
 
 branchprotected=`grep "$1" ${gitscripts_path}protected_branches`
 
-#if it is a protected branch, don't allow them to delete the remote
-if [ -n branchprotected ]
-	then
-
-	onremote=`git branch -r | grep "$1"`
-	if [ -n "$onremote" ]
-		then
-		echo
-		echo "delete remote copy of branch? y (n)"
-		read deleteremote
-
-		if [ -n "$deleteremote" ] && [ "$deleteremote" = "y" ]
-			then
-			echo
-			echo "deleting remote!"
-			echo
-			remote=$(git remote)
-			echo "git push $remote :$1"
-			git push $remote :$1
-		fi
-	fi
-fi
-
 exit 1
