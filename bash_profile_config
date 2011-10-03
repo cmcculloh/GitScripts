@@ -342,7 +342,7 @@ alias modifygitexcludes="gedit .git/info/exclude"
 #########################################################################################################################
 alias min="ant ${ANT_ARGS} min -buildfile ${finishline_path}${myenvironment}.build.xml;"
 alias mincss="ant ${ANT_ARGS} merge-css-files -buildfile ${finishline_path}${myenvironment}.build.xml;"
-alias build="ant ${ANT_ARGS} build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
+alias normalbuild="ant ${ANT_ARGS} build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
 alias cleanbuild="ant ${ANT_ARGS} clean-build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
 alias webapprefresh="ant ${ANT_ARGS} webapprefresh -buildfile ${finishline_path}${myenvironment}.build.xml ;"
 alias webapprefreshminmerge="ant ${ANT_ARGS} webapprefreshminmerge -buildfile ${finishline_path}${myenvironment}.build.xml ;"
@@ -352,6 +352,7 @@ alias promosremerge="ant ${ANT_ARGS} git-checkout-mergey-thing -buildfile ${buil
 alias promospush="ant ${ANT_ARGS} git-push-todays-promos -buildfile ${builds_path}staging-front-end.build.xml ;"
 alias promosimportstouch="ant ${ANT_ARGS} set-mod-dates-of-imports-to-now -buildfile ${builds_path}staging-front-end.build.xml ;"
 alias zipexports="ant ${ANT_ARGS} promos-zip-up-exports -buildfile ${builds_path}staging-front-end.build.xml ;"
+alias snapshot="ant ${ANT_ARGS} take-changed-files-snapshot -buildfile ${builds_path}staging-front-end.build.xml ;"
 
 alias wipeoutallexports="ant ${ANT_ARGS} all-wipeout-exports -buildfile ${builds_path}all-front-end.build.xml ;"
 alias allsnapbackexportchanges=" \
@@ -367,6 +368,13 @@ alias devexportchanges="ant ${ANT_ARGS} export-changed-by-day -buildfile ${build
 alias qaexportchanges="ant ${ANT_ARGS} export-changed-by-day -buildfile ${builds_path}qa-front-end.build.xml ;"
 alias stagingexportchanges="ant ${ANT_ARGS} export-changed-by-day -buildfile ${builds_path}staging-front-end.build.xml ;"
 alias allexportchanges="ant ${ANT_ARGS} export-changes -buildfile ${builds_path}all-remotes.build.xml ;"
+
+
+###############################################################################
+# 360 Image Scripts
+###############################################################################
+alias swivelimagemaker="${gitscripts_path}swivel-images-maker.sh"
+alias makesprite="${gitscripts_path}swivel-images-maker.sh"
 
 
 
