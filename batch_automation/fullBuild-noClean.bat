@@ -8,7 +8,7 @@ set PATH=%JAVA_HOME%\bin;%ANT_HOME%\bin;%ANT_CONTRIB_HOME%;%PATH%
 set CLASSPATH=%JAVA_HOME%\lib;%ANT_CONTRIB_HOME%\ant-contrib-1.0b3.jar;%YUI_COMPRESSOR_HOME%\build\YUIAnt.jar;%YUI_COMPRESSOR_HOME%\build\yuicompressor-2.4.2.jar
 
 rem set ANT_OPTS=-Xmx512M
-set ANT_OPTS=-Xms128m -Xmx512m -Duser.language=en -XX:PermSize=128M -XX:MaxPermSize=256M
+set ANT_OPTS=-Xms64m -Xmx512m -Duser.language=en -XX:PermSize=128M -XX:MaxPermSize=256M
 rem set ANT_ARGS=-logger org.apache.tools.ant.listener.AnsiColorLogger
 
 ant build-deploy-all-withclean -f %PROJECT_HOME%\build.xml

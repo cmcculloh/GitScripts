@@ -3,13 +3,13 @@
 [ -n "$programs_root" ] || programs_root=/c/Program\ Files\ \(x86\)/
 [ -n "$firefox" ] || firefox="${programs_root}"Mozilla\ Firefox/firefox.exe
 [ -n "$chrome" ] || chrome="${HOME}\AppData\Local\Google\Chrome\Application\chrome.exe"
-[ -n "$git_install" ] || git_install=/d/Applications/Git/etc/
+[ -n "$git_install" ] || git_install=/c/Program\ Files\ \(x86\)/Git/etc/
 [ -n "$default_browser" ] || default_browser="${chrome}"
-[ -n "$native_bash_profile_path" ] || native_bash_profile_path="${git_install}bash_profile"
+[ -n "$native_bash_profile_path" ] || native_bash_profile_path=/c/Program\ Files\ \(x86\)/Git/etc/bash_profile
 [ -n "$native_bash_profile_extras_path" ] || native_bash_profile_extras_path="~/.bash_extras/"
 [ -n "$native_gitscripts_bash_profile_path" ] || native_gitscripts_bash_profile_path="${native_bash_profile_extras_path}gitscripts_profile"
 [ -n "$native_gitscripts_bash_motd_path" ] || native_gitscripts_bash_motd_path="${native_bash_profile_extras_path}motd"
-[ -n "$eclipse_home" ] || eclipse_home="/c/eclipse/"
+[ -n "$eclipse_home" ] || eclipse_home="/d/Applications/eclipse/"
 [ -n "$sublime_home" ] || sublime_home="${programs_root}Sublime Text/"
 [ -n "$notepad_pp_home" ] || notepad_pp_home="${programs_root}Notepad++/"
 [ -n "$textpad_home" ] || textpad_home="${programs_root}TextPad 5/"
@@ -61,8 +61,8 @@
 
 
 
-[ -n "$ANT_OPTS" ] || export ANT_OPTS=" -Xms128m -Xmx512m -Duser.language=en -XX:PermSize=128M -XX:MaxPermSize=256M "
-[ -n "$ANT_ARGS" ] || export ANT_ARGS=" -lib ${ANT_LIB} -quiet -Dmyenvironment=${myenvironment} -Dproject.workspace=${project_workspace} -Dmainprojectname=${mainprojectname} -Dmediaprojectname=${mediaprojectname} -Dbuildsprojectname=${buildsprojectname} -Dpath.git-exec=${GIT_EXEC} -DANT_HOME=${ANT_HOME}"
+[ -n "$ANT_OPTS" ] || export ANT_OPTS="-Xms64m -Xmx512m -Duser.language=en -XX:PermSize=128M -XX:MaxPermSize=256M "
+[ -n "$ANT_ARGS" ] || export ANT_ARGS="-lib ${ANT_LIB} -quiet -Dmyenvironment=${myenvironment} -Dproject.workspace=${project_workspace} -Dmainprojectname=${mainprojectname} -Dmediaprojectname=${mediaprojectname} -Dbuildsprojectname=${buildsprojectname} -Dpath.git-exec=${GIT_EXEC} -DANT_HOME=${ANT_HOME}"
 
 
 

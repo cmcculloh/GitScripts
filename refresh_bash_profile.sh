@@ -14,7 +14,7 @@ cat "${gitscripts_path}environment_config.overrides" "${gitscripts_path}line_bre
 #touch "${native_gitscripts_bash_profile_path}"
 #touch "${native_gitscripts_bash_motd_path}"
 
-cp "${gitscripts_temp_bash_profile_path}" "${native_gitscripts_bash_profile_path}"
+cp "${gitscripts_temp_bash_profile_path}" "${native_bash_profile_path}"
 #cp "${gitscripts_path}motd" "${native_gitscripts_bash_motd_path}"
 
 rm "${gitscripts_temp_bash_profile_path}"
@@ -30,6 +30,26 @@ source "${native_bash_profile_path}"
 
 #source "${native_gitscripts_bash_profile_path}"
 
+## ADDED BY SMOLA ##
+
+	#prevent Heap error
+export ANT_OPTS="-Xms64m -Xmx512m -Duser.language=en -XX:PermSize=128M -XX:MaxPermSize=256M "
+
+	#prevent saving of *.orig files during git diff
+git config --global mergetool.keepBackup false
+
+	#some vars
+export workspacedir="/d/workspaces/helios_workspace"
+export myscriptsdir="${workspacedir}/myscripts"
+
+	#added scripts
+unalias branch; alias branch="${gitscripts_path}grepbranch.sh"
+alias finddocs="${myscriptsdir}/finddocrefs.sh"
+alias getdirs="${myscriptsdir}/getdirs.sh"
+alias promosetup="${myscriptsdir}/promosetup.sh"
+alias fixbranch="${myscriptsdir}/renamerawbranch.sh"
+alias mastermerges="${myscriptsdir}/checkoutbranches.sh"
+alias cleanbranches="${myscriptsdir}/cleanbranches.sh"
 
 echo ""
 echo "Refreshed your bash profile."

@@ -1,4 +1,4 @@
-export STYLE_NORM=$'\033[0;30;39m'
+export STYLE_NORM=$'\033[0;20;39m'
 export TEXT_BRIGHT=$'\033[1m'
 export TEXT_NORM=$'\033[0m'
 export TEXT_DIM=$'\033[2m'
@@ -12,8 +12,8 @@ export COL_WHITE=$'\033[37m'
 export COL_NORM=$'\033[39m'
 export STYLE_ERROR=$'\033[1;37;41m'
 export STYLE_H1=$'\033[1;37;42m'
-export STYLE_H2=$'\033[1;37;43m'
-export STYLE_OUTPUT=$'\033[0;37;45m'
+export STYLE_H2=$'\033[1;44m'
+export STYLE_OUTPUT=$'\033[1;34m'
 export STYLE_INPUT=$'\033[1;37;44m'
 
 export H1=${STYLE_NORM}${STYLE_H1}
