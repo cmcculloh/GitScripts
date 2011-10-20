@@ -11,10 +11,10 @@
 [ -n "$native_gitscripts_bash_motd_path" ] || native_gitscripts_bash_motd_path="${native_bash_profile_extras_path}motd"
 [ -n "$eclipse_home" ] || eclipse_home="/c/eclipse/"
 [ -n "$sublime_home" ] || sublime_home="${programs_root}Sublime Text/"
-[ -n "$notepad_pp_home" ] || notepad_pp_home="${programs_root}Notepad++/"
+[ -n "$notepad_pp_home" ] || notepad_pp_home="/home/csc/Downloads/navicat100_lite_en/wine/bin/notepad"
 [ -n "$textpad_home" ] || textpad_home="${programs_root}TextPad 5/"
 [ -n "$natural_docs_home" ] || natural_docs_home="/d/java_dev/NaturalDocs-1.5"
-
+notepad_pp_home="/home/csc/Downloads/navicat100_lite_en/wine/bin/notepad"
 
 #workspace specific
 [ -n "$buildsprojectname" ] || buildsprojectname="builds"

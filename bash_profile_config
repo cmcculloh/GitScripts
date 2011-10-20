@@ -164,12 +164,28 @@ alias aliases="cat ${gitscripts_path}aliases.txt"
 #${COL_GREEN}\u@\h${COL_YELLOW} \d \t ${TEXT_BRIGHT}${COL_MAG}$(__git_ps1)
 #${COL_CYAN}\w${COL_NORM}
 #${TEXT_NORM}$ '
+
+
+
+GIT_PS1_SHOWDIRTYSTATE=true
+GIT_PS1_SHOWUNTRACKEDFILES=true
+###############################################################################
+#custom __parse_git_branch function
+###############################################################################
+function __parse_git_branch {
+  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+}
 PS1='\[\033]0;$MSYSTEM:\w\007
 ${COL_VIOLET}\d \t${COL_NORM}
 ${COL_CYAN}\w${COL_NORM}${COL_GREEN}$(__git_ps1)${COL_NORM}
 ${COL_YELLOW}$(__parse_git_branch)${COL_NORM}
 ${COL_RED}\u@\h${COL_NORM}
 $ '
+
+
+
+
+
 
 
 
