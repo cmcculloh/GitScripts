@@ -5,6 +5,7 @@ git_dir=/usr/local/git/
 git_install=~/
 GIT_HOME="${git_dir}bin/"
 GIT_EXEC="${GIT_HOME}git"
+bash_profile_prefix=.
 
 
 # This needs to point to wherever you installed gitscripts
