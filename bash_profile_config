@@ -247,6 +247,8 @@ alias gitdiff="${gitscripts_path}showlog.sh"
 alias rungitdiff="${gitscripts_path}run-gitdiff.sh"
 alias gitdifftool="${gitscripts_path}gitdifftool.sh"
 alias checkout="${gitscripts_path}checkout.sh"
+alias both="${gitscripts_path}checkout-both.sh"
+alias gotoqa="${gitscripts_path}checkout-qa.sh"
 alias fastcheckout="${gitscripts_path}checkout-fast.sh"
 alias merge="${gitscripts_path}merge.sh"
 alias mergemaster="${gitscripts_path}mergemaster.sh"
@@ -348,6 +350,7 @@ alias createrepositories="source ${gitscripts_path}createRepositories.sh"
 # Server interaction
 #########################################################################################################################
 alias startserver="source ${gitscripts_path}startserver.sh"
+alias qstartserver="source ${gitscripts_path}startserver.sh > /dev/null &"
 alias stopserver="${JBOSS_HOME}shutdown.sh --shutdown"
 alias taillogs="source ${gitscripts_path}tail_log.sh"
 alias modifygitexcludes="gedit .git/info/exclude"
@@ -394,3 +397,4 @@ alias makesprite="${gitscripts_path}swivel-images-maker.sh"
 
 
 
+# -lib /home/csc/Development/java_dev/yuicompressor-2.4.2/build/ -quiet -Dmyenvironment=workstation-ubuntu -Dproject.workspace=/home/csc/Development/workspaces/ubuntu_galileo_workspace -Dmainprojectname=finishline -Dmediaprojectname=finishline_media -Dbuildsprojectname=builds -Dpath.git-exec=/usr/bin/git -Dgitscriptsprojectname=gitscripts -DANT_HOME=/usr/share/ant
