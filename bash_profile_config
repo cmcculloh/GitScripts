@@ -7,8 +7,10 @@
 #[ -z "$PS1" ] && return
 
 
-
-
+##/*
+# @author chris corwin
+# @// this would not get spit out
+# @desc
 # The simplest, and perhaps most useful ANSI escape sequence
 # is bold text:
 # 
@@ -18,6 +20,7 @@
 # attribute, while the "[0" switches it off.
 # 
 # The "m" terminates each term of the escape sequence.
+##*/
 
 source ${gitscripts_path}set-bash-colors.sh
 
@@ -29,7 +32,7 @@ echo ${H2}
 echo "Setting default bash profile vars now..."
 echo ${X}
 echo ${E}
-echo "TEST: This should output in such a way that it looks like an error has occored (it is just a test, no error has actually occured) really)."
+echo "TEST: This should output in such a way that it looks like an error has occurred (it is just a test, no error has actually occurred really). Your mom's butt."
 echo ${X}
 echo
 echo

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "preparing to refresh your bash profile"
 
 touch "${gitscripts_path}bash_profile_config.overrides"
