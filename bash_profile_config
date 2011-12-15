@@ -1,3 +1,23 @@
+## /*
+#	@description
+#	This is the first file that is read when the terminal is opened. It defines
+#	core functions and utility features used by all other scripts. In addition,
+#	all aliases are defined in this file.
+#	description@
+#
+#	@notes
+#	- Do not re-define values in this file for personal use. Instead, use the
+#	bash_profile_config.overrides file.
+#	notes@
+#
+#	@dependencies
+#	gitscripts/environment_config.default
+#	gitscripts/set-bash-colors.sh
+#	gitscripts/bash_completion
+#	gitscripts/bashmarks.sh
+#	dependencies@
+## */
+
 #if [ -f /etc/bashrc ]; then
 #	. /etc/bashrc
 #fi
@@ -40,11 +60,15 @@ echo
 
 
 #########################################################################################################################
-#custom __parse_git_branch function
+#custom functions
 #########################################################################################################################
-function __parse_git_branch {
- git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
-}
+source ${gitscripts_path}gsfunctions.sh
+
+## functions defined in the script above cannot be referenced within other scripts unless somehow "exported" so
+## we assign variables that source the script as a convenience
+export loadfuncs="source ${gitscripts_path}gsfunctions.sh"
+export cbranch=$(cb)
+alias cb=__parse_git_branch
 
 
 #########################################################################################################################
@@ -198,26 +222,18 @@ alias refresh_bash_profile="source ${gitscripts_path}refresh_bash_profile.sh"
 #########################################################################################################################
 alias addall="git add -A"
 
-
-
 # this is interfering with bashmarks
 #alias g="git"
-
 
 alias reset="git reset --hard"
 alias move="git mv"
 alias add="git add"
 #alias push="git push $1 $2"
-#alias branch="${gitscripts_path}grepbranch.sh"
+alias branch="git branch"
 alias status="git status"
 alias fetch="git fetch --all --prune"
 #alias pull="git pull $1 $2"
 
-
-
-alias cb=__parse_git_branch
-export cbranch=$(cb)
-#export cb=$(currentbranch)
 
 #########################################################################################################################
 ##advanced
@@ -242,14 +258,12 @@ alias exports="${gitscripts_path}exportchanges.sh"
 alias gitscripts="${gitscripts_path}gitscripts.sh"
 alias copyit="${gitscripts_path}copy_it.sh"
 
-#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^#
-
-
 
 #########################################################################################################################
 #ssh shortcuts
 #########################################################################################################################
 alias sshgit="ssh git@10.0.2.160"
+
 
 #########################################################################################################################
 #webpage launches
@@ -257,14 +271,16 @@ alias sshgit="ssh git@10.0.2.160"
 #alias gitwiki="\"${default_browser}\" http://10.0.2.160/wiki/index.php/Git_Commands"
 #alias local="\"${default_browser}\" http://local.finishline.com/store"
 
+
 #########################################################################################################################
 #programs -- make windows bash see them
 #########################################################################################################################
 type -P eclipse &>/dev/null && echo "Found eclipse" 			|| alias eclipse="eclipse.exe"
 type -P npp &>/dev/null     && echo "Found npp (notepad++) "	|| alias npp="notepad++.exe"
-type -P sublime &>/dev/null && echo "Found sublime" 			|| alias sublime="sublimetext.exe"
+type -P sublime &>/dev/null && echo "Found sublime" 			|| alias sublime="sublime_text.exe"
 type -P textpad &>/dev/null && echo "Found textpad" 			|| alias textpad="TextPad.exe"
 type -P ant &>/dev/null     && echo "Found ANT"     			|| alias ant="${ANT_HOME}ant"
+
 
 #########################################################################################################################
 #home directories
@@ -310,7 +326,6 @@ alias promosremerge="ant ${ANT_ARGS} git-checkout-mergey-thing -buildfile ${buil
 alias promospush="ant ${ANT_ARGS} git-push-todays-promos -buildfile ${builds_path}staging-front-end.build.xml ;"
 alias promosimportstouch="ant ${ANT_ARGS} set-mod-dates-of-imports-to-now -buildfile ${builds_path}staging-front-end.build.xml ;"
 alias zipexports="ant ${ANT_ARGS} promos-zip-up-exports -buildfile ${builds_path}staging-front-end.build.xml ;"
-
 alias wipeoutallexports="ant ${ANT_ARGS} all-wipeout-exports -buildfile ${builds_path}all-front-end.build.xml ;"
 alias allsnapbackexportchanges=" \
 	ant ${ANT_ARGS} snap-to-master-and-back	-buildfile ${builds_path}staging-front-end.build.xml ${ANT_ARGS}; \
@@ -327,4 +342,12 @@ alias stagingexportchanges="ant ${ANT_ARGS} export-changed-by-day -buildfile ${b
 alias allexportchanges="ant ${ANT_ARGS} export-changes -buildfile ${builds_path}all-remotes.build.xml ;"
 
 
+#########################################################################################################################
+# Utilities and Miscellaneous
+#########################################################################################################################
+alias branch="${gitscripts_path}grepbranch.sh"
+alias fixbranch="${gitscripts_path}fixbranch.sh"
+alias phone="${gitscripts_path}phone.sh"
 
+alias syncmywork="/d/workspaces/helios_workspace/myscripts/syncmyapp.sh"
+alias synctree="/d/workspaces/helios_workspace/myscripts/synctree.sh"

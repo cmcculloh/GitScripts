@@ -47,9 +47,11 @@ unalias branch; alias branch="${gitscripts_path}grepbranch.sh"
 alias finddocs="${myscriptsdir}/finddocrefs.sh"
 alias getdirs="${myscriptsdir}/getdirs.sh"
 alias promosetup="${myscriptsdir}/promosetup.sh"
-alias fixbranch="${myscriptsdir}/renamerawbranch.sh"
+
 alias mastermerges="${myscriptsdir}/checkoutbranches.sh"
 alias cleanbranches="${myscriptsdir}/cleanbranches.sh"
+alias switchenv="${myscriptsdir}/switchenvironment.sh"
+alias whichenv="${myscriptsdir}/whichenvironment.sh"
 
 echo ""
 echo "Refreshed your bash profile."

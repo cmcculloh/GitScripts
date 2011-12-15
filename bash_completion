@@ -1,4 +1,4 @@
-#enabe custom tab completion
+#enable custom tab completion
 shopt -s progcomp
 
 _tab_branches()

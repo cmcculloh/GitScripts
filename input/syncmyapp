@@ -1,0 +1,15 @@
+# only lines beginning with a hyphen will be read into the synctree command!
+# this file is called by syncmyapp.sh
+
+# web-app.war files/directories
+#-a storelocator
+#-a assets/scripts/conditional
+#-a assets/scripts/library
+-a checkout/fragments/cart_errors.jsp
+-a checkout/fragments/cart2_body.jsp
+
+
+# media.war files/directories
+#-m storelocator
+
+# promos
