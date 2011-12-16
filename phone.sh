@@ -20,49 +20,52 @@
 #	examples@
 #
 #	@dependencies
+#	gitscripts/gsfunctions.sh
 #	gitscripts/awkscripts/phone.awk
 #	gitscripts/input/_phoneList
 #	dependencies@
 ## */
+$loadfuncs
 
 
 hcolor=${COL_MAG}
 
-case $# in
+function update_list {
+	echo
+}
 
+
+case $# in
 	1)
 		#search string given. default processing.
-	;;
+		if [ "$1" == "-u" ]; then
+			update_list
+		else
+			query="$1"
+		fi
+		;;
 
 	2)
 		#parse option(s)
 		case $1 in
-			"-i")
-				if [ ! -f $2 ]; then
-					echo ${hcolor}"phone: "${X}"Given file path appears to be invalid. "${hcolor}"phone"${X}". Use \""${hcolor}"gsman phone\""${X}" for usage instructions."
-					exit 1
-				fi
-
-				#make sure the function is available if a word doc is given
-				filex=$(echo $2 | grep '')
-				okstrings=$(which strings)
-
-			;;
+			"-u")
+				update_list
+				query="$2"
+				;;
 
 			*)
-				echo ${hcolor}"phone: "${X}"Invalid option specified. Use \""${hcolor}"gsman phone\""${X}" for usage instructions."
+				__bad_usage phone "Invalid option specified."
 				exit 1
-	;;
+				;;
+		esac
+		;;
 
 	*)
-		echo ${hcolor}"phone: "${X}"Invalid usage. Use \""${hcolor}"gsman phone\""${X}" for usage instructions."
+		__bad_usage phone
 		exit 1
-	;;
-
+		;;
 esac
-if [ $# ]; then
 
-fi
 
 list="${inputdir}_phoneList"
-cat $list | awk -v name="$1" -f "${awkdir}phone.awk"
+cat $list | awk -v name="$query" -f "${awkdir}phone.awk"

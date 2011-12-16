@@ -39,15 +39,15 @@
 
 source ${gitscripts_path}set-bash-colors.sh
 
-
+echo
 echo ${H1}"####################################################################################"
-echo "         Configuring bash profile         "
+echo "         Configuring bash profile:         $BASH_SOURCE  "
 echo "####################################################################################"
 echo ${H2}
 echo "Setting default bash profile vars now..."
 echo ${X}
 echo ${E}
-echo "TEST: This should output in such a way that it looks like an error has occurred (it is just a test, no error has actually occurred) really)."
+echo "TEST: This should output in such a way that it looks like an error has occurred (it is just a test, no error has actually occurred--really)."
 echo ${X}
 echo
 echo
@@ -67,8 +67,8 @@ source ${gitscripts_path}gsfunctions.sh
 ## functions defined in the script above cannot be referenced within other scripts unless somehow "exported" so
 ## we assign variables that source the script as a convenience
 export loadfuncs="source ${gitscripts_path}gsfunctions.sh"
-export cbranch=$(cb)
 alias cb=__parse_git_branch
+export cbranch=$(cb)
 
 
 #########################################################################################################################
@@ -77,12 +77,11 @@ alias cb=__parse_git_branch
 source ${gitscripts_path}bash_completion
 
 
-
-
 #########################################################################################################################
 #bring in the bashmarks stuff
 #########################################################################################################################
 source ${gitscripts_path}bashmarks.sh
+
 
 # don't put duplicate lines in the history. See bash(1) for more options
 # ... or force ignoredups and ignorespace
@@ -194,6 +193,14 @@ ${COL_RED}\u@\h${COL_NORM}
 $ '
 
 
+# export ftpuserfile="${inputdir}_riddleFTPuser"
+# export RIDDLEFTPUSER=$(cat $ftpuserfile)
+# if [ -z "$RIDDLEFTPUSER" ]; then
+# 	echo -n ${COL_YELLOW}"Certain gitscripts require ftp access. Your user name should be your first initial followed by your last name, without spaces or special characters, and in all lowercase. Please enter it now: "${X}
+# 	read user
+# 	echo $user > $ftpuserfile
+# 	export RIDDLEFTPUSER=$user
+# fi
 
 
 
@@ -277,7 +284,7 @@ alias sshgit="ssh git@10.0.2.160"
 #########################################################################################################################
 type -P eclipse &>/dev/null && echo "Found eclipse" 			|| alias eclipse="eclipse.exe"
 type -P npp &>/dev/null     && echo "Found npp (notepad++) "	|| alias npp="notepad++.exe"
-type -P sublime &>/dev/null && echo "Found sublime" 			|| alias sublime="sublime_text.exe"
+type -P sublime_text &>/dev/null && echo "Found sublime" 		|| alias sublime="sublime_text.exe"
 type -P textpad &>/dev/null && echo "Found textpad" 			|| alias textpad="TextPad.exe"
 type -P ant &>/dev/null     && echo "Found ANT"     			|| alias ant="${ANT_HOME}ant"
 
@@ -347,6 +354,7 @@ alias allexportchanges="ant ${ANT_ARGS} export-changes -buildfile ${builds_path}
 #########################################################################################################################
 alias branch="${gitscripts_path}grepbranch.sh"
 alias fixbranch="${gitscripts_path}fixbranch.sh"
+alias gsman="${gitscripts_path}gsman.sh"
 alias phone="${gitscripts_path}phone.sh"
 
 alias syncmywork="/d/workspaces/helios_workspace/myscripts/syncmyapp.sh"
