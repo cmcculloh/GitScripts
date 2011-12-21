@@ -41,7 +41,7 @@ source ${gitscripts_path}set-bash-colors.sh
 
 echo
 echo ${H1}"####################################################################################"
-echo "         Configuring bash profile:         $BASH_SOURCE  "
+echo "         Configuring bash profile:         $BASH_SOURCE            "
 echo "####################################################################################"
 echo ${H2}
 echo "Setting default bash profile vars now..."
@@ -50,11 +50,6 @@ echo ${E}
 echo "TEST: This should output in such a way that it looks like an error has occurred (it is just a test, no error has actually occurred--really)."
 echo ${X}
 echo
-echo
-echo
-
-
-
 
 
 
@@ -192,15 +187,6 @@ ${COL_YELLOW}$(__parse_git_branch)${COL_NORM}
 ${COL_RED}\u@\h${COL_NORM}
 $ '
 
-
-# export ftpuserfile="${inputdir}_riddleFTPuser"
-# export RIDDLEFTPUSER=$(cat $ftpuserfile)
-# if [ -z "$RIDDLEFTPUSER" ]; then
-# 	echo -n ${COL_YELLOW}"Certain gitscripts require ftp access. Your user name should be your first initial followed by your last name, without spaces or special characters, and in all lowercase. Please enter it now: "${X}
-# 	read user
-# 	echo $user > $ftpuserfile
-# 	export RIDDLEFTPUSER=$user
-# fi
 
 
 

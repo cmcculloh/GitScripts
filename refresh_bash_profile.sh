@@ -11,7 +11,7 @@ echo "	> concatenating scripts..."
 cat "${gitscripts_path}environment_config.overrides" "${gitscripts_path}line_break" "${gitscripts_path}environment_config.default" "${gitscripts_path}line_break" "${gitscripts_path}bash_profile_config.overrides" "${gitscripts_path}line_break" "${gitscripts_path}bash_profile_config" > "${gitscripts_temp_bash_profile_path}"
 
 
-echo "	> sending scripts to bash_profile..."
+echo "	> sending scripts to etc..."
 cp "${gitscripts_temp_bash_profile_path}" "${native_bash_profile_path}"
 cp "${gitscripts_motd_path}" "${native_motd_path}"
 
@@ -47,7 +47,7 @@ alias cleanbranches="${myscriptsdir}/cleanbranches.sh"
 alias switchenv="${myscriptsdir}/switchenvironment.sh"
 alias whichenv="${myscriptsdir}/whichenvironment.sh"
 
-echo ""
-echo "Refreshed your bash profile."
-echo ""
-echo ""
+echo
+echo ${TEXT_BRIGHT}"Your bash profile has been refreshed!"${X}
+echo
+echo

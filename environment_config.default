@@ -53,7 +53,7 @@
 [ -n "$csr_path" ] || export csr_path="${workspace_path}finishline_csr/"
 [ -n "$promo_editor_path" ] || export promo_editor_path="${workspace_path}promo_editor/"
 [ -n "$naturaldocs_path" ] || export naturaldocs_path="${workspace_path}naturaldocs/"
-[ -n "$gitscripts_motd_path" ] || gitscripts_bash_motd_path="${gitscripts_path}motd"
+[ -n "$gitscripts_motd_path" ] || gitscripts_motd_path="${gitscripts_path}motd"
 [ -n "$gitscripts_temp_bash_profile_path" ] || gitscripts_temp_bash_profile_path="${gitscripts_path}gitscripts_bash_profile"
 [ -n "$inputdir" ] || export inputdir="${gitscripts_path}input/"
 [ -n "$outputdir" ] || export outputdir="${gitscripts_path}output/"
@@ -68,10 +68,10 @@
 
 
 # Project-specific
-[ -n "$webappwar" ] || webappwar="${finishline_path}modules/base/j2ee-apps/base/web-app.war/"
-[ -n "$myenvironment" ] || myenvironment="workstation-windows"
-[ -n "$promosdir" ] || promosdir="${webappwar}global/promos/"
-[ -n "$buildsImportsPath" ] || buildsImportsPath="${buildsprom}global/promos/"
+[ -n "$webappwar" ] || export webappwar="${finishline_path}modules/base/j2ee-apps/base/web-app.war/"
+[ -n "$myenvironment" ] || export myenvironment="workstation-windows"
+[ -n "$promosdir" ] || export promosdir="${webappwar}global/promos/"
+[ -n "$buildsImportsPath" ] || export buildsImportsPath="${buildsprom}global/promos/"
 [ -n "$mediaLandingPagesPath" ] || export mediaLandingPagesPath="${workspace_path}${mediaprojectname}/media/landing-pages/"
 
 

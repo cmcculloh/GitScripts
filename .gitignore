@@ -1,3 +1,6 @@
 .project
-environment_config.overrides
-bash_profile_config.overrides
+*.overrides
+input/*
+!input/_*
+temp/
+output/

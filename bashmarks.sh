@@ -50,6 +50,7 @@ function s {
         _purge_line "$SDIRS" "export DIR_$1="
         CURDIR=$(echo $PWD| sed "s#^$HOME#\$HOME#g")
         echo "export DIR_$1=\"$CURDIR\"" >> $SDIRS
+        echo "Bashmark "${TEXT_BRIGHT}${COL_RED}"${1}"${X}" was saved!"
     fi
 }
 
@@ -74,6 +75,7 @@ function d {
     if [ -z "$exit_message" ]; then
         _purge_line "$SDIRS" "export DIR_$1="
         unset "DIR_$1"
+        echo "Bashmark "${TEXT_BRIGHT}${COL_RED}"${1}"${X}" was deleted!"
     fi
 }
 
@@ -138,12 +140,13 @@ function _compzsh {
 function _purge_line {
     if [ -s "$1" ]; then
         # safely create a temp file
-        t=$(mktemp -t bashmarks.XXXXXX) || exit 1
+        t="${tmp}1"
+        touch $t
         trap "rm -f -- '$t'" EXIT
 
         # purge line
         sed "/$2/d" "$1" > "$t"
-        mv "$t" "$1"
+        cp "$t" "$1"
 
         # cleanup temp file
         rm -f -- "$t"

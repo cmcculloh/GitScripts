@@ -1,13 +1,18 @@
 #!/bin/bash
 
 ## /*
-#	@usage phone <term>
+#	@usage phone [options] [term]
 #
 #	@description
 #	Searches the phone list in the input folder for the specified string.
 #	First/Last names as well as phone extensions are searchable. Name and
 #	extension are output to screen.
 #	description@
+#
+#	@options
+#	-u	Acquire an updated phone list. This option can be used with or
+#		without a search term specified.
+#	options@
 #
 #	@notes
 #	- Search terms are case-insensitive.
@@ -28,10 +33,26 @@
 $loadfuncs
 
 
-hcolor=${COL_MAG}
+list="${inputdir}_phoneList"
+touch $list
 
 function update_list {
-	echo
+	local txtfile="${tempdir}numbers.txt"
+	echo "	Acquiring phone list via sftp..."
+	sftp -b "${inputdir}_phoneList.batch" et@10.0.30.45 1>/dev/null
+	if [ -s "$txtfile" ]; then
+		cat $txtfile | egrep '[-[:blank:]][0-9][0-9][0-9][0-9]$' > $tmp
+		if [ -s "$tmp" ]; then
+			cp $tmp $list
+			echo "	Phone list has been updated!"
+			rm $txtfile
+			rm $tmp
+		else
+			echo ${E}"	There was a problem parsing the phone list for numbers."${X}
+		fi
+	else
+		__bad_usage phone "Unable to acquire updated phone list."
+	fi
 }
 
 
@@ -66,6 +87,5 @@ case $# in
 		;;
 esac
 
-
-list="${inputdir}_phoneList"
+#search the list
 cat $list | awk -v name="$query" -f "${awkdir}phone.awk"
