@@ -1,4 +1,4 @@
-echo "preparing to refresh your bash profile"
+echo "Preparing to refresh your bash profile..."
 
 touch "${gitscripts_path}bash_profile_config.overrides"
 touch "${gitscripts_path}environment_config.overrides"
