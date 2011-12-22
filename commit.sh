@@ -19,6 +19,7 @@ echo ""
 
 if [ -n $2 ] && [ $2 = "-A" ]
 	then
+	echo "git add -A"
 	git add -A
 	flag="-a"
 elif [-n $2 ] && [ $2 = "-a" ]
@@ -28,6 +29,7 @@ elif [-n $2 ] && [ $2 = "-a" ]
 	read yn
 	if [ "$yn" = "y" ]
 		then
+		echo "git add -A"
 		git add -A
 	fi
 	flag="-a"
