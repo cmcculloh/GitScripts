@@ -1,6 +1,6 @@
 A series of shell scripts that simplify and streamline the use of Git.
 
-run _gsinit.sh
+source _gsinit.sh in your bash.rc
 
 
 GitScripts helps make git more user friendly and more user safe. It is a set of bash scripts that will make your life much easier and streamline your use of Git.
