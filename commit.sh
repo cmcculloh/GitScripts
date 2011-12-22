@@ -5,9 +5,12 @@ function __parse_git_branch {
  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
 }
 
+function evil_git_num_untracked_files {
+ git status --porcelain 2>/dev/null| grep "^??" | wc -l
+}
 
 startingBranch="$(__parse_git_branch)"
-
+untrackedfiles="$(evil_git_num_untracked_files)"
 
 
 echo ${H1}
@@ -34,24 +37,28 @@ if [ -n $2 ]
 	elif [ $2 = "-a" ]
 		then
 
-		echo ""
-		echo ${O}
-		echo "------------------------------------------------------------------------------------"
-		echo "# git status"
-		#${TEXT_NORM}
-		#${TEXT_BRIGHT}
-		git status
-		echo ${X}
-		
-		echo ""
-		echo "Would you like to run 'git add -A' to add untracked files as well? y (n)"
-		read yn
-		if [ "$yn" = "y" ]
+		if [ untrackedfiles -gt 0 ]
 			then
+
+			echo ""
+			echo ${O}
 			echo "------------------------------------------------------------------------------------"
-			echo "# git add -A"
-			git add -A
-			echo "------------------------------------------------------------------------------------"
+			echo "# git status"
+			#${TEXT_NORM}
+			#${TEXT_BRIGHT}
+			git status
+			echo ${X}
+
+			echo ""
+			echo "Would you like to run 'git add -A' to add untracked files as well? y (n)"
+			read yn
+			if [ "$yn" = "y" ]
+				then
+				echo "------------------------------------------------------------------------------------"
+				echo "# git add -A"
+				git add -A
+				echo "------------------------------------------------------------------------------------"
+			fi
 		fi
 	fi
 fi
@@ -82,15 +89,6 @@ echo "--------------------------------------------------------------------------
 echo "# git diff-tree --stat HEAD"
 git diff-tree --stat HEAD
 echo "------------------------------------------------------------------------------------"
-echo ${X}
-
-echo ""
-echo ${O}
-echo "------------------------------------------------------------------------------------"
-echo "# git status"
-#${TEXT_NORM}
-#${TEXT_BRIGHT}
-git status
 echo ${X}
 
 
