@@ -47,9 +47,9 @@ fi
 
 if [[ "$extension" == png ]]
   then
-	"/d/Applications/TortoiseGIT/bin/TortoiseIDiff.exe" /left:"$oldfile" /right:"$newfile" /fit /overlay
+	"C:/Program Files/TortoiseGit/bin/TortoiseIDiff.exe" /left:"$oldfile" /right:"$newfile" /fit /overlay
 else
-	"/d/Applications/ToirtoiseGIT/bin/TortoiseMerge.exe" $oldfile $newfile
+	"C:/Program Files/TortoiseGit/bin/TortoiseMerge.exe" $oldfile $newfile
 fi
 
 
