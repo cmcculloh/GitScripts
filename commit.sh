@@ -10,7 +10,7 @@ function evil_git_num_untracked_files {
 }
 
 startingBranch="$(__parse_git_branch)"
-untrackedfiles=`$(evil_git_num_untracked_files)`
+untrackedfiles=`git status --porcelain 2>/dev/null| grep "^??" | wc -l`
 
 
 echo ${H1}
