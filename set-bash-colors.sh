@@ -22,4 +22,3 @@ export O=${STYLE_NORM}${STYLE_OUTPUT}
 export I=${STYLE_NORM}${STYLE_INPUT}
 export E=${STYLE_NORM}${STYLE_ERROR}
 export X=${STYLE_NORM}
-
