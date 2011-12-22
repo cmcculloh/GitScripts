@@ -17,6 +17,21 @@ echo "##########################################################################
 echo ${X}
 echo ""
 
+if [ -n $2 ] && [ $2 = "-A" ]
+	then
+	git add -A
+	flag="-a"
+elif [-n $2 ] && [ $2 = "-a" ]
+	then
+	echo ""
+	echo "Would you like to run 'git add -A' to add untracked files as well? y (n)"
+	read yn
+	if [ "$yn" = "y" ]
+		then
+		git add -A
+	fi
+	flag="-a"
+fi
 
 echo ""
 echo ${O}
@@ -28,11 +43,12 @@ git status
 echo ${X}
 
 
+
 echo ""
 echo ${O}
 echo "------------------------------------------------------------------------------------"
 echo "# git commit -q -m \"($(__parse_git_branch)) $1\" $2"
-git commit -q -m "($(__parse_git_branch)) $1" $2
+git commit -q -m "($(__parse_git_branch)) $1" $flag
 echo "------------------------------------------------------------------------------------"
 echo ${X}
 
