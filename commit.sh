@@ -24,7 +24,7 @@ if [ -n $2 ] && [ $2 = "-A" ]
 	git add -A
 	echo "------------------------------------------------------------------------------------"
 	flag="-a"
-elif [-n $2 ] && [ $2 = "-a" ]
+elif [ -n $2 ] && [ $2 = "-a" ]
 	then
 	echo ""
 	echo "Would you like to run 'git add -A' to add untracked files as well? y (n)"
