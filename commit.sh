@@ -101,7 +101,7 @@ echo ${X}
 read YorN
 if [ "$YorN" = "y" ]
 	then
-	remote=$(git remote)
+	remote=$(git remote | head -1)
 
 	echo ""
 	echo ${O}
