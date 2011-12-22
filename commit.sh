@@ -141,10 +141,24 @@ if [ "$YorN" = "y" ] || [ "$YorN" = "" ]
 fi
 
 
+if [ "$clearscreenanswer" = "n" ]
+	then
+	echo "Clear screen? y (n)"
+	read YorN
+	if[ "$YorN" = "" ]
+		then
+		YorN=n
+	fi
+else
+	echo "Clear screen? (y) n"
+	read YorN
+	if[ "$YorN" = "" ]
+		then
+		YorN=y
+	fi
+fi
 
-echo "Clear screen? (y) n"
-read YorN
-if [ "$YorN" = "y" ] || [ "$YorN" = "" ]
+if [ "$YorN" = "y" ]
 	then
 
 	echo ""
@@ -152,6 +166,7 @@ if [ "$YorN" = "y" ] || [ "$YorN" = "" ]
 	echo ""
 	clear
 fi
+
 
 
 
