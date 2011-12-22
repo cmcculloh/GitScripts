@@ -84,6 +84,6 @@ else
 	echo
 fi
 
-branchprotected=`grep "$1" ${gitscripts_path}protected_branches`
+#used to be an option to delete remote branch automagically here, but I trashed it because it was too dangerous
 
 exit 1
