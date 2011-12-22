@@ -1,6 +1,8 @@
 #!/bin/bash
 
-echo "preparing to refresh your bash profile"
+STYLE_NORM=$'\033[0;30;39m'
+
+echo ${STYLE_NORM}"Preparing to refresh your bash profile..."
 
 touch "${gitscripts_path}bash_profile_config.overrides"
 touch "${gitscripts_path}environment_config.overrides"
@@ -31,6 +33,7 @@ echo "Going to source: ${native_bash_profile_path}"
 source ${gitscripts_path}set-bash-colors.sh
 source ${gitscripts_path}bashmarks.sh
 
+${STYLE_NORM}
 
 source "${native_bash_profile_path}"
 
