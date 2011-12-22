@@ -10,7 +10,7 @@ function evil_git_num_untracked_files {
 }
 
 startingBranch="$(__parse_git_branch)"
-untrackedfiles=`git status --porcelain 2>/dev/null| grep "^??" | wc -l`
+untrackedfiles="$(evil_git_num_untracked_files)"
 
 
 echo ${H1}
@@ -37,7 +37,7 @@ if [ -n $2 ]
 	elif [ $2 = "-a" ]
 		then
 
-		if [ untrackedfiles -gt 0 ]
+		if [ $untrackedfiles -gt 0 ]
 			then
 
 			echo ""
