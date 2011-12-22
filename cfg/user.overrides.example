@@ -1,0 +1,24 @@
+## /*
+#	@description
+#	This file, when copied into the same directory WITHOUT the .example extension will
+#	override virtually any variable set through the various *.cfg files. This is also
+#	where you should set any variable flags that control behavior via the flagged_actions.cfg
+#	file. To see which variables you can overwrite and which flags you can set, view
+#	the *.cfg files within the cfg/ directory.
+#	description@
+#
+#	@notes
+#	- Aliases set in aliases.cfg cannot be overridden from this file. You will have to
+#	re-define them sometime after you have included the GitScripts bootstrap file (_gsinit.sh).
+#	notes@
+## */
+
+
+# I have a Mac so my Git is installed in a different directory...
+export GIT_INSTALL=/usr/local/git/
+
+# Change date color in custom prompt...
+export PROMPT_DATE=${COL_GREEN}
+
+# I already have shortcuts for native Git commands...
+export exclude_git_aliases="true"
