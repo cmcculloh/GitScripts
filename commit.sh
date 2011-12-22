@@ -33,6 +33,16 @@ if [ -n $2 ]
 		echo "------------------------------------------------------------------------------------"
 	elif [ $2 = "-a" ]
 		then
+
+		echo ""
+		echo ${O}
+		echo "------------------------------------------------------------------------------------"
+		echo "# git status"
+		#${TEXT_NORM}
+		#${TEXT_BRIGHT}
+		git status
+		echo ${X}
+		
 		echo ""
 		echo "Would you like to run 'git add -A' to add untracked files as well? y (n)"
 		read yn
