@@ -1,3 +1,4 @@
+#!/bin/bash
 # need to know current path of this file first
 SCRIPT_PATH="${BASH_SOURCE[0]}"
 if [ -h "${SCRIPT_PATH}" ]; then

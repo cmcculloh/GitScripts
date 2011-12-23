@@ -189,7 +189,7 @@ type -P ant &>/dev/null     && echo "Found ANT"     			|| alias ant="${ANT_HOME}
 #########################################################################################################################
 alias flhome="cd ${finishline_path}"
 alias mediahome="cd ${media_path}"
-alias flscriptshome="cd ${flscripts_path}"
+alias flscriptshome="cd ${flgitscripts_path}"
 alias gitscriptshome="cd ${gitscripts_path}"
 alias deployhome="cd ${deploys_path}"
 alias buildhome="cd ${builds_path}"
@@ -260,12 +260,12 @@ alias makesprite="${gitscripts_path}swivel-images-maker.sh"
 #########################################################################################################################
 # Utilities and Miscellaneous
 #########################################################################################################################
-alias fixbranch="${flscripts_path}fixbranch.sh"
-alias phone="${flscripts_path}phone.sh"
-alias switchenv="${flscripts_path}/switchenvironment.sh"
-alias whichenv="${flscripts_path}/whichenvironment.sh"
-alias refresh_bash_profile="${flscripts_path}refresh_bash_profile.sh"
-alias varsreset="source ${flscripts_path}vars_reset.sh"
+alias fixbranch="${flgitscripts_path}fixbranch.sh"
+alias phone="${flgitscripts_path}phone.sh"
+alias switchenv="${flgitscripts_path}/switchenvironment.sh"
+alias whichenv="${flgitscripts_path}/whichenvironment.sh"
+alias refresh_bash_profile="${flgitscripts_path}refresh_bash_profile.sh"
+alias varsreset="source ${flgitscripts_path}vars_reset.sh"
 
 #alias syncmywork="/d/workspaces/helios_workspace/myscripts/syncmyapp.sh"
 #alias synctree="/d/workspaces/helios_workspace/myscripts/synctree.sh"
