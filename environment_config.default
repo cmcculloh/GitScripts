@@ -20,11 +20,42 @@
 #
 ## */
 
+
 # bring in gitscripts
 if [ -s "${flgitscripts_path}gitscripts/_gsinit.sh" ]; then
 	source "${flgitscripts_path}gitscripts/_gsinit.sh"
 else
-	echo "GitScripts can't be found!"
+	echo "GitScripts can't be found! Looked for:  ${flgitscripts_path}gitscripts/_gsinit.sh"
+fi
+
+
+# This block is identical in GitScripts, but should GitScripts ever be removed or
+# not found, having it here in a conditional will prevent breakage of flgitscripts.
+#
+# Git for Windows/mysysGit have a different configuration and setup than Git has
+# on Unix. Therefore, some functionality will simply be restricted/accessible based
+# on OS.
+#
+# Both GfW and msysGit mount their home directories on / . If we find a windows path
+# (e.g. C:\...) being mounted at / we know the OS is Windows.
+
+if [ -z "$GIT_INSTALL" ] || [ -z "$GIT_ETC" ]; then
+	winGitpath=$(mount | awk -f ${gitscripts_path}awk/findgit.awk)
+	if [ -n "${winGitpath}" ]; then
+		# Windows
+		export GIT_INSTALL="${winGitpath}/"
+		export GIT_BIN="${GIT_INSTALL}bin/"
+		export GIT_ETC="${GIT_INSTALL}etc/"
+
+		# a custom message of the day that replaces the one that comes with Git.
+		# this custom motd replaces Git's unless the $replace_motd variable is set
+		# to anything other than an empty string in user.overrides.
+		[ -n "$native_motd_path" ] || export native_motd_path="${GIT_ETC}motd"
+		[ -n "$gitscripts_motd_path" ] || export gitscripts_motd_path="${gitscripts_path}motd"
+	else
+		# Unix
+		git=$(which git)
+	fi
 fi
 
 
@@ -33,7 +64,6 @@ fi
 [ -n "$firefox" ] || firefox="${programs_root}"Mozilla\ Firefox/firefox.exe
 [ -n "$chrome" ] || chrome="${HOME}\AppData\Local\Google\Chrome\Application\chrome.exe"
 [ -n "$default_browser" ] || default_browser="${chrome}"
-[ -n "$native_bash_profile_path" ] || native_bash_profile_path="${GIT_ETC}bash_profile"
 [ -n "$eclipse_home" ] || eclipse_home="/d/Applications/eclipse/"
 [ -n "$sublime_home" ] || sublime_home="${programs_root}"Sublime\ Text/
 [ -n "$notepad_pp_home" ] || notepad_pp_home="${programs_root}Notepad++/"
@@ -42,6 +72,7 @@ fi
 
 
 # Workspace-specific
+[ -n "$native_bash_profile_path" ] || native_bash_profile_path="${GIT_ETC}bash_profile"
 [ -n "$buildsprojectname" ] || export buildsprojectname="builds"
 [ -n "$mainprojectname" ] || export mainprojectname="finishline"
 [ -n "$mediaprojectname" ] || export mediaprojectname="finishline_media"

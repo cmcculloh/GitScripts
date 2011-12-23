@@ -11,10 +11,7 @@
 #	notes@
 #
 #	@dependencies
-#	gitscripts/environment_config.default
-#	gitscripts/set-bash-colors.sh
-#	gitscripts/bash_completion
-#	gitscripts/bashmarks.sh
+#	flgitscripts/environment_config.default
 #	dependencies@
 ## */
 
@@ -63,28 +60,6 @@ shopt -s checkwinsize
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
- xterm-color) color_prompt=yes;;
-esac
-
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-#force_color_prompt=yes
-
-if [ -n "$force_color_prompt" ]; then
- if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
- else
-	color_prompt=
- fi
-fi
-
-
 # some more ls aliases
 alias ll='ls -alF'
 alias la='ls -A'
@@ -119,17 +94,17 @@ type -P ant &>/dev/null     && echo "Found ANT"     			|| alias ant="${ANT_HOME}
 #########################################################################################################################
 #home directories
 #########################################################################################################################
-alias flhome="cd ${finishline_path}"
-alias mediahome="cd ${media_path}"
-alias flscriptshome="cd ${flscripts_path}"
-alias gitscriptshome="cd ${gitscripts_path}"
-alias deployhome="cd ${deploys_path}"
 alias buildhome="cd ${builds_path}"
-alias storehome="cd ${webappwar}"
-alias imagescriptshome="cd ${imagescripts_path}"
 alias csrhome="cd ${csr_path}"
-alias promoeditorhome="cd ${promo_editor_path}"
+alias deployhome="cd ${deploys_path}"
+alias flgitscriptshome="cd ${flgitscripts_path}"
+alias flhome="cd ${finishline_path}"
+alias gitscriptshome="cd ${gitscripts_path}"
+alias imagescriptshome="cd ${imagescripts_path}"
+alias mediahome="cd ${media_path}"
 alias naturaldocshome="cd ${naturaldocs_path}"
+alias promoeditorhome="cd ${promo_editor_path}"
+alias storehome="cd ${webappwar}"
 
 
 #########################################################################################################################
@@ -150,42 +125,42 @@ alias taillogs="source ${gitscripts_path}tail_log.sh"
 #########################################################################################################################
 # ANT scripts for front end builds automation
 #########################################################################################################################
-alias min="ant ${ANT_ARGS} min -buildfile ${finishline_path}${myenvironment}.build.xml;"
-alias build="ant build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
-alias cleanbuild="ant ${ANT_ARGS} clean-build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
-alias webapprefresh="ant ${ANT_ARGS} webapprefresh -buildfile ${finishline_path}${myenvironment}.build.xml ;"
-alias webapprefreshminmerge="ant ${ANT_ARGS} webapprefreshminmerge -buildfile ${finishline_path}${myenvironment}.build.xml ;"
-alias promosinit="ant ${ANT_ARGS} initpromos -buildfile ${builds_path}staging-front-end.build.xml ;"
-alias promosliteremerge="ant ${ANT_ARGS} git-checkout-mergey-thing-lite -buildfile ${builds_path}staging-front-end.build.xml ;"
-alias promosremerge="ant ${ANT_ARGS} git-checkout-mergey-thing -buildfile ${builds_path}staging-front-end.build.xml ;"
-alias promospush="ant ${ANT_ARGS} git-push-todays-promos -buildfile ${builds_path}staging-front-end.build.xml ;"
-alias promosimportstouch="ant ${ANT_ARGS} set-mod-dates-of-imports-to-now -buildfile ${builds_path}staging-front-end.build.xml ;"
-alias zipexports="ant ${ANT_ARGS} promos-zip-up-exports -buildfile ${builds_path}staging-front-end.build.xml ;"
-alias wipeoutallexports="ant ${ANT_ARGS} all-wipeout-exports -buildfile ${builds_path}all-front-end.build.xml ;"
+alias allexportchanges="ant ${ANT_ARGS} export-changes -buildfile ${builds_path}all-remotes.build.xml ;"
 alias allsnapbackexportchanges=" \
 	ant ${ANT_ARGS} snap-to-master-and-back	-buildfile ${builds_path}staging-front-end.build.xml ${ANT_ARGS}; \
 	ant ${ANT_ARGS} export-changed-by-day	-buildfile ${builds_path}qa-front-end.build.xml ${ANT_ARGS}; \
 	ant ${ANT_ARGS} export-changed-by-day	-buildfile ${builds_path}dev-front-end.build.xml ${ANT_ARGS};\
 "
 alias alluploadexports="ant ${ANT_ARGS} upload-all-exports -buildfile ${builds_path}all-remotes.build.xml ;"
-alias devuploadexports="ant ${ANT_ARGS} upload-code-and-media-exports-to-remote -buildfile ${builds_path}dev-front-end.build.xml ;"
-alias qauploadexports="ant ${ANT_ARGS} upload-code-and-media-exports-to-remote -buildfile ${builds_path}qa-front-end.build.xml ;"
-alias staginguploadexports="ant ${ANT_ARGS} upload-code-and-media-exports-to-remote -buildfile ${builds_path}staging-front-end.build.xml ;"
+alias build="ant build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
+alias cleanbuild="ant ${ANT_ARGS} clean-build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
 alias devexportchanges="ant ${ANT_ARGS} export-changed-by-day -buildfile ${builds_path}dev-front-end.build.xml ;"
+alias devuploadexports="ant ${ANT_ARGS} upload-code-and-media-exports-to-remote -buildfile ${builds_path}dev-front-end.build.xml ;"
+alias min="ant ${ANT_ARGS} min -buildfile ${finishline_path}${myenvironment}.build.xml;"
+alias promosimportstouch="ant ${ANT_ARGS} set-mod-dates-of-imports-to-now -buildfile ${builds_path}staging-front-end.build.xml ;"
+alias promosinit="ant ${ANT_ARGS} initpromos -buildfile ${builds_path}staging-front-end.build.xml ;"
+alias promosliteremerge="ant ${ANT_ARGS} git-checkout-mergey-thing-lite -buildfile ${builds_path}staging-front-end.build.xml ;"
+alias promospush="ant ${ANT_ARGS} git-push-todays-promos -buildfile ${builds_path}staging-front-end.build.xml ;"
+alias promosremerge="ant ${ANT_ARGS} git-checkout-mergey-thing -buildfile ${builds_path}staging-front-end.build.xml ;"
 alias qaexportchanges="ant ${ANT_ARGS} export-changed-by-day -buildfile ${builds_path}qa-front-end.build.xml ;"
+alias qauploadexports="ant ${ANT_ARGS} upload-code-and-media-exports-to-remote -buildfile ${builds_path}qa-front-end.build.xml ;"
 alias stagingexportchanges="ant ${ANT_ARGS} export-changed-by-day -buildfile ${builds_path}staging-front-end.build.xml ;"
-alias allexportchanges="ant ${ANT_ARGS} export-changes -buildfile ${builds_path}all-remotes.build.xml ;"
+alias staginguploadexports="ant ${ANT_ARGS} upload-code-and-media-exports-to-remote -buildfile ${builds_path}staging-front-end.build.xml ;"
+alias webapprefresh="ant ${ANT_ARGS} webapprefresh -buildfile ${finishline_path}${myenvironment}.build.xml ;"
+alias webapprefreshminmerge="ant ${ANT_ARGS} webapprefreshminmerge -buildfile ${finishline_path}${myenvironment}.build.xml ;"
+alias wipeoutallexports="ant ${ANT_ARGS} all-wipeout-exports -buildfile ${builds_path}all-front-end.build.xml ;"
+alias zipexports="ant ${ANT_ARGS} promos-zip-up-exports -buildfile ${builds_path}staging-front-end.build.xml ;"
 
 
 #########################################################################################################################
 # Utilities and Miscellaneous
 #########################################################################################################################
-alias fixbranch="${flscripts_path}fixbranch.sh"
-alias phone="${flscripts_path}phone.sh"
-alias switchenv="${flscripts_path}/switchenvironment.sh"
-alias whichenv="${flscripts_path}/whichenvironment.sh"
-alias refresh_bash_profile="${flscripts_path}refresh_bash_profile.sh"
-alias varsreset="source ${flscripts_path}vars_reset.sh"
+alias fixbranch="${flgitscripts_path}fixbranch.sh"
+alias phone="${flgitscripts_path}phone.sh"
+alias refresh_bash_profile="${flgitscripts_path}refresh_bash_profile.sh"
+alias switchenv="${flgitscripts_path}/switchenvironment.sh"
+alias varsreset="source ${flgitscripts_path}vars_reset.sh"
+alias whichenv="${flgitscripts_path}/whichenvironment.sh"
 
 #alias syncmywork="/d/workspaces/helios_workspace/myscripts/syncmyapp.sh"
 #alias synctree="/d/workspaces/helios_workspace/myscripts/synctree.sh"
