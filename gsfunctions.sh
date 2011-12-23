@@ -6,6 +6,46 @@ function __parse_git_branch {
 }
 
 
+# origin of work http://henrik.nyh.se/2008/12/git-dirty-prompt
+# These are the character codes I used for the git dirty state in the project.
+# ‘☭’ – files have been modified
+# ‘?’ – there are untracted files in the project
+# ‘*’ – a new file has been add to the project but not committed
+# ‘+’ – the local project is ahead of the remote
+# ‘>’ – file has been moved or renamed
+function parse_git_dirty {
+	status=`git status 2> /dev/null`
+	dirty=`echo -n "${status}" 2> /dev/null | grep -q "\(Changed but not updated\)\|\(Changes not staged for commit\)" 2> /dev/null; echo "$?"`
+	untracked=`echo -n "${status}" 2> /dev/null | grep -q "Untracked files" 2> /dev/null; echo "$?"`
+	ahead=`echo -n "${status}" 2> /dev/null | grep -q "Your branch is ahead of" 2> /dev/null; echo "$?"`
+	newfile=`echo -n "${status}" 2> /dev/null | grep -q "new file:" 2> /dev/null; echo "$?"`
+	renamed=`echo -n "${status}" 2> /dev/null | grep -q "renamed:" 2> /dev/null; echo "$?"`
+	bits="${X}"
+	if [ "${dirty}" == "0" ]; then
+		bits="${bits} ${STYLE_DIRTY} ☭ (dirty) ${X}"
+	fi
+	if [ "${untracked}" == "0" ]; then
+		bits="${bits} ${STYLE_UNTRACKED} ? (untracked) ${X}"
+	fi
+	if [ "${newfile}" == "0" ]; then
+		bits="${bits} ${STYLE_NEWFILE} * (newfile) ${X}"
+	fi
+	if [ "${ahead}" == "0" ]; then
+		bits="${bits} ${STYLE_AHEAD} + (ahead) ${X}"
+	fi
+	if [ "${renamed}" == "0" ]; then
+		bits="${bits} > (renamed) "
+	fi
+	echo "${bits}"
+}
+
+
+function __parse_git_branch_state {
+	# git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/(\1$(parse_git_dirty))/"
+	echo "$(parse_git_dirty)"
+}
+
+
 ## /*
 #	@usage __bad_usage [command_name [message]]
 #
