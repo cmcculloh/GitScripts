@@ -20,15 +20,20 @@
 #
 ## */
 
+# bring in gitscripts
+if [ -s "${flscripts_path}gitscripts/_gsinit.sh" ]; then
+	source "${flscripts_path}gitscripts/_gsinit.sh"
+else
+	echo "GitScripts can't be found!"
+fi
+
 
 # Program-specific
 [ -n "$programs_root" ] || programs_root=/c/Program\ Files\ \(x86\)/
 [ -n "$firefox" ] || firefox="${programs_root}"Mozilla\ Firefox/firefox.exe
 [ -n "$chrome" ] || chrome="${HOME}\AppData\Local\Google\Chrome\Application\chrome.exe"
-[ -n "$git_install" ] || git_install=/c/Git/etc/
 [ -n "$default_browser" ] || default_browser="${chrome}"
-[ -n "$native_bash_profile_path" ] || native_bash_profile_path="${git_install}bash_profile"
-[ -n "$native_motd_path" ] || native_motd_path="${git_install}motd"
+[ -n "$native_bash_profile_path" ] || native_bash_profile_path="${GIT_ETC}bash_profile"
 [ -n "$eclipse_home" ] || eclipse_home="/d/Applications/eclipse/"
 [ -n "$sublime_home" ] || sublime_home="${programs_root}"Sublime\ Text/
 [ -n "$notepad_pp_home" ] || notepad_pp_home="${programs_root}Notepad++/"
@@ -40,31 +45,24 @@
 [ -n "$buildsprojectname" ] || export buildsprojectname="builds"
 [ -n "$mainprojectname" ] || export mainprojectname="finishline"
 [ -n "$mediaprojectname" ] || export mediaprojectname="finishline_media"
-[ -n "$gitscriptsprojectname" ] || export gitscriptsprojectname="gitscripts"
+[ -n "$flscriptsprojectname" ] || export flscriptsprojectname="flscripts"
 [ -n "$development_root" ] || export development_root="/d/workspaces/"
 [ -n "$workspace_path" ] || export workspace_path="${development_root}helios_workspace/"
 [ -n "$project_workspace" ] || export project_workspace="${development_root}helios_workspace"
 [ -n "$media_path" ] || export media_path="${workspace_path}${mediaprojectname}/"
 [ -n "$finishline_path" ] || export finishline_path="${workspace_path}${mainprojectname}/"
-[ -n "$gitscripts_path" ] || export gitscripts_path="${workspace_path}${gitscriptsprojectname}/"
 [ -n "$deploys_path" ] || export deploys_path="${workspace_path}deploys/"
 [ -n "$builds_path" ] || export builds_path="${workspace_path}${buildsprojectname}/"
 [ -n "$imagescripts_path" ] || export imagescripts_path="${workspace_path}image_scripts/"
 [ -n "$csr_path" ] || export csr_path="${workspace_path}finishline_csr/"
 [ -n "$promo_editor_path" ] || export promo_editor_path="${workspace_path}promo_editor/"
 [ -n "$naturaldocs_path" ] || export naturaldocs_path="${workspace_path}naturaldocs/"
-[ -n "$gitscripts_motd_path" ] || gitscripts_motd_path="${gitscripts_path}motd"
-[ -n "$gitscripts_temp_bash_profile_path" ] || gitscripts_temp_bash_profile_path="${gitscripts_path}gitscripts_bash_profile"
-[ -n "$inputdir" ] || export inputdir="${gitscripts_path}input/"
-[ -n "$outputdir" ] || export outputdir="${gitscripts_path}output/"
-[ -n "$awkdir" ] || export awkdir="${gitscripts_path}awkscripts/"
-[ -n "$tempdir" ] || export tempdir="${gitscripts_path}temp/"
+[ -n "$inputdir" ] || export inputdir="${flscripts_path}input/"
+[ -n "$outputdir" ] || export outputdir="${flscripts_path}output/"
+[ -n "$awkdir" ] || export awkdir="${flscripts_path}awkscripts/"
+[ -n "$tempdir" ] || export tempdir="${flscripts_path}temp/"
 [ -n "$tmp" ] || export tmp="${tempdir}tmp"
-
-
-# Git settings
-[ -n "$GIT_HOME" ] || GIT_HOME="/c/Git/bin/"
-[ -n "$GIT_EXEC" ] || GIT_EXEC="${GIT_HOME}git.exe"
+[ -n "$flscripts_temp_bash_profile_path" ] || export flscripts_temp_bash_profile_path="${tempdir}temp_bash_profile"
 
 
 # Project-specific
