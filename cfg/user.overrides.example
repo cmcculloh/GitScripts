@@ -14,15 +14,14 @@
 ## */
 
 
-# I have a Mac so my Git is installed in a different directory...
-export GIT_INSTALL=/usr/local/git/
-
-# Change date color in custom prompt...
-export PROMPT_DATE=${COL_GREEN}
-
-# I already have shortcuts for native Git commands...
-export exclude_git_aliases="true"
-
-
-# Change default clear screen question answer to yes
+# [vars] It's important that I clean up after major operations...
 export clearscreenanswer="y"
+
+# [colors] Magenta headings are more my style...
+export STYLE_H1=$'\033[1;33;42m'
+
+# [flagged_actions] I have my own prompt that I prefer...
+export USE_GS_PROMPT=false
+
+# [flagged_actions] I set up my own aliases when I first got Git...
+export IMPORT_GIT_ALIASES=false
