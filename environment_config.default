@@ -50,17 +50,17 @@ SYSTEM_TYPE="unset";
 case "`uname`" in
     MINGW32*)
         windows=true
-        system_type="windows"
+        SYSTEM_TYPE="windows"
         ;;
 
     Linux*)
         linux=true
-        system_type="linux"
+        SYSTEM_TYPE="linux"
         ;;
 
     Darwin*)
         darwin=true
-        system_type="darwin"
+        SYSTEM_TYPE="darwin"
         ;;
 esac
 
@@ -77,34 +77,103 @@ else
 	echo ""
 fi
 
+if [ $SYSTEM_TYPE == "linux" ]; then 
+	echo "We are on Linux";
+	PROGRAMS_ROOT=/usr/bin/
 
-native_bash_profile_path="${HOME}/.bashrc"
-native_bash_profile_extras_path="${HOME}/.bash_extras.d/"
-native_gitscripts_bash_profile_path="${native_bash_profile_extras_path}gitscripts_profile"
-native_gitscripts_bash_motd_path="${native_bash_profile_extras_path}gitscripts_motd"
+	[ -n "$native_bash_profile_path" ] || native_bash_profile_path="${HOME}/.bashrc"
+	[ -n "$native_bash_profile_extras_path" ] || native_bash_profile_extras_path="${HOME}/.bash_extras.d/"
+	[ -n "$native_gitscripts_bash_profile_path" ] || native_gitscripts_bash_profile_path="${native_bash_profile_extras_path}gitscripts_profile"
+	export native_bash_profile_path
+	export native_bash_profile_extras_path
+	export native_gitscripts_bash_profile_path
+
+	type firefox &>/dev/null && { 
+		echo "firefox found."; echo "No need to re-set."; 
+	} || { 
+		echo "firefox was NOT found."; 
+		echo "Will check to see if command exists  and if not, we will set an alias."; 
+
+		type -P firefox &>/dev/null && { 
+			echo "firefox command found, no need to re-set."; 
+		} || { 
+			echo "firefox command was NOT found."; echo "We need to set it."; 
+			[ -n "$firefox" ] || firefox="${PROGRAMS_ROOT}"firefox
+		}
+
+	}
+	[ -n "$chrome" ] || chrome="${PROGRAMS_ROOT}"google-chrome
+	[ -n "$chromium" ] || chromium="${PROGRAMS_ROOT}"chromium-browser
+	[ -n "$default_browser" ] || default_browser="${chrome}"
+	[ -n "$eclipse_home" ] || eclipse_home="${PROGRAMS_ROOT}"eclipse
+	
+	# Workspace-specific
+	[ -n "$development_root" ] || export development_root="${HOME}/Development/workspaces/"
+	[ -n "$workspace_name" ] || export workspace_name="ubuntu_galileo_workspace"
+	[ -n "$myenvironment" ] || export myenvironment="workstation-ubuntu"
+	[ -n "$JAVA_DEV_HOME" ] || JAVA_DEV_HOME="${HOME}/Development/java_dev/"
+
+	# JBoss Settings
+	[ -n "$JBOSS" ] || JBOSS="${HOME}/Development/opt/jboss-4.0.5.GA/"
 
 
-# Program-specific
-[ -n "$programs_root" ] || programs_root=/c/Program\ Files\ \(x86\)/
-[ -n "$firefox" ] || firefox="${programs_root}"Mozilla\ Firefox/firefox.exe
-[ -n "$chrome" ] || chrome="${HOME}\AppData\Local\Google\Chrome\Application\chrome.exe"
-[ -n "$default_browser" ] || default_browser="${chrome}"
-[ -n "$native_bash_profile_path" ] || native_bash_profile_path="${GIT_ETC}bash_profile"
-[ -n "$eclipse_home" ] || eclipse_home="/d/Applications/eclipse/"
-[ -n "$sublime_home" ] || sublime_home="${programs_root}"Sublime\ Text/
-[ -n "$notepad_pp_home" ] || notepad_pp_home="${programs_root}Notepad++/"
-[ -n "$textpad_home" ] || textpad_home="${programs_root}TextPad 5/"
-[ -n "$natural_docs_home" ] || natural_docs_home="/d/java_dev/NaturalDocs-1.5"
+
+elif [ $SYSTEM_TYPE == "darwin" ]; then
+	echo "We are on Darwin"; 
+
+elif [ $SYSTEM_TYPE == "windows" ]; then
+	echo "We are on Windows"; 
+	PROGRAMS_ROOT=/c/Program\ Files\ \(x86\)/
+	[ -n "$native_bash_profile_path" ] || export native_bash_profile_path="${GIT_ETC}bash_profile"
+	[ -n "$native_gitscripts_bash_profile_path" ] || export native_gitscripts_bash_profile_path="${native_bash_profile_path}"
+	
+	# Program-specific
+	type firefox &>/dev/null && { 
+		echo "firefox alias found."; echo "No need to re-set."; 
+	} || { 
+		echo "firefox alias was NOT found."; 
+		echo "Will check to see if command exists  and if not, we will set an alias."; 
+
+		type -P firefox &>/dev/null && { 
+			echo "firefox command found, no need to re-set."; 
+		} || { 
+			echo "firefox command was NOT found."; echo "We need to set it."; 
+			[ -n "$firefox" ] || firefox="${PROGRAMS_ROOT}"Mozilla\ Firefox/firefox.exe
+		}
+
+	}
+	[ -n "$chrome" ] || chrome="${HOME}\AppData\Local\Google\Chrome\Application\chrome.exe"
+	[ -n "$default_browser" ] || default_browser="${chrome}"
+	[ -n "$eclipse_home" ] || eclipse_home="/d/Applications/eclipse/"
+	[ -n "$sublime_home" ] || sublime_home="${PROGRAMS_ROOT}"Sublime\ Text/
+	[ -n "$notepad_pp_home" ] || notepad_pp_home="${PROGRAMS_ROOT}Notepad++/"
+	[ -n "$textpad_home" ] || textpad_home="${PROGRAMS_ROOT}TextPad 5/"
+	[ -n "$natural_docs_home" ] || natural_docs_home="/d/java_dev/NaturalDocs-1.5"
+
+	
+	# Workspace-specific
+	[ -n "$development_root" ] || export development_root="/d/workspaces/"
+	[ -n "$workspace_name" ] || export workspace_name="helios_workspace"
+	[ -n "$myenvironment" ] || export myenvironment="workstation-windows"
+
+	[ -n "$JAVA_DEV_HOME" ] || JAVA_DEV_HOME="/d/java_dev/"
+
+
+	# JBoss Settings
+	[ -n "$JBOSS" ] || JBOSS="/d/opt/jboss-4.0.5.GA/"
+fi
+
+
+
 
 
 # Workspace-specific
 [ -n "$buildsprojectname" ] || export buildsprojectname="builds"
 [ -n "$mainprojectname" ] || export mainprojectname="finishline"
 [ -n "$mediaprojectname" ] || export mediaprojectname="finishline_media"
-[ -n "$flscriptsprojectname" ] || export flscriptsprojectname="flscripts"
-[ -n "$development_root" ] || export development_root="/d/workspaces/"
-[ -n "$workspace_path" ] || export workspace_path="${development_root}helios_workspace/"
-[ -n "$project_workspace" ] || export project_workspace="${development_root}helios_workspace"
+[ -n "$flgitscriptsprojectname" ] || export flgitscriptsprojectname="flgitscripts"
+[ -n "$workspace_path" ] || export workspace_path="${development_root}${workspace_name}/"
+[ -n "$project_workspace" ] || export project_workspace="${development_root}${workspace_name}"
 [ -n "$media_path" ] || export media_path="${workspace_path}${mediaprojectname}/"
 [ -n "$finishline_path" ] || export finishline_path="${workspace_path}${mainprojectname}/"
 [ -n "$deploys_path" ] || export deploys_path="${workspace_path}deploys/"
@@ -123,7 +192,7 @@ native_gitscripts_bash_motd_path="${native_bash_profile_extras_path}gitscripts_m
 
 # Project-specific
 [ -n "$webappwar" ] || export webappwar="${finishline_path}modules/base/j2ee-apps/base/web-app.war/"
-[ -n "$myenvironment" ] || export myenvironment="workstation-windows"
+# moved up above! [ -n "$myenvironment" ] || export myenvironment="workstation-windows"
 [ -n "$promosdir" ] || export promosdir="${webappwar}global/promos/"
 [ -n "$buildsImportsPath" ] || export buildsImportsPath="${buildsprom}global/promos/"
 [ -n "$mediaLandingPagesPath" ] || export mediaLandingPagesPath="${workspace_path}${mediaprojectname}/media/landing-pages/"
@@ -131,7 +200,7 @@ native_gitscripts_bash_motd_path="${native_bash_profile_extras_path}gitscripts_m
 
 
 # Java and ANT Settings
-[ -n "$JAVA_DEV_HOME" ] || JAVA_DEV_HOME="/d/java_dev/"
+# moved up above! [ -n "$JAVA_DEV_HOME" ] || JAVA_DEV_HOME="/d/java_dev/"
 [ -n "$JDK_VERSION" ] || JDK_VERSION="jdk1.5.0_14"
 [ -n "$JAVA_HOME" ] || JAVA_HOME="${JAVA_DEV_HOME}jdk/${JDK_VERSION}/"
 [ -n "$ANT_HOME" ] || export ANT_HOME="${JAVA_DEV_HOME}apache-ant-1.8.1"
@@ -139,16 +208,10 @@ native_gitscripts_bash_motd_path="${native_bash_profile_extras_path}gitscripts_m
 [ -n "$YUI_COMPRESSOR_HOME" ] || export YUI_COMPRESSOR_HOME="${JAVA_DEV_HOME}yuicompressor-2.4.2/build"
 [ -n "$ANT_LIB" ] || export ANT_LIB="${YUI_COMPRESSOR_HOME}/"
 [ -n "$ANT_OPTS" ] || export ANT_OPTS=" -Xms128m -Xmx512m -Duser.language=en -XX:PermSize=128M -XX:MaxPermSize=256M "
-#[ -n "$ANT_ARGS" ] || export ANT_ARGS=" -lib ${ANT_LIB} -quiet -Dmyenvironment=${myenvironment} -Dproject.workspace=${project_workspace} -Dmainprojectname=${mainprojectname} -Dmediaprojectname=${mediaprojectname} -Dbuildsprojectname=${buildsprojectname} -Dpath.git-exec=${GIT_EXEC} -DANT_HOME=${ANT_HOME}"
 [ -n "$ANT_ARGS" ] || export ANT_ARGS=" -lib ${ANT_LIB} -Dmyenvironment=${myenvironment} -Dproject.workspace=${project_workspace} -Dmainprojectname=${mainprojectname} -Dmediaprojectname=${mediaprojectname} -Dbuildsprojectname=${buildsprojectname} -Dpath.git-exec=${GIT_EXEC} -DANT_HOME=${ANT_HOME}"
 
 
-
-
-
-
 # JBoss Settings
-[ -n "$JBOSS" ] || JBOSS="/d/opt/jboss-4.0.5.GA/"
 [ -n "$JBOSS_HOME" ] || JBOSS_HOME="${JBOSS}bin/"
 [ -n "$JBOSS_LOGS" ] || JBOSS_LOGS="${JBOSS}server/finishline/log/"
 [ -n "$JBOSS_DEPLOY" ] || export JBOSS_DEPLOY="${JBOSS}server/finishline/deploy/"

@@ -12,7 +12,7 @@ export flgitscripts_path="${SCRIPT_PATH}/"
 popd  > /dev/null
 
 
-echo "Preparing to refresh your bash profile..."
+echo ${STYLE_NORM}"Preparing to refresh your bash profile..."
 
 touch "${flgitscripts_path}bash_profile_config.overrides"
 touch "${flgitscripts_path}environment_config.overrides"
@@ -26,15 +26,16 @@ echo "	> concatenating scripts..."
 cat "${flgitscripts_path}environment_config.overrides" "${flgitscripts_path}line_break" "${flgitscripts_path}environment_config.default" "${flgitscripts_path}line_break" "${flgitscripts_path}bash_profile_config.overrides" "${flgitscripts_path}line_break" "${flgitscripts_path}bash_profile_config" > "${flgitscripts_temp_bash_profile_path}"
 
 
-echo "	> sending scripts to etc..."
-cp -p -f "${gitscripts_temp_bash_profile_path}" "${native_gitscripts_bash_profile_path}"
+echo "	> sending scripts to native_gitscripts_bash_profile_path (${native_gitscripts_bash_profile_path})..."
+cp -p -f "${native_gitscripts_bash_profile_path}" "${flgitscripts_path}/temp/bak-native_gitscripts_bash_profile"
+cp -p -f "${flgitscripts_temp_bash_profile_path}" "${native_gitscripts_bash_profile_path}"
 
 #rm "${flgitscripts_temp_bash_profile_path}"
 
-${STYLE_NORM}
 
-echo "	> sourcing: ${native_bash_profile_path}"
-source "${native_bash_profile_path}"
+
+echo "	> Sourcing native_gitscripts_bash_profile_path (${native_gitscripts_bash_profile_path})"
+#source "${native_gitscripts_bash_profile_path}"
 
 echo
 echo ${TEXT_BRIGHT}"Your bash profile has been refreshed!"${X}

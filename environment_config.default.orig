@@ -1,18 +1,18 @@
 #program specific
 #[ -n "$VAR_NAME" ] || VAR_NAME="value"
-[ -n "$programs_root" ] || programs_root=/c/Program\ Files\ \(x86\)/
-[ -n "$firefox" ] || firefox="${programs_root}"Mozilla\ Firefox/firefox.exe
+[ -n "$PROGRAMS_ROOT" ] || PROGRAMS_ROOT=/c/Program\ Files\ \(x86\)/
+[ -n "$firefox" ] || firefox="${PROGRAMS_ROOT}"Mozilla\ Firefox/firefox.exe
 [ -n "$chrome" ] || chrome="${HOME}\AppData\Local\Google\Chrome\Application\chrome.exe"
-[ -n "$git_install" ] || ="${programs_root}"Git/etc/
+[ -n "$git_install" ] || ="${PROGRAMS_ROOT}"Git/etc/
 [ -n "$default_browser" ] || default_browser="${chrome}"
 [ -n "$native_bash_profile_path" ] || native_bash_profile_path="${git_install}bash_profile"
 [ -n "$native_bash_profile_extras_path" ] || native_bash_profile_extras_path="~/.bash_extras/"
 [ -n "$native_gitscripts_bash_profile_path" ] || native_gitscripts_bash_profile_path="${native_bash_profile_extras_path}gitscripts_profile"
 [ -n "$native_gitscripts_bash_motd_path" ] || native_gitscripts_bash_motd_path="${native_bash_profile_extras_path}motd"
 [ -n "$eclipse_home" ] || eclipse_home="/c/eclipse/"
-[ -n "$sublime_home" ] || sublime_home="${programs_root}Sublime Text/"
+[ -n "$sublime_home" ] || sublime_home="${PROGRAMS_ROOT}Sublime Text/"
 [ -n "$notepad_pp_home" ] || notepad_pp_home="/home/csc/Downloads/navicat100_lite_en/wine/bin/notepad"
-[ -n "$textpad_home" ] || textpad_home="${programs_root}TextPad 5/"
+[ -n "$textpad_home" ] || textpad_home="${PROGRAMS_ROOT}TextPad 5/"
 [ -n "$natural_docs_home" ] || natural_docs_home="/d/java_dev/NaturalDocs-1.5"
 notepad_pp_home="/home/csc/Downloads/navicat100_lite_en/wine/bin/notepad"
 
