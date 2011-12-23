@@ -39,7 +39,10 @@ cat "${tmp}" "${flgitscripts_path}environment_config.overrides" "${flgitscripts_
 
 
 echo "	> sending scripts to etc..."
-cp "${flgitscripts_temp_bash_profile_path}" "${native_bash_profile_path}"
+cp -p -f "${native_gitscripts_bash_profile_path}" "${flgitscripts_path}/temp/bak-native_gitscripts_bash_profile"
+cp -p -f "${flgitscripts_temp_bash_profile_path}" "${native_gitscripts_bash_profile_path}"
+
+
 
 echo "	> cleaning up temporary files..."
 rm $tmp

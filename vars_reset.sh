@@ -2,6 +2,7 @@
 export GIT_INSTALL=""
 export GIT_BIN=""
 export GIT_ETC=""
+export flgitscripts_path=""
 export gitscripts_path=""
 export native_bash_profile_path=""
 export gitscripts_motd_path=""
