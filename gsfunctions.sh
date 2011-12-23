@@ -2,6 +2,7 @@ function __parse_git_branch {
  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
 }
 
+
 ## /*
 #	@usage __bad_usage [command_name [message]]
 #
@@ -69,35 +70,31 @@ function __bad_usage {
 }
 
 
-
-
-GIT_PS1_SHOWDIRTYSTATE=true
-GIT_PS1_SHOWUNTRACKEDFILES=true
-
-
 ## /*
-#	@usage parse_git_dirty 
+#	@usage parse_git_dirty
 #
 #	@description
 #	Outputs flags of the current branch state.
 #
 #	origin of work http://henrik.nyh.se/2008/12/git-dirty-prompt
 #	These are the character codes I used for the git dirty state in the project.
-#	‘?’ – files have been modified
-#	‘?’ – there are untracted files in the project
-#	‘*’ – a new file has been add to the project but not committed
-#	‘+’ – the local project is ahead of the remote
-#	‘>’ – file has been moved or renamed
+#	??? ? files have been modified
+#	??? ? there are untracted files in the project
+#	?*? ? a new file has been add to the project but not committed
+#	?+? ? the local project is ahead of the remote
+#	?>? ? file has been moved or renamed
 #	description@
 #
 #	@notes
-#	
+#
 #	notes@
 #
 #	@examples
-#	
+#
 #	examples@
 ## */
+GIT_PS1_SHOWDIRTYSTATE=true
+GIT_PS1_SHOWUNTRACKEDFILES=true
 function parse_git_dirty {
   status=`git status 2> /dev/null`
   staged=` echo -n "${status}" 2> /dev/null | grep -q "Changes to be committed" 2> /dev/null; echo "$?"`
@@ -138,6 +135,7 @@ function parse_git_dirty {
   fi
   echo "${bits}"
 }
+
 
 function __parse_git_branch_state {
 #  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/(\1$(parse_git_dirty))/"
