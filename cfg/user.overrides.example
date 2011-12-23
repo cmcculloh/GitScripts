@@ -25,3 +25,9 @@ export USE_GS_PROMPT=false
 
 # [flagged_actions] I set up my own aliases when I first got Git...
 export IMPORT_GIT_ALIASES=false
+
+
+# [ -n "$workspace_name" ] || export workspace_name="ubuntu_galileo_workspace"
+# [ -n "$workspace_name" ] || export workspace_name="coda_workspace"
+
+
