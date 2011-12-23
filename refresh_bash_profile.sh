@@ -36,7 +36,7 @@ touch "${flgitscripts_temp_bash_profile_path}"
 echo "export flgitscripts_path=\"${flgitscripts_path}\"" > $tmp
 
 echo "	> concatenating scripts..."
-cat "${tmp}" "${flgitscripts_path}environment_config.overrides" "${flgitscripts_path}line_break" "${flgitscripts_path}environment_config.default" "${flgitscripts_path}line_break" "${flgitscripts_path}bash_profile_config.overrides" "${flgitscripts_path}line_break" "${flgitscripts_path}bash_profile_config" > "${flgitscripts_temp_bash_profile_path}"
+cat "${tmp}" "${flgitscripts_path}environment_config.overrides" "${flgitscripts_path}line_break" "${flgitscripts_path}environment_config.default" "${flgitscripts_path}line_break" "${flgitscripts_path}bash_profile_config.overrides" "${flgitscripts_path}line_break" "${flgitscripts_path}bash_profile_config.default" > "${flgitscripts_temp_bash_profile_path}"
 
 
 echo "	> sending scripts to etc..."
