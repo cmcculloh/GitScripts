@@ -2,9 +2,9 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
-TEXT_BRIGHT=$'\033[1m'
-TEXT_DIM=$'\033[2m'
-TEXT_NORM=$'\033[0m'
+STYLE_BRIGHT=$'\033[1m'
+STYLE_DIM=$'\033[2m'
+STYLE_NORM=$'\033[0m'
 COL_RED=$'\033[31m'
 COL_GREEN=$'\033[32m'
 COL_VIOLET=$'\033[34m'
@@ -19,9 +19,9 @@ COL_NORM=$'\033[39m'
 #custom console
 ###############################################################################
 PS1='\[\033]0;$MSYSTEM:\w\007
-${COL_GREEN}\u@\h${COL_YELLOW} \d \t ${TEXT_BRIGHT}${COL_MAG}$(__git_ps1)
+${COL_GREEN}\u@\h${COL_YELLOW} \d \t ${STYLE_BRIGHT}${COL_MAG}$(__git_ps1)
 ${COL_CYAN}\w${COL_NORM}
-${TEXT_NORM}$ '
+${STYLE_NORM}$ '
 
 
 

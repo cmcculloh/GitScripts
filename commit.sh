@@ -44,8 +44,8 @@ if [ -n $2 ]
 			echo ${O}
 			echo "------------------------------------------------------------------------------------"
 			echo "# git status"
-			#${TEXT_NORM}
-			#${TEXT_BRIGHT}
+			#${STYLE_NORM}
+			#${STYLE_BRIGHT}
 			git status
 			echo ${X}
 
@@ -67,8 +67,8 @@ echo ""
 echo ${O}
 echo "------------------------------------------------------------------------------------"
 echo "# git status"
-#${TEXT_NORM}
-#${TEXT_BRIGHT}
+#${STYLE_NORM}
+#${STYLE_BRIGHT}
 git status
 echo ${X}
 
@@ -170,8 +170,8 @@ if [ "$YorN" = "y" ]
 	echo ${O}
 	echo "------------------------------------------------------------------------------------"
 	echo "# git status"
-	#${TEXT_NORM}
-	#${TEXT_BRIGHT}
+	#${STYLE_NORM}
+	#${STYLE_BRIGHT}
 	git status
 	echo ${X}
 
