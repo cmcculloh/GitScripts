@@ -9,6 +9,16 @@ _tab_branches()
 	return 0
 }
 
+_tab_filenames_changed()
+{
+	COMPREPLY=()
+	curw=${COMP_WORDS[COMP_CWORD]}
+	COMPREPLY=($(compgen -W "$(git status  --short | sed 's/M //g' | sed 's/?? //g' | sed 's/A //g')'" -- $curw))
+	return 0
+}
+#tab completion for the new command
+complete -F _tab_filenames_changed commit
+
 #tab completion for the checkout command
 complete -F _tab_branches checkout
 

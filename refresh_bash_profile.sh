@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # need to know current path of this file first
 SCRIPT_PATH="${BASH_SOURCE[0]}"
 if [ -h "${SCRIPT_PATH}" ]; then
@@ -40,15 +39,19 @@ cat "${tmp}" "${flgitscripts_path}environment_config.overrides" "${flgitscripts_
 
 
 echo "	> sending scripts to etc..."
-cp "${flgitscripts_temp_bash_profile_path}" "${native_bash_profile_path}"
+cp -p -f "${native_gitscripts_bash_profile_path}" "${flgitscripts_path}/temp/bak-native_gitscripts_bash_profile"
+cp -p -f "${flgitscripts_temp_bash_profile_path}" "${native_gitscripts_bash_profile_path}"
+
+
 
 echo "	> cleaning up temporary files..."
 rm $tmp
-#rm "${flgitscriptss_temp_bash_profile_path}"
 
 
-echo "	> sourcing: ${native_bash_profile_path}"
-source "${native_bash_profile_path}"
+
+
+echo "	> Sourcing native_gitscripts_bash_profile_path (${native_gitscripts_bash_profile_path})"
+source "${native_gitscripts_bash_profile_path}"
 
 echo
 echo ${STYLE_BRIGHT}"Your bash profile has been refreshed!"${X}
