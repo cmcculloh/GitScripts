@@ -36,6 +36,6 @@ echo "	> sourcing: ${native_bash_profile_path}"
 source "${native_bash_profile_path}"
 
 echo
-echo ${TEXT_BRIGHT}"Your bash profile has been refreshed!"${X}
+echo ${STYLE_BRIGHT}"Your bash profile has been refreshed!"${X}
 echo
 echo

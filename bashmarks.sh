@@ -50,7 +50,7 @@ function s {
         _purge_line "$SDIRS" "export DIR_$1="
         CURDIR=$(echo $PWD| sed "s#^$HOME#\$HOME#g")
         echo "export DIR_$1=\"$CURDIR\"" >> $SDIRS
-        echo "Bashmark "${TEXT_BRIGHT}${COL_RED}"${1}"${X}" was saved!"
+        echo "Bashmark "${STYLE_BRIGHT}${COL_RED}"${1}"${X}" was saved!"
     fi
 }
 
@@ -75,7 +75,7 @@ function d {
     if [ -z "$exit_message" ]; then
         _purge_line "$SDIRS" "export DIR_$1="
         unset "DIR_$1"
-        echo "Bashmark "${TEXT_BRIGHT}${COL_RED}"${1}"${X}" was deleted!"
+        echo "Bashmark "${STYLE_BRIGHT}${COL_RED}"${1}"${X}" was deleted!"
     fi
 }
 

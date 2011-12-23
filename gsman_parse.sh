@@ -34,7 +34,7 @@ else
 	echo "#   gsman: Geez man! Use the GitScripts MANual!   "
 	echo "## */                                               "${X}
 	echo
-	echo "SCRIPT/COMMAND: "${TEXT_BRIGHT}${COL_YELLOW}$1
+	echo "SCRIPT/COMMAND: "${STYLE_BRIGHT}${COL_YELLOW}$1
 	echo ${X}
 	cat "$tmp"
 	echo
