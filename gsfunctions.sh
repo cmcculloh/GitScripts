@@ -1,50 +1,6 @@
-##
-#	Determine the current branch name if within a source-controlled directory.
-##
 function __parse_git_branch {
  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
 }
-
-
-# origin of work http://henrik.nyh.se/2008/12/git-dirty-prompt
-# These are the character codes I used for the git dirty state in the project.
-# â€˜â˜­â€™ â€“ files have been modified
-# â€˜?â€™ â€“ there are untracted files in the project
-# â€˜*â€™ â€“ a new file has been add to the project but not committed
-# â€˜+â€™ â€“ the local project is ahead of the remote
-# â€˜>â€™ â€“ file has been moved or renamed
-function parse_git_dirty {
-	status=`git status 2> /dev/null`
-	dirty=`echo -n "${status}" 2> /dev/null | grep -q "\(Changed but not updated\)\|\(Changes not staged for commit\)" 2> /dev/null; echo "$?"`
-	untracked=`echo -n "${status}" 2> /dev/null | grep -q "Untracked files" 2> /dev/null; echo "$?"`
-	ahead=`echo -n "${status}" 2> /dev/null | grep -q "Your branch is ahead of" 2> /dev/null; echo "$?"`
-	newfile=`echo -n "${status}" 2> /dev/null | grep -q "new file:" 2> /dev/null; echo "$?"`
-	renamed=`echo -n "${status}" 2> /dev/null | grep -q "renamed:" 2> /dev/null; echo "$?"`
-	bits="${X}"
-	if [ "${dirty}" == "0" ]; then
-		bits="${bits} ${STYLE_DIRTY} â˜­ (dirty) ${X}"
-	fi
-	if [ "${untracked}" == "0" ]; then
-		bits="${bits} ${STYLE_UNTRACKED} ? (untracked) ${X}"
-	fi
-	if [ "${newfile}" == "0" ]; then
-		bits="${bits} ${STYLE_NEWFILE} * (newfile) ${X}"
-	fi
-	if [ "${ahead}" == "0" ]; then
-		bits="${bits} ${STYLE_AHEAD} + (ahead) ${X}"
-	fi
-	if [ "${renamed}" == "0" ]; then
-		bits="${bits} > (renamed) "
-	fi
-	echo "${bits}"
-}
-
-
-function __parse_git_branch_state {
-	# git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/(\1$(parse_git_dirty))/"
-	echo "$(parse_git_dirty)"
-}
-
 
 ## /*
 #	@usage __bad_usage [command_name [message]]
@@ -110,4 +66,80 @@ function __bad_usage {
 			echo "Error: Invalid usage. Use \""${hcolor}"gsman <command>"${X}"\" for usage instructions."
 			;;
 	esac
+}
+
+
+
+
+GIT_PS1_SHOWDIRTYSTATE=true
+GIT_PS1_SHOWUNTRACKEDFILES=true
+
+
+## /*
+#	@usage parse_git_dirty 
+#
+#	@description
+#	Outputs flags of the current branch state.
+#
+#	origin of work http://henrik.nyh.se/2008/12/git-dirty-prompt
+#	These are the character codes I used for the git dirty state in the project.
+#	‘?’ – files have been modified
+#	‘?’ – there are untracted files in the project
+#	‘*’ – a new file has been add to the project but not committed
+#	‘+’ – the local project is ahead of the remote
+#	‘>’ – file has been moved or renamed
+#	description@
+#
+#	@notes
+#	
+#	notes@
+#
+#	@examples
+#	
+#	examples@
+## */
+function parse_git_dirty {
+  status=`git status 2> /dev/null`
+  staged=` echo -n "${status}" 2> /dev/null | grep -q "Changes to be committed" 2> /dev/null; echo "$?"`
+  dirty=`    echo -n "${status}" 2> /dev/null | grep -q "Changed but not updated" 2> /dev/null; echo "$?"`
+  untracked=`echo -n "${status}" 2> /dev/null | grep -q "Untracked files" 2> /dev/null; echo "$?"`
+  ahead=`    echo -n "${status}" 2> /dev/null | grep -q "Your branch is ahead of" 2> /dev/null; echo "$?"`
+  newfile=`  echo -n "${status}" 2> /dev/null | grep -q "new file:" 2> /dev/null; echo "$?"`
+  renamed=`  echo -n "${status}" 2> /dev/null | grep -q "renamed:" 2> /dev/null; echo "$?"`
+  modified=`  echo -n "${status}" 2> /dev/null | grep -q "modified:" 2> /dev/null; echo "$?"`
+  bits=''
+
+  if [ "${dirty}" == "0" ]; then
+    bits="${bits} ${X}${STYLE_DIRTY} + (dirty) ${X}"
+  fi
+  if [ "${modified}" == "0" -a "${staged}" == "0" -a "${dirty}" == "1" ]; then
+    bits="${bits} ${X}${STYLE_COMMITTED} ++ (staged) ${X}"
+  fi
+
+  if [ "${modified}" == "0" -a "${staged}" == "0" -a "${dirty}" == "0" ]; then
+    bits="${bits} ${X}${STYLE_MODIFIED} >> (modified) ${X}"
+  fi
+
+
+  if [ "${modified}" == "0" -a "${staged}" == "1" ]; then
+    bits="${bits} ${X}${STYLE_MODIFIED} >> (modified) ${X}"
+  fi
+  if [ "${untracked}" == "0" ]; then
+    bits="${bits} ${X}${STYLE_UNTRACKED} ? (untracked) ${X}"
+  fi
+  if [ "${newfile}" == "0" ]; then
+    bits="${bits} ${X}${STYLE_NEWFILE} * (newfile) ${X}"
+  fi
+  if [ "${ahead}" == "0" ]; then
+    bits="${bits} ${X}${STYLE_AHEAD} + (ahead) ${X}"
+  fi
+  if [ "${renamed}" == "0" ]; then
+    bits="${bits} > (renamed) "
+  fi
+  echo "${bits}"
+}
+
+function __parse_git_branch_state {
+#  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/(\1$(parse_git_dirty))/"
+  echo "$(parse_git_dirty)"
 }

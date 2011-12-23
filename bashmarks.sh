@@ -93,7 +93,7 @@ function check_help {
     if [ "$1" = "-h" ] || [ "$1" = "-help" ] || [ "$1" = "--help" ] ; then
         echo ''
         echo 's <bookmark_name> - Saves the current directory as "bookmark_name"'
-        echo 'g <bookmark_name> - Goes (cd) to the directory associated with "bookmark_name"'
+        echo 'go <bookmark_name> - Goes (cd) to the directory associated with "bookmark_name"'
         echo 'p <bookmark_name> - Prints the directory associated with "bookmark_name"'
         echo 'd <bookmark_name> - Deletes the bookmark'
         echo 'lb                 - Lists all available bookmarks'
@@ -165,12 +165,12 @@ function _purge_line {
 
 # bind completion command for g,p,d to _comp
 if [ $ZSH_VERSION ]; then
-    compctl -K _compzsh g
+    compctl -K _compzsh go
     compctl -K _compzsh p
     compctl -K _compzsh d
 else
     shopt -s progcomp
-    complete -F _comp g
+    complete -F _comp go
     complete -F _comp p
     complete -F _comp d
 fi
