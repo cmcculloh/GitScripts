@@ -188,18 +188,17 @@ if [ "$YorN" = "y" ] || [ "$YorN" = "" ]
 fi
 
 
-if [ "$clearscreenanswer" = "n" ]
-	then
-	echo "Clear screen? y (n)"
+if [ "$clearscreenanswer" = "n" ]; 	then
+	echo "Clear screen? y (n)";
 	read YorN
-	if[ "$YorN" = "" ]
+	if [ "$YorN" = "" ]
 		then
 		YorN=n
 	fi
 else
 	echo "Clear screen? (y) n"
 	read YorN
-	if[ "$YorN" = "" ]
+	if [ "$YorN" = "" ]
 		then
 		YorN=y
 	fi
