@@ -5,9 +5,9 @@
 . /etc/git-completion.bash
 
 
-TEXT_BRIGHT=$'\033[1m'
-TEXT_DIM=$'\033[2m'
-TEXT_NORM=$'\033[0m'
+STYLE_BRIGHT=$'\033[1m'
+STYLE_DIM=$'\033[2m'
+STYLE_NORM=$'\033[0m'
 COL_RED=$'\033[31m'
 COL_GREEN=$'\033[32m'
 COL_VIOLET=$'\033[34m'
@@ -138,7 +138,7 @@ if [[ "$statusofmerge" == "# Unmerged paths:" ]];
 		echo
 		echo "${COL_YELLOW}WARNING: You have unmerged paths!${COL_NORM}"
 		echo
-		echo "Please ${COL_RED}resolve your merge conflicts${COL_NORM} , then ${COL_YELLOW}run a build and test your build before pushing${COL_NORM} back out.${TEXT_NORM}"
+		echo "Please ${COL_RED}resolve your merge conflicts${COL_NORM} , then ${COL_YELLOW}run a build and test your build before pushing${COL_NORM} back out.${STYLE_NORM}"
 		echo
 		echo "Would you like to run the merge tool? (y) n"
 		read YorN
@@ -161,7 +161,7 @@ if [[ "$statusofmerge" == "# Changes to be committed:" ]];
 
 		echo "${COL_YELLOW}WARNING: You have uncommitted changes!${COL_NORM}"
 		echo
-		echo "Please ${COL_RED}add/commit${COL_NORM} any changes you have.${TEXT_NORM}"
+		echo "Please ${COL_RED}add/commit${COL_NORM} any changes you have.${STYLE_NORM}"
 		echo "Would you like to commit these changes? (y) n"
 		read YorN
 		if [ "$YorN" != "n" ]

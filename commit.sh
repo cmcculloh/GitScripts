@@ -21,21 +21,21 @@ echo "##########################################################################
 echo ${X}
 echo ""
 
-if [ -n $2 ]
+if [ -n "$2" ]
 	then
 
-	if [ $2 = "-A" ] || [ $2 = "-a" ]
+	if [ "$2" = "-A" ] || [ "$2" = "-a" ]
 		then
 		flag="-a"
 	fi
 
-	if [ $2 = "-A" ]
+	if [ "$2" = "-A" ]
 		then
 		echo "------------------------------------------------------------------------------------"
 		echo "# git add -A"
 		git add -A
 		echo "------------------------------------------------------------------------------------"
-	elif [ $2 = "-a" ]
+	elif [ "$2" = "-a" ]
 		then
 
 		if [ $untrackedfiles -gt 0 ]
@@ -44,8 +44,8 @@ if [ -n $2 ]
 			echo ${O}
 			echo "------------------------------------------------------------------------------------"
 			echo "# git status"
-			#${TEXT_NORM}
-			#${TEXT_BRIGHT}
+			#${STYLE_NORM}
+			#${STYLE_BRIGHT}
 			git status
 			echo ${X}
 
@@ -67,8 +67,8 @@ echo ""
 echo ${O}
 echo "------------------------------------------------------------------------------------"
 echo "# git status"
-#${TEXT_NORM}
-#${TEXT_BRIGHT}
+#${STYLE_NORM}
+#${STYLE_BRIGHT}
 git status
 echo ${X}
 
@@ -95,52 +95,65 @@ echo ${X}
 echo
 echo
 
-echo ${H2}
-echo "Would you like to push? y (n)"
-echo ${X}
-read YorN
-if [ "$YorN" = "y" ]
-	then
-	echo ${O}"------------------------------------------------------------------------------------"
-	echo "Choose a remote (or just hit enter to abort):"
-	echo "------------------------------------------------------------------------------------"
-	remotes=()
-	#eval "$(git for-each-ref --shell --format='branches+=(%(refname:short))' refs/heads/)"
-	eval "$(git for-each-ref --shell --format='remotes+=(%(refname:short))' refs/remotes/)"
-	for (( i = 0 ; i < ${#branches[@]} ; i++ ))
-	do
-		if [ $i -le "9" ] ; then
-			index="  "$i
-		elif [ $i -le "99" ] ; then
-			index=" "$i
-		else
-			index=$i
-		fi
-		echo "$index: " ${remotes[$i]}
-		# yadda yadda
-	done
-	echo ${I}"Choose a remote (or just hit enter to abort):"
-	read remote
-	echo ${X}
+# echo ${H2}
+# echo "Would you like to push? y (n)"
+# echo ${X}
+# read YorN
+# if [ "$YorN" = "y" ]
+# 	then
+# 	echo ${O}"------------------------------------------------------------------------------------"
+# 	echo "Choose a remote (or just hit enter to abort):"
+# 	echo "------------------------------------------------------------------------------------"
+# 	remotes=()
+# # 	#eval "$(git for-each-ref --shell --format='branches+=(%(refname:short))' refs/heads/)"
+# 	eval "$(git for-each-ref --shell --format='remotes+=(%(refname:short))' refs/remotes/)"
+# 	lastone=""
+# 	num=0
+# 	for (( i = 0 ; i < ${#remotes[@]} ; i++ ))
+# 	do
+# 		remote=$(echo ${remotes[$i]} | sed 's/[a-zA-Z0-9\-]+(\/\{1\}[a-zA-Z0-9\-]+)//p')
+# 		if [ "$lastone" != "$remote" ]
+# 			then
+# 			if [ $i -le "9" ] ; then
+# 				index="  "$i
+# 			elif [ $i -le "99" ] ; then
+# 				index=" "$i
+# 			else
+# 				index=$i
+# 			fi
+# 			echo "$index: $remote"
+# 		else
+# 			echo "$remote == $lastone"
+# 		fi
+# 		lastone=$remote
+
+# # 		# yadda yadda
+# 	done
+# 	echo ${I}"Choose a remote (or just hit enter to abort):"
+# 	read remote
+# 	echo ${X}
+
+# 	remo=$(echo ${remotes[$remote]} | sed 's/\// /')
+# 	echo "remote: $remo"
+# 	chosenremoteexists=`git remote | grep "${remotes[$remote]}"`
+# 	if [ -z "$remote" ] || [ "$remote" = "" ] ; then
+# 		echo ${E}"####################################################################################"
+# 		echo "ABORTING: pushing requires a remote to continue                               "
+# 		echo "####################################################################################"
+# 		echo ${X}
+# 		exit 0
+# 	elif [ -n "$chosenremoteexists" ] ; then
+# 		echo ${h2}"You chose: ${COL_CYAN}${remotes[$remote]}${h2}"
+# 		echo ${X}
+# 		eval "git push ${remotes[$remote]} HEAD"
+
+# 	else
+# 		echo ${E}"You chose: ${COL_CYAN}${remotes[$remote]}${E}"
+# 		echo "404 NOT FOUND. The requested REMOTE /${remotes[$remote]} was not found on this server."
+# 		echo ${X}
+# 	fi
 
 
-	chosenremoteexists=`git remote | grep "${remotes[$remote]}"`
-	if [ -z "$remote" ] || [ "$remote" = "" ] ; then
-		echo ${E}"####################################################################################"
-		echo "ABORTING: pushing requires a remote to continue                               "
-		echo "####################################################################################"
-		echo ${X}
-		exit 0
-	elif [ -n "$chosenremoteexists" ] ; then
-		echo ${h2}"You chose: ${COL_CYAN}${remotes[$remote]}${h2}"
-		echo ${X}
-		eval "git push ${remotes[$remote]} HEAD"
-
-	else
-		echo ${E}"You chose: ${COL_CYAN}${remotes[$remote]}${E}"
-		echo "404 NOT FOUND. The requested REMOTE /${remotes[$remote]} was not found on this server."
-		echo ${X}
-	fi
 
 
 
@@ -148,57 +161,54 @@ if [ "$YorN" = "y" ]
 
 
 
+# 	echo ""
+# 	echo ${O}
+# 	echo "------------------------------------------------------------------------------------"
+# 	echo "# git push $remote HEAD"
+# 	git push $remote HEAD
+# 	echo "------------------------------------------------------------------------------------"
+# 	echo ${X}
+# 	echo
 
 
-	echo ""
-	echo ${O}
-	echo "------------------------------------------------------------------------------------"
-	echo "# git push $remote HEAD"
-	git push $remote HEAD
-	echo "------------------------------------------------------------------------------------"
-	echo ${X}
-	echo
+# 	echo ${H2}
+# 	echo "####################################################################################"
+# 	echo "Status after push:"
+# 	echo "####################################################################################"
+# 	echo ${X}
+
+# 	echo ""
+# 	echo ${O}
+# 	echo "------------------------------------------------------------------------------------"
+# 	echo "# git status"
+# 	#${STYLE_NORM}
+# 	#${STYLE_BRIGHT}
+# 	git status
+# 	echo ${X}
+
+# fi
 
 
-	echo ${H2}
-	echo "####################################################################################"
-	echo "Status after push:"
-	echo "####################################################################################"
-	echo ${X}
-
-	echo ""
-	echo ${O}
-	echo "------------------------------------------------------------------------------------"
-	echo "# git status"
-	#${TEXT_NORM}
-	#${TEXT_BRIGHT}
-	git status
-	echo ${X}
-
-fi
-
-
-echo "Check for remote changes? (y) n"
-echo ""
-read YorN
-if [ "$YorN" = "y" ] || [ "$YorN" = "" ]
-	then
-	
-	echo "NOT ACTUALLY CHECKING FOR CHANGES RIGHT NOW --- TBD LATER"
-fi
+#echo "Check for remote changes? (y) n"
+#echo ""
+#read YorN
+#if [ "$YorN" = "y" ] || [ "$YorN" = "" ]
+#	then
+#	echo "NOT ACTUALLY CHECKING FOR CHANGES RIGHT NOW --- TBD LATER"
+#fi
 
 
 if [ "$clearscreenanswer" = "n" ]; 	then
 	echo "Clear screen? y (n)";
 	read YorN
-	if [ "$YorN" = "" ]
+	if [ -z "$YorN" ] && [ "$YorN" = "" ]
 		then
 		YorN=n
 	fi
 else
 	echo "Clear screen? (y) n"
 	read YorN
-	if [ "$YorN" = "" ]
+	if [ -z "$YorN" ] && [ "$YorN" = "" ]
 		then
 		YorN=y
 	fi
