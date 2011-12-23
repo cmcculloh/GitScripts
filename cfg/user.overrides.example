@@ -22,3 +22,7 @@ export PROMPT_DATE=${COL_GREEN}
 
 # I already have shortcuts for native Git commands...
 export exclude_git_aliases="true"
+
+
+# Change default clear screen question answer to yes
+export clearscreenanswer="y"

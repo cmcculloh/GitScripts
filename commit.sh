@@ -101,7 +101,54 @@ echo ${X}
 read YorN
 if [ "$YorN" = "y" ]
 	then
-	remote=$(git remote | head -1)
+	echo ${O}"------------------------------------------------------------------------------------"
+	echo "Choose a remote (or just hit enter to abort):"
+	echo "------------------------------------------------------------------------------------"
+	remotes=()
+	#eval "$(git for-each-ref --shell --format='branches+=(%(refname:short))' refs/heads/)"
+	eval "$(git for-each-ref --shell --format='remotes+=(%(refname:short))' refs/remotes/)"
+	for (( i = 0 ; i < ${#branches[@]} ; i++ ))
+	do
+		if [ $i -le "9" ] ; then
+			index="  "$i
+		elif [ $i -le "99" ] ; then
+			index=" "$i
+		else
+			index=$i
+		fi
+		echo "$index: " ${remotes[$i]}
+		# yadda yadda
+	done
+	echo ${I}"Choose a remote (or just hit enter to abort):"
+	read remote
+	echo ${X}
+
+
+	chosenremoteexists=`git remote | grep "${remotes[$remote]}"`
+	if [ -z "$remote" ] || [ "$remote" = "" ] ; then
+		echo ${E}"####################################################################################"
+		echo "ABORTING: pushing requires a remote to continue                               "
+		echo "####################################################################################"
+		echo ${X}
+		exit 0
+	elif [ -n "$chosenremoteexists" ] ; then
+		echo ${h2}"You chose: ${COL_CYAN}${remotes[$remote]}${h2}"
+		echo ${X}
+		eval "git push ${remotes[$remote]} HEAD"
+
+	else
+		echo ${E}"You chose: ${COL_CYAN}${remotes[$remote]}${E}"
+		echo "404 NOT FOUND. The requested REMOTE /${remotes[$remote]} was not found on this server."
+		echo ${X}
+	fi
+
+
+
+
+
+
+
+
 
 	echo ""
 	echo ${O}
@@ -141,10 +188,24 @@ if [ "$YorN" = "y" ] || [ "$YorN" = "" ]
 fi
 
 
+if [ "$clearscreenanswer" = "n" ]
+	then
+	echo "Clear screen? y (n)"
+	read YorN
+	if[ "$YorN" = "" ]
+		then
+		YorN=n
+	fi
+else
+	echo "Clear screen? (y) n"
+	read YorN
+	if[ "$YorN" = "" ]
+		then
+		YorN=y
+	fi
+fi
 
-echo "Clear screen? (y) n"
-read YorN
-if [ "$YorN" = "y" ] || [ "$YorN" = "" ]
+if [ "$YorN" = "y" ]
 	then
 
 	echo ""
@@ -152,6 +213,7 @@ if [ "$YorN" = "y" ] || [ "$YorN" = "" ]
 	echo ""
 	clear
 fi
+
 
 
 
