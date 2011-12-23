@@ -18,26 +18,6 @@
 #	dependencies@
 ## */
 
-#if [ -f /etc/bashrc ]; then
-#	. /etc/bashrc
-#fi
-
-
-# If not running interactively, don't do anything
-#[ -z "$PS1" ] && return
-
-
-# The simplest, and perhaps most useful ANSI escape sequence
-# is bold text:
-#
-# \033[1m ... \033[0m.
-#
-# The \033 represents an escape, the "[1" turns on the bold
-# attribute, while the "[0" switches it off.
-#
-# The "m" terminates each term of the escape sequence.
-
-source ${gitscripts_path}set-bash-colors.sh
 
 echo
 echo ${H1}"####################################################################################"
@@ -57,25 +37,11 @@ echo
 #########################################################################################################################
 #custom functions
 #########################################################################################################################
-source ${gitscripts_path}gsfunctions.sh
+#source ${gitscripts_path}gsfunctions.sh
 
 ## functions defined in the script above cannot be referenced within other scripts unless somehow "exported" so
 ## we assign variables that source the script as a convenience
-export loadfuncs="source ${gitscripts_path}gsfunctions.sh"
-alias cb=__parse_git_branch
-export cbranch=$(cb)
-
-
-#########################################################################################################################
-#bring in the bash completion stuff
-#########################################################################################################################
-source ${gitscripts_path}bash_completion
-
-
-#########################################################################################################################
-#bring in the bashmarks stuff
-#########################################################################################################################
-source ${gitscripts_path}bashmarks.sh
+#export loadfuncs="source ${gitscripts_path}gsfunctions.sh"
 
 
 # don't put duplicate lines in the history. See bash(1) for more options
@@ -96,10 +62,6 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
- debian_chroot=$(cat /etc/debian_chroot)
-fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
@@ -122,134 +84,13 @@ if [ -n "$force_color_prompt" ]; then
  fi
 fi
 
-if [ "$color_prompt" = yes ]; then
- PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-else
- PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
-unset color_prompt force_color_prompt
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
- PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
- ;;
-*)
- ;;
-esac
-
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
- test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
- alias ls='ls --color=auto'
- #alias dir='dir --color=auto'
- #alias vdir='vdir --color=auto'
-
- alias grep='grep --color=auto'
- alias fgrep='fgrep --color=auto'
- alias egrep='egrep --color=auto'
-fi
 
 # some more ls aliases
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
-
-
-# the word test is reserved
-alias testecho="echo this is a test: ${gitscripts_path}"
-
-
-
 alias cd..="cd .."
 alias cls="clear"
-alias llcoolj="echo \"I'm BAAAD\""
-alias hammer="${gitscripts_path}hammertime.sh"
-alias aliases="cat ${gitscripts_path}aliases.txt"
-
-
-
-
-
-
-
-#########################################################################################################################
-#custom console
-#########################################################################################################################
-#PS1='\[\033]0;$MSYSTEM:\w\007
-#${COL_GREEN}\u@\h${COL_YELLOW} \d \t ${TEXT_BRIGHT}${COL_MAG}$(__git_ps1)
-#${COL_CYAN}\w${COL_NORM}
-#${TEXT_NORM}$ '
-PS1='\[\033]0;$MSYSTEM:\w\007
-${COL_VIOLET}\d \t${COL_NORM}
-${COL_CYAN}\w${COL_NORM}${COL_GREEN}$(__git_ps1)${COL_NORM}
-${COL_YELLOW}$(__parse_git_branch)${COL_NORM}
-${COL_RED}\u@\h${COL_NORM}
-$ '
-
-
-
-
-#########################################################################################################################
-#gitscripts
-#########################################################################################################################
-alias pullscripts="source ${gitscripts_path}pullscripts.sh"
-alias pushscripts="source ${gitscripts_path}pushscripts.sh"
-alias refresh_bash_profile="source ${gitscripts_path}refresh_bash_profile.sh"
-
-
-
-
-#########################################################################################################################
-#automated deploys
-#########################################################################################################################
-#not verified to be working right now, commented out just in case...
-#alias prodDeploy="${deploys_path}prodDeploy.sh"
-
-
-
-#vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv#
-#git stuff
-#########################################################################################################################
-##basic
-#########################################################################################################################
-alias addall="git add -A"
-
-# this is interfering with bashmarks
-#alias g="git"
-
-alias reset="git reset --hard"
-alias move="git mv"
-alias add="git add"
-#alias push="git push $1 $2"
-alias branch="git branch"
-alias status="git status"
-alias fetch="git fetch --all --prune"
-#alias pull="git pull $1 $2"
-
-
-#########################################################################################################################
-##advanced
-#########################################################################################################################
-alias commit="${gitscripts_path}commit.sh"
-alias showlog="${gitscripts_path}showlog.sh"
-alias gitdiff="${gitscripts_path}showlog.sh"
-alias rungitdiff="${gitscripts_path}run-gitdiff.sh"
-alias gitdifftool="${gitscripts_path}gitdifftool.sh"
-alias checkout="${gitscripts_path}checkout.sh"
-alias fastcheckout="${gitscripts_path}checkout-fast.sh"
-alias merge="${gitscripts_path}merge.sh"
-alias mergemaster="${gitscripts_path}mergemaster.sh"
-alias mergemasterinto="${gitscripts_path}mergemaster.sh"
-alias new="${gitscripts_path}new.sh"
-alias delete="${gitscripts_path}delete.sh"
-alias updatecore="${gitscripts_path}update-core-branches.sh"
-alias clean-branches="${gitscripts_path}clean-branches.sh"
-alias contains="${gitscripts_path}contains.sh"
-alias snap="${gitscripts_path}snapback.sh"
-alias exports="${gitscripts_path}exportchanges.sh"
-alias gitscripts="${gitscripts_path}gitscripts.sh"
-alias copyit="${gitscripts_path}copy_it.sh"
 
 
 #########################################################################################################################
@@ -280,6 +121,7 @@ type -P ant &>/dev/null     && echo "Found ANT"     			|| alias ant="${ANT_HOME}
 #########################################################################################################################
 alias flhome="cd ${finishline_path}"
 alias mediahome="cd ${media_path}"
+alias flscriptshome="cd ${flscripts_path}"
 alias gitscriptshome="cd ${gitscripts_path}"
 alias deployhome="cd ${deploys_path}"
 alias buildhome="cd ${builds_path}"
@@ -338,10 +180,12 @@ alias allexportchanges="ant ${ANT_ARGS} export-changes -buildfile ${builds_path}
 #########################################################################################################################
 # Utilities and Miscellaneous
 #########################################################################################################################
-alias branch="${gitscripts_path}grepbranch.sh"
-alias fixbranch="${gitscripts_path}fixbranch.sh"
-alias gsman="${gitscripts_path}gsman.sh"
-alias phone="${gitscripts_path}phone.sh"
+alias fixbranch="${flscripts_path}fixbranch.sh"
+alias phone="${flscripts_path}phone.sh"
+alias switchenv="${flscripts_path}/switchenvironment.sh"
+alias whichenv="${flscripts_path}/whichenvironment.sh"
+alias refresh_bash_profile="${flscripts_path}refresh_bash_profile.sh"
+alias varsreset="source ${flscripts_path}vars_reset.sh"
 
-alias syncmywork="/d/workspaces/helios_workspace/myscripts/syncmyapp.sh"
-alias synctree="/d/workspaces/helios_workspace/myscripts/synctree.sh"
+#alias syncmywork="/d/workspaces/helios_workspace/myscripts/syncmyapp.sh"
+#alias synctree="/d/workspaces/helios_workspace/myscripts/synctree.sh"
