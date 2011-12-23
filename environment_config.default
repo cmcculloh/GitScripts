@@ -84,8 +84,13 @@
 [ -n "$ANT_CONTRIB_HOME" ] || export ANT_CONTRIB_HOME="${JAVA_DEV_HOME}ant-contrib/"
 [ -n "$YUI_COMPRESSOR_HOME" ] || export YUI_COMPRESSOR_HOME="${JAVA_DEV_HOME}yuicompressor-2.4.2/build"
 [ -n "$ANT_LIB" ] || export ANT_LIB="${YUI_COMPRESSOR_HOME}/"
-[ -n "$ANT_OPTS" ] || export ANT_OPTS="-Xms64m -Xmx512m -Duser.language=en -XX:PermSize=128M -XX:MaxPermSize=256M "
-[ -n "$ANT_ARGS" ] || export ANT_ARGS="-lib ${ANT_LIB} -quiet -Dmyenvironment=${myenvironment} -Dproject.workspace=${project_workspace} -Dmainprojectname=${mainprojectname} -Dmediaprojectname=${mediaprojectname} -Dbuildsprojectname=${buildsprojectname} -Dpath.git-exec=${GIT_EXEC} -DANT_HOME=${ANT_HOME}"
+[ -n "$ANT_OPTS" ] || export ANT_OPTS=" -Xms128m -Xmx512m -Duser.language=en -XX:PermSize=128M -XX:MaxPermSize=256M "
+#[ -n "$ANT_ARGS" ] || export ANT_ARGS=" -lib ${ANT_LIB} -quiet -Dmyenvironment=${myenvironment} -Dproject.workspace=${project_workspace} -Dmainprojectname=${mainprojectname} -Dmediaprojectname=${mediaprojectname} -Dbuildsprojectname=${buildsprojectname} -Dpath.git-exec=${GIT_EXEC} -DANT_HOME=${ANT_HOME}"
+[ -n "$ANT_ARGS" ] || export ANT_ARGS=" -lib ${ANT_LIB} -Dmyenvironment=${myenvironment} -Dproject.workspace=${project_workspace} -Dmainprojectname=${mainprojectname} -Dmediaprojectname=${mediaprojectname} -Dbuildsprojectname=${buildsprojectname} -Dpath.git-exec=${GIT_EXEC} -DANT_HOME=${ANT_HOME}"
+
+
+
+
 
 
 # JBoss Settings

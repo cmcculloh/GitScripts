@@ -2,8 +2,6 @@
 # merge
 # merges one git branch into another
 
-. /etc/git-completion.bash
-
 
 TEXT_BRIGHT=$'\033[1m'
 TEXT_DIM=$'\033[2m'
@@ -20,7 +18,7 @@ COL_NORM=$'\033[39m'
 current_branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
 
 echo "##########################################"
-echo "Merging from ${COL_YELLOW}$1${COL_NORM} into ${COL_CYAN}$3${COL_NORM}"
+echo "Pushing ${COL_YELLOW}$1${COL_NORM} up to the remote ${COL_CYAN}$3${COL_NORM}"
 echo "##########################################"
 echo
 echo

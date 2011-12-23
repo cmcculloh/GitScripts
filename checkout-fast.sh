@@ -149,8 +149,8 @@ else
 			echo
 			echo "Merging $remote/master into ${COL_CYAN}$1${COL_NORM}"
 			echo
-			echo "git merge $remote/master"
-			git merge $remote/master
+			echo "git merge --no-ff  $remote/master"
+			git merge --no-ff  $remote/master
 	fi
 
 	echo
