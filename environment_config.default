@@ -40,7 +40,7 @@ fi
 # (e.g. C:\...) being mounted at / we know the OS is Windows.
 
 if [ -z "$GIT_INSTALL" ] || [ -z "$GIT_ETC" ]; then
-	winGitpath=$(mount | awk -f ${gitscripts_path}awk/findgit.awk)
+	winGitpath=$(mount | awk -f ${flgitscripts_path}awkscripts/findgit.awk)
 	if [ -n "${winGitpath}" ]; then
 		# Windows
 		export GIT_INSTALL="${winGitpath}/"
