@@ -23,29 +23,6 @@
 
 #MINGW32_NT-6.1
 
-# OS specific support (must be 'true' or 'false').
-linux=false
-darwin=false;
-windows=false;
-system_type="unset";
-case "`uname`" in
-    MINGW32*)
-        windows=true
-        system_type="windows"
-        ;;
-
-    Linux*)
-        linux=true
-        system_type="linux"
-        ;;
-
-    Darwin*)
-        darwin=true
-        system_type="darwin"
-        ;;
-esac
-
-
 
 # Setup FLGitScripts Home
 if [ "x$flgitscripts_path" = "x" ]; then
@@ -65,13 +42,46 @@ if [ "x$flgitscripts_path" = "x" ]; then
 fi
 export flgitscripts_path
 
+# OS specific support (must be 'true' or 'false').
+linux=false
+darwin=false;
+windows=false;
+SYSTEM_TYPE="unset";
+case "`uname`" in
+    MINGW32*)
+        windows=true
+        system_type="windows"
+        ;;
+
+    Linux*)
+        linux=true
+        system_type="linux"
+        ;;
+
+    Darwin*)
+        darwin=true
+        system_type="darwin"
+        ;;
+esac
+
+export SYSTEM_TYPE
 
 # bring in gitscripts
 if [ -s "${flgitscripts_path}gitscripts/_gsinit.sh" ]; then
 	source "${flgitscripts_path}gitscripts/_gsinit.sh"
 else
-	echo "GitScripts can't be found!"
+	echo ${E}"####################################################################################"
+	echo "Error setting flgitscripts environment_config.default: GitScripts can't be found!                               "
+	echo "####################################################################################"
+	echo ${X}
+	echo ""
 fi
+
+
+native_bash_profile_path="${HOME}/.bashrc"
+native_bash_profile_extras_path="${HOME}/.bash_extras.d/"
+native_gitscripts_bash_profile_path="${native_bash_profile_extras_path}gitscripts_profile"
+native_gitscripts_bash_motd_path="${native_bash_profile_extras_path}gitscripts_motd"
 
 
 # Program-specific
@@ -108,7 +118,7 @@ fi
 [ -n "$awkdir" ] || export awkdir="${flgitscripts_path}awkscripts/"
 [ -n "$tempdir" ] || export tempdir="${flgitscripts_path}temp/"
 [ -n "$tmp" ] || export tmp="${tempdir}tmp"
-[ -n "$flscripts_temp_bash_profile_path" ] || export flscripts_temp_bash_profile_path="${tempdir}temp_bash_profile"
+[ -n "$flgitscripts_temp_bash_profile_path" ] || export flgitscripts_temp_bash_profile_path="${tempdir}temp_bash_profile"
 
 
 # Project-specific
