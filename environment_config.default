@@ -112,7 +112,7 @@ fi
 
 
 
-if [ $SYSTEM_TYPE == "linux" ]; then 
+if [ $SYSTEM_TYPE == "linux" ]; then
 	echo "We are on Linux";
 	PROGRAMS_ROOT=/usr/bin/
 
@@ -123,16 +123,16 @@ if [ $SYSTEM_TYPE == "linux" ]; then
 	export native_bash_profile_extras_path
 	export native_gitscripts_bash_profile_path
 
-	type firefox &>/dev/null && { 
-		echo "firefox found."; echo "No need to re-set."; 
-	} || { 
-		echo "firefox was NOT found."; 
-		echo "Will check to see if command exists  and if not, we will set an alias."; 
+	type firefox &>/dev/null && {
+		echo "firefox found."; echo "No need to re-set.";
+	} || {
+		echo "firefox was NOT found.";
+		echo "Will check to see if command exists  and if not, we will set an alias.";
 
-		type -P firefox &>/dev/null && { 
-			echo "firefox command found, no need to re-set."; 
-		} || { 
-			echo "firefox command was NOT found."; echo "We need to set it."; 
+		type -P firefox &>/dev/null && {
+			echo "firefox command found, no need to re-set.";
+		} || {
+			echo "firefox command was NOT found."; echo "We need to set it.";
 			[ -n "$firefox" ] || firefox="${PROGRAMS_ROOT}"firefox
 		}
 
@@ -141,7 +141,7 @@ if [ $SYSTEM_TYPE == "linux" ]; then
 	[ -n "$chromium" ] || chromium="${PROGRAMS_ROOT}"chromium-browser
 	[ -n "$default_browser" ] || default_browser="${chrome}"
 	[ -n "$eclipse_home" ] || eclipse_home="${PROGRAMS_ROOT}"eclipse
-	
+
 	# Workspace-specific
 	[ -n "$development_root" ] || export development_root="${HOME}/Development/workspaces/"
 	[ -n "$workspace_name" ] || export workspace_name="ubuntu_galileo_workspace"
@@ -154,14 +154,14 @@ if [ $SYSTEM_TYPE == "linux" ]; then
 
 
 elif [ $SYSTEM_TYPE == "darwin" ]; then
-	echo "We are on Darwin"; 
+	echo "We are on Darwin";
 
 elif [ $SYSTEM_TYPE == "windows" ]; then
-	echo "We are on Windows"; 
+	echo "We are on Windows";
 	PROGRAMS_ROOT=/c/Program\ Files\ \(x86\)/
 	[ -n "$native_bash_profile_path" ] || export native_bash_profile_path="${GIT_ETC}bash_profile"
 	[ -n "$native_gitscripts_bash_profile_path" ] || export native_gitscripts_bash_profile_path="${native_bash_profile_path}"
-		
+
 	# Program-specific
 	[ -n "$programs_root" ] || programs_root=/c/Program\ Files\ \(x86\)/
 	[ -n "$firefox" ] || firefox="${programs_root}"Mozilla\ Firefox/firefox.exe
@@ -173,7 +173,7 @@ elif [ $SYSTEM_TYPE == "windows" ]; then
 	[ -n "$textpad_home" ] || textpad_home="${programs_root}TextPad 5/"
 	[ -n "$natural_docs_home" ] || natural_docs_home="/d/java_dev/NaturalDocs-1.5"
 
-	
+
 	# Workspace-specific
 	[ -n "$development_root" ] || export development_root="/d/workspaces/"
 	[ -n "$workspace_name" ] || export workspace_name="helios_workspace"
@@ -191,7 +191,6 @@ fi
 
 
 # Workspace-specific
-[ -n "$native_bash_profile_path" ] || native_bash_profile_path="${GIT_ETC}bash_profile"
 [ -n "$buildsprojectname" ] || export buildsprojectname="builds"
 [ -n "$mainprojectname" ] || export mainprojectname="finishline"
 [ -n "$mediaprojectname" ] || export mediaprojectname="finishline_media"
