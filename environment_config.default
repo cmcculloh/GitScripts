@@ -21,8 +21,8 @@
 ## */
 
 # bring in gitscripts
-if [ -s "${flscripts_path}gitscripts/_gsinit.sh" ]; then
-	source "${flscripts_path}gitscripts/_gsinit.sh"
+if [ -s "${flgitscripts_path}gitscripts/_gsinit.sh" ]; then
+	source "${flgitscripts_path}gitscripts/_gsinit.sh"
 else
 	echo "GitScripts can't be found!"
 fi
@@ -45,7 +45,7 @@ fi
 [ -n "$buildsprojectname" ] || export buildsprojectname="builds"
 [ -n "$mainprojectname" ] || export mainprojectname="finishline"
 [ -n "$mediaprojectname" ] || export mediaprojectname="finishline_media"
-[ -n "$flscriptsprojectname" ] || export flscriptsprojectname="flscripts"
+[ -n "$flscriptsprojectname" ] || export flgitscriptsprojectname="flgitscripts"
 [ -n "$development_root" ] || export development_root="/d/workspaces/"
 [ -n "$workspace_path" ] || export workspace_path="${development_root}helios_workspace/"
 [ -n "$project_workspace" ] || export project_workspace="${development_root}helios_workspace"
@@ -57,19 +57,18 @@ fi
 [ -n "$csr_path" ] || export csr_path="${workspace_path}finishline_csr/"
 [ -n "$promo_editor_path" ] || export promo_editor_path="${workspace_path}promo_editor/"
 [ -n "$naturaldocs_path" ] || export naturaldocs_path="${workspace_path}naturaldocs/"
-[ -n "$inputdir" ] || export inputdir="${flscripts_path}input/"
-[ -n "$outputdir" ] || export outputdir="${flscripts_path}output/"
-[ -n "$awkdir" ] || export awkdir="${flscripts_path}awkscripts/"
-[ -n "$tempdir" ] || export tempdir="${flscripts_path}temp/"
+[ -n "$inputdir" ] || export inputdir="${flgitscripts_path}input/"
+[ -n "$outputdir" ] || export outputdir="${flgitscripts_path}output/"
+[ -n "$awkdir" ] || export awkdir="${flgitscripts_path}awkscripts/"
+[ -n "$tempdir" ] || export tempdir="${flgitscripts_path}temp/"
 [ -n "$tmp" ] || export tmp="${tempdir}tmp"
-[ -n "$flscripts_temp_bash_profile_path" ] || export flscripts_temp_bash_profile_path="${tempdir}temp_bash_profile"
+[ -n "$flgitscripts_temp_bash_profile_path" ] || export flgitscripts_temp_bash_profile_path="${tempdir}temp_bash_profile"
 
 
 # Project-specific
 [ -n "$webappwar" ] || export webappwar="${finishline_path}modules/base/j2ee-apps/base/web-app.war/"
 [ -n "$myenvironment" ] || export myenvironment="workstation-windows"
 [ -n "$promosdir" ] || export promosdir="${webappwar}global/promos/"
-[ -n "$buildsImportsPath" ] || export buildsImportsPath="${buildsprom}global/promos/"
 [ -n "$mediaLandingPagesPath" ] || export mediaLandingPagesPath="${workspace_path}${mediaprojectname}/media/landing-pages/"
 
 
