@@ -35,7 +35,7 @@ cp -p -f "${flgitscripts_temp_bash_profile_path}" "${native_gitscripts_bash_prof
 
 
 echo "	> Sourcing native_gitscripts_bash_profile_path (${native_gitscripts_bash_profile_path})"
-#source "${native_gitscripts_bash_profile_path}"
+source "${native_gitscripts_bash_profile_path}"
 
 echo
 echo ${TEXT_BRIGHT}"Your bash profile has been refreshed!"${X}
