@@ -27,13 +27,6 @@
 #[ -z "$PS1" ] && return
 
 
-<<<<<<< HEAD
-=======
-##/*
-# @author chris corwin
-# @// this would not get spit out
-# @desc
->>>>>>> unified-gitscripts-no-github
 # The simplest, and perhaps most useful ANSI escape sequence
 # is bold text:
 #
@@ -70,8 +63,8 @@ source ${gitscripts_path}gsfunctions.sh
 ## functions defined in the script above cannot be referenced within other scripts unless somehow "exported" so
 ## we assign variables that source the script as a convenience
 export loadfuncs="source ${gitscripts_path}gsfunctions.sh"
-alias cb=__parse_git_branch
-export cbranch=$(cb)
+#alias cb=__parse_git_branch
+#export cbranch=$(cb)
 
 
 #########################################################################################################################
@@ -191,20 +184,20 @@ alias aliases="cat ${gitscripts_path}aliases.txt"
 
 
 
-GIT_PS1_SHOWDIRTYSTATE=true
-GIT_PS1_SHOWUNTRACKEDFILES=true
-###############################################################################
-#custom __parse_git_branch function
-###############################################################################
-function __parse_git_branch {
-  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
-}
-PS1='\[\033]0;$MSYSTEM:\w\007
-${COL_VIOLET}\d \t${COL_NORM}
-${COL_CYAN}\w${COL_NORM}${COL_GREEN}$(__git_ps1)${COL_NORM}
-${COL_YELLOW}$(__parse_git_branch)${COL_NORM}
-${COL_RED}\u@\h${COL_NORM}
-$ '
+# GIT_PS1_SHOWDIRTYSTATE=true
+# GIT_PS1_SHOWUNTRACKEDFILES=true
+# ###############################################################################
+# #custom __parse_git_branch function
+# ###############################################################################
+# function __parse_git_branch {
+#   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+# }
+# PS1='\[\033]0;$MSYSTEM:\w\007
+# ${COL_VIOLET}\d \t${COL_NORM}
+# ${COL_CYAN}\w${COL_NORM}${COL_GREEN}$(__git_ps1)${COL_NORM}
+# ${COL_YELLOW}$(__parse_git_branch)${COL_NORM}
+# ${COL_RED}\u@\h${COL_NORM}
+# $ '
 
 
 
