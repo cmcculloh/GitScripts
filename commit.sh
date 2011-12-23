@@ -178,14 +178,13 @@ if [ "$YorN" = "y" ]
 fi
 
 
-echo "Check for remote changes? (y) n"
-echo ""
-read YorN
-if [ "$YorN" = "y" ] || [ "$YorN" = "" ]
-	then
-	
-	echo "NOT ACTUALLY CHECKING FOR CHANGES RIGHT NOW --- TBD LATER"
-fi
+#echo "Check for remote changes? (y) n"
+#echo ""
+#read YorN
+#if [ "$YorN" = "y" ] || [ "$YorN" = "" ]
+#	then
+#	echo "NOT ACTUALLY CHECKING FOR CHANGES RIGHT NOW --- TBD LATER"
+#fi
 
 
 if [ "$clearscreenanswer" = "n" ]
