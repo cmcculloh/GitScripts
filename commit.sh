@@ -191,14 +191,14 @@ if [ "$clearscreenanswer" = "n" ]
 	then
 	echo "Clear screen? y (n)"
 	read YorN
-	if [ -z "$YorN"] && [ "$YorN" = "" ]
+	if [ -z "$YorN" ] && [ "$YorN" = "" ]
 		then
 		YorN=n
 	fi
 else
 	echo "Clear screen? (y) n"
 	read YorN
-	if [ -z "$YorN"] && [ "$YorN" = "" ]
+	if [ -z "$YorN" ] && [ "$YorN" = "" ]
 		then
 		YorN=y
 	fi
