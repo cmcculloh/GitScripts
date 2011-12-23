@@ -77,6 +77,41 @@ else
 	echo ""
 fi
 
+
+
+# This block is identical in GitScripts, but should GitScripts ever be removed or
+# not found, having it here in a conditional will prevent breakage of flgitscripts.
+#
+# Git for Windows/mysysGit have a different configuration and setup than Git has
+# on Unix. Therefore, some functionality will simply be restricted/accessible based
+# on OS.
+#
+# Both GfW and msysGit mount their home directories on / . If we find a windows path
+# (e.g. C:\...) being mounted at / we know the OS is Windows.
+
+if [ -z "$GIT_INSTALL" ] || [ -z "$GIT_ETC" ]; then
+	winGitpath=$(mount | awk -f ${flgitscripts_path}awkscripts/findgit.awk)
+	if [ -n "${winGitpath}" ]; then
+		# Windows
+		export GIT_INSTALL="${winGitpath}/"
+		export GIT_BIN="${GIT_INSTALL}bin/"
+		export GIT_ETC="${GIT_INSTALL}etc/"
+		export GIT_EXEC="${GIT_BIN}/git.exe"
+
+		# a custom message of the day that replaces the one that comes with Git.
+		# this custom motd replaces Git's unless the $replace_motd variable is set
+		# to anything other than an empty string in user.overrides.
+		[ -n "$native_motd_path" ] || export native_motd_path="${GIT_ETC}motd"
+		[ -n "$gitscripts_motd_path" ] || export gitscripts_motd_path="${gitscripts_path}motd"
+	else
+		# Unix
+		export GIT_ETC="useless for linux"
+		export GIT_EXEC="${GIT_INSTALL}"
+	fi
+fi
+
+
+
 if [ $SYSTEM_TYPE == "linux" ]; then 
 	echo "We are on Linux";
 	PROGRAMS_ROOT=/usr/bin/
@@ -127,28 +162,16 @@ elif [ $SYSTEM_TYPE == "windows" ]; then
 	[ -n "$native_bash_profile_path" ] || export native_bash_profile_path="${GIT_ETC}bash_profile"
 	[ -n "$native_gitscripts_bash_profile_path" ] || export native_gitscripts_bash_profile_path="${native_bash_profile_path}"
 	
-	# Program-specific
-	type firefox &>/dev/null && { 
-		echo "firefox alias found."; echo "No need to re-set."; 
-	} || { 
-		echo "firefox alias was NOT found."; 
-		echo "Will check to see if command exists  and if not, we will set an alias."; 
-
-		type -P firefox &>/dev/null && { 
-			echo "firefox command found, no need to re-set."; 
-		} || { 
-			echo "firefox command was NOT found."; echo "We need to set it."; 
-			[ -n "$firefox" ] || firefox="${PROGRAMS_ROOT}"Mozilla\ Firefox/firefox.exe
-		}
-
-	}
-	[ -n "$chrome" ] || chrome="${HOME}\AppData\Local\Google\Chrome\Application\chrome.exe"
-	[ -n "$default_browser" ] || default_browser="${chrome}"
-	[ -n "$eclipse_home" ] || eclipse_home="/d/Applications/eclipse/"
-	[ -n "$sublime_home" ] || sublime_home="${PROGRAMS_ROOT}"Sublime\ Text/
-	[ -n "$notepad_pp_home" ] || notepad_pp_home="${PROGRAMS_ROOT}Notepad++/"
-	[ -n "$textpad_home" ] || textpad_home="${PROGRAMS_ROOT}TextPad 5/"
-	[ -n "$natural_docs_home" ] || natural_docs_home="/d/java_dev/NaturalDocs-1.5"
+# Program-specific
+[ -n "$programs_root" ] || programs_root=/c/Program\ Files\ \(x86\)/
+[ -n "$firefox" ] || firefox="${programs_root}"Mozilla\ Firefox/firefox.exe
+[ -n "$chrome" ] || chrome="${HOME}\AppData\Local\Google\Chrome\Application\chrome.exe"
+[ -n "$default_browser" ] || default_browser="${chrome}"
+[ -n "$eclipse_home" ] || eclipse_home="/d/Applications/eclipse/"
+[ -n "$sublime_home" ] || sublime_home="${programs_root}"Sublime\ Text/
+[ -n "$notepad_pp_home" ] || notepad_pp_home="${programs_root}Notepad++/"
+[ -n "$textpad_home" ] || textpad_home="${programs_root}TextPad 5/"
+[ -n "$natural_docs_home" ] || natural_docs_home="/d/java_dev/NaturalDocs-1.5"
 
 	
 	# Workspace-specific
@@ -168,6 +191,7 @@ fi
 
 
 # Workspace-specific
+[ -n "$native_bash_profile_path" ] || native_bash_profile_path="${GIT_ETC}bash_profile"
 [ -n "$buildsprojectname" ] || export buildsprojectname="builds"
 [ -n "$mainprojectname" ] || export mainprojectname="finishline"
 [ -n "$mediaprojectname" ] || export mediaprojectname="finishline_media"
@@ -194,7 +218,6 @@ fi
 [ -n "$webappwar" ] || export webappwar="${finishline_path}modules/base/j2ee-apps/base/web-app.war/"
 # moved up above! [ -n "$myenvironment" ] || export myenvironment="workstation-windows"
 [ -n "$promosdir" ] || export promosdir="${webappwar}global/promos/"
-[ -n "$buildsImportsPath" ] || export buildsImportsPath="${buildsprom}global/promos/"
 [ -n "$mediaLandingPagesPath" ] || export mediaLandingPagesPath="${workspace_path}${mediaprojectname}/media/landing-pages/"
 
 
