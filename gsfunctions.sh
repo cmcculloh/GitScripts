@@ -1,5 +1,9 @@
 function __parse_git_branch {
- git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+	if [ "$windows" == "true" ]; then
+		git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+	else
+		git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/\* (.*)/\1/'
+	fi
 }
 
 
