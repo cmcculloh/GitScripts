@@ -1,9 +1,6 @@
 #!/bin/bash
+$loadfuncs
 
-
-function __parse_git_branch {
- git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
-}
 
 #http://stackoverflow.com/questions/2657935/checking-for-a-dirty-index-or-untracked-files-with-git
 function evil_git_num_untracked_files {

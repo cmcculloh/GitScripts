@@ -46,7 +46,7 @@ if [ -z "$1" ] || [ "$1" = " " ]
 	elif [ "$decision" = "r" ] || [ "$decision" = "R" ] ; then
 		echo ${O}"------------------------------------------------------------------------------------"
 		echo "Choose a remote branch (or just hit enter to abort):"
-		echo "------------------------------------------------------------------------------------"			
+		echo "------------------------------------------------------------------------------------"
 		remotebranches=()
 		eval "$(git for-each-ref --shell --format='remotebranches+=(%(refname:short))' refs/remotes/)"
 		for (( i = 0 ; i < ${#remotebranches[@]} ; i++ ))
@@ -63,7 +63,7 @@ if [ -z "$1" ] || [ "$1" = " " ]
 		echo "------------------------------------------------------------------------------------"${X}
 		echo ${I}"------------------------------------------------------------------------------------"
 		echo "Choose a remote branch (or just hit enter to abort):"
-		echo "------------------------------------------------------------------------------------"			
+		echo "------------------------------------------------------------------------------------"
 		read decision2
 		echo ${X}
 		chosenBranchName2=${remotebranches[$decision2]}
@@ -93,7 +93,7 @@ if [ -z "$1" ] || [ "$1" = " " ]
 		echo "Not sure what to do, as that does not appear to be a valid branch. Aborting."
 		echo ${X}
 	fi
-		
+
 
 	echo ${X}
 	exit -1
@@ -115,7 +115,7 @@ if [ -n "$branchexists" ]
 	then
 
 	#make sure the branch is not a protected branch (meaning, one you should always delete to protect against forced updates)
-	branchprotected=`grep "$1" ${gitscripts_path}../protected_branches_nomergefrom ${gitscripts_path}../protected_branches_nomergeto`
+	#branchprotected=`grep "$1" ${gitscripts_path}../protected_branches_nomergefrom ${gitscripts_path}../protected_branches_nomergeto`
 	if [ -n "$branchprotected" ]
 		then
 		echo "delete your local copy of $1,"
