@@ -3,16 +3,17 @@
 # checks to see which other branches the branch you specify has merged into it
 
 branchtocheck=$1
-if [ -z "$branchtocheck" ]
-	then
-	#use current branch if none specifid
-	branchtocheck=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+if [ -z "$branchtocheck" ]; then
+	#use current branch if none specified
+	$loadfuncs
+	branchtocheck=$(__parse_git_branch)
 fi
 
-echo "##########################################"
-echo "Running contains on ${COL_CYAN}$branchtocheck${COL_NORM}"
-echo "##########################################"
 echo
+echo ${H2}${H1HL}
+echo "Running contains on: $branchtocheck  "
+echo ${H1HL}
+echo ${X}
 echo
 
 echo "The following branches contain the lateset version of ${COL_CYAN}$branchtocheck${COL_NORM}"
@@ -21,7 +22,7 @@ git branch --contains $branchtocheck
 echo
 echo
 echo "the following branches ${COL_CYAN}do not${COL_NORM} contain the latest version of ${COL_CYAN}$branchtocheck${COL_NORM}"
-echo "----------------------------------------------"
+echo ${H2HL}
 allbranches=`git branch`
 for branch in $allbranches
 do
@@ -35,5 +36,5 @@ do
 		fi
 	fi
 done
-echo "----------------------------------------------"
+echo ${H2HL}
 

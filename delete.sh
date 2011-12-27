@@ -1,6 +1,15 @@
-echo "##########################################"
-echo Deleting new branch $1
-echo "##########################################"
+
+$loadfuncs
+
+if [ -z "$1" ]; then
+	__bad_usage delete "Branch name to delete is required as the only parameter."
+	exit 1
+fi
+
+echo
+echo ${H1}${H1HL}
+echo "Deleting branch: $1"
+echo ${H1HL}{X}
 
 echo
 echo

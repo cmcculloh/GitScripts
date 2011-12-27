@@ -111,20 +111,21 @@ function __parse_git_branch {
 #	examples@
 ## */
 function __parse_git_branch_state {
-	export __gitstatus=`git status 2> /dev/null`
+	export __GS_GITSTATUS=`git status 2> /dev/null`
+
 	# ahead=`    echo -n "${status}" 2> /dev/null | grep -q "Your branch is ahead of" 2> /dev/null; echo "$?"`
-	ahead=`__parse_git_status ahead`
 	# dirty=`    echo -n "${status}" 2> /dev/null | grep -q "Changed but not updated" 2> /dev/null; echo "$?"`
-	dirty=`__parse_git_status dirty`
 	# modified=`  echo -n "${status}" 2> /dev/null | grep -q "modified:" 2> /dev/null; echo "$?"`
-	modified=`__parse_git_status modified`
 	# newfile=`  echo -n "${status}" 2> /dev/null | grep -q "new file:" 2> /dev/null; echo "$?"`
-	newfile=`__parse_git_status newfile`
 	# renamed=`  echo -n "${status}" 2> /dev/null | grep -q "renamed:" 2> /dev/null; echo "$?"`
-	renamed=`__parse_git_status renamed`
 	# staged=` echo -n "${status}" 2> /dev/null | grep -q "Changes to be committed" 2> /dev/null; echo "$?"`
-	staged=`__parse_git_status staged`
 	# untracked=`echo -n "${status}" 2> /dev/null | grep -q "Untracked files" 2> /dev/null; echo "$?"`
+	ahead=`__parse_git_status ahead`
+	dirty=`__parse_git_status dirty`
+	modified=`__parse_git_status modified`
+	newfile=`__parse_git_status newfile`
+	renamed=`__parse_git_status renamed`
+	staged=`__parse_git_status staged`
 	untracked=`__parse_git_status untracked`
 	bits=''
 
@@ -201,7 +202,8 @@ function __parse_git_status {
 
 	esac
 
-	# export searchstr
-	echo -n `echo -n "${__gitstatus}" 2> /dev/null | grep -q "$searchstr" 2> /dev/null; echo "$?"`
+	# this function is called mostly by PS1 and by other scripts. if the latter, must set __GS_GITSTATUS.
+	[ -n "${__GS_GITSTATUS}" ] || export __GS_GITSTATUS=$(git status 2> /dev/null)
+	echo -n `echo -n "${__GS_GITSTATUS}" 2> /dev/null | grep -q "$searchstr" 2> /dev/null; echo "$?"`
 	return 0
 }

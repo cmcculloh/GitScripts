@@ -1,94 +1,108 @@
 #!/bin/bash
+## /*
+#	@usage commit <message> [-aA]
+#
+#	@description
+#	Commits already-staged work to a branch with a few extra benefits. The branch name
+#	is prepended to the commit message so that all commits are easily associated with
+#	their branch. The commit summary message is also automatically suppressed.
+#
+#	Non-staged work can be staged via the available options, which are described below.
+#	description@
+#
+#	@options
+#	-a	Automatically stage modified and deleted files before committing.
+#	-A	Automatically stage ALL tracked/untracked files before committing.
+#	options@
+#
+#	@notes
+#	- The options for this command must come AFTER the message since the -m
+#	option is automatically passed to git commit during processing.
+#	- If there are untracked files in the working tree and the user passes the -a
+#	option, he/she will be prompted to add the untracked files as well.
+#	notes@
+#
+#	@examples
+#	1) commit "I know I added some untracked files, so I'll pass the right option" -A
+#	examples@
+#
+#	@dependencies
+#	gitscripts/gsfunctions.sh
+#	dependencies@
+## */
 $loadfuncs
 
-
-#http://stackoverflow.com/questions/2657935/checking-for-a-dirty-index-or-untracked-files-with-git
-function evil_git_num_untracked_files {
- git status --porcelain 2>/dev/null| grep "^??" | wc -l
-}
-
-startingBranch="$(__parse_git_branch)"
-untrackedfiles="$(evil_git_num_untracked_files)"
+startingBranch=$(__parse_git_branch)
+if [ -z "$startingBranch" ]; then
+	echo ${E}"Unable to determine current branch."${X}
+	exit 1
+fi
 
 
 echo ${H1}
-echo "####################################################################################"
+echo ${H1HL}
 echo "Committing changes to branch ${COL_CYAN}${startingBranch}${COL_NORM}"
-echo "####################################################################################"
+echo ${H1HL}
 echo ${X}
-echo ""
+echo
 
-if [ -n "$2" ]
-	then
+# check to see if user wants to add all modified/deleted files
+if [ -n "$2" ]; then
 
-	if [ "$2" = "-A" ] || [ "$2" = "-a" ]
-		then
+	if [ "$2" == "-A" ] || [ "$2" == "-a" ]; then
 		flag="-a"
+	else
+		__bad_usage commit
+		exit 1
 	fi
 
-	if [ "$2" = "-A" ]
-		then
-		echo "------------------------------------------------------------------------------------"
+	if [ "$2" == "-A" ]; then
+		echo ${H2HL}
 		echo "# git add -A"
 		git add -A
-		echo "------------------------------------------------------------------------------------"
-	elif [ "$2" = "-a" ]
-		then
+		echo ${H2HL}
 
-		if [ $untrackedfiles -gt 0 ]
-			then
-			echo ""
-			echo ${O}
-			echo "------------------------------------------------------------------------------------"
-			echo "# git status"
-			#${STYLE_NORM}
-			#${STYLE_BRIGHT}
-			git status
-			echo ${X}
-
-			echo ""
-			echo "Would you like to run 'git add -A' to add untracked files as well? y (n)"
+	elif [ "$2" == "-a" ]; then
+		# if there are untracked files, user may wish to stage them
+		if [ "$(__parse_git_status untracked)" == "0" ]; then
+			echo
+			echo ${Q}"Would you like to run 'git add -A' to add untracked files as well? y (n)"${X}
 			read yn
-			if [ "$yn" = "y" ]
-				then
-				echo "------------------------------------------------------------------------------------"
+			if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
+				echo
+				echo ${H2HL}
 				echo "# git add -A"
 				git add -A
-				echo "------------------------------------------------------------------------------------"
+				echo ${H2HL}
 			fi
 		fi
 	fi
 fi
 
-echo ""
+echo
 echo ${O}
-echo "------------------------------------------------------------------------------------"
+echo ${H2HL}
 echo "# git status"
-#${STYLE_NORM}
-#${STYLE_BRIGHT}
 git status
 echo ${X}
 
 
-
-echo ""
+echo
 echo ${O}
-echo "------------------------------------------------------------------------------------"
-echo "# git commit -q -m \"($(__parse_git_branch)) $1\" $2"
-git commit -q -m "($(__parse_git_branch)) $1" $flag
-echo "------------------------------------------------------------------------------------"
+echo ${H2HL}
+echo "# git commit -q -m \"($startingBranch) $1\" $flag"
+git commit -q -m "(${startingBranch}) $1" $flag
+echo ${H2HL}
 echo ${X}
 
 
-echo ""
+echo
 echo ${O}
-echo "------------------------------------------------------------------------------------"
+echo ${H2HL}
 echo "# git diff-tree --stat HEAD"
 git diff-tree --stat HEAD
-echo "------------------------------------------------------------------------------------"
+echo ${H2HL}
 echo ${X}
-
-
 echo
 echo
 
@@ -219,7 +233,4 @@ if [ "$YorN" = "y" ]
 	echo ""
 	clear
 fi
-
-
-
 

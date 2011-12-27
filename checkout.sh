@@ -8,13 +8,13 @@ if [ -z "$1" ] || [ "$1" = " " ]
 	then
 
 
-	echo ${H2}"####################################################################################"
+	echo ${H2}${H1HL}
 	echo "WARNING: Checkout requires a branch name                                            "
-	echo "####################################################################################"${X}
+	echo ${H1HL}${X}
 
-	echo ${O}"------------------------------------------------------------------------------------"
+	echo ${O}${H2HL}
 	echo "Choose a branch (or just hit enter to abort):"
-	echo "------------------------------------------------------------------------------------"
+	echo ${H2HL}
 	branches=()
 	eval "$(git for-each-ref --shell --format='branches+=(%(refname:short))' refs/heads/)"
 	#eval "$(git for-each-ref --shell --format='branches+=(%(refname:short))' refs/remotes/)"
@@ -30,23 +30,23 @@ if [ -z "$1" ] || [ "$1" = " " ]
 		echo "$index: " ${branches[$i]}
 		# yadda yadda
 	done
-	echo "------------------------------------------------------------------------------------"
+	echo ${H2HL}
 	echo "  R:  View remote branches"
-	echo "------------------------------------------------------------------------------------"${X}
+	echo ${H2HL}${X}
 	echo ${I}"Choose a branch (or just hit enter to abort):"
 	read decision
 	echo ${X}
 	chosenbranchexists=`git branch | grep "${branches[$decision]}"`
 	if [ -z "$decision" ] || [ "$decision" = "" ] ; then
-		echo ${E}"####################################################################################"
+		echo ${E}${H1HL}
 		echo "ABORTING: checkout requires a branch name to continue                               "
-		echo "####################################################################################"
+		echo ${H1HL}
 		echo ${X}
 		exit 0
 	elif [ "$decision" = "r" ] || [ "$decision" = "R" ] ; then
-		echo ${O}"------------------------------------------------------------------------------------"
+		echo ${O}${H2HL}
 		echo "Choose a remote branch (or just hit enter to abort):"
-		echo "------------------------------------------------------------------------------------"
+		echo ${H2HL}
 		remotebranches=()
 		eval "$(git for-each-ref --shell --format='remotebranches+=(%(refname:short))' refs/remotes/)"
 		for (( i = 0 ; i < ${#remotebranches[@]} ; i++ ))
@@ -60,20 +60,19 @@ if [ -z "$1" ] || [ "$1" = " " ]
 			fi
 			echo "$index: " ${remotebranches[$i]}
 		done
-		echo "------------------------------------------------------------------------------------"${X}
-		echo ${I}"------------------------------------------------------------------------------------"
+		echo ${H2HL}${X}
+		echo ${I}${H2HL}
 		echo "Choose a remote branch (or just hit enter to abort):"
-		echo "------------------------------------------------------------------------------------"
 		read decision2
-		echo ${X}
+		echo ${H2HL}${X}
 		chosenBranchName2=${remotebranches[$decision2]}
 		chosenBranchName2=${chosenBranchName2/#fl\//}
 		chosenbranchexists2=`git branch -r | grep "${remotebranches[$decision2]}"`
 
 		if [ -z "$decision2" ] || [ "$decision2" = "" ] ; then
-			echo ${E}"####################################################################################"
+			echo ${E}${H1HL}
 			echo "ABORTING: checkout requires a branch name to continue                               "
-			echo "####################################################################################"
+			echo ${H1HL}
 			echo ${X}
 			exit 0
 		fi
@@ -102,9 +101,9 @@ fi
 
 
 echo ${H1}
-echo "####################################################################################"
+echo ${H1HL}
 echo "Checking out branch ${COL_CYAN}$1${H1}"
-echo "####################################################################################"
+echo ${H1HL}
 echo ${X}
 
 echo
