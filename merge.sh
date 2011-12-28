@@ -5,10 +5,10 @@
 
 current_branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
 
-echo "##########################################"
-echo "Merging from ${COL_YELLOW}$1${COL_NORM} into ${COL_CYAN}$3${COL_NORM}"
-echo "##########################################"
-echo
+echo ${H1}${H1HL}
+echo "Merging from ${COL_MAG}$1${COL_NORM} into ${COL_MAG}$3${COL_NORM}"
+echo ${H1HL}
+echo ${X}
 echo
 
 branchprotected_nomergefrom=`grep "$1" ${gitscripts_path}../protected_branches_nomergefrom`

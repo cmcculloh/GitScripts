@@ -41,7 +41,7 @@ fi
 
 echo ${H1}
 echo ${H1HL}
-echo "Committing changes to branch ${COL_CYAN}${startingBranch}${COL_NORM}"
+echo "Committing changes to branch: ${startingBranch}"
 echo ${H1HL}
 echo ${X}
 echo
