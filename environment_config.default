@@ -17,11 +17,7 @@
 #	- Variable names are NOT required to be strictly uppercase.
 #	- Current convention requires trailing slash for all directory/path variables.
 #	notes@
-#
 ## */
-
-
-#MINGW32_NT-6.1
 
 
 # Setup FLGitScripts Home
@@ -63,18 +59,22 @@ case "`uname`" in
         SYSTEM_TYPE="darwin"
         ;;
 esac
-
 export SYSTEM_TYPE
 
-# bring in gitscripts
+
+# Bring in GitScripts  (https://github.com/cmcculloh/GitScripts)
 if [ -s "${flgitscripts_path}gitscripts/_gsinit.sh" ]; then
+	# We require protection on branches during merges
+	export protectmergefrom_path="${flgitscripts_path}input/_gs_protectmergefrom"
+	export protectmergeto_path="${flgitscripts_path}input/_gs_protectmergeto"
+
 	source "${flgitscripts_path}gitscripts/_gsinit.sh"
 else
 	echo ${E}"####################################################################################"
-	echo "Error setting flgitscripts environment_config.default: GitScripts can't be found!                               "
+	echo "Error setting flgitscripts in environment_config.default: GitScripts can't be found!"
 	echo "####################################################################################"
 	echo ${X}
-	echo ""
+	echo
 fi
 
 
@@ -151,8 +151,6 @@ if [ $SYSTEM_TYPE == "linux" ]; then
 	# JBoss Settings
 	[ -n "$JBOSS" ] || JBOSS="${HOME}/Development/opt/jboss-4.0.5.GA/"
 
-
-
 elif [ $SYSTEM_TYPE == "darwin" ]; then
 	echo "We are on Darwin";
 
@@ -178,16 +176,12 @@ elif [ $SYSTEM_TYPE == "windows" ]; then
 	[ -n "$development_root" ] || export development_root="/d/workspaces/"
 	[ -n "$workspace_name" ] || export workspace_name="helios_workspace"
 	[ -n "$myenvironment" ] || export myenvironment="workstation-windows"
-
 	[ -n "$JAVA_DEV_HOME" ] || JAVA_DEV_HOME="/d/java_dev/"
 
 
 	# JBoss Settings
 	[ -n "$JBOSS" ] || JBOSS="/d/opt/jboss-4.0.5.GA/"
 fi
-
-
-
 
 
 # Workspace-specific
@@ -215,14 +209,12 @@ fi
 
 # Project-specific
 [ -n "$webappwar" ] || export webappwar="${finishline_path}modules/base/j2ee-apps/base/web-app.war/"
-# moved up above! [ -n "$myenvironment" ] || export myenvironment="workstation-windows"
 [ -n "$promosdir" ] || export promosdir="${webappwar}global/promos/"
 [ -n "$mediaLandingPagesPath" ] || export mediaLandingPagesPath="${workspace_path}${mediaprojectname}/media/landing-pages/"
 
 
 
 # Java and ANT Settings
-# moved up above! [ -n "$JAVA_DEV_HOME" ] || JAVA_DEV_HOME="/d/java_dev/"
 [ -n "$JDK_VERSION" ] || JDK_VERSION="jdk1.5.0_14"
 [ -n "$JAVA_HOME" ] || JAVA_HOME="${JAVA_DEV_HOME}jdk/${JDK_VERSION}/"
 [ -n "$ANT_HOME" ] || export ANT_HOME="${JAVA_DEV_HOME}apache-ant-1.8.1"
@@ -245,7 +237,7 @@ PATH="${PATH}:${JAVA_HOME}bin:${ANT_HOME}/bin:${YUI_COMPRESSOR_HOME}"
 CLASSPATH="${CLASSPATH};${JAVA_HOME}lib;${ANT_CONTRIB_HOME};${YUI_COMPRESSOR_HOME}/;${ANT_HOME}"
 
 
-export PATH="${PATH}:${sublime_home}:${notepad_pp_home}:${eclipse_home}:${textpad_home}:${gitscripts_path}:${natural_docs_home}"
+export PATH="${PATH}:${sublime_home}:${notepad_pp_home}:${eclipse_home}:${textpad_home}:${gitscripts_path}:${flgitscripts_path}:${natural_docs_home}"
 export CLASSPATH="${CLASSPATH}"
 export ANT_LIB="${ANT_LIB}"
 export ANT_ARGS="${ANT_ARGS}"

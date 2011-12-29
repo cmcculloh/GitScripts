@@ -84,48 +84,17 @@ alias sshgit="ssh git@10.0.2.160"
 #########################################################################################################################
 #programs -- make windows bash see them
 #########################################################################################################################
-
-type eclipse &>/dev/null && { 
-	echo "eclipse alias found."; echo "No need to re-set."; 
-} || { 
-	echo "eclipse alias was NOT found."; 
-	echo "Will check to see if command exists  and if not, we will set an alias."; 
-
-	type -P eclipse &>/dev/null && { 
-		echo "eclipse command found, no need to re-set."; 
-	} || { 
-		echo "eclipse command was NOT found."; echo "We need to set it."; 
-		alias eclipse="eclipse.exe";
+findprograms=(eclipse notepad++ textpad sublime_text ant)
+echo "Use bash_profile_config.overrides to set an alias for any of the following, if desired."
+for prog in ${findprograms[@]}; do
+	type -P $prog &>/dev/null && {
+		echo "    Found ${COL_GREEN}${prog}${X}."
+	} || {
+		echo "    "${E}" Could not find ${prog}! "${X}
 	}
-
-}
-#type -P eclipse &>/dev/null && echo "Found eclipse" 			|| alias eclipse="eclipse.exe"
-
-type -P npp &>/dev/null     && echo "Found npp (notepad++) "	|| alias npp="notepad++.exe"
+done
 
 
-
-type sublime &>/dev/null && { 
-	echo "sublime alias found."; echo "No need to re-set."; 
-} || { 
-	echo "sublime alias was NOT found."; 
-	echo "Will check to see if command exists  and if not, we will set an alias."; 
-
-	type -P sublime &>/dev/null && { 
-		echo "sublime command found, no need to re-set."; 
-	} || { 
-		echo "sublime command was NOT found."; echo "We need to set it."; 
-		alias sublime="sublimetext.exe";
-	}
-
-}
-
-
-#type -P sublime &>/dev/null && echo "Found sublime command, not setting again." 			|| type sublime &>/dev/null && echo "Found sublime alias, not setting again." 			|| alias sublime="sublimetext.exe"
-
-
-type -P textpad &>/dev/null && echo "Found textpad" 			|| alias textpad="TextPad.exe"
-type -P ant &>/dev/null     && echo "Found ANT"     			|| alias ant="${ANT_HOME}ant"
 
 
 #########################################################################################################################
@@ -147,38 +116,23 @@ alias storehome="cd ${webappwar}"
 #########################################################################################################################
 #automation of grunt work
 #########################################################################################################################
-alias check-nike-track-club="${gitscripts_path}check-nike-track-club.sh"
-alias createrepositories="source ${gitscripts_path}createRepositories.sh"
+alias check-nike-track-club="${flgitscripts_path}check-nike-track-club.sh"
+alias createrepositories="source ${flgitscripts_path}createRepositories.sh"
 
 
 #########################################################################################################################
 # Server interaction
 #########################################################################################################################
-alias startserver="source ${gitscripts_path}startserver.sh"
-alias qstartserver="source ${gitscripts_path}startserver.sh > /dev/null &"
+alias startserver="source ${flgitscripts_path}startserver.sh"
+alias qstartserver="source ${flgitscripts_path}startserver.sh > /dev/null &"
 alias stopserver="${JBOSS_HOME}shutdown.sh --shutdown"
-alias taillogs="source ${gitscripts_path}tail_log.sh"
+alias taillogs="source ${flgitscripts_path}tail_log.sh"
 alias modifygitexcludes="gedit .git/info/exclude"
 
 
 #########################################################################################################################
 # ANT scripts for front end builds automation
 #########################################################################################################################
-alias min="ant ${ANT_ARGS} min -buildfile ${finishline_path}${myenvironment}.build.xml;"
-alias mincss="ant ${ANT_ARGS} merge-css-files -buildfile ${finishline_path}${myenvironment}.build.xml;"
-alias normalbuild="ant ${ANT_ARGS} build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
-alias cleanbuild="ant ${ANT_ARGS} clean-build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
-alias webapprefresh="ant ${ANT_ARGS} webapprefresh -buildfile ${finishline_path}${myenvironment}.build.xml ;"
-alias webapprefreshminmerge="ant ${ANT_ARGS} webapprefreshminmerge -buildfile ${finishline_path}${myenvironment}.build.xml ;"
-alias promosinit="ant ${ANT_ARGS} initpromos -buildfile ${builds_path}staging-front-end.build.xml ;"
-alias promosliteremerge="ant ${ANT_ARGS} git-checkout-mergey-thing-lite -buildfile ${builds_path}staging-front-end.build.xml ;"
-alias promosremerge="ant ${ANT_ARGS} git-checkout-mergey-thing -buildfile ${builds_path}staging-front-end.build.xml ;"
-alias promospush="ant ${ANT_ARGS} git-push-todays-promos -buildfile ${builds_path}staging-front-end.build.xml ;"
-alias promosimportstouch="ant ${ANT_ARGS} set-mod-dates-of-imports-to-now -buildfile ${builds_path}staging-front-end.build.xml ;"
-alias zipexports="ant ${ANT_ARGS} promos-zip-up-exports -buildfile ${builds_path}staging-front-end.build.xml ;"
-alias snapshot="ant ${ANT_ARGS} take-changed-files-snapshot -buildfile ${builds_path}staging-front-end.build.xml ;"
-
-alias wipeoutallexports="ant ${ANT_ARGS} all-wipeout-exports -buildfile ${builds_path}all-front-end.build.xml ;"
 alias allsnapbackexportchanges=" \
 	ant ${ANT_ARGS} snap-to-master-and-back	-buildfile ${builds_path}staging-front-end.build.xml ${ANT_ARGS}; \
 	ant ${ANT_ARGS} export-changed-by-day	-buildfile ${builds_path}qa-front-end.build.xml ${ANT_ARGS}; \
@@ -190,6 +144,8 @@ alias cleanbuild="ant ${ANT_ARGS} clean-build -buildfile ${finishline_path}${mye
 alias devexportchanges="ant ${ANT_ARGS} export-changed-by-day -buildfile ${builds_path}dev-front-end.build.xml ;"
 alias devuploadexports="ant ${ANT_ARGS} upload-code-and-media-exports-to-remote -buildfile ${builds_path}dev-front-end.build.xml ;"
 alias min="ant ${ANT_ARGS} min -buildfile ${finishline_path}${myenvironment}.build.xml;"
+alias mincss="ant ${ANT_ARGS} merge-css-files -buildfile ${finishline_path}${myenvironment}.build.xml;"
+alias normalbuild="ant ${ANT_ARGS} build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
 alias promosimportstouch="ant ${ANT_ARGS} set-mod-dates-of-imports-to-now -buildfile ${builds_path}staging-front-end.build.xml ;"
 alias promosinit="ant ${ANT_ARGS} initpromos -buildfile ${builds_path}staging-front-end.build.xml ;"
 alias promosliteremerge="ant ${ANT_ARGS} git-checkout-mergey-thing-lite -buildfile ${builds_path}staging-front-end.build.xml ;"
@@ -197,6 +153,7 @@ alias promospush="ant ${ANT_ARGS} git-push-todays-promos -buildfile ${builds_pat
 alias promosremerge="ant ${ANT_ARGS} git-checkout-mergey-thing -buildfile ${builds_path}staging-front-end.build.xml ;"
 alias qaexportchanges="ant ${ANT_ARGS} export-changed-by-day -buildfile ${builds_path}qa-front-end.build.xml ;"
 alias qauploadexports="ant ${ANT_ARGS} upload-code-and-media-exports-to-remote -buildfile ${builds_path}qa-front-end.build.xml ;"
+alias snapshot="ant ${ANT_ARGS} take-changed-files-snapshot -buildfile ${builds_path}staging-front-end.build.xml ;"
 alias stagingexportchanges="ant ${ANT_ARGS} export-changed-by-day -buildfile ${builds_path}staging-front-end.build.xml ;"
 alias staginguploadexports="ant ${ANT_ARGS} upload-code-and-media-exports-to-remote -buildfile ${builds_path}staging-front-end.build.xml ;"
 alias webapprefresh="ant ${ANT_ARGS} webapprefresh -buildfile ${finishline_path}${myenvironment}.build.xml ;"
@@ -217,7 +174,10 @@ alias makesprite="${gitscripts_path}swivel-images-maker.sh"
 #########################################################################################################################
 alias fixbranch="${flgitscripts_path}fixbranch.sh"
 alias phone="${flgitscripts_path}phone.sh"
-alias refresh_bash_profile="${flgitscripts_path}refresh_bash_profile.sh"
+
+# leave refresh_bash_profile as sourced, WITHOUT a shebang in the script, so sourced values are available immediately
+alias refresh_bash_profile="source ${flgitscripts_path}refresh_bash_profile.sh"
+
 alias switchenv="${flgitscripts_path}/switchenvironment.sh"
 alias varsreset="source ${flgitscripts_path}vars_reset.sh"
 alias whichenv="${flgitscripts_path}/whichenvironment.sh"
