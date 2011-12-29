@@ -80,6 +80,13 @@ function __gslog {
 
 
 ##
+#	Set a variable which hold git status data. Useful for many reasons!
+##
+function __set_git_status_var {
+	export __GS_GITSTATUS=`git status 2> /dev/null`
+}
+
+##
 #	Determine which branch the current repository is on.
 ##
 function __parse_git_branch {
@@ -111,48 +118,42 @@ function __parse_git_branch {
 #	examples@
 ## */
 function __parse_git_branch_state {
-	export __GS_GITSTATUS=`git status 2> /dev/null`
+	__set_git_status_var
 
-	# ahead=`    echo -n "${status}" 2> /dev/null | grep -q "Your branch is ahead of" 2> /dev/null; echo "$?"`
-	# dirty=`    echo -n "${status}" 2> /dev/null | grep -q "Changed but not updated" 2> /dev/null; echo "$?"`
-	# modified=`  echo -n "${status}" 2> /dev/null | grep -q "modified:" 2> /dev/null; echo "$?"`
-	# newfile=`  echo -n "${status}" 2> /dev/null | grep -q "new file:" 2> /dev/null; echo "$?"`
-	# renamed=`  echo -n "${status}" 2> /dev/null | grep -q "renamed:" 2> /dev/null; echo "$?"`
-	# staged=` echo -n "${status}" 2> /dev/null | grep -q "Changes to be committed" 2> /dev/null; echo "$?"`
-	# untracked=`echo -n "${status}" 2> /dev/null | grep -q "Untracked files" 2> /dev/null; echo "$?"`
-	ahead=`__parse_git_status ahead`
-	dirty=`__parse_git_status dirty`
-	modified=`__parse_git_status modified`
-	newfile=`__parse_git_status newfile`
-	renamed=`__parse_git_status renamed`
-	staged=`__parse_git_status staged`
-	untracked=`__parse_git_status untracked`
+	__parse_git_status ahead && ahead=true
+	__parse_git_status dirty && dirty=true
+	__parse_git_status modified && modified=true
+	__parse_git_status newfile && newfile=true
+	__parse_git_status renamed && renamed=true
+	__parse_git_status staged && staged=true
+	__parse_git_status untracked && untracked=true
 	bits=''
 
-	if [ "${dirty}" == "0" ]; then
+	if [ -n "${dirty}" ]; then
 		bits="${bits} ${X}${STYLE_DIRTY} + (dirty) ${X}"
 	fi
-	if [ "${modified}" == "0" -a "${staged}" == "0" -a "${dirty}" == "1" ]; then
+	if [ -n "${modified}" -a -n "${staged}" -a -z "${dirty}" ]; then
 		bits="${bits} ${X}${STYLE_COMMITTED} ++ (staged) ${X}"
 	fi
-	if [ "${modified}" == "0" -a "${staged}" == "0" -a "${dirty}" == "0" ]; then
+	if [ -n "${modified}" -a -n "${staged}" -a -n "${dirty}" ]; then
 		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified) ${X}"
 	fi
-	if [ "${modified}" == "0" -a "${staged}" == "1" ]; then
+	if [ -n "${modified}" -a -z "${staged}" ]; then
 		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified) ${X}"
 	fi
-	if [ "${untracked}" == "0" ]; then
+	if [ -n "${untracked}" ]; then
 		bits="${bits} ${X}${STYLE_UNTRACKED} ? (untracked) ${X}"
 	fi
-	if [ "${newfile}" == "0" ]; then
+	if [ -n "${newfile}" ]; then
 		bits="${bits} ${X}${STYLE_NEWFILE} * (newfile) ${X}"
 	fi
-	if [ "${ahead}" == "0" ]; then
+	if [ -n "${ahead}" ]; then
 		bits="${bits} ${X}${STYLE_AHEAD} + (ahead) ${X}"
 	fi
-	if [ "${renamed}" == "0" ]; then
+	if [ -n "${renamed}" ]; then
 		bits="${bits} > (renamed) "
 	fi
+
 	echo "${bits}"
 }
 
@@ -168,42 +169,60 @@ function __parse_git_status {
 
 	case $1 in
 		"ahead")
-			searchstr="Your branch is ahead of"
-			;;
+			searchstr="Your branch is ahead of";;
+
+		"clean")
+			searchstr="working directory clean";;
 
 		"dirty")
-			searchstr="Changed but not updated"
-			;;
+			searchstr="Changed but not updated";;
 
 		"modified")
-			searchstr="modified:"
-			;;
+			searchstr="modified:";;
 
 		"newfile")
-			searchstr="new file:"
-			;;
+			searchstr="new file:";;
 
 		"renamed")
-			searchstr="renamed:"
-			;;
+			searchstr="renamed:";;
 
 		"staged")
-			searchstr="Changes to be committed"
-			;;
+			searchstr="Changes to be committed";;
 
 		"untracked")
-			searchstr="Untracked files"
-			;;
+			searchstr="Untracked files";;
 
 		*)
 			__gslog "__parse_git_status: Invalid parameter given  <$1>"
 			return 1
 			;;
-
 	esac
 
-	# this function is called mostly by PS1 and by other scripts. if the latter, must set __GS_GITSTATUS.
-	[ -n "${__GS_GITSTATUS}" ] || export __GS_GITSTATUS=$(git status 2> /dev/null)
-	echo -n `echo -n "${__GS_GITSTATUS}" 2> /dev/null | grep -q "$searchstr" 2> /dev/null; echo "$?"`
-	return 0
+	# this function is called mostly by PS1 and by other scripts. must set __GS_GITSTATUS.
+	export __GS_GITSTATUS=$(git status 2> /dev/null)
+
+	# use the return value of the grep as the return value of the function
+	echo -n "${__GS_GITSTATUS}" 2> /dev/null | grep -q "$searchstr" 2> /dev/null
+}
+
+
+##
+#	Determine if the given branch exists either locally or remotely.
+##
+function __branch_exists {
+	if [ -z "$1" ]; then
+		__gslog "__branch_exists: First parameter must be branch name."
+		return 1
+	fi
+
+	local locally=$(git branch | grep "$1")
+	if [ -n "$locally" ]; then
+		return 0
+	else
+		local remotely=$(git branch -r | grep "$1")
+		if [ -n "$remotely" ]; then
+			return 0
+		fi
+	fi
+	return 1
 }
