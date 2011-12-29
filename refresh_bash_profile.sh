@@ -1,4 +1,6 @@
-#!/bin/bash
+
+# NO SHEBANG!
+
 # need to know current path of this file first
 SCRIPT_PATH="${BASH_SOURCE[0]}"
 if [ -h "${SCRIPT_PATH}" ]; then
@@ -43,11 +45,8 @@ cp -p -f "${native_gitscripts_bash_profile_path}" "${flgitscripts_path}/temp/bak
 cp -p -f "${flgitscripts_temp_bash_profile_path}" "${native_gitscripts_bash_profile_path}"
 
 
-
 echo "	> cleaning up temporary files..."
 rm $tmp
-
-
 
 
 echo "	> Sourcing native_gitscripts_bash_profile_path (${native_gitscripts_bash_profile_path})"
