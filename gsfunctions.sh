@@ -167,6 +167,10 @@ function __parse_git_status {
 		return 1
 	fi
 
+	# set the __GS_GITSTATUS variable
+	__set_git_status_var
+
+	# check for given status
 	case $1 in
 		"ahead")
 			searchstr="Your branch is ahead of";;
@@ -197,9 +201,6 @@ function __parse_git_status {
 			return 1
 			;;
 	esac
-
-	# this function is called mostly by PS1 and by other scripts. must set __GS_GITSTATUS.
-	export __GS_GITSTATUS=$(git status 2> /dev/null)
 
 	# use the return value of the grep as the return value of the function
 	echo -n "${__GS_GITSTATUS}" 2> /dev/null | grep -q "$searchstr" 2> /dev/null
