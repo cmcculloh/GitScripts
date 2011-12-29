@@ -38,6 +38,8 @@ touch $list
 
 function update_list {
 	local txtfile="${tempdir}numbers.txt"
+	echo "Touching..."
+	touch $txtfile
 	echo "	Acquiring phone list via sftp..."
 	sftp -b "${inputdir}_phoneList.batch" et@10.0.30.45 1>/dev/null
 	if [ -s "$txtfile" ]; then
