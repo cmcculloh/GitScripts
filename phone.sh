@@ -33,20 +33,20 @@
 $loadfuncs
 
 
-list="${inputdir}_phoneList"
+list="${inputdir}phoneList"
 touch $list
 
 function update_list {
 	local txtfile="${tempdir}numbers.txt"
-	echo "Touching..."
 	touch $txtfile
+	echo
 	echo "	Acquiring phone list via sftp..."
 	sftp -b "${inputdir}_phoneList.batch" et@10.0.30.45 1>/dev/null
 	if [ -s "$txtfile" ]; then
 		cat $txtfile | egrep '[-[:blank:]][0-9][0-9][0-9][0-9]$' > $tmp
 		if [ -s "$tmp" ]; then
 			cp $tmp $list
-			echo "	Phone list has been updated!"
+			echo ${COL_GREEN}"	Phone list has been updated!"${X}
 			rm $txtfile
 			rm $tmp
 		else
