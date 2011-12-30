@@ -1,16 +1,7 @@
 #!/bin/bash
 # merge
 # merges one git branch into another
-
-
-
-
-#########################################################################################################################
-#custom __parse_git_branch function
-#########################################################################################################################
-function __parse_git_branch {
- git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
-}
+$loadfuncs
 
 cd ${finishline_path}
 startingBranch="$(__parse_git_branch)"
@@ -30,7 +21,7 @@ echo ${X}
 echo
 echo
 echo "First, we check out the ${COL_CYAN}master${COL_NORM} branch"
-${gitscripts_path}checkout-fast.sh master
+${flgitscripts_path}checkout-fast.sh master
 result=$?
 
 if [ $result -lt 0 ]
@@ -57,11 +48,10 @@ elif [ $result -eq 255 ]
 	exit -1
 fi
 
-touchpath="${finishline_path}modules/base/j2ee-apps/base/web-app.war"
+touchpath="${webappwar}"
 
 
 find "$touchpath" -type f -print0 | xargs -0 touch  -m -d '1974-01-05 13:31:00'
-
 
 
 cd ${media_path}
@@ -70,7 +60,7 @@ startingBranchMedia="$(__parse_git_branch)"
 echo
 echo
 echo "Now we will check out the ${COL_CYAN}master${COL_NORM} branch for media"
-${gitscripts_path}checkout-fast.sh master
+${flgitscripts_path}checkout-fast.sh master
 result=$?
 
 if [ $result -lt 0 ]
@@ -103,17 +93,11 @@ touchpathMedia="${media_path}media"
 find "$touchpathMedia" -type f -print0 | xargs -0 touch  -m -d '1974-01-05 13:31:00'
 
 
-
-
 echo
 echo
-
-
-
-
 echo "Now we will check out the ${startingBranch} branch"
 cd ${finishline_path}
-${gitscripts_path}checkout-fast.sh ${startingBranch}
+${flgitscripts_path}checkout-fast.sh ${startingBranch}
 result=$?
 
 if [ $result -lt 0 ]
@@ -145,7 +129,7 @@ fi
 
 echo "Now we will check out the ${startingBranchMedia} branch for media"
 cd ${media_path}
-${gitscripts_path}checkout-fast.sh ${startingBranchMedia}
+${flgitscripts_path}checkout-fast.sh ${startingBranchMedia}
 result=$?
 
 if [ $result -lt 0 ]
@@ -194,14 +178,14 @@ rm -f -r "${targetpathMedia}"
 echo "Going to export files that are different in ${COL_CYAN}${startingBranch}${COL_NORM} from ${COL_CYAN}master${COL_NORM}"
 echo "...to ${COL_YELLOW}${targetpath}${COL_NORM}"
 
-${gitscripts_path}cpafter.sh -f -a $NOW -s "${touchpath}" -t "${targetpath}"
+${flgitscripts_path}cpafter.sh -f -a $NOW -s "${touchpath}" -t "${targetpath}"
 
 
 
 echo "Going to export files that are different in ${COL_CYAN}${startingBranchMedia}${COL_NORM} from ${COL_CYAN}master${COL_NORM}"
 echo "...to ${COL_YELLOW}${targetpathMedia}${COL_NORM}"
 
-${gitscripts_path}cpafter.sh -f -a $NOW -s "${touchpathMedia}" -t "${targetpathMedia}"
+${flgitscripts_path}cpafter.sh -f -a $NOW -s "${touchpathMedia}" -t "${targetpathMedia}"
 
 
 targetpathqa="${builds_path}build/front-end/exports/qa/code-exports/"
@@ -294,15 +278,15 @@ echo ${X}
 
 exit 0
 
-#	
-#	
+#
+#
 #	echo ${O}
 #	echo "------------------------------------------------------------------------------------"
 #	echo "# git status"
 #	git status
 #	echo ${X}
-#	
-#	
+#
+#
 
 #	echo ${I}"####################################################################################"
 #	echo "Upload to dev, qa, and staging? ${COL_CYAN}(y)${I} n "
@@ -319,8 +303,8 @@ exit 0
 #		ant ${ANT_ARGS} upload-all-exports -buildfile ${builds_path}"all-remotes.build.xml" ;
 #		echo "------------------------------------------------------------------------------------"${X}
 #	fi
-#	
-#	
+#
+#
 #	echo ${I}"####################################################################################"
 #	echo "Zip code and media exports for handoff? ${COL_CYAN}(y)${I} n "
 #	echo "####################################################################################"${X}
@@ -333,7 +317,7 @@ exit 0
 #		ant ${ANT_ARGS} promos-zip-up-exports -buildfile ${builds_path}"staging-front-end.build.xml" ;
 #		echo "------------------------------------------------------------------------------------"${X}
 #	fi
-#	
+#
 
 
 
