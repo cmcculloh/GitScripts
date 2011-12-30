@@ -98,12 +98,13 @@ function __bad_usage {
 #	dependencies@
 ## */
 function __gslog {
-	if [ -n "$1" -a -f "$gslog" ]; then
-		echo >> $gslog
-		echo "###################################  "$(date)"  ###################################" >> $gslog
-		echo $1 >> $gslog
-		echo >> $gslog
-		echo >> $gslog
+	if [ -n "$1" -a -f "$gitscripts_log" ]; then
+		echo >> $gitscripts_log
+		echo "###################################  "$(date)"  ###################################" >> $gitscripts_log
+		echo >> $gitscripts_log
+		echo $1 >> $gitscripts_log
+		echo >> $gitscripts_log
+		echo >> $gitscripts_log
 	fi
 }
 
