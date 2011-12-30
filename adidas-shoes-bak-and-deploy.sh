@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# This script takes care of bringing 102 up to date with an .ear, 
-# while taking care to backup and restore any submodules that 
+# This script takes care of bringing 102 up to date with an .ear,
+# while taking care to backup and restore any submodules that
 # outside vendors have access to.
-
+$loadfuncs
 thisHostname=hostname;
 
 if [ $thisHostname = "flqap102.finishline.com" ]; then
@@ -16,7 +16,7 @@ else
 	instancename="alt_finishline"
 	JBOSS_LOG_FILE="/home/csc/Development/opt/jboss-4.0.5.GA/server/${instancename}/log/server.log"
 	# import developer workstation settings
-	source ./refresh_bash_profile.sh
+	source "${flgitscripts_path}refresh_bash_profile.sh"
 fi
 
 
@@ -48,10 +48,7 @@ fi
 
 
 # check for any changes and stash them
-checkbranch=`git status | grep "nothing to commit (working directory clean)"`
-echo "$checkbranch"
-
-if [ -z "$checkbranch" ]; then
+if { ! __parse_git_status clean; }; then
 	echo
 	echo "git status"
 	git status
@@ -82,7 +79,7 @@ else
 	"${JBOSS_HOME}shutdown.sh" -s jnp://localhost:1299 >> /dev/null&
 fi
 
-	
+
 #Check the logs for the stop string
 echo -n "Waiting for ${instancename} to stop ... "
 down="1";
@@ -98,7 +95,7 @@ echo "${instancename} instance stopped."
 
 
 # backup the old ear
-cd /home/csc/Development/opt/jboss-4.0.5.GA/server/"${instancename}"/deploy 
+cd /home/csc/Development/opt/jboss-4.0.5.GA/server/"${instancename}"/deploy
 echo "Creating ear backup zip file in ${back_file}";
 rm -rf ${back_file}
 zip -q -r ${back_file} finishline.ear/
@@ -120,7 +117,7 @@ chown -R csc:csc ${ear_path}
 cd "/adidas-shoes"
 
 # make note of what branch is currently checked out
-current_branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+current_branch=$(__parse_git_branch)
 
 echo "Current Branch: "${current_branch};
 
@@ -186,13 +183,13 @@ while [ ${up} != 0 ]; do
 	if [ $thisHostname = "flqap102.finishline.com" ]; then
 		echo "";
 	else
-		
+
 		(( tries++ ))
 
 		if [ $tries > 16 ]; then
 			echo "we've reached 10 tries, forcing up to 0 to give up...";
 			up="0";
-		else 
+		else
 			echo "..trying again...";
 		fi
 	fi
@@ -202,10 +199,11 @@ done
 
 # Give the server a minute to get settled.
 echo "Waiting for one minute to let the server settle down. Stand by ...";
-sleep 60;
+sleep 30
+echo "30 seconds to go..."
+sleep 20
+echo "10 seconds left..."
+sleep 10
 echo "Build for ${instancename} (fake!) complete. Proceed to the next server.";
 #rm -rf /tmp/finishline.ear.FL_QA.zip
 echo "Deploy Complete";
-
-
-

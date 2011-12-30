@@ -1,4 +1,4 @@
-source ${gitscripts_path}stack.sh
+source ${flgitscripts_path}stack.sh
 
 
 
@@ -25,7 +25,7 @@ echo "about to pop"
 pop
 echo "just did pop"
 
-status_report     # Garbage in, garbage out.      
+status_report     # Garbage in, garbage out.
 
 value1=23;        push $value1
 value2=skidoo;    push $value2

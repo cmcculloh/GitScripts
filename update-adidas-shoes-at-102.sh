@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ./refresh_bash_profile.sh
+source "${flgitscripts_path}refresh_bash_profile.sh"
 
 
 EARNAME="finishline.ear"
@@ -23,9 +23,9 @@ cp  ${EARZIPPED} /tmp
 
 #/opt/jboss/server/03finishline/deploy/finishline.ear/web-app.war/global/promos/adidas-shoes/
 
-# ssh into 102 and run a script that does the rest of it 
+# ssh into 102 and run a script that does the rest of it
 
 
 #ssh ccorwin@172.17.2.102 "/deployers/adidas-shoes-bak-and-deploy.sh"
-"${$gitscripts_path}adidas-shoes-bak-and-deploy.sh"
+"${$flgitscripts_path}adidas-shoes-bak-and-deploy.sh"
 

@@ -1,9 +1,10 @@
 #!/bin/sh
+$loadfuncs
 
 current_location=$(pwd)
-cd ${gitscripts_path}
+cd ${flgitscripts_path}
 
-current_branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+current_branch=$(__parse_git_branch)
 
 git fetch --all --prune
 git checkout master

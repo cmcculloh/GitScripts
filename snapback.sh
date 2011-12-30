@@ -4,7 +4,7 @@
 $loadfuncs
 
 cd ${finishline_path}
-startingBranch="$(__parse_git_branch)"
+startingBranch=$(__parse_git_branch)
 
 
 
@@ -55,7 +55,7 @@ find "$touchpath" -type f -print0 | xargs -0 touch  -m -d '1974-01-05 13:31:00'
 
 
 cd ${media_path}
-startingBranchMedia="$(__parse_git_branch)"
+startingBranchMedia=$(__parse_git_branch)
 
 echo
 echo
