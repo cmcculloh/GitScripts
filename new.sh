@@ -91,6 +91,7 @@ if [ "$branch" = "master" ]
 	git checkout -b $1
 	git config branch.$1.remote $remote
 	git config branch.$1.merge refs/heads/$1
+	git push $remote $1
 
 	echo
 	echo
@@ -113,6 +114,7 @@ else
 		git checkout -b $1 $branch
 		git config branch.$branch.remote $remote
 		git config branch.$branch.merge refs/heads/$branch
+		git push $remote $1
 
 	else
 		echo 'You have chosen.... wisely.'
