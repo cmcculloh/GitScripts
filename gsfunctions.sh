@@ -299,16 +299,21 @@ function __parse_git_branch_state {
 	if [ -n "${staged}" ]; then
 		bits="${bits} ${X}${STYLE_COMMITTED} + (staged) ${X}"
 	fi
-	if [ -n "${modified}" -a -n "${staged}" -a -z "${dirty}" ]; then
-		echo "staged!"
-		bits="${bits} ${X}${STYLE_COMMITTED} ++ (staged) ${X}"
-	fi
-	if [ -n "${modified}" -a -n "${staged}" -a -n "${dirty}" ]; then
+
+	if [ -n "${modified}" ]; then
 		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified) ${X}"
 	fi
-	if [ -n "${modified}" -a -z "${staged}" ]; then
-		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified) ${X}"
-	fi
+
+	# if [ -n "${modified}" -a -n "${staged}" -a -z "${dirty}" ]; then
+	# 	echo "staged!"
+	# 	bits="${bits} ${X}${STYLE_COMMITTED} ++ (staged) ${X}"
+	# fi
+	# if [ -n "${modified}" -a -n "${staged}" -a -n "${dirty}" ]; then
+	# 	bits="${bits} ${X}${STYLE_MODIFIED} >> (modified) ${X}"
+	# fi
+	# if [ -n "${modified}" -a -z "${staged}" ]; then
+	# 	bits="${bits} ${X}${STYLE_MODIFIED} >> (modified) ${X}"
+	# fi
 	if [ -n "${untracked}" ]; then
 		bits="${bits} ${X}${STYLE_UNTRACKED} ? (untracked) ${X}"
 	fi
