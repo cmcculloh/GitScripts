@@ -89,7 +89,7 @@ if [ "$branch" = "master" ]
 	echo
 	echo git checkout -b $1
 	git checkout -b $1
-	git config branch.$1.remote origin
+	git config branch.$1.remote $remote
 	git config branch.$1.merge refs/heads/$1
 
 	echo
@@ -111,7 +111,7 @@ else
 		echo This branches $branch to create a new branch named $1
 		echo git checkout -b $1 $branch
 		git checkout -b $1 $branch
-		git config branch.$branch.remote origin
+		git config branch.$branch.remote $remote
 		git config branch.$branch.merge refs/heads/$branch
 
 	else
