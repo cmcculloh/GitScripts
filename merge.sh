@@ -2,27 +2,13 @@
 # merge
 # merges one git branch into another
 
-. /etc/git-completion.bash
-
-
-STYLE_BRIGHT=$'\033[1m'
-STYLE_DIM=$'\033[2m'
-STYLE_NORM=$'\033[0m'
-COL_RED=$'\033[31m'
-COL_GREEN=$'\033[32m'
-COL_VIOLET=$'\033[34m'
-COL_YELLOW=$'\033[33m'
-COL_MAG=$'\033[35m'
-COL_CYAN=$'\033[36m'
-COL_WHITE=$'\033[37m'
-COL_NORM=$'\033[39m'
 
 current_branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
 
-echo "##########################################"
-echo "Merging from ${COL_YELLOW}$1${COL_NORM} into ${COL_CYAN}$3${COL_NORM}"
-echo "##########################################"
-echo
+echo ${H1}${H1HL}
+echo "Merging from ${COL_MAG}$1${COL_NORM} into ${COL_MAG}$3${COL_NORM}"
+echo ${H1HL}
+echo ${X}
 echo
 
 branchprotected_nomergefrom=`grep "$1" ${gitscripts_path}../protected_branches_nomergefrom`

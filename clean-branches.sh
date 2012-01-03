@@ -1,6 +1,6 @@
 current_branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
 
-source ${gitscripts_path}checkout.sh master
+${gitscripts_path}checkout.sh master
 
 for branch in `git branch`
 do
