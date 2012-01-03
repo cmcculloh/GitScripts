@@ -213,6 +213,9 @@ function __parse_git_status {
 		"ahead")
 			searchstr="Your branch is ahead of";;
 
+		"behind")
+			searchstr="Your branch is behind";;
+
 		"clean")
 			searchstr="working directory clean";;
 
@@ -263,6 +266,7 @@ function __parse_git_status {
 #	have been set to differ in color by default.
 #
 #	 + (ahead)     Local branch is ahead (contains additional commits) of remote branch
+#	 - (behind)     Local branch is behind (missing commits) that are on the remote branch
 #	 + (dirty)     Tracked files have been modified but not staged.
 #	>> (modified)  Tracked files have been modified
 #	 * (newfile)   A new file has been staged (if unstaged the file is considered untracked).
@@ -282,6 +286,7 @@ function __parse_git_status {
 ## */
 function __parse_git_branch_state {
 	__parse_git_status ahead && ahead=true
+	__parse_git_status behind && behind=true
 	__parse_git_status dirty && dirty=true
 	__parse_git_status modified && modified=true
 	__parse_git_status newfile && newfile=true
@@ -334,6 +339,9 @@ function __parse_git_branch_state {
 	fi
 	if [ -n "${ahead}" ]; then
 		bits="${bits} ${X}${STYLE_AHEAD} + (ahead) ${X}"
+	fi
+	if [ -n "${behind}" ]; then
+		bits="${bits} ${X}${STYLE_AHEAD} - (behind) ${X}"
 	fi
 	if [ -n "${renamed}" ]; then
 		bits="${bits} > (renamed) "
