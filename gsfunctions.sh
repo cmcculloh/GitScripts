@@ -320,9 +320,9 @@ function __parse_git_branch_state {
 	if [ -n "${modified}" -a -z "${staged}" -a -n "${dirty}" ]; then
 		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified 3) ${X}"
 	fi
-	if [ -n "${modified}" -a -z "${staged}" ]; then
-		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified 4) ${X}"
-	fi
+	#if [ -n "${modified}" -a -z "${staged}" ]; then
+	#	bits="${bits} ${X}${STYLE_MODIFIED} >> (modified 4) ${X}"
+	#fi
 	if [ -n "${modified}" -a -z "${staged}" -a -z "${dirty}" ]; then
 		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified 5) ${X}"
 	fi
