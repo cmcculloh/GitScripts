@@ -277,18 +277,20 @@ function __parse_git_status {
 function __parse_git_branch_state {
 	__parse_git_status ahead && ahead=true
 	__parse_git_status dirty && dirty=true
-	# __parse_git_status modified && modified=true
+	__parse_git_status modified && modified=true
 	__parse_git_status newfile && newfile=true
 	__parse_git_status renamed && renamed=true
 	__parse_git_status staged && staged=true
 	__parse_git_status untracked && untracked=true
 	bits=''
 
+	echo " Staged: ${staged} | Dirty: ${dirty} | Modified: ${modified} "
 
 	if [ -n "${dirty}" ]; then
 		bits="${bits} ${X}${STYLE_DIRTY} + (dirty) ${X}"
 	fi
 	if [ -n "${modified}" -a -n "${staged}" -a -z "${dirty}" ]; then
+		echo "staged!"
 		bits="${bits} ${X}${STYLE_COMMITTED} ++ (staged) ${X}"
 	fi
 	if [ -n "${modified}" -a -n "${staged}" -a -n "${dirty}" ]; then
