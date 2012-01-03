@@ -207,6 +207,7 @@ function __parse_git_status {
 		return 1
 	fi
 
+
 	# check for given status
 	case $1 in
 		"ahead")
@@ -217,7 +218,7 @@ function __parse_git_status {
 
 		"dirty")
 			# older Git versions use the first terminology
-			searchstr="Changed but not updated\\|Changes not staged for commit";;
+			searchstr="Changed but not updated\\|Changes not staged for commit\\|no changes added to commit";;
 
 		"newfile")
 			searchstr="new file:";;
@@ -227,6 +228,7 @@ function __parse_git_status {
 
 		"staged")
 			searchstr="Changes to be committed";;
+
 
 		"untracked")
 			searchstr="Untracked files";;
@@ -277,7 +279,7 @@ function __parse_git_status {
 function __parse_git_branch_state {
 	__parse_git_status ahead && ahead=true
 	__parse_git_status dirty && dirty=true
-	__parse_git_status modified && modified=true
+	#__parse_git_status modified && modified=true
 	__parse_git_status newfile && newfile=true
 	__parse_git_status renamed && renamed=true
 	__parse_git_status staged && staged=true
@@ -288,6 +290,10 @@ function __parse_git_branch_state {
 
 	if [ -n "${dirty}" ]; then
 		bits="${bits} ${X}${STYLE_DIRTY} + (dirty) ${X}"
+	fi
+
+	if [ -n "${staged}" ]; then
+		bits="${bits} ${X}${STYLE_COMMITTED} + (staged) ${X}"
 	fi
 	if [ -n "${modified}" -a -n "${staged}" -a -z "${dirty}" ]; then
 		echo "staged!"
