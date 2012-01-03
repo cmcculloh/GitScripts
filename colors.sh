@@ -14,6 +14,7 @@ clear
 T='jMx'   # The test text
 
 
+
 echo "##########################################"
 echo "Color table for your shell"
 echo "##########################################"
