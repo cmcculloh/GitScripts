@@ -315,6 +315,12 @@ function __parse_git_branch_state {
 	if [ -z "${modified}" -a -n "${staged}" -a -z "${dirty}" ]; then
 		#bits="${bits} ${X}${STYLE_MODIFIED} >> (staged AND dirty) ${X}"
 	 	bits="${bits} ${X}${STYLE_COMMITTED} ++ (staged) ${X}"
+		if [ -n "${deleted}" ]; then
+			bits="${bits} ${X}${STYLE_NEWFILE} !* (deleted files) ${X}"
+		fi
+		if [ -n "${newfile}" ]; then
+			bits="${bits} ${X}${STYLE_NEWFILE} * (new files) ${X}"
+		fi
 	fi
 	if [ -n "${modified}" -a -z "${staged}" -a -n "${dirty}" ]; then
 		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified) ${X}"
