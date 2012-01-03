@@ -233,6 +233,9 @@ function __parse_git_status {
 		"renamed")
 			searchstr="renamed:";;
 
+		"deleted")
+			searchstr="deleted:";;
+
 		"staged")
 			searchstr="Changes to be committed";;
 
@@ -267,10 +270,11 @@ function __parse_git_status {
 #
 #	 + (ahead)     Local branch is ahead (contains additional commits) of remote branch
 #	 - (behind)     Local branch is behind (missing commits) that are on the remote branch
-#	 + (dirty)     Tracked files have been modified but not staged.
+#	+- (dirty)     Tracked files have been modified but not staged.
 #	>> (modified)  Tracked files have been modified
 #	 * (newfile)   A new file has been staged (if unstaged the file is considered untracked).
 #	 > (renamed)   A tracked file has been identified as being renamed. Applies to staged/unstaged.
+#	!* (deleted)   A tracked file has been identified as being deleted. Applies to staged/unstaged.
 #	++ (staged)    A file has been staged for the next commit.
 #	 ? (untracked) One or more untracked files have been identified.
 #	description@
@@ -287,6 +291,7 @@ function __parse_git_status {
 function __parse_git_branch_state {
 	__parse_git_status ahead && ahead=true
 	__parse_git_status behind && behind=true
+	__parse_git_status deleted && deleted=true
 	__parse_git_status dirty && dirty=true
 	__parse_git_status modified && modified=true
 	__parse_git_status newfile && newfile=true
@@ -298,12 +303,18 @@ function __parse_git_branch_state {
 
 	if [ -z "${modified}" -a -n "${staged}" -a -n "${dirty}" ]; then
 		#bits="${bits} ${X}${STYLE_MODIFIED} >> (staged AND dirty) ${X}"
-	 	bits="${bits} ${X}${STYLE_COMMITTED} + (staged) ${X}"
-	 	bits="${bits} ${X}${STYLE_DIRTY} + (dirty) ${X}"
+	 	bits="${bits} ${X}${STYLE_COMMITTED} ++ (staged) ${X}"
+		if [ -n "${deleted}" ]; then
+			bits="${bits} ${X}${STYLE_NEWFILE} !* (deleted files) ${X}"
+		fi
+		if [ -n "${newfile}" ]; then
+			bits="${bits} ${X}${STYLE_NEWFILE} * (new files) ${X}"
+		fi
+	 	bits="${bits} ${X}${STYLE_DIRTY} +- (dirty) ${X}"
 	fi
 	if [ -z "${modified}" -a -n "${staged}" -a -z "${dirty}" ]; then
 		#bits="${bits} ${X}${STYLE_MODIFIED} >> (staged AND dirty) ${X}"
-	 	bits="${bits} ${X}${STYLE_COMMITTED} + (staged) ${X}"
+	 	bits="${bits} ${X}${STYLE_COMMITTED} ++ (staged) ${X}"
 	fi
 	if [ -n "${modified}" -a -z "${staged}" -a -n "${dirty}" ]; then
 		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified) ${X}"
@@ -334,11 +345,8 @@ function __parse_git_branch_state {
 	if [ -n "${untracked}" ]; then
 		bits="${bits} ${X}${STYLE_UNTRACKED} ? (untracked) ${X}"
 	fi
-	if [ -n "${newfile}" ]; then
-		bits="${bits} ${X}${STYLE_NEWFILE} * (newfile) ${X}"
-	fi
 	if [ -n "${ahead}" ]; then
-		bits="${bits} ${X}${STYLE_AHEAD} ++ (ahead) ${X}"
+		bits="${bits} ${X}${STYLE_AHEAD} + (ahead) ${X}"
 	fi
 	if [ -n "${behind}" ]; then
 		bits="${bits} ${X}${STYLE_AHEAD} - (behind) ${X}"
