@@ -1,3 +1,3 @@
 [submodule "gitscripts"]
 	path = gitscripts
-	url = git@github.com:cmcculloh/GitScripts.git
+	url = git://github.com/cmcculloh/GitScripts.git
