@@ -338,7 +338,7 @@ function __parse_git_branch_state {
 		bits="${bits} ${X}${STYLE_NEWFILE} * (newfile) ${X}"
 	fi
 	if [ -n "${ahead}" ]; then
-		bits="${bits} ${X}${STYLE_AHEAD} + (ahead) ${X}"
+		bits="${bits} ${X}${STYLE_AHEAD} ++ (ahead) ${X}"
 	fi
 	if [ -n "${behind}" ]; then
 		bits="${bits} ${X}${STYLE_AHEAD} - (behind) ${X}"
@@ -347,7 +347,7 @@ function __parse_git_branch_state {
 		bits="${bits} > (renamed) "
 	fi
 
-	bits="${bits} | Staged: ${staged} | Dirty: ${dirty} | Modified: ${modified} "
+	# bits="${bits} | Staged: ${staged} | Dirty: ${dirty} | Modified: ${modified} "
 
 	echo "${bits}"
 }
