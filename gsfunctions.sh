@@ -218,7 +218,11 @@ function __parse_git_status {
 
 		"dirty")
 			# older Git versions use the first terminology
-			searchstr="Changed but not updated\\|Changes not staged for commit\\|no changes added to commit";;
+			searchstr="Changed but not updated\\|Changes not staged for commit";;
+
+		"modified")
+			# older Git versions use the first terminology
+			searchstr="no changes added to commit";;
 
 		"newfile")
 			searchstr="new file:";;
@@ -279,7 +283,7 @@ function __parse_git_status {
 function __parse_git_branch_state {
 	__parse_git_status ahead && ahead=true
 	__parse_git_status dirty && dirty=true
-	#__parse_git_status modified && modified=true
+	__parse_git_status modified && modified=true
 	__parse_git_status newfile && newfile=true
 	__parse_git_status renamed && renamed=true
 	__parse_git_status staged && staged=true
