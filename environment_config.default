@@ -213,6 +213,13 @@ fi
 [ -n "$mediaLandingPagesPath" ] || export mediaLandingPagesPath="${workspace_path}${mediaprojectname}/media/landing-pages/"
 
 
+# Hosts referenced by other flgitscripts. Cannot be overwritten in overrides.
+export HOST_FLGITSCRIPTS="flgit.finishline.com"
+export HOST_RIDDLE="10.0.30.45"
+
+
+# Set up SSH Hosts file
+
 
 # Java and ANT Settings
 [ -n "$JDK_VERSION" ] || JDK_VERSION="jdk1.5.0_14"
