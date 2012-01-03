@@ -300,6 +300,9 @@ function __parse_git_branch_state {
 		#bits="${bits} ${X}${STYLE_MODIFIED} >> (staged AND dirty) ${X}"
 	 	bits="${bits} ${X}${STYLE_COMMITTED} + (staged) ${X}"
 	fi
+	if [ -n "${modified}" -a -z "${staged}" -a -n "${dirty}" ]; then
+		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified) ${X}"
+	fi
 	# if [ -n "${staged}" ]; then
 	# 	bits="${bits} ${X}${STYLE_COMMITTED} + (staged) ${X}"
 	# fi
@@ -316,9 +319,6 @@ function __parse_git_branch_state {
 	# fi
 	if [ -n "${modified}" -a -n "${staged}" -a -n "${dirty}" ]; then
 		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified 1) ${X}"
-	fi
-	if [ -n "${modified}" -a -z "${staged}" -a -n "${dirty}" ]; then
-		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified 3) ${X}"
 	fi
 	#if [ -n "${modified}" -a -z "${staged}" ]; then
 	#	bits="${bits} ${X}${STYLE_MODIFIED} >> (modified 4) ${X}"
