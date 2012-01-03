@@ -14,15 +14,6 @@ clear
 T='jMx'   # The test text
 
 
-
-
-
-# adding some meaningless comments
-# adding some meaningless comments
-# adding some meaningless comments
-# adding some meaningless comments
-# adding some meaningless comments
-
 echo "##########################################"
 echo "Color table for your shell"
 echo "##########################################"
