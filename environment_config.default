@@ -205,13 +205,34 @@ fi
 [ -n "$tempdir" ] || export tempdir="${flgitscripts_path}temp/"
 [ -n "$tmp" ] || export tmp="${tempdir}tmp"
 [ -n "$flgitscripts_temp_bash_profile_path" ] || export flgitscripts_temp_bash_profile_path="${tempdir}temp_bash_profile"
+[ -n "$flgitscripts_config_path" ] || export flgitscripts_config_path="${flgitscripts_path}cfg/"
+[ -n "$flgitscripts_config_defaults" ] || export flgitscripts_config_defaults="${flgitscripts_config_path}flgs.config.defaults"
+[ -n "$flgitscripts_config" ] || export flgitscripts_config="${flgitscripts_config_path}flgs.config"
+
+# Config is important. Set a flag if file exists.
+if [ ! -s "$flgitscripts_config" ]; then
+	if [ -s "$flgitscripts_config_defaults" ]; then
+		# config file isn't found. create it from default
+		tolog="flgs.config not found. Creating ${flgitscripts_config} from ${flgitscripts_config_defaults}..."
+		# find a way to add gscomment at top?
+		cp -f $flgitscripts_config_defaults $flgitscripts_config && { __gslog "${tolog}done."; export FLGS_CONFIG=true; } || {
+			__gslog "${tolog}failed!"
+			echo ${E}" There was an error creating the config file! "${X}
+			exit 1
+		}
+	else
+		echo ${E}" No config files found! "${X}
+		exit 1
+	fi
+else
+	export FLGS_CONFIG=true
+fi
 
 
 # Project-specific
 [ -n "$webappwar" ] || export webappwar="${finishline_path}modules/base/j2ee-apps/base/web-app.war/"
 [ -n "$promosdir" ] || export promosdir="${webappwar}global/promos/"
 [ -n "$mediaLandingPagesPath" ] || export mediaLandingPagesPath="${workspace_path}${mediaprojectname}/media/landing-pages/"
-
 
 
 # Java and ANT Settings
