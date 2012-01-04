@@ -115,7 +115,7 @@ if [ "$YorN" = "y" ]
 	remotes=$(git remote);
 	if [ ${#remotes[@]} = 1 ]
 		then
-		remote = $(git remote);
+		remote=$(git remote);
 	else
 		echo ${O}"------------------------------------------------------------------------------------"
 		echo "Choose a remote (or just hit enter to abort):"
