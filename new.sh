@@ -1,9 +1,14 @@
 $loadfuncs
 
 startingBranch="master"
-if [ -n $3 ] && [ "$3" != " " ] && [ "$3" != "" ]
+
+startingBranch="master"
+if [ -n $2 ] && [ "$2" == "from" ]
 	then
-	startingBranch=$3
+	if [ -n $3 ] && [ "$3" != " " ] && [ "$3" != "" ]
+		then
+		startingBranch=$3
+	fi
 fi
 
 
@@ -170,7 +175,6 @@ if [ "$startingBranch" = "master" ]
 else
 	echo
 	echo
-	checkout.sh $startingBranch
 
 	echo "You are about to checkout branch $startingBranch in order to create a new branch named $1"
 	echo 'Do not do this unless you truly know what you are doing, and why!'
@@ -182,6 +186,7 @@ else
 		then
 		echo This branches $startingBranch to create a new branch named $1
 		echo git checkout -b $1 $startingBranch
+		checkout.sh $startingBranch
 		git checkout -b $1 $startingBranch
 		git config branch.$1.remote $remote
 		git config branch.$1.merge refs/heads/$1
