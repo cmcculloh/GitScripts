@@ -154,6 +154,7 @@ if [ "$startingBranch" = "master" ]
 		echo ${h2}"You chose: ${COL_CYAN}${remote}${h2}"
 		echo ${X}
 		eval "git push ${remote} ${1}"
+		git fetch --all --prune
 
 	else
 		echo ${E}"You chose: ${COL_CYAN}${remote}${E}"
