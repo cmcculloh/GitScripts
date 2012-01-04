@@ -118,8 +118,8 @@ if [ "$YorN" = "y" ]
 	for i in $remotes_string; 
 	do 
 	echo "$c: $i";
-	c=$((c+1));
 	remotes[$c]=$i;
+	c=$((c+1));
 	done
 
 	if [ ${#remotes[@]} = 1 ]
