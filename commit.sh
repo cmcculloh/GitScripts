@@ -112,7 +112,7 @@ echo ${X}
 read YorN
 if [ "$YorN" = "y" ]
 	then
-	remotes=$(git remote);
+	remotes_string=$(git remote);
 	c=0;
 
 	for i in $remotes_string; 
