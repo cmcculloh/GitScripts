@@ -137,26 +137,26 @@ if [ "$YorN" = "y" ]
 		read remote
 		echo ${X}
 
-		remo=$(echo ${remotes[$remote]} | sed 's/\// /')
-		echo "remote: $remo"
-		chosenremoteexists=`git remote | grep "${remotes[$remote]}"`
-		if [ -z "$remote" ] || [ "$remote" = "" ] ; then
-			echo ${E}"####################################################################################"
-			echo "ABORTING: pushing requires a remote to continue                               "
-			echo "####################################################################################"
-			echo ${X}
-			exit 0
-		elif [ -n "$chosenremoteexists" ] ; then
-			echo ${h2}"You chose: ${COL_CYAN}${remotes[$remote]}${h2}"
-			echo ${X}
-			eval "git push ${remotes[$remote]} HEAD"
+		remote=$(echo ${remotes[$remote]} | sed 's/\// /')
+	fi
 
-		else
-			echo ${E}"You chose: ${COL_CYAN}${remotes[$remote]}${E}"
-			echo "404 NOT FOUND. The requested REMOTE /${remotes[$remote]} was not found on this server."
-			echo ${X}
-		fi
+	echo "remote: $remo"
+	chosenremoteexists=`git remote | grep "${remotes[$remote]}"`
+	if [ -z "$remote" ] || [ "$remote" = "" ] ; then
+		echo ${E}"####################################################################################"
+		echo "ABORTING: pushing requires a remote to continue                               "
+		echo "####################################################################################"
+		echo ${X}
+		exit 0
+	elif [ -n "$chosenremoteexists" ] ; then
+		echo ${h2}"You chose: ${COL_CYAN}${remotes[$remote]}${h2}"
+		echo ${X}
+		eval "git push ${remotes[$remote]} HEAD"
 
+	else
+		echo ${E}"You chose: ${COL_CYAN}${remotes[$remote]}${E}"
+		echo "404 NOT FOUND. The requested REMOTE /${remotes[$remote]} was not found on this server."
+		echo ${X}
 	fi
 fi
 
