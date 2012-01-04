@@ -124,7 +124,7 @@ if [ "$YorN" = "y" ]
 
 	if [ ${#remotes[@]} = 1 ]
 		then
-		remote=$remotes[1];
+		remote=${remotes[1]};
 	else
 		echo ${O}"------------------------------------------------------------------------------------"
 		echo "Choose a remote (or just hit enter to abort):"
