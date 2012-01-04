@@ -113,9 +113,18 @@ read YorN
 if [ "$YorN" = "y" ]
 	then
 	remotes=$(git remote);
+	c=0;
+
+	for i in $remotes_string; 
+	do 
+	echo "$c: $i";
+	c=$((c+1));
+	remotes[$c]=$i;
+	done
+
 	if [ ${#remotes[@]} = 1 ]
 		then
-		remote=$(git remote);
+		remote=$remotes[1];
 	else
 		echo ${O}"------------------------------------------------------------------------------------"
 		echo "Choose a remote (or just hit enter to abort):"
