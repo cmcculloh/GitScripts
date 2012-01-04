@@ -117,8 +117,8 @@ if [ "$YorN" = "y" ]
 
 	for remote in $remotes_string; 
 	do 
-	echo "$c: $i";
-	remotes[$c]=$i;
+	echo "$c: $remote";
+	remotes[$c]=$remote;
 	c=$((c+1));
 	done
 
