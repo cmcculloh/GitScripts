@@ -1,4 +1,23 @@
 #!/bin/bash
+## /*
+#	@usage ssh-hosts-setup
+#
+#	@description
+#	This script sets up a user's ssh config file for the first time. There are certain settings
+#	required by some flgitscripts that require hosts to be clearly defined and differentiable.
+#	Some scripts that require specific hosts:
+#
+#		phone.sh
+#	description@
+#
+#	@notes
+#	-
+#	notes@
+#
+#	@dependencies
+#	gitscripts (for styles)
+#	dependencies@
+## */
 
 # Tilde (~) expansion for home directory not reliable in quotes.
 config_path=`cd ~; pwd`"/.ssh/"
@@ -6,11 +25,9 @@ config="${config_path}config"
 configbak="${config}.bak"
 flgs_tag="# Edited by ssh-hosts-setup.sh"
 keys=(riddle_key)
-riddle_key_in="${inputdir}_riddle_key"
-riddle_key="${config_path}riddle_key"
 
 
-# Function for writing to the config file.
+# Function for writing the heading to the config file.
 function write_config {
 	cat > $config <<CONFIGINPUT
 $flgs_tag
