@@ -36,7 +36,7 @@ elif [ $decision -eq 4 ]
 	then
 	echo "Aborting creation of branch ${STYLE_NEWBRANCH}\`${1}\`${X}"
 	exit 1
-	
+
 elif [ $decision -eq 2 ]
 	then
 	echo This stashes any local changes you might have made and forgot to commit
@@ -105,7 +105,63 @@ if [ "$startingBranch" = "master" ]
 	git checkout -b $1
 	git config branch.$1.remote $remote
 	git config branch.$1.merge refs/heads/$1
-	git push $remote $1
+
+
+	remotes_string=$(git remote);
+	c=0;
+
+	for remote in $remotes_string; 
+	do 
+	echo "$c: $remote";
+	remotes[$c]=$remote;
+	c=$((c+1));
+	done
+
+	if [ ${#remotes[@]} -gt 1 ]
+		then
+		echo ${O}"------------------------------------------------------------------------------------"
+		echo "Choose a remote (or just hit enter to abort):"
+		echo "------------------------------------------------------------------------------------"
+		for (( i = 0 ; i < ${#remotes[@]} ; i++ ))
+			do
+			remote=$(echo ${remotes[$i]} | sed 's/[a-zA-Z0-9\-]+(\/\{1\}[a-zA-Z0-9\-]+)//p')
+
+			if [ $i -le "9" ] ; then
+				index="  "$i
+			elif [ $i -le "99" ] ; then
+				index=" "$i
+			else
+				index=$i
+			fi
+			echo "$index: $remote"
+		done
+		echo ${I}"Choose a remote (or just hit enter to abort):"
+		read remote
+		echo ${X}
+
+		remote=$(echo ${remotes[$remote]} | sed 's/\// /')
+	fi
+
+	echo "remote: $remote"
+	chosenremoteexists=`git remote | grep "${remote}"`
+	if [ -z "$remote" ] || [ "$remote" = "" ] ; then
+		echo ${E}"####################################################################################"
+		echo "ABORTING: pushing requires a remote to continue                               "
+		echo "####################################################################################"
+		echo ${X}
+		exit 0
+	elif [ -n "$chosenremoteexists" ] ; then
+		echo ${h2}"You chose: ${COL_CYAN}${remote}${h2}"
+		echo ${X}
+		eval "git push ${remote} ${1}"
+
+	else
+		echo ${E}"You chose: ${COL_CYAN}${remote}${E}"
+		echo "404 NOT FOUND. The requested REMOTE /${remote} was not found on this server."
+		echo ${X}
+	fi
+
+
 
 	echo
 	echo
