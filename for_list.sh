@@ -23,6 +23,10 @@ fi
 
 echo "remotes[1]: ${remotes[1]}"
 
+remote=${remotes[1]}
+
+echo "remote: $remote";
+
 if [ ${#remotes[@]} -eq 1 ]
 	then
 	echo "array is (1) ${#remotes[@]} elements long"

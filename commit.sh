@@ -115,17 +115,15 @@ if [ "$YorN" = "y" ]
 	remotes_string=$(git remote);
 	c=0;
 
-	for i in $remotes_string; 
+	for remote in $remotes_string; 
 	do 
 	echo "$c: $i";
 	remotes[$c]=$i;
 	c=$((c+1));
 	done
 
-	if [ ${#remotes[@]} = 1 ]
+	if [ ${#remotes[@]} -gt 1 ]
 		then
-		remote=$remotes[1];
-	else
 		echo ${O}"------------------------------------------------------------------------------------"
 		echo "Choose a remote (or just hit enter to abort):"
 		echo "------------------------------------------------------------------------------------"
