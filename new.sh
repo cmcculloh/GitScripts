@@ -217,7 +217,7 @@ if [ -n "$remote" ]; then
 	echo
 	echo "Finally, your new branch will be pushed up to the remote: ${COL_GREEN}${remote}${COL_NORM}"
 	echo ${O}${H2HL}
-	eval "$ git push ${remote} ${1}"
+	echo "$ git push ${remote} ${1}"
 	git push $remote $1
 	echo ${H2HL}${X}
 fi
