@@ -181,7 +181,7 @@ else
 	echo "You are about to checkout branch ${COL_CYAN}${startingBranch}${COL_NORM} in order to create a new branch named ${COL_CYAN}$1${COL_NORM}."
 	echo "Do not do this unless you truly know what you are doing, and why!"
 	echo "The only reason to do this is if your new branch relies on branch ${COL_CYAN}${startingBranch}${COL_NORM}."
-	echo 'Please type "${I}I understand${X}" (case sensitive!) and hit enter to continue. Any other input'
+	echo "Please type '${I}I understand${X}' (case sensitive!) and hit enter to continue. Any other input"
 	echo 'will abort this process:'
 	read iunderstand
 
