@@ -164,6 +164,7 @@ if [ "$YorN" = "y" ]
 		echo ${E}"You chose: ${COL_CYAN}${remote}${E}"
 		echo "404 NOT FOUND. The requested REMOTE /${remote} was not found on this server."
 		echo ${X}
+		exit -1
 	fi
 fi
 
