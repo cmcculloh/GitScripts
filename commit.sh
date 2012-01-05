@@ -168,7 +168,9 @@ if [ "$YorN" = "y" ]
 	fi
 fi
 
+echo
 git fetch
+echo
 
 echo ""
 echo ${O}
