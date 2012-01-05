@@ -5,11 +5,17 @@ git branch -a | grep "$1"
 remotes_string=$(git branch -a | grep "$1" | sed 's/fl\///' | sed 's/remotes\///');
 c=0;
 
+last=""
 for remote in $remotes_string; 
 do 
 #echo "$c: $remote";
-remotes[$c]=$remote;
-c=$((c+1));
+r=$(echo $remote)
+if [ "$last" != "$r" ]; then
+	remotes[$c]=$r;
+	c=$((c+1));
+fi
+
+last=$r
 done
 
 if [ ${#remotes[@]} -gt 1 ]
@@ -35,7 +41,7 @@ if [ ${#remotes[@]} -gt 1 ]
 	echo ${X}
 
 	if [ -n "$remote" ]; then
-		remote=$(echo ${remotes[$remote]})
+		remote=$(echo ${remotes[$remote]} | sed 's/[a-z]*\///g')
 	else
 		echo "no branch chosen, aborting"
 		exit 0
