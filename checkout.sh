@@ -304,18 +304,66 @@ if [ -n "$trycheckout" ]; then
 	nolocal=`git checkout $1 2>&1 | grep "error: pathspec "`
 	if [ -n "$nolocal" ]; then
 		echo "No local version of $1, attempting to create new local from remote"
-		noremote=`git checkout -b $1 origin/$1 2>&1 | grep "error: "`
-		if [ -n "$noremote" ]; then
-			echo
-			echo ${X}${E}"Checkout failed!"
-			echo "$noremote"${X}
-			echo ${O}${H2HL}${X}
-			echo
-			echo
-			exit -1
-		else
-			git checkout -b "$1" "origin/$1"
+
+		git branch -a | grep "$1"
+		remotes_string=$(git branch -a | grep "$1");
+		c=0;
+
+		for remote in $remotes_string; 
+		do 
+		#echo "$c: $remote";
+		remotes[$c]=$remote;
+		c=$((c+1));
+		done
+
+		if [ ${#remotes[@]} -gt 1 ]
+			then
+			echo ${O}"------------------------------------------------------------------------------------"
+			echo "Choose a remote (or just hit enter to abort):"
+			echo "------------------------------------------------------------------------------------"
+			for (( i = 0 ; i < ${#remotes[@]} ; i++ ))
+				do
+				remote=$(echo ${remotes[$i]} | sed 's/[a-zA-Z0-9\-]+(\/\{1\}[a-zA-Z0-9\-]+)//p' | sed 's/fl\///' | sed 's/remotes\///')
+
+				if [ $i -le "9" ] ; then
+					index="  "$i
+				elif [ $i -le "99" ] ; then
+					index=" "$i
+				else
+					index=$i
+				fi
+				echo "$index: $remote"
+			done
+			echo ${I}"Choose a remote (or just hit enter to abort):"
+			read remote
+			echo ${X}
+
+			remote=$(echo ${remotes[$remote]} | sed 's/remotes\// /')
 		fi
+
+		echo""
+		echo "  Checkout ${remote}? y (n)"
+		read YorN
+		if [ "$YorN" = "y" ]
+			then
+			noremote=`git checkout -b $1 ${remote} 2>&1 | grep "error: "`
+			if [ -n "$noremote" ]; then
+				echo
+				echo ${X}${E}"Checkout failed!"
+				echo "$noremote"${X}
+				echo ${O}${H2HL}${X}
+				echo
+				echo
+				exit -1
+			else
+				git checkout -b "$1" "${remote}"
+			fi
+		else
+			echo "Aborting"
+			exit -1
+		fi
+
+
 	else
 		echo
 		echo ${X}${E}"Checkout failed!"
