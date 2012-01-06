@@ -69,7 +69,7 @@ if __branch_merge_set $startingBranch; then
 	echo ${STYLE_WARNING}"Alert: the branch ${COL_CYAN}${startingBranch}${COL_NORM}${STYLE_WARNING} is already tracking a remote branch. Exiting now."${X}
 	exit 1
 else
-	echo ${STYLE_NOTIFY}"The branch ${COL_CYAN}${startingBranch}${COL_NORM}${STYLE_WARNING} is not yet tracking a remote branch. Determining remote now..."${X}
+	echo ${STYLE_NOTIFY}"The branch ${COL_CYAN}${startingBranch}${COL_NORM}${STYLE_NOTIFY} is not yet tracking a remote branch. Determining remote now..."${X}
 	remote=$(__get_remote)
 
 	if [ -n "$remote" ]; then
@@ -82,7 +82,7 @@ else
 		# if a remote exists, push to it.
 		echo
 		echo
-		echo ${STYLE_NOTIFY}"Remote determined to be ${COL_CYAN}${remote}${COL_NORM}${STYLE_WARNING}. Pushing to remote now..."${X}
+		echo ${STYLE_NOTIFY}"Remote determined to be ${COL_CYAN}${remote}${COL_NORM}${STYLE_NOTIFY}. Pushing to remote now..."${X}
 		echo ${O}${H2HL}
 		echo "$ git push ${remote} ${startingBranch}"
 		git push $remote $startingBranch
