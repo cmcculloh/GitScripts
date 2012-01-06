@@ -40,9 +40,18 @@ if [ -z "$1" ]; then
 
 	echo "No branch name supplied, we have determined that it is: ${startingBranch}"
 
+	echo "Will check to see if it is being tracked already..."
+	if __branch_merge_set $startingBranch; then
+		echo "It is already tracked."
+		exit 1
+	else
+		echo "It is NOT already tracked."
+	fi
+
 elif __branch_exists $1; then
 	# parameter supplied --- and branch exists
 	echo "Branch exists!"
+	startingBranch=$1
 else
 	# parameter supplied --- and branch does not exist
 	echo ${E}"Error: a failure has occured."${X}
@@ -54,4 +63,5 @@ fi
 
 
 # git config --get branch.master.merge
+# git config --get branch.csc---make-command-to-set-up-remote-tracking-on-existing-branch.merge
 
