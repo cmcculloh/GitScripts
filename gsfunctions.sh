@@ -232,7 +232,7 @@ function __get_remote {
 #	notes@
 ## */
 function __parse_git_branch {
-	git branch --no-color 2> /dev/null | awk '/^* / { gsub(/^* /,""); print }'
+	git branch --no-color 2> /dev/null | awk '/^\* / { gsub(/^\* /,""); print }'
 }
 
 
