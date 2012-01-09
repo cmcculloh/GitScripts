@@ -294,15 +294,85 @@ echo "This checks out the ${COL_CYAN}$1${COL_NORM} branch."
 echo ${O}${H2HL}
 echo "$ git checkout $1"
 
+# Get updated changes from the remote (there should rarely be any for personal branches)
+#TODO: Update this to use our remote choosing function (maybe?)
+remote=$(git remote)
+onremote=`git branch -r | grep "$1"`
+
 trycheckout=`git checkout $1 2>&1 | grep "error: "`
 if [ -n "$trycheckout" ]; then
-	echo
-	echo ${X}${E}"Checkout failed!"
-	echo "$trycheckout"${X}
-	echo ${O}${H2HL}${X}
-	echo
-	echo
-	exit -1
+	nolocal=`git checkout $1 2>&1 | grep "error: pathspec "`
+	if [ -n "$nolocal" ]; then
+		echo "No local version of $1, attempting to create new local from remote"
+
+		git branch -a | grep "$1"
+		remotes_string=$(git branch -a | grep "$1");
+		c=0;
+
+		for remote in $remotes_string; 
+		do 
+		#echo "$c: $remote";
+		remotes[$c]=$remote;
+		c=$((c+1));
+		done
+
+		if [ ${#remotes[@]} -gt 1 ]
+			then
+			echo ${O}"------------------------------------------------------------------------------------"
+			echo "Choose a remote (or just hit enter to abort):"
+			echo "------------------------------------------------------------------------------------"
+			for (( i = 0 ; i < ${#remotes[@]} ; i++ ))
+				do
+				remote=$(echo ${remotes[$i]} | sed 's/[a-zA-Z0-9\-]+(\/\{1\}[a-zA-Z0-9\-]+)//p' | sed 's/fl\///' | sed 's/remotes\///')
+
+				if [ $i -le "9" ] ; then
+					index="  "$i
+				elif [ $i -le "99" ] ; then
+					index=" "$i
+				else
+					index=$i
+				fi
+				echo "$index: $remote"
+			done
+			echo ${I}"Choose a remote (or just hit enter to abort):"
+			read remote
+			echo ${X}
+
+			remote=$(echo ${remotes[$remote]} | sed 's/remotes\// /')
+		fi
+
+		echo""
+		echo "  Checkout ${remote}? y (n)"
+		read YorN
+		if [ "$YorN" = "y" ]
+			then
+			noremote=`git checkout -b $1 ${remote} 2>&1 | grep "error: "`
+			if [ -n "$noremote" ]; then
+				echo
+				echo ${X}${E}"Checkout failed!"
+				echo "$noremote"${X}
+				echo ${O}${H2HL}${X}
+				echo
+				echo
+				exit -1
+			else
+				git checkout -b "$1" "${remote}"
+			fi
+		else
+			echo "Aborting"
+			exit -1
+		fi
+
+
+	else
+		echo
+		echo ${X}${E}"Checkout failed!"
+		echo "$trycheckout"${X}
+		echo ${O}${H2HL}${X}
+		echo
+		echo
+		exit -1
+	fi
 else
 	echo "Already on branch $1"
 
@@ -319,55 +389,57 @@ else
 		echo "$ git pull ${remote} $1"
 		git pull $remote $1
 	fi
+fi
 
-	if [ "$1" == "master" ]; then
-		# do nothing, already on master
-		# echo ${H2HL}${X}
-		echo
-		echo
-	else
-		# if checkout branch is on the remote, MERGE master in...
-		echo ${H2HL}${X}
-		echo
-		echo
-		if [ -n "$onremote" ]; then
-			echo ${Q}"${COL_MAG}Merge${COL_NORM} branch ${COL_CYAN}master${COL_NORM} into ${COL_CYAN}$1${COL_NORM}? (y) n"${X}
-			read decision
 
-			if [ -z "$decision" ] || [ "$decision" = "y" ] || [ "$decision" = "Y" ]; then
-				echo
-				echo "Merging ${COL_CYAN}${remote}/master${COL_NORM} into ${COL_CYAN}$1${COL_NORM} ..."
-				echo ${O}${H2HL}
-				echo "$ git merge ${remote}/master"
-				git merge "${remote}/master"
-				echo
-				echo
-			else
-				echo
-				echo ${O}${H2HL}
-			fi
+if [ "$1" == "master" ]; then
+	# do nothing, already on master
+	# echo ${H2HL}${X}
+	echo
+	echo
+else
+	# if checkout branch is on the remote, MERGE master in...
+	echo ${H2HL}${X}
+	echo
+	echo
+	if [ -n "$onremote" ]; then
+		echo ${Q}"${COL_MAG}Merge${COL_NORM} branch ${COL_CYAN}master${COL_NORM} into ${COL_CYAN}$1${COL_NORM}? (y) n"${X}
+		read decision
 
-		# ...otherwise rebase this branch's changes onto master ("cleaner" option)
+		if [ -z "$decision" ] || [ "$decision" = "y" ] || [ "$decision" = "Y" ]; then
+			echo
+			echo "Merging ${COL_CYAN}${remote}/master${COL_NORM} into ${COL_CYAN}$1${COL_NORM} ..."
+			echo ${O}${H2HL}
+			echo "$ git merge ${remote}/master"
+			git merge "${remote}/master"
+			echo
+			echo
 		else
-			echo ${Q}"${COL_MAG}Rebase${COL_NORM} branch ${COL_CYAN}$1${COL_NORM} onto ${COL_CYAN}master${COL_NORM}? (y) n"${X}
-			read decision
-
-			if [ -z "$decision" ] || [ "$decision" = "y" ] || [ "$decision" = "y" ]; then
-				echo
-				echo "Rebasing ${COL_CYAN}$1${COL_NORM} onto ${COL_CYAN}${remote}/master${COL_NORM} ..."
-				echo ${O}${H2HL}
-				echo "$ git rebase ${remote}/master"
-				git rebase "${remote}/master"
-				echo
-				echo
-			else
-				echo
-				echo ${O}${H2HL}
-			fi
+			echo
+			echo ${O}${H2HL}
 		fi
 
+	# ...otherwise rebase this branch's changes onto master ("cleaner" option)
+	else
+		echo ${Q}"${COL_MAG}Rebase${COL_NORM} branch ${COL_CYAN}$1${COL_NORM} onto ${COL_CYAN}master${COL_NORM}? (y) n"${X}
+		read decision
+
+		if [ -z "$decision" ] || [ "$decision" = "y" ] || [ "$decision" = "y" ]; then
+			echo
+			echo "Rebasing ${COL_CYAN}$1${COL_NORM} onto ${COL_CYAN}${remote}/master${COL_NORM} ..."
+			echo ${O}${H2HL}
+			echo "$ git rebase ${remote}/master"
+			git rebase "${remote}/master"
+			echo
+			echo
+		else
+			echo
+			echo ${O}${H2HL}
+		fi
 	fi
+
 fi
+
 
 # Show status for informational purposes
 echo "$ git status"
