@@ -1,21 +1,36 @@
-STYLE_BRIGHT=$'\033[1m'
-STYLE_DIM=$'\033[2m'
-STYLE_NORM=$'\033[0m'
-COL_RED=$'\033[31m'
-COL_GREEN=$'\033[32m'
-COL_VIOLET=$'\033[34m'
-COL_YELLOW=$'\033[33m'
-COL_MAG=$'\033[35m'
-COL_CYAN=$'\033[36m'
-COL_WHITE=$'\033[37m'
-COL_NORM=$'\033[39m'
+#!/bin/bash
+## /*
+#	@usage pull
+#
+#	@description
+#	This is a quick script that pulls in changes from the current branch's remote
+#	tracking branch if it exists. It will abort otherwise.
+#	description@
+#
+#	@dependencies
+#	gitscripts/gsfunctions.sh
+#	dependencies@
+## */
+$loadfuncs
 
 
+cb=$(__parse_git_branch)
+remote=$(__get_remote)
 
-echo "##########################################"
-echo " pulling ${COL_CYAN}$(git remote)${COL_NORM}/${COL_CYAN}$(cb)${COL_NORM}"
-echo "##########################################"
 echo
-echo
+if git branch -r | grep -q $cb; then
+	echo ${H1}${H1HL}
+	echo " Pulling in changes from ${STYLE_OLDBRANCH_H1}\`${remote}/${cb}\`${H1} "
+	echo ${H1HL}${X}
+	echo
+	echo
+	echo ${O}${H2HL}
+	echo "$ git pull ${remote} ${cb}"
+	git pull $remote $cb
+	echo ${H2HL}${X}
+else
+	echo ${E}"  The current branch \`${cb}\` does not exist on the remote. Aborting...  "
+	exit 1
+fi
 
-git pull $(git remote) $(cb)
+exit
