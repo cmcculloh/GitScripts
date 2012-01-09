@@ -38,6 +38,9 @@ if [ "x$flgitscripts_path" = "x" ]; then
 fi
 export flgitscripts_path
 
+# Grab flgitscripts-specific functions.
+source "${flgitscripts_path}flgs-functions.sh"
+
 # OS specific support (must be 'true' or 'false').
 linux=false
 darwin=false;
