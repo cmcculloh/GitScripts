@@ -64,7 +64,7 @@ do
 				# echo "git branch --contains \"${branch}\""
 
 				# branchesContainingThisOne=`git branch --no-color --contains "${branch}"` | awk '{gsub(/\* /, "");print;}'
-				branchesContainingThisOne=`git branch --no-color --contains "${branch}" | awk '{gsub(/\* /, "");print;}'`
+				branchesContainingThisOne=`git branch --contains "${branch}" | awk '{gsub(/\* /, "");print;}'`
 				# branchesContainingThisOne=`git branch --no-color --contains "${branch}"` | awk '{gsub(/\* /, "");print;}'
 
 
