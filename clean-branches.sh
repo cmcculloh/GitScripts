@@ -44,7 +44,9 @@ echo
 
 ${gitscripts_path}checkout.sh master
 
-for branch in `git branch`
+
+
+for branch in `git branch | awk '{gsub(/\* /, "");print;}'`
 do
 	echo "${branch}"
 	# echo "`git branch | grep \"${branch}\"`"
