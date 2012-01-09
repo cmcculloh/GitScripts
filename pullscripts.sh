@@ -7,7 +7,7 @@ echo
 if __parse_git_status clean || { ! __parse_git_status modified && ! __parse_git_status staged; }; then
 
 	# if there is a space in the directory, storing it in a variable won't work with cd
-	pushd $(pwd)
+	pushd $(pwd) > /dev/null
 	cd ${gitscripts_path}
 
 	cb=$(__parse_git_branch)
@@ -46,7 +46,7 @@ if __parse_git_status clean || { ! __parse_git_status modified && ! __parse_git_
 	fi
 
 	echo "Now returning you to your original working directory..."
-	popd
+	popd > /dev/null
 else
 	echo ${E}"  Error: Your working directory must be clean with the exception of untracked files. Aborting...  "
 	exit 1
