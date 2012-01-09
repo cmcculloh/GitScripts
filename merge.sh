@@ -18,8 +18,9 @@
 #	notes@
 #
 #	@examples
-#	1) merge master                  # Merges master into current branch
-#	2) merge my-branch into master   # Merges my-branch into master (unless master is a protected branch)
+#	1) merge master                     # Merges master into current branch
+#	2) merge my-branch into master      # Merges my-branch into master (unless master is a protected branch)
+#	3) merge my-branch another-branch   # This will fail. The second "action" parameter (into) must be included.
 #	examples@
 #
 #	@dependencies
@@ -134,7 +135,7 @@ echo
 echo
 echo ${I}"Would you like to push? y (n)"${X}
 read yn
-if [ -z "$yn" ] || [ "$yn" = "n" ] || [ "$yn" = "N" ]; then
+if [ "$yn" = "y" ] || [ "$yn" = "Y" ]; then
 	remote=$(__get_remote)
 	echo ${O}${H2HL}
 	echo "$ git push ${remote} ${baseBranch}"
