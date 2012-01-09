@@ -277,7 +277,6 @@ function __parse_git_status {
 		return 1
 	fi
 
-
 	# check for given status
 	case $1 in
 		"ahead")
@@ -289,15 +288,12 @@ function __parse_git_status {
 		"clean")
 			searchstr="working directory clean";;
 
-		"dirty")
-			# older Git versions use the first terminology
+		"modified")
+			# first pattern for older versions of Git
 			searchstr="Changed but not updated\\|Changes not staged for commit";;
 
-		"modified")
-			# older Git versions use the first terminology
-			searchstr="no changes added to commit";;
-
 		"newfile")
+			# only returns true if file has been staged
 			searchstr="new file:";;
 
 		"renamed")
@@ -308,7 +304,6 @@ function __parse_git_status {
 
 		"staged")
 			searchstr="Changes to be committed";;
-
 
 		"untracked")
 			searchstr="Untracked files";;
@@ -359,79 +354,50 @@ function __parse_git_status {
 #	examples@
 ## */
 function __parse_git_branch_state {
-	__parse_git_status ahead && ahead=true
-	__parse_git_status behind && behind=true
-	__parse_git_status deleted && deleted=true
-	__parse_git_status dirty && dirty=true
-	__parse_git_status modified && modified=true
-	__parse_git_status newfile && newfile=true
-	__parse_git_status renamed && renamed=true
-	__parse_git_status staged && staged=true
-	__parse_git_status untracked && untracked=true
-	bits=''
+	__parse_git_status ahead 		&& local ahead=true
+	__parse_git_status behind 		&& local behind=true
+	__parse_git_status deleted 		&& local deleted=true
+	__parse_git_status modified 	&& local modified=true
+	__parse_git_status newfile 		&& local newfile=true
+	__parse_git_status renamed 		&& local renamed=true
+	__parse_git_status staged 		&& local staged=true
+	__parse_git_status untracked	&& local untracked=true
+	bits=
 
 
-	if [ -z "${modified}" -a -n "${staged}" -a -n "${dirty}" ]; then
-		#bits="${bits} ${X}${STYLE_MODIFIED} >> (staged AND dirty) ${X}"
-	 	bits="${bits} ${X}${STYLE_COMMITTED} ++ (staged) ${X}"
-		if [ -n "${deleted}" ]; then
-			bits="${bits} ${X}${STYLE_NEWFILE} !* (deleted files) ${X}"
-		fi
-		if [ -n "${newfile}" ]; then
+	if [ $staged ]; then
+		bits="${bits} ${X}${STYLE_COMMITTED} ++ (staged) ${X}"
+
+		if [ $newfile ]; then
 			bits="${bits} ${X}${STYLE_NEWFILE} * (new files) ${X}"
 		fi
-	 	bits="${bits} ${X}${STYLE_DIRTY} +- (dirty) ${X}"
-	fi
-	if [ -z "${modified}" -a -n "${staged}" -a -z "${dirty}" ]; then
-		#bits="${bits} ${X}${STYLE_MODIFIED} >> (staged AND dirty) ${X}"
-	 	bits="${bits} ${X}${STYLE_COMMITTED} ++ (staged) ${X}"
-		if [ -n "${deleted}" ]; then
-			bits="${bits} ${X}${STYLE_NEWFILE} !* (deleted files) ${X}"
+		if [ $renamed ]; then
+			bits="${bits} ${X}${STYLE_RENAMEDFILE} > (renamed) ${X}"
 		fi
-		if [ -n "${newfile}" ]; then
-			bits="${bits} ${X}${STYLE_NEWFILE} * (new files) ${X}"
+		if [ $modified ]; then
+			bits="${bits} ${X}${STYLE_DIRTY} +- (dirty) ${X}"
 		fi
 	fi
-	if [ -n "${modified}" -a -z "${staged}" -a -n "${dirty}" ]; then
+
+	if [ $deleted ]; then
+		bits="${bits} ${X}${STYLE_DELETEDFILE} !* (deleted files) ${X}"
+	fi
+
+	if [ $modified ] && [ ! $staged ]; then
 		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified) ${X}"
 	fi
-	# if [ -n "${staged}" ]; then
-	# 	bits="${bits} ${X}${STYLE_COMMITTED} + (staged) ${X}"
-	# fi
-	# if [ -n "${dirty}" ]; then
-	# 	bits="${bits} ${X}${STYLE_DIRTY} + (dirty) ${X}"
-	# fi
-	# if [ -n "${modified}" ]; then
-	# 	bits="${bits} ${X}${STYLE_MODIFIED} >> (modified) ${X}"
-	# fi
 
-	# if [ -n "${modified}" -a -n "${staged}" -a -z "${dirty}" ]; then
-	# 	echo "staged!"
-	# 	bits="${bits} ${X}${STYLE_COMMITTED} ++ (staged) ${X}"
-	# fi
-	if [ -n "${modified}" -a -n "${staged}" -a -n "${dirty}" ]; then
-		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified 1) ${X}"
-	fi
-	#if [ -n "${modified}" -a -z "${staged}" ]; then
-	#	bits="${bits} ${X}${STYLE_MODIFIED} >> (modified 4) ${X}"
-	#fi
-	if [ -n "${modified}" -a -z "${staged}" -a -z "${dirty}" ]; then
-		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified 5) ${X}"
-	fi
-	if [ -n "${untracked}" ]; then
+	if [ $untracked ]; then
 		bits="${bits} ${X}${STYLE_UNTRACKED} ? (untracked) ${X}"
 	fi
-	if [ -n "${ahead}" ]; then
+
+	if [ $ahead ]; then
 		bits="${bits} ${X}${STYLE_AHEAD} + (ahead) ${X}"
 	fi
-	if [ -n "${behind}" ]; then
+
+	if [ $behind ]; then
 		bits="${bits} ${X}${STYLE_AHEAD} - (behind) ${X}"
 	fi
-	if [ -n "${renamed}" ]; then
-		bits="${bits} > (renamed) "
-	fi
 
-	# bits="${bits} | Staged: ${staged} | Dirty: ${dirty} | Modified: ${modified} "
-
-	echo "${bits}"
+	echo "$bits"
 }
