@@ -85,14 +85,14 @@ if [ -n "$2" ]; then
 					echo "Adding all modified and untracked files..."
 					echo ${O}${H2HL}
 					echo "$ git add -A"
-				git add -A
+					git add -A
 					echo ${H2HL}${X}
 			fi
 		fi
 			;;
 
 		"-A")
-			flag="-A"
+			flag=""
 			echo "Adding all modified and untracked files..."
 			echo ${O}${H2HL}
 			echo "$ git add -A"
@@ -132,7 +132,7 @@ echo ${I}"Would you like to push? y (n)"${X}
 read YorN
 echo 
 if [ "$YorN" == "y" ] || [ "$YorN" == "Y" ]; then
-	remote=$(__get_remote)	
+	remote=$(__get_remote)
 	if [ -n "$remote" ]; then
 		echo
 		echo "Now pushing to:${X} ${COL_GREEN} ${remote} ${COL_NORM}"
