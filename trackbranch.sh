@@ -42,9 +42,21 @@ if [ -z "$1" ]; then
 	#echo "No branch name supplied, we have determined that it is: ${startingBranch}"
 
 
-elif __branch_exists $1; then
+elif __branch_exists_locally $1; then
 	# parameter supplied --- and branch exists
-	#echo "Branch exists!"
+	echo "local branch exists!"
+	startingBranch=$1
+elif __branch_exists_remote $1; then
+	# parameter supplied --- and branch exists
+	echo ${H2HL}
+	echo "Branch does not exist locally, but it does on the remote -- check it out? (y) n"
+	echo ${H2HL}${X}
+	read decision
+	if [ -z "$decision" ] || [ "$decision" = "" ] || [ "$decision" = "1" ] ; then
+		${gitscripts_path}/checkout.sh $1	
+	fi
+	echo
+
 	startingBranch=$1
 else
 	# parameter supplied --- and branch does not exist
