@@ -27,7 +27,20 @@ if [ -z "$startingBranch" ]; then
 	exit 1
 fi
 
+echo
+echo
+echo
 
+
+echo ${H1}
+echo ${H1HL}
+echo "Clean Branches"
+echo ${H1HL}
+echo "This script iterates through your local branches and prompts you to delete branche that are fully merged into master, prompting you to delete the ones that are."
+echo ${X}
+echo
+echo
+echo
 
 # ${gitscripts_path}checkout.sh master
 
