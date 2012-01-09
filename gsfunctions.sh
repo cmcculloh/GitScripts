@@ -152,6 +152,189 @@ function __branch_exists {
 	return 1
 }
 
+## /* @function
+#	@usage __branch_exists_locally <branch_name>
+#
+#	@output false
+#
+#	@description
+#	Determine if the given branch exists locally.
+#	description@
+#
+#	@notes
+#	- Since this function does not echo anything to be captured, it is most useful if
+#	used directly in conditional statements. See example below.
+#	notes@
+#
+#	@examples
+#	# ...
+#
+#	if __branch_exists_locally master; then
+#		echo "local branch 'master' exists!"
+#	fi
+#
+#	#...
+#	examples@
+## */
+function __branch_exists_locally {
+	if [ -z "$1" ]; then
+		__gslog "__branch_exists_locally: First parameter must be branch name."
+		return 1
+	fi
+
+	local locally=$(git branch | grep "$1")
+	if [ -n "$locally" ]; then
+		return 0
+	fi
+	return 1
+}
+## /* @function
+#	@usage __branch_exists_remote <branch_name>
+#
+#	@output false
+#
+#	@description
+#	Determine if the given branch exists on the remote.
+#	description@
+#
+#	@notes
+#	- Since this function does not echo anything to be captured, it is most useful if
+#	used directly in conditional statements. See example below.
+#	notes@
+#
+#	@examples
+#	# ...
+#
+#	if __branch_exists_remote master; then
+#		echo "remote branch 'master' exists!"
+#	fi
+#
+#	#...
+#	examples@
+## */
+function __branch_exists_remote {
+	if [ -z "$1" ]; then
+		__gslog "__branch_exists_remote: First parameter must be branch name."
+		return 1
+	fi
+
+	local onRemote=$(git branch -r | grep "$1")
+	if [ -n "$onRemote" ]; then
+		return 0
+	fi
+	return 1
+}
+
+## /* @function
+#	@usage __branch_merge_set <branch_name>
+#
+#	@output false
+#
+#	@description
+#	Determine if the given branch exists either locally or remotely. If it exists locally,
+#	skip checking for the remote branch.
+#	description@
+#
+#	@notes
+#	- Since this function does not echo anything to be captured, it is most useful if
+#	used directly in conditional statements. See example below.
+#	notes@
+#
+#	@examples
+#	# ...
+#
+#	if __branch_exists master; then
+#		echo "Branch 'master' exists!"
+#	fi
+#
+#	#...
+#	examples@
+## */
+function __branch_merge_set {
+	if [ -z "$1" ]; then
+		__gslog "__branch_merge_set: First parameter must be branch name."
+		return 1
+	fi
+
+	local configExists=$(git config --get branch.$1.merge)
+	if [ -n "$configExists" ]; then
+		return 0
+	else
+		return 1
+	fi
+	return 1
+}
+
+
+## /* @function
+#	@usage __get_remote
+#
+#	@output true
+#
+#	@description
+#	This function searches all the remotes for a git project and will present a menu
+#	to choose one if multiple remotes have been configured. If only one remote has been configured
+#	it will bypass the menu process and simply return that remote string. If no remotes are
+#	configured, there will be no output.
+#	description@
+#
+#	@notes
+#	- This function is intended to be used for it's output, not in conditionals.
+#	notes@
+#
+#	@examples
+#	...
+#	remote=$(__get_remote)
+#	git push $remote branch-name-to-push
+#	...
+#	examples@
+## */
+function __get_remote {
+	local cb=$(__parse_git_branch)
+	local remote=$(git config branch.$cb.remote)
+
+	if [ ! $remote ]; then
+	remotes_string=$(git remote);
+
+	# if no remotes are configured there's no reason to continue processing.
+	if [ -z "$remotes_string" ]; then
+		exit 1
+	fi
+
+	c=0;
+	for remote in $remotes_string; do
+		remotes[$c]=$remote;
+		(( c++ ));
+	done
+
+	# if more than one remote exists, give the user a choice.
+	if [ ${#remotes[@]} -gt 1 ]; then
+		echo ${O}${H2HL}
+		for (( i = 0 ; i < ${#remotes[@]} ; i++ )); do
+			remote=$(echo ${remotes[$i]} | sed 's/[a-zA-Z0-9\-]+(\/\{1\}[a-zA-Z0-9\-]+)//p')
+
+			if [ $i -le "9" ]; then
+				index="  "$i
+			elif [ $i -le "99" ]; then
+				index=" "$i
+			else
+				index=$i
+			fi
+			echo "$index: $remote"
+		done
+		echo ${H2HL}${X}
+		echo ${I}"Choose a remote (or just hit enter to abort):"
+		read remote
+		echo ${X}
+
+		remote=$(echo ${remotes[$remote]} | sed 's/\// /')
+	else
+		remote=${remotes[0]}
+	fi
+	fi
+	echo "$remote"
+}
+
 
 ## /* @function
 #	@usage __parse_git_branch
@@ -167,7 +350,7 @@ function __branch_exists {
 #	notes@
 ## */
 function __parse_git_branch {
-	git branch --no-color 2> /dev/null | awk '/^* / { gsub(/^* /,""); print }'
+	git status >/dev/null 2>&1 && expr "$(git symbolic-ref HEAD)" : 'refs/heads/\(.*\)'
 }
 
 
@@ -207,7 +390,6 @@ function __parse_git_status {
 		return 1
 	fi
 
-
 	# check for given status
 	case $1 in
 		"ahead")
@@ -219,15 +401,12 @@ function __parse_git_status {
 		"clean")
 			searchstr="working directory clean";;
 
-		"dirty")
-			# older Git versions use the first terminology
+		"modified")
+			# first pattern for older versions of Git
 			searchstr="Changed but not updated\\|Changes not staged for commit";;
 
-		"modified")
-			# older Git versions use the first terminology
-			searchstr="no changes added to commit";;
-
 		"newfile")
+			# only returns true if file has been staged
 			searchstr="new file:";;
 
 		"renamed")
@@ -238,7 +417,6 @@ function __parse_git_status {
 
 		"staged")
 			searchstr="Changes to be committed";;
-
 
 		"untracked")
 			searchstr="Untracked files";;
@@ -289,79 +467,50 @@ function __parse_git_status {
 #	examples@
 ## */
 function __parse_git_branch_state {
-	__parse_git_status ahead && ahead=true
-	__parse_git_status behind && behind=true
-	__parse_git_status deleted && deleted=true
-	__parse_git_status dirty && dirty=true
-	__parse_git_status modified && modified=true
-	__parse_git_status newfile && newfile=true
-	__parse_git_status renamed && renamed=true
-	__parse_git_status staged && staged=true
-	__parse_git_status untracked && untracked=true
-	bits=''
+	__parse_git_status ahead 		&& local ahead=true
+	__parse_git_status behind 		&& local behind=true
+	__parse_git_status deleted 		&& local deleted=true
+	__parse_git_status modified 	&& local modified=true
+	__parse_git_status newfile 		&& local newfile=true
+	__parse_git_status renamed 		&& local renamed=true
+	__parse_git_status staged 		&& local staged=true
+	__parse_git_status untracked	&& local untracked=true
+	bits=
 
 
-	if [ -z "${modified}" -a -n "${staged}" -a -n "${dirty}" ]; then
-		#bits="${bits} ${X}${STYLE_MODIFIED} >> (staged AND dirty) ${X}"
-	 	bits="${bits} ${X}${STYLE_COMMITTED} ++ (staged) ${X}"
-		if [ -n "${deleted}" ]; then
-			bits="${bits} ${X}${STYLE_NEWFILE} !* (deleted files) ${X}"
-		fi
-		if [ -n "${newfile}" ]; then
+	if [ $staged ]; then
+		bits="${bits} ${X}${STYLE_COMMITTED} ++ (staged) ${X}"
+
+		if [ $newfile ]; then
 			bits="${bits} ${X}${STYLE_NEWFILE} * (new files) ${X}"
 		fi
-	 	bits="${bits} ${X}${STYLE_DIRTY} +- (dirty) ${X}"
-	fi
-	if [ -z "${modified}" -a -n "${staged}" -a -z "${dirty}" ]; then
-		#bits="${bits} ${X}${STYLE_MODIFIED} >> (staged AND dirty) ${X}"
-	 	bits="${bits} ${X}${STYLE_COMMITTED} ++ (staged) ${X}"
-		if [ -n "${deleted}" ]; then
-			bits="${bits} ${X}${STYLE_NEWFILE} !* (deleted files) ${X}"
+		if [ $renamed ]; then
+			bits="${bits} ${X}${STYLE_RENAMEDFILE} > (renamed) ${X}"
 		fi
-		if [ -n "${newfile}" ]; then
-			bits="${bits} ${X}${STYLE_NEWFILE} * (new files) ${X}"
+		if [ $modified ]; then
+			bits="${bits} ${X}${STYLE_DIRTY} +- (dirty) ${X}"
 		fi
 	fi
-	if [ -n "${modified}" -a -z "${staged}" -a -n "${dirty}" ]; then
+
+	if [ $deleted ]; then
+		bits="${bits} ${X}${STYLE_DELETEDFILE} !* (deleted files) ${X}"
+	fi
+
+	if [ $modified ] && [ ! $staged ]; then
 		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified) ${X}"
 	fi
-	# if [ -n "${staged}" ]; then
-	# 	bits="${bits} ${X}${STYLE_COMMITTED} + (staged) ${X}"
-	# fi
-	# if [ -n "${dirty}" ]; then
-	# 	bits="${bits} ${X}${STYLE_DIRTY} + (dirty) ${X}"
-	# fi
-	# if [ -n "${modified}" ]; then
-	# 	bits="${bits} ${X}${STYLE_MODIFIED} >> (modified) ${X}"
-	# fi
 
-	# if [ -n "${modified}" -a -n "${staged}" -a -z "${dirty}" ]; then
-	# 	echo "staged!"
-	# 	bits="${bits} ${X}${STYLE_COMMITTED} ++ (staged) ${X}"
-	# fi
-	if [ -n "${modified}" -a -n "${staged}" -a -n "${dirty}" ]; then
-		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified 1) ${X}"
-	fi
-	#if [ -n "${modified}" -a -z "${staged}" ]; then
-	#	bits="${bits} ${X}${STYLE_MODIFIED} >> (modified 4) ${X}"
-	#fi
-	if [ -n "${modified}" -a -z "${staged}" -a -z "${dirty}" ]; then
-		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified 5) ${X}"
-	fi
-	if [ -n "${untracked}" ]; then
+	if [ $untracked ]; then
 		bits="${bits} ${X}${STYLE_UNTRACKED} ? (untracked) ${X}"
 	fi
-	if [ -n "${ahead}" ]; then
+
+	if [ $ahead ]; then
 		bits="${bits} ${X}${STYLE_AHEAD} + (ahead) ${X}"
 	fi
-	if [ -n "${behind}" ]; then
+
+	if [ $behind ]; then
 		bits="${bits} ${X}${STYLE_AHEAD} - (behind) ${X}"
 	fi
-	if [ -n "${renamed}" ]; then
-		bits="${bits} > (renamed) "
-	fi
 
-	# bits="${bits} | Staged: ${staged} | Dirty: ${dirty} | Modified: ${modified} "
-
-	echo "${bits}"
+	echo "$bits"
 }

@@ -1,227 +1,163 @@
 #!/bin/bash
-# merge
-# merges one git branch into another
+## /*
+#	@usage merge <branch_name> [into <branch_name2>]
+#
+#	@description
+#	This script is a helpful wrapper for merging one branch into another. The command itself
+#	is more intuitive because it uses "into" to clearly distinguish which branch is getting
+#	merged into the other.  There are some helpful safeties included as well. Referenced branches
+#	are checked for existence before the script gets too far along, protected branches are checked,
+#	and merge conflicts are determined after the merge. If merge conflicts should arise, the
+#	user is prompted to resolve them using the native git mergetool.
+#	description@
+#
+#	@notes
+#	- If specifying both branches in the merge, the second parameter (which should be "into") is
+#	not explicitly checked. Technically, a user could successfully merge two branches with the
+#	command "merge branch1 flapjack branch2".
+#	notes@
+#
+#	@examples
+#	1) merge master                     # Merges master into current branch
+#	2) merge my-branch into master      # Merges my-branch into master (unless master is a protected branch)
+#	3) merge my-branch another-branch   # This will fail. The second "action" parameter (into) must be included.
+#	examples@
+#
+#	@dependencies
+#	gitscripts/gsfunctions.sh
+#	gitscripts/clear-screen.sh
+#	dependencies@
+## */
+$loadfuncs
 
 
-current_branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+# check for minimum requirements
+[ $# -eq 1 ] && oneArg=true
+[ $# -eq 3 ] && threeArg=true
+# must have 1 arg (merge $1 into current branch) or 3 (merge $1 into $2)
+if [ ! $oneArg ] && [ ! $threeArg ]; then
+	echo
+	__bad_usage merge "Invalid number of parameters."
+	exit 1
 
+# branch getting merged in (first param) must exist
+elif ! __branch_exists $1; then
+	echo
+	echo ${E}"  Branch \`$1\` does not exist! Aborting...  "
+	exit 1
+fi
+
+# if three params given, make sure base branch (3rd param) exists (first branch was just checked above).
+# this not included as an elif because we want this check done in addition to previous check.
+if [ $threeArg ] && ! __branch_exists $3; then
+	echo
+	echo ${E}"  Branch \`$3\` does not exist! Aborting...  "
+	exit 1
+fi
+
+current_branch=$(__parse_git_branch)
+mergeBranch=$1
+[ $oneArg ] && { baseBranch=$current_branch; } || { baseBranch=$3; }
+
+# check protected branches
+[ -z "${protectmergefrom_path}" ] || isProtectedFrom=`grep "$mergeBranch" ${protectmergefrom_path}`
+if [ $isProtectedFrom ]; then
+	echo "  ${COL_RED}WARNING:${COL_NORM} Merging ${COL_YELLOW}from${COL_NORM} ${COL_CYAN}$1${COL_NORM} not allowed. Aborting..."
+	exit 1
+fi
+
+[ -z "${protectmergeto_path}" ] || isProtectedTo=`grep "$baseBranch" ${protectmergeto_path}`
+if [ $isProtectedTo ]; then
+	echo "${COL_RED}WARNING:${COL_NORM} merging ${COL_YELLOW}into${COL_NORM} ${COL_CYAN}$3${COL_NORM} not allowed."
+	exit 1
+fi
+
+# do the merge
+echo
 echo ${H1}${H1HL}
-echo "Merging from ${COL_MAG}$1${COL_NORM} into ${COL_MAG}$3${COL_NORM}"
-echo ${H1HL}
-echo ${X}
+echo "Beginning merge from \`${COL_MAG}${mergeBranch}${COL_NORM}\` into \`${COL_MAG}${baseBranch}${COL_NORM}\`  "
+echo ${H1HL}${X}
 echo
-
-branchprotected_nomergefrom=`grep "$1" ${gitscripts_path}../protected_branches_nomergefrom`
-echo "branchprotected_nomergefrom: ${branchprotected_nomergefrom}"
-if [ -n "$branchprotected_nomergefrom" ]
-	then
-	echo
-	echo "${COL_RED}WARNING: merging ${COL_YELLOW}from${COL_RED} ${COL_CYAN}$1${COL_RED} not allowed. You may only merge ${COL_YELLOW}INTO ${COL_CYAN}$1${COL_NORM}."
-	echo
-	echo
-	return -1
-fi
-
-branchprotected_nomergeto=`grep "$3" ${gitscripts_path}../protected_branches_nomergeto`
-echo "branchprotected_nomergeto: ${branchprotected_nomergeto}"
-if [ -n "$branchprotected_nomergeto" ]
-	then
-	echo
-	echo "${COL_RED}WARNING: merging ${COL_YELLOW}into${COL_RED} ${COL_CYAN}$3${COL_NORM} not allowed.${COL_NORM}"
-	echo "${COL_RED}You may only merge ${COL_YELLOW}FROM${COL_RED} ${COL_CYAN}$3${COL_NORM}.${COL_NORM}"
-	echo
-	echo
-	return -1
-fi
-
-
-
-
-if [ $? -lt 0 ]
-	then
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	git status
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	return -1
-fi
-
-echo This tells your local git about all changes on fl remote
-echo git fetch --all --prune
+echo
+echo "This tells your local git about all changes on the remote..."
+echo ${O}${H2HL}
+echo "$ git fetch --all --prune"
 git fetch --all --prune
+echo ${H2HL}${X}
+echo
+echo
+echo "This checks out the \`${mergeBranch}\` branch..."
+echo ${O}${H2HL}
+echo "$ checkout $mergeBranch"
+${gitscripts_path}checkout.sh $mergeBranch
+echo
+echo
+echo "This checks out the \`${baseBranch}\` branch..."
+echo ${O}${H2HL}
+echo "$ checkout $baseBranch"
+${gitscripts_path}checkout.sh $baseBranch
+echo
+echo
+echo "This merges from ${mergeBranch} into ${baseBranch}..."
+echo ${O}${H2HL}
+echo "$ git merge --no-ff ${mergeBranch}"
+git merge --no-ff $mergeBranch
 
-if [ $? -lt 0 ]
-	then
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+# check for merge conflicts
+if git status | grep -q "Unmerged paths"; then
+	echo
+	echo
+	echo "$ git status"
 	git status
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	echo "git fetch --all --prune failed"
-	return -1
+	echo ${H2HL}${X}
+	echo
+	echo
+	echo "${COL_YELLOW}WARNING: You have unmerged paths!${COL_NORM}"
+	echo
+	echo "Please ${COL_MAG}resolve your merge conflicts${COL_NORM}, then ${COL_MAG}run a build and test your build before pushing${COL_NORM} back out."
+	echo
+	echo "Would you like to run the merge tool? (y) n"
+	read yn
+	if [ -z "$yn" ] || [ "$yn" = "y" ] || [ "$yn" = "Y" ]; then
+		git mergetool
+	else
+		exit
+	fi
 fi
 
-echo
-echo
-echo This checks out the $1 branch
-echo git checkout $1
-${gitscripts_path}checkout.sh $1
-result=$?
-
-if [ $result -lt 0 ]
-	then
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	git status
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	echo "checkout of branch $1 failed"
-	return -1
-elif [ $result -eq 255 ]
-	then
-	echo "Checking out the branch $1 was unsuccessful, aborting merge attempt..."
-	return -1
-fi
 
 echo
-echo
-echo This checks out the $3 branch
-echo git checkout $3
-${gitscripts_path}checkout.sh $3
-result=$?
-
-if [ $result -lt 0 ]
-	then
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	git status
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	echo "git checkout $3 failed"
-	return -1
-elif [ $result -eq 255 ]
-	then
-	echo "Checking out the branch $3 was unsuccessful, aborting merge attempt..."
-	return -1
-fi
-
-echo
-echo
-echo This merges from $1 into $3
-echo git merge --no-ff $1
-git merge --no-ff $1
-
-if [ $? -lt 0 ]
-	then
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	git status
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	echo "git merge --no-ff $1 failed"
-	return -1
-fi
-
-statusofmerge=`git status | grep "Unmerged paths"`
-
-if [[ "$statusofmerge" == "# Unmerged paths:" ]];
-	then
-		echo
-		git status
-		echo
-
-		echo
-		echo "${COL_YELLOW}WARNING: You have unmerged paths!${COL_NORM}"
-		echo
-		echo "Please ${COL_RED}resolve your merge conflicts${COL_NORM} , then ${COL_YELLOW}run a build and test your build before pushing${COL_NORM} back out.${STYLE_NORM}"
-		echo
-		echo "Would you like to run the merge tool? (y) n"
-		read YorN
-		if [ "$YorN" != "n" ]
-			then
-
-				git mergetool
-			else
-				return -1
-		fi
-fi
-
-statusofmerge=`git status | grep "Changes to be committed"`
-
-if [[ "$statusofmerge" == "# Changes to be committed:" ]];
-	then
-		echo
-		git status
-		echo
-
-		echo "${COL_YELLOW}WARNING: You have uncommitted changes!${COL_NORM}"
-		echo
-		echo "Please ${COL_RED}add/commit${COL_NORM} any changes you have.${STYLE_NORM}"
-		echo "Would you like to commit these changes? (y) n"
-		read YorN
-		if [ "$YorN" != "n" ]
-			then
-				echo "please enter a commit message"
-				read commitmessage
-
-				source ${gitscripts_path}commit.sh "$commitmessage" -a
-
-			else
-				return -1
-		fi
-fi
-
-echo
-echo
-echo git status
+echo ${O}
+echo "$ git status"
 git status
+echo ${H2HL}${X}
 echo
-echo "Would you like to push? y (n)"
-read YorN
-if [ "$YorN" = "y" ]
-	then
-	remote=$(git remote)
-	git push $remote head
+echo
+echo ${I}"Would you like to push? y (n)"${X}
+read yn
+if [ "$yn" = "y" ] || [ "$yn" = "Y" ]; then
+	remote=$(__get_remote)
+	echo ${O}${H2HL}
+	echo "$ git push ${remote} ${baseBranch}"
+	git push $remote $baseBranch
+	echo ${H2HL}${X}
+fi
 
-	#offer to delete dev/dev2/qa for them if they push since they may no longer need it
-	if [ -n "$branchprotected_nomergefrom" ]
-	then
-		if [ "$3" != "$current_branch" ]
-			then
-			echo
-			echo
-			echo "Would you like to delete ${COL_CYAN}$3${COL_NORM} and check ${COL_CYAN}$current_branch${COL_NORM} back out? y (n)"
-			read decision
-			if [ "$decision" = "y" ]
-				then
-				echo
-				echo
-				echo "checking out ${COL_CYAN}$current_branch${COL_NORM}"
-				${gitscripts_path}checkout.sh $current_branch
-
-				echo
-				echo
-				echo "deleting ${COL_CYAN}$3${COL_NORM}"
-				${gitscripts_path}delete.sh $3
-			fi
-		fi
+if [ "$current_branch" != "$baseBranch" ]; then
+	echo
+	echo
+	echo ${I}"Would you like to check \`${COL_CYAN}${current_branch}${COL_NORM}\` back out? y (n)"${X}
+	read decision
+	if [ "$decision" = "y" ] || [ "$decision" = "Y" ]; then
+		echo
+		echo "Checking out \`${COL_CYAN}${current_branch}${COL_NORM}\`..."
+		echo "$ checkout ${current_branch}"
+		${gitscripts_path}checkout.sh $current_branch
+	else
+		"${gitscripts_path}clear-screen.sh"
 	fi
 else
-	if [ "$3" != "$current_branch" ]
-		then
-		echo
-		echo
-		echo "Would you like to check ${COL_CYAN}$current_branch${COL_NORM} back out? y (n)"
-		read decision
-		if [ "$decision" = "y" ]
-			then
-			echo
-			echo
-			echo "checking out ${COL_CYAN}$current_branch${COL_NORM}"
-			${gitscripts_path}checkout.sh $current_branch
-		fi
-	fi
+	"${gitscripts_path}clear-screen.sh"
 fi
 
-if [ $? -lt 0 ]
-	then
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	git status
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	echo "git push ${COL_CYAN}$remote $3${COL_NORM} failed"
-	return -1
-fi
-
-
-
+exit

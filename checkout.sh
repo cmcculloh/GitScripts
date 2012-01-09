@@ -374,7 +374,11 @@ if [ -n "$trycheckout" ]; then
 		exit -1
 	fi
 else
-	git checkout "$1"
+	echo "Already on branch $1"
+
+	# Get updated changes from the remote (there should rarely be any for personal branches)
+	remote=$(__get_remote)
+	onremote=`git branch -r | grep "$1"`
 
 	if [ -n "$onremote" ]; then
 		echo ${H2HL}${X}
