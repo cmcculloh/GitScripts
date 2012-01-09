@@ -177,6 +177,10 @@ function __branch_exists {
 #	examples@
 ## */
 function __get_remote {
+	local cb=$(__parse_git_branch)
+	local remote=$(git config branch.$cb.remote)
+
+	if [ ! $remote ]; then
 	remotes_string=$(git remote);
 
 	# if no remotes are configured there's no reason to continue processing.
@@ -214,6 +218,7 @@ function __get_remote {
 	else
 		remote=${remotes[0]}
 	fi
+	fi
 	echo "$remote"
 }
 
@@ -232,8 +237,7 @@ function __get_remote {
 #	notes@
 ## */
 function __parse_git_branch {
-	git branch --no-color 2> /dev/null | awk '/^\* / { gsub(/^\* /,""); print }'
-	#expr $(git symbolic-ref HEAD) : 'refs/heads/\(.*\)'
+	expr $(git symbolic-ref HEAD) : 'refs/heads/\(.*\)'
 }
 
 
