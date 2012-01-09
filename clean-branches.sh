@@ -46,6 +46,7 @@ ${gitscripts_path}checkout.sh master
 
 for branch in `git branch`
 do
+	echo "`git branch | grep \"${branch}\"`"
 	wellformed=`git branch | grep "${branch}"`
 	if [ -n "$wellformed" ]
 		then
