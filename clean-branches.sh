@@ -108,4 +108,7 @@ do
 	fi
 done
 
+echo ${X}
+echo ${X}
+
 git checkout $startingBranch
