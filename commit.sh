@@ -32,6 +32,23 @@
 ## */
 $loadfuncs
 
+
+# conditions that should cause the script to halt immediately:
+# missing commit message
+if [ -z "$1" ]; then
+	__bad_usage commit "Commit message is required."
+	exit 1
+fi
+
+
+# make sure SOMETHING is staged if user doesn't specify flag
+if ! __parse_git_status staged && [ -z "$2" ]; then
+	echo
+	echo ${E}"  You haven't staged any changes to commit! Aborting...  "${X}
+	exit 1
+fi
+
+
 startingBranch=$(__parse_git_branch)
 if [ -z "$startingBranch" ]; then
 	echo ${E}"Unable to determine current branch."${X}
@@ -39,201 +56,98 @@ if [ -z "$startingBranch" ]; then
 fi
 
 
-echo ${H1}
-echo ${H1HL}
-echo "Committing changes to branch: ${startingBranch}"
-echo ${H1HL}
-echo ${X}
-echo
+echo 
+echo ${H1}${H1HL}
+echo "Committing changes to branch: \`${startingBranch}\`"
+echo ${H1HL}${X}
+
+echo 
+echo 
+echo "Checking status..."
+echo ${O}${H2HL}
+echo "$ git status"
+git status
+echo ${H2HL}${X}
 
 # check to see if user wants to add all modified/deleted files
 if [ -n "$2" ]; then
-
-	if [ "$2" == "-A" ] || [ "$2" == "-a" ]; then
-		flag="-a"
-	else
-		__bad_usage commit
-		exit 1
-	fi
-
-	if [ "$2" == "-A" ]; then
-		echo ${H2HL}
-		echo "# git add -A"
-		git add -A
-		echo ${H2HL}
-
-	elif [ "$2" == "-a" ]; then
-		# if there are untracked files, user may wish to stage them
-		if [ "$(__parse_git_status untracked)" == "0" ]; then
-			echo
-			echo ${Q}"Would you like to run 'git add -A' to add untracked files as well? y (n)"${X}
-			read yn
-			if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
+	flag=$2
+	case $2 in
+		"-a")
+			if __parse_git_status untracked; then
+				echo 
 				echo
-				echo ${H2HL}
-				echo "# git add -A"
-				git add -A
-				echo ${H2HL}
+				echo ${Q}"Would you like to run ${COL_MAG}git add -A${COL_NORM} to add untracked files as well? y (n)"${X}
+				read yn
+				if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
+					echo
+					echo
+					echo "Adding all modified and untracked files..."
+					echo ${O}${H2HL}
+					echo "$ git add -A"
+					git add -A
+					echo ${H2HL}${X}
+				fi
 			fi
-		fi
-	fi
+			;;
+
+		"-A")
+			flag="-A"
+			echo "Adding all modified and untracked files..."
+			echo ${O}${H2HL}
+			echo "$ git add -A"
+			git add -A
+			echo ${H2HL}${X}
+			;; 
+		
+		*)
+			__bad_usage commit "Invalid value for second parameter."
+			exit 1
+			;;
+	esac
 fi
 
-echo
-echo ${O}
-echo ${H2HL}
-echo "# git status"
-git status
-echo ${X}
-
 
 echo
-echo ${O}
-echo ${H2HL}
-echo "# git commit -q -m \"($startingBranch) $1\" $flag"
+echo 
+echo "Committing and displaying branch changes..."
+echo ${O}${H2HL}
+echo "$ git commit -q -m \"($startingBranch) $1\" $flag"
 git commit -q -m "(${startingBranch}) $1" $flag
-echo ${H2HL}
-echo ${X}
-
-
+echo 
 echo
-echo ${O}
-echo ${H2HL}
-echo "# git diff-tree --stat HEAD"
+echo "$ git diff-tree --stat HEAD"
 git diff-tree --stat HEAD
-echo ${H2HL}
-echo ${X}
-echo
-echo
-
-echo ${H2}
-echo "Would you like to push? y (n)"
-echo ${X}
+echo ${H2HL}${X}
+echo 
+echo 
+echo "Checking status..."
+echo ${O}${H2HL}
+echo "$ git status"
+git status
+echo ${H2HL}${X}
+echo 
+echo 
+echo ${I}"Would you like to push? y (n)"${X}
 read YorN
-if [ "$YorN" = "y" ]
-	then
-	remotes_string=$(git remote);
-	c=0;
-
-	for remote in $remotes_string; 
-	do 
-	echo "$c: $remote";
-	remotes[$c]=$remote;
-	c=$((c+1));
-	done
-
-	if [ ${#remotes[@]} -gt 1 ]
-		then
-		echo ${O}"------------------------------------------------------------------------------------"
-		echo "Choose a remote (or just hit enter to abort):"
-		echo "------------------------------------------------------------------------------------"
-		for (( i = 0 ; i < ${#remotes[@]} ; i++ ))
-			do
-			remote=$(echo ${remotes[$i]} | sed 's/[a-zA-Z0-9\-]+(\/\{1\}[a-zA-Z0-9\-]+)//p')
-
-			if [ $i -le "9" ] ; then
-				index="  "$i
-			elif [ $i -le "99" ] ; then
-				index=" "$i
-			else
-				index=$i
-			fi
-			echo "$index: $remote"
-		done
-		echo ${I}"Choose a remote (or just hit enter to abort):"
-		read remote
-		echo ${X}
-
-		remote=$(echo ${remotes[$remote]} | sed 's/\// /')
-	fi
-
-	echo "remote: $remote"
-	chosenremoteexists=`git remote | grep "${remote}"`
-	if [ -z "$remote" ] || [ "$remote" = "" ] ; then
-		echo ${E}"####################################################################################"
-		echo "ABORTING: pushing requires a remote to continue                               "
-		echo "####################################################################################"
-		echo ${X}
-		exit 0
-	elif [ -n "$chosenremoteexists" ] ; then
-		echo ${h2}"You chose: ${COL_CYAN}${remote}${h2}"
-		echo ${X}
-		eval "git push ${remote} HEAD"
+echo 
+if [ "$YorN" == "y" ] || [ "$YorN" == "Y" ]; then
+	remote=$(__get_remote)	
+	if [ -n "$remote" ]; then
+		echo
+		echo "Now pushing to:${X} ${COL_GREEN} ${remote} ${COL_NORM}"
+		echo ${O}${H2HL}
+		echo "$ git push ${remote} ${startingBranch}"
+		git push $remote $startingBranch
 
 	else
-		echo ${E}"You chose: ${COL_CYAN}${remote}${E}"
-		echo "404 NOT FOUND. The requested REMOTE /${remote} was not found on this server."
-		echo ${X}
+		echo "Remote: ${COL_GREEN} ${remote} ${X}"
+		echo ${E}"404 NOT FOUND. The requested REMOTE /${remote} was not found on this server."${X}
+
 	fi
 fi
 
 
+"${gitscripts_path}clear-screen.sh"
 
-
-
-
-
-
-
-# 	echo ""
-# 	echo ${O}
-# 	echo "------------------------------------------------------------------------------------"
-# 	echo "# git push $remote HEAD"
-# 	git push $remote HEAD
-# 	echo "------------------------------------------------------------------------------------"
-# 	echo ${X}
-# 	echo
-
-
-# 	echo ${H2}
-# 	echo "####################################################################################"
-# 	echo "Status after push:"
-# 	echo "####################################################################################"
-# 	echo ${X}
-
-# 	echo ""
-# 	echo ${O}
-# 	echo "------------------------------------------------------------------------------------"
-# 	echo "# git status"
-# 	#${STYLE_NORM}
-# 	#${STYLE_BRIGHT}
-# 	git status
-# 	echo ${X}
-
-# fi
-
-
-#echo "Check for remote changes? (y) n"
-#echo ""
-#read YorN
-#if [ "$YorN" = "y" ] || [ "$YorN" = "" ]
-#	then
-#	echo "NOT ACTUALLY CHECKING FOR CHANGES RIGHT NOW --- TBD LATER"
-#fi
-
-
-if [ "$clearscreenanswer" = "n" ]; 	then
-	echo "Clear screen? y (n)";
-	read YorN
-	if [ -z "$YorN" ] && [ "$YorN" = "" ]
-		then
-		YorN=n
-	fi
-else
-	echo "Clear screen? (y) n"
-	read YorN
-	if [ -z "$YorN" ] && [ "$YorN" = "" ]
-		then
-		YorN=y
-	fi
-fi
-
-if [ "$YorN" = "y" ]
-	then
-
-	echo ""
-	echo "Clearing screen now!"
-	echo ""
-	clear
-fi
-
+exit
