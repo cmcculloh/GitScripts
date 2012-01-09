@@ -42,7 +42,7 @@ echo
 echo
 echo
 
-# ${gitscripts_path}checkout.sh master
+${gitscripts_path}checkout.sh master
 
 for branch in `git branch`
 do
