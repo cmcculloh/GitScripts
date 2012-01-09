@@ -38,8 +38,8 @@ if __parse_git_status clean || { ! __parse_git_status modified && ! __parse_git_
 		echo "Now returning you to your original branch: ${STYLE_OLDBRANCH_H2}\`${cb}\`${X}"
 		echo "It is recommended that you manually ${COL_MAG}pull${COL_NORM} in ${COL_CYAN}master${COL_NORM} to this branch afterwards."
 		echo ${O}${H2HL}
-		echo "$ git checkout $current_branch"
-		git checkout $current_branch
+		echo "$ git checkout $cb"
+		git checkout $cb
 		echo ${H2HL}${X}
 		echo
 		echo
