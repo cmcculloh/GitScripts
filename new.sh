@@ -91,7 +91,7 @@ echo ${I}"Type the number of the choice you want and hit enter: "
 read decision
 [ -n "$decision" ] || decision=1
 echo ${X}
-echo ${O}"You chose: $decision"
+echo ${O}"You chose:${X} $decision"
 echo
 
 # handle decision cases
@@ -99,7 +99,7 @@ case $decision in
 
 	# create new branch from master or specified branch
 	1)
-		echo "Continuing...";;
+		echo ${O}"Continuing..."${X};;
 
 	# create new branch from whatever branch user is currently on
 	2)
@@ -150,6 +150,8 @@ esac
 
 
 if [ "$startingBranch" == "master" ]; then
+	echo
+	echo
 	echo "This branches master to create a new branch named ${COL_CYAN}$1${COL_NORM}"
 	echo "and then checks out the ${COL_CYAN}$1${COL_NORM} branch. We will make sure"
 	echo "to get all updates (if available) to master as well."
@@ -166,7 +168,8 @@ if [ "$startingBranch" == "master" ]; then
 	if [ -n "$remote" ]; then
 		echo "Remote: ${COL_GREEN}${remote}${COL_NORM}"
 		echo
-		echo "$ git pull ${remote} master"
+		echo
+		echo ${O}"$ git pull ${remote} master"
 		git pull $remote master
 		echo
 		echo
@@ -178,6 +181,8 @@ if [ "$startingBranch" == "master" ]; then
 	git config branch.$1.remote $remote
 	git config branch.$1.merge refs/heads/$1
 else
+	echo
+	echo
 	echo "You are about to checkout branch ${COL_CYAN}${startingBranch}${COL_NORM} in order to create a new branch named ${COL_CYAN}$1${COL_NORM}."
 	echo "Do not do this unless you truly know what you are doing, and why!"
 	echo "The only reason to do this is if your new branch relies on branch ${COL_CYAN}${startingBranch}${COL_NORM}."
