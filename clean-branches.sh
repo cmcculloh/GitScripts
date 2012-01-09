@@ -49,65 +49,65 @@ ${gitscripts_path}checkout.sh master
 for branch in `git branch | awk '{gsub(/\* /, "");print;}'`
 do
 	echo "${branch}"
-	# echo "`git branch | grep \"${branch}\"`"
-	# wellformed=`git branch | grep "${branch}"`
-	# if [ -n "$wellformed" ]
-	# 	then
-	# 	masterContains=`git branch --contains "${branch}" | grep "master"`
-	# 	if [ -n "$masterContains" ]
-	# 		then
-	# 		if [ "$branch" != "master" ]
-	# 			then
+	echo "`git branch | grep \"${branch}\"`"
+	wellformed=`git branch | grep "${branch}"`
+	if [ -n "$wellformed" ]
+		then
+		masterContains=`git branch --contains "${branch}" | grep "master"`
+		if [ -n "$masterContains" ]
+			then
+			if [ "$branch" != "master" ]
+				then
 
-	# 			echo ${H2}${H2HL}
-	# 			echo "${STYLE_NEWBRANCH_H2}\`${branch}\`${H2}  appears to be merged into the following branches:"
-	# 			echo ${H2HL}${X}
-	# 			echo
-	# 			# git branch --contains "${branch}"
+				echo ${H2}${H2HL}
+				echo "${STYLE_NEWBRANCH_H2}\`${branch}\`${H2}  appears to be merged into the following branches:"
+				echo ${H2HL}${X}
+				echo
+				# git branch --contains "${branch}"
 
-	# 			# echo "git branch --contains \"${branch}\""
+				# echo "git branch --contains \"${branch}\""
 
-	# 			# branchesContainingThisOne=`git branch --no-color --contains "${branch}"` | awk '{gsub(/\* /, "");print;}'
-	# 			echo "`git branch --contains \"${branch}\" | awk '{gsub(/\* /, "");print;}'`"
-	# 			branchesContainingThisOne=`git branch --contains "${branch}" | awk '{gsub(/\* /, "");print;}'`
-	# 			# branchesContainingThisOne=`git branch --no-color --contains "${branch}"` | awk '{gsub(/\* /, "");print;}'
+				# branchesContainingThisOne=`git branch --no-color --contains "${branch}"` | awk '{gsub(/\* /, "");print;}'
+				echo "`git branch --contains \"${branch}\" | awk '{gsub(/\* /, "");print;}'`"
+				branchesContainingThisOne=`git branch --contains "${branch}" | awk '{gsub(/\* /, "");print;}'`
+				# branchesContainingThisOne=`git branch --no-color --contains "${branch}"` | awk '{gsub(/\* /, "");print;}'
 
 
 
-	# 			echo ${O}${H2HL}
+				echo ${O}${H2HL}
 
-	# 			for aBranch in $branchesContainingThisOne
-	# 			do
+				for aBranch in $branchesContainingThisOne
+				do
 
-	# 				# echo "aBranch: \"${aBranch}\""
-	# 				# echo "git branch | grep \"${aBranch}\""
-	# 				wellformed=`git branch | grep "${aBranch}"`
-	# 				# echo "wellformed: ${wellformed}"
+					# echo "aBranch: \"${aBranch}\""
+					# echo "git branch | grep \"${aBranch}\""
+					wellformed=`git branch | grep "${aBranch}"`
+					# echo "wellformed: ${wellformed}"
 
-	# 				if [ -n "$wellformed" ]
-	# 					then
-	# 					branchcontains=`git branch --contains "${branch}" | grep "${aBranch}"`
-	# 					if [ -n "$branchcontains" ]
-	# 						then
-	# 						echo "${aBranch}"
-	# 						# echo "${COL_RED}$aBranch${COL_NORM}"
-	# 					fi
-	# 				fi
-	# 			done
-	# 			echo ${H2HL}
+					if [ -n "$wellformed" ]
+						then
+						branchcontains=`git branch --contains "${branch}" | grep "${aBranch}"`
+						if [ -n "$branchcontains" ]
+							then
+							echo "${aBranch}"
+							# echo "${COL_RED}$aBranch${COL_NORM}"
+						fi
+					fi
+				done
+				echo ${H2HL}
 
-	# 			echo ${STYLE_INPUT}
-	# 			echo "  delete $branch? (y) n"
-	# 			echo ${X}
-	# 			read decision
-	# 			if [ -z $decision ] || [ "$decision" = "y" ]
-	# 				then
-	# 				echo "git branch -d $branch"
-	# 				${gitscripts_path}delete.sh $branch
-	# 			fi
-	# 		fi
-	# 	fi
-	# fi
+				echo ${STYLE_INPUT}
+				echo "  delete $branch? (y) n"
+				echo ${X}
+				read decision
+				if [ -z $decision ] || [ "$decision" = "y" ]
+					then
+					echo "git branch -d $branch"
+					${gitscripts_path}delete.sh $branch
+				fi
+			fi
+		fi
+	fi
 done
 
 git checkout $startingBranch
