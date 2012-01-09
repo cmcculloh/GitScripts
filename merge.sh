@@ -46,6 +46,7 @@ if [ $isProtectedTo ]; then
 fi
 
 # do the merge
+echo
 echo ${H1}${H1HL}
 echo "Beginning merge from \`${COL_MAG}${mergeBranch}${COL_NORM}\` into \`${COL_MAG}${baseBranch}${COL_NORM}\`  "
 echo ${H1HL}${X}
