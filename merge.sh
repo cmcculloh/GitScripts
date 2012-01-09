@@ -1,6 +1,32 @@
 #!/bin/bash
-# merge
-# merges one git branch into another
+## /*
+#	@usage merge <branch_name> [into <branch_name2>]
+#
+#	@description
+#	This script is a helpful wrapper for merging one branch into another. The command itself
+#	is more intuitive because it uses "into" to clearly distinguish which branch is getting
+#	merged into the other.  There are some helpful safeties included as well. Referenced branches
+#	are checked for existence before the script gets too far along, protected branches are checked,
+#	and merge conflicts are determined after the merge. If merge conflicts should arise, the
+#	user is prompted to resolve them using the native git mergetool.
+#	description@
+#
+#	@notes
+#	- If specifying both branches in the merge, the second parameter (which should be "into") is
+#	not explicitly checked. Technically, a user could successfully merge two branches with the
+#	command "merge branch1 flapjack branch2".
+#	notes@
+#
+#	@examples
+#	1) merge master                  # Merges master into current branch
+#	2) merge my-branch into master   # Merges my-branch into master (unless master is a protected branch)
+#	examples@
+#
+#	@dependencies
+#	gitscripts/gsfunctions.sh
+#	gitscripts/clear-screen.sh
+#	dependencies@
+## */
 $loadfuncs
 
 
@@ -126,7 +152,11 @@ if [ "$current_branch" != "$baseBranch" ]; then
 		echo "Checking out \`${COL_CYAN}${current_branch}${COL_NORM}\`..."
 		echo "$ checkout ${current_branch}"
 		${gitscripts_path}checkout.sh $current_branch
+	else
+		"${gitscripts_path}clear-screen.sh"
 	fi
+else
+	"${gitscripts_path}clear-screen.sh"
 fi
 
 exit
