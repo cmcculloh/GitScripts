@@ -1,24 +1,33 @@
 #!/bin/sh
+$loadfuncs
 
+
+echo
 branch="master"
-if [ -n $1 ] && [ "$1" != " " ] && [ "$1" != "" ]
-	then
+if [ -n "$1" ]; then
 	branch=$1
+	if ! __branch_exists $branch; then
+		echo ${E}"  Branch \`$branch\` does not exist! Aborting...  "
+		exit 1
+	fi
 fi
 
-log1=$(git rev-parse --short $branch)
-log2=$(git rev-parse --short head)
 
-echo git diff --name-status $log1..$log2
-git diff --name-status $log1..$log2
+hashFrom=$(git rev-parse --short $branch)
+hashTo=$(git rev-parse --short HEAD)
 
+echo ${O}${H2HL}
+echo "$ git diff --name-status $hashFrom..$hashTo"
 echo
+git diff --name-status $hashFrom..$hashTo
 echo
-echo git diff -w $log1..$log2
-
-echo "Do diff? y (n) "
-read decision
-if [ "$decision" ] && [ $decision = "y" ]
-    then
-    git diff -w $log1..$log2
+echo "git diff -w $hashFrom..$hashTo"
+echo ${H2HL}${X}
+echo
+echo ${Q}"Do diff? y (n)"${X}
+read yn
+if [ "$yn" = "y" ] || [ "$yn" = "Y" ]; then
+	git diff -w $hashFrom..$hashTo
 fi
+
+exit
