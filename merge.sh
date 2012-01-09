@@ -50,7 +50,7 @@ fi
 echo ${H1}${H1HL}
 echo "Merging from \`${COL_MAG}$mergeBranch${COL_NORM}\` into \`${COL_MAG}$baseBranch${COL_NORM}\`"
 echo ${H1HL}${X}
-echo 
+echo
 echo
 echo "This tells your local git about all changes on the remote..."
 echo ${O}${H2HL}
@@ -67,7 +67,9 @@ if [ "$current_branch" == "$baseBranch" ]; then
 			# pull in updates
 			remote=__get_remote
 			if [ -n "$remote" ]; then
-				echo "Now pulling in changes from the remote"
+				echo "Now pulling in changes from the remote..."
+				echo ${O}${H2HL}
+				echo "$ git pull"
 			fi
 		fi
 	fi
@@ -76,8 +78,8 @@ else
 	echo "$ checkout $1"
 	${gitscripts_path}checkout.sh $3
 fi
-echo	
-echo 
+echo
+echo
 echo "This checks out the \`$3\` branch..."
 echo "$ checkout $3"
 ${gitscripts_path}checkout.sh $3
