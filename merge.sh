@@ -1,87 +1,85 @@
 #!/bin/bash
 # merge
 # merges one git branch into another
+$loadfuncs
 
 
-current_branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+# check for minimum requirements
+[ $# -eq 1] && oneArg=true
+[ $# -eq 3] && threeArg=true
 
+# must have 1 arg (merge $1 into current branch) or 3 (merge $1 into $2)
+if [ ! $oneArg ] && [ ! threeArg ]; then
+	echo
+	echo __bad_usage merge "Invalid number of parameters."
+	exit 1
+
+# branch getting merged in (first param) must exist
+elif ! __branch_exists $1; then
+	echo
+	echo ${E}"  Branch \`$1\` does not exist! Aborting...  "
+	exit 1
+fi
+
+# if three params given, make sure base branch (3rd param) exists (first branch was just checked above).
+# this not included as an elif because we want this check done in addition to previous check.
+if [ $threeArg ] && ! __branch_exists $3; then
+	echo
+	echo ${E}"  Branch \`$3\` does not exist! Aborting...  "
+	exit 1
+fi
+
+current_branch=$(__parse_git_branch)
+mergeBranch=$1
+[ $oneArg ] && { baseBranch=$current_branch; } || { baseBranch=$3; }
+
+# check protected branches
+[ -z "${protectmergefrom_path}" ] || isProtectedFrom=`grep "$mergeBranch" ${protectmergefrom_path}`
+if [ $isProtectedFrom ]; then
+	echo "  ${COL_RED}WARNING:${COL_NORM} Merging ${COL_YELLOW}from${COL_NORM} ${COL_CYAN}$1${COL_NORM} not allowed. Aborting..."
+	exit 1
+fi
+
+[ -z "${protectmergeto_path}" ] || isProtectedTo=`grep "$baseBranch" ${protectmergeto_path}`
+if [ $isProtectedTo ]; then
+	echo "${COL_RED}WARNING:${COL_NORM} merging ${COL_YELLOW}into${COL_NORM} ${COL_CYAN}$3${COL_NORM} not allowed."
+	exit 1
+fi
+
+# do the merge
 echo ${H1}${H1HL}
-echo "Merging from ${COL_MAG}$1${COL_NORM} into ${COL_MAG}$3${COL_NORM}"
-echo ${H1HL}
-echo ${X}
+echo "Merging from \`${COL_MAG}$mergeBranch${COL_NORM}\` into \`${COL_MAG}$baseBranch${COL_NORM}\`"
+echo ${H1HL}${X}
+echo 
 echo
-
-branchprotected_nomergefrom=`grep "$1" ${gitscripts_path}../protected_branches_nomergefrom`
-echo "branchprotected_nomergefrom: ${branchprotected_nomergefrom}"
-if [ -n "$branchprotected_nomergefrom" ]
-	then
-	echo
-	echo "${COL_RED}WARNING: merging ${COL_YELLOW}from${COL_RED} ${COL_CYAN}$1${COL_RED} not allowed. You may only merge ${COL_YELLOW}INTO ${COL_CYAN}$1${COL_NORM}."
-	echo
-	echo
-	return -1
-fi
-
-branchprotected_nomergeto=`grep "$3" ${gitscripts_path}../protected_branches_nomergeto`
-echo "branchprotected_nomergeto: ${branchprotected_nomergeto}"
-if [ -n "$branchprotected_nomergeto" ]
-	then
-	echo
-	echo "${COL_RED}WARNING: merging ${COL_YELLOW}into${COL_RED} ${COL_CYAN}$3${COL_NORM} not allowed.${COL_NORM}"
-	echo "${COL_RED}You may only merge ${COL_YELLOW}FROM${COL_RED} ${COL_CYAN}$3${COL_NORM}.${COL_NORM}"
-	echo
-	echo
-	return -1
-fi
-
-
-
-
-if [ $? -lt 0 ]
-	then
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	git status
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	return -1
-fi
-
-echo This tells your local git about all changes on fl remote
-echo git fetch --all --prune
+echo "This tells your local git about all changes on the remote..."
+echo ${O}${H2HL}
+echo "$ git fetch --all --prune"
 git fetch --all --prune
+echo ${H2HL}${X}
+echo
+echo
 
-if [ $? -lt 0 ]
-	then
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	git status
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	echo "git fetch --all --prune failed"
-	return -1
+if [ "$current_branch" == "$baseBranch" ]; then
+	# make sure current branch is clean
+	if __parse_git_status clean; then
+		if __parse_git_status behind; then
+			# pull in updates
+			remote=__get_remote
+			if [ -n "$remote" ]; then
+				echo "Now pulling in changes from the remote"
+			fi
+		fi
+	fi
+else
+	echo "This checks out the \`$1\` branch..."
+	echo "$ checkout $1"
+	${gitscripts_path}checkout.sh $3
 fi
-
-echo
-echo
-echo This checks out the $1 branch
-echo git checkout $1
-${gitscripts_path}checkout.sh $1
-result=$?
-
-if [ $result -lt 0 ]
-	then
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	git status
-	echo "FAILED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-	echo "checkout of branch $1 failed"
-	return -1
-elif [ $result -eq 255 ]
-	then
-	echo "Checking out the branch $1 was unsuccessful, aborting merge attempt..."
-	return -1
-fi
-
-echo
-echo
-echo This checks out the $3 branch
-echo git checkout $3
+echo	
+echo 
+echo "This checks out the \`$3\` branch..."
+echo "$ checkout $3"
 ${gitscripts_path}checkout.sh $3
 result=$?
 
