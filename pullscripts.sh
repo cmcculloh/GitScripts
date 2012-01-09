@@ -1,4 +1,18 @@
 #!/bin/sh
+## /*
+#	@usage pullscripts
+#
+#	@description
+#	This is a quick way to update the GitScripts master branch. It takes note of the current branch
+#	and the current working directory of the user, updates master, then returns the user
+#	to his/her previous working conditions. Furthermore, the script will fail if there are
+#	changed/staged files in the working tree. Untracked files don't make a difference.
+#	description@
+#
+#	@dependencies
+#	gitscripts/gsfunctions.sh
+#	dependencies@
+## */
 $loadfuncs
 
 
