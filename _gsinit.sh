@@ -62,8 +62,7 @@ fi
 # note: you will have to re-define any of your personal aliases which conflict with GitScripts aliases
 #	sometime AFTER your have sourced this file (_gsinit.sh). The cfg/user.overrides will NOT work for aliases.
 source "${gitscripts_cfg_path}colors.cfg"
-source "${gitscripts_path}gsfunctions.sh"
-source "${gitscripts_path}utils/menu.sh"
+source "${gitscripts_lib_path}source_files.sh"
 source "${gitscripts_cfg_path}completion.cfg"
 source "${gitscripts_cfg_path}flagged_actions.cfg"
 source "${gitscripts_cfg_path}aliases.cfg"
