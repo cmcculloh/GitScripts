@@ -1,10 +1,20 @@
 ## /* @function
-#	@usage __menu 
+#	@usage __menu <arr> ["$message"]
 #
-#	@output true
+#	@examples
+#		arr="bolah lah blah"
+#		msg="this is a message"
+#		__menu arr "$msg"
+#		__menu arr
+#
+#		echo "exported $_menu_selection"
+#	examples@
+#
+#	@output _menu_selection
 #
 #	@description
 #	Takes an array and outputs each element as a selectable item
+#	description@
 ## */
 __menu() {
 	local items=$1[@]
@@ -37,10 +47,3 @@ __menu() {
 
 	export _menu_selection
 }
-
-#arr="bolah lah blah"
-#msg="this is a message"
-#__menu arr "$msg"
-#__menu arr
-
-#echo "exported $_menu_selection"

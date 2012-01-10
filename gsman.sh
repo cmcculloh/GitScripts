@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## /*
-#	@usage gsman [options] <command>
+#	@usage gsman [options|flags] <required command>
 #
 #	@description
 #	The GitScripts MANual is to GitScripts as the Man Pages are to Unix commands.
