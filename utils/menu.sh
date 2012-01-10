@@ -1,5 +1,5 @@
 ## /* @function
-#	@usage __menu
+#	@usage __menu 
 #
 #	@output true
 #
@@ -11,7 +11,6 @@ __menu() {
 	items=(${!items})
 	for (( i = 0 ; i < ${#items[@]} ; i++ ))
 		do
-		#TODO: make it so that you can pass through a sed value (or two or three) to be run on each item
 		item=$(echo ${items[$i]})
 
 		if [ $i -le "9" ] ; then
@@ -23,7 +22,25 @@ __menu() {
 		fi
 		echo "$index: $item"
 	done
+
+	msg=$2
+	if [ -z "$2" ]
+		then
+		msg="Please make a selection: "
+	fi
+	echo $msg
+	read selection
+
+	_menu_selection=${items[$selection]}
+
+	echo "You chose: $_menu_selection"
+
+	export _menu_selection
 }
 
-arr=(bolah lah blah)
-__menu arr
+#arr="bolah lah blah"
+#msg="this is a message"
+#__menu arr "$msg"
+#__menu arr
+
+#echo "exported $_menu_selection"
