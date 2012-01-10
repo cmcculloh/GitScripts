@@ -173,15 +173,11 @@ alias makesprite="${gitscripts_path}swivel-images-maker.sh"
 # Utilities and Miscellaneous
 #########################################################################################################################
 alias fixbranch="${flgitscripts_path}fixbranch.sh"
-alias gsman="${gitscripts_path}gsman.sh"
 alias phone="${flgitscripts_path}phone.sh"
-
-# leave refresh_bash_profile as sourced, WITHOUT a shebang in the script, so sourced values are available immediately
 alias refresh_bash_profile="source ${flgitscripts_path}refresh_bash_profile.sh"
-
-alias switchenv="${flgitscripts_path}/switchenvironment.sh"
-alias varsreset="source ${flgitscripts_path}vars_reset.sh"
-alias whichenv="${flgitscripts_path}/whichenvironment.sh"
-
+#alias switchenv="${flgitscripts_path}/switchenvironment.sh"
 #alias syncmywork="/d/workspaces/helios_workspace/myscripts/syncmyapp.sh"
-#alias synctree="/d/workspaces/helios_workspace/myscripts/synctree.sh"
+alias synctree="${flgitscripts_path}synctree.sh"
+alias varsreset="source ${flgitscripts_path}vars_reset.sh"
+#alias whichenv="${flgitscripts_path}/whichenvironment.sh"
+
