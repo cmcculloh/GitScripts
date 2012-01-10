@@ -1,5 +1,8 @@
 ## /* @function
 #	@usage __menu <arr> ["$message"]
+#	@description
+#	Takes an array and outputs each element as a selectable item
+#	description@
 #
 #	@examples
 #		arr="bolah lah blah"
@@ -10,11 +13,7 @@
 #		echo "exported $_menu_selection"
 #	examples@
 #
-#	@output _menu_selection
-#
-#	@description
-#	Takes an array and outputs each element as a selectable item
-#	description@
+#	@vars _menu_selection
 ## */
 __menu() {
 	local items=$1[@]
