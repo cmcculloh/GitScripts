@@ -1,24 +1,16 @@
-for file in functions/*
+## /*
+#	@description
+#	This file is sourced and subsequently sources all files in a given directory.
+#	description@
+#
+#	@notes
+#	- The asterisk is outside of the quotes so that it expands as a wildcard.
+#	notes@
+## */
+for file in "${gitscripts_functions_path}"*; do
 
-do
-	if [ -d "$file" ]; then
-		#echo "Directory: $file";
-
-		for file2 in $file
-
-		do
-			if [ -d "$file2" ]; then
-				#echo "Directory: $file2";
-				continue
-			else
-				#echo "File2: $file2";
-				source $file2
-			fi
-		done
-
-		continue
-	else
-		#echo "File: $file";
+	if [ ! -d "$file" ] && [ -s "$file" ]; then
 		source $file
 	fi
+
 done
