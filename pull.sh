@@ -15,19 +15,24 @@ $loadfuncs
 
 
 cb=$(__parse_git_branch)
-remote=$(__get_remote)
+__set_remote
 
 echo
 if git branch -r | grep -q $cb; then
-	echo ${H1}${H1HL}
-	echo " Pulling in changes from ${STYLE_OLDBRANCH_H1}\`${remote}/${cb}\`${H1} "
-	echo ${H1HL}${X}
-	echo
-	echo
-	echo ${O}${H2HL}
-	echo "$ git pull ${remote} ${cb}"
-	git pull $remote $cb
-	echo ${H2HL}${X}
+	if [ $_remote ]; then
+		echo ${H1}${H1HL}
+		echo " Pulling in changes from ${STYLE_OLDBRANCH_H1}\`${remote}/${cb}\`${H1} "
+		echo ${H1HL}${X}
+		echo
+		echo
+		echo ${O}${H2HL}
+		echo "$ git pull ${remote} ${cb}"
+		git pull $remote $cb
+		echo ${H2HL}${X}
+	else
+		echo ${E}"  There is no remote configured to pull from. Aborting...  "${X}
+		exit 1
+	fi
 else
 	echo ${E}"  The current branch \`${cb}\` does not exist on the remote. Aborting...  "
 	exit 1

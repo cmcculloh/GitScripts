@@ -136,11 +136,15 @@ echo
 echo ${I}"Would you like to push? y (n)"${X}
 read yn
 if [ "$yn" = "y" ] || [ "$yn" = "Y" ]; then
-	remote=$(__get_remote)
-	echo ${O}${H2HL}
-	echo "$ git push ${remote} ${baseBranch}"
-	git push $remote $baseBranch
-	echo ${H2HL}${X}
+	__set_remote
+	if [ $_remote ]; then
+		echo ${O}${H2HL}
+		echo "$ git push ${_remote} ${baseBranch}"
+		git push $_remote $baseBranch
+		echo ${H2HL}${X}
+	else
+		echo ${E}"  No remote could be found. Push aborted.  "${X}
+	fi
 fi
 
 if [ "$current_branch" != "$baseBranch" ]; then

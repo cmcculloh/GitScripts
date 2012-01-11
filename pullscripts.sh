@@ -33,7 +33,7 @@ if __parse_git_status clean || { ! __parse_git_status modified && ! __parse_git_
 	echo ${H1HL}${X}
 	echo
 	echo
-	echo "Checkout ${COL_CYAN}master${COL_NORM}, ${COL_MAG}fetch${COL_NORM}, and ${COL_MAG}pull${COL_NORM}..."
+	echo "Checkout ${COL_CYAN}master${COL_NORM}, ${COL_MAG}fetch${COL_NORM} changes, and ${COL_MAG}pull${COL_NORM} them in..."
 	echo ${O}${H2HL}
 	echo "$ git fetch --all --prune"
 	git fetch --all --prune

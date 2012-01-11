@@ -61,8 +61,8 @@ echo ${H1}${H1HL}
 echo "Committing changes to branch: \`${startingBranch}\`"
 echo ${H1HL}${X}
 
-echo 
-echo 
+echo
+echo
 echo "Checking status..."
 echo ${O}${H2HL}
 echo "$ git status"
@@ -75,7 +75,7 @@ if [ -n "$2" ]; then
 	case $2 in
 		"-a")
 			if __parse_git_status untracked; then
-				echo 
+				echo
 				echo
 				echo ${Q}"Would you like to run ${COL_MAG}git add -A${COL_NORM} to add untracked files as well? y (n)"${X}
 			read yn
@@ -98,7 +98,7 @@ if [ -n "$2" ]; then
 			echo "$ git add -A"
 			git add -A
 			echo ${H2HL}${X}
-			;; 
+			;;
 
 		*)
 			__bad_usage commit "Invalid value for second parameter."
@@ -109,7 +109,7 @@ fi
 
 
 echo
-echo 
+echo
 echo "Committing and displaying branch changes..."
 echo ${O}${H2HL}
 echo "$ git commit -q -m \"($startingBranch) $1\" $flag"
@@ -126,48 +126,26 @@ echo ${O}${H2HL}
 echo "$ git status"
 git status
 echo ${H2HL}${X}
-echo 
-echo 
+echo
+echo
 echo ${I}"Would you like to push? y (n)"${X}
 read YorN
-echo 
+echo
 if [ "$YorN" == "y" ] || [ "$YorN" == "Y" ]; then
-	remote=$(__get_remote)
-	if [ -n "$remote" ]; then
+	__set_remote
+	if [ -n "$_remote" ]; then
 		echo
-		echo "Now pushing to:${X} ${COL_GREEN} ${remote} ${COL_NORM}"
+		echo "Now pushing to:${X} ${COL_GREEN} ${_remote} ${COL_NORM}"
 		echo ${O}${H2HL}
-		echo "$ git push ${remote} ${startingBranch}"
-		git push $remote $startingBranch
+		echo "$ git push ${_remote} ${startingBranch}"
+		git push $_remote $startingBranch
 
-			else
-		echo "Remote: ${COL_GREEN} ${remote} ${X}"
-		echo ${E}"404 NOT FOUND. The requested REMOTE /${remote} was not found on this server."${X}
+	else
+		echo ${E}"  No remote could be found. Push aborted.  "${X}
 
 	fi
-		exit -1
-	fi
-
-echo
-git fetch
-echo
+fi
 
 "${gitscripts_path}clear-screen.sh"
-echo ${H2}
-echo "####################################################################################"
-echo "Status:"
-echo "####################################################################################"
-echo ${X}
 
-echo ""
-echo ${O}
-echo "------------------------------------------------------------------------------------"
-echo "# git status"
-#${STYLE_NORM}
-#${STYLE_BRIGHT}
-git status
-echo ${X}
-
-
-
-
+exit

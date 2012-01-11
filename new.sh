@@ -49,7 +49,6 @@ fi
 # default branch to start from, current branch, and any remotes
 startingBranch="master"
 currentBranch=$(__parse_git_branch)
-remote=$(__get_remote)
 
 #user may specify a different base branch
 if [ -n "$2" ] && [ "$2" == "from" ]; then
@@ -148,6 +147,13 @@ case $decision in
 
 esac
 
+echo
+echo
+echo "Attempting to configure remote for future use..."
+echo ${O}${H2HL}
+__set_remote
+echo ${H2HL}${X}
+
 
 if [ "$startingBranch" == "master" ]; then
 	echo
@@ -165,12 +171,12 @@ if [ "$startingBranch" == "master" ]; then
 		echo
 	fi
 
-	if [ -n "$remote" ]; then
-		echo "Remote: ${COL_GREEN}${remote}${COL_NORM}"
+	if [ -n "$_remote" ]; then
+		echo "Remote: ${COL_GREEN}${_remote}${COL_NORM}"
 		echo
 		echo
-		echo ${O}"$ git pull ${remote} master"
-		git pull $remote master
+		echo ${O}"$ git pull ${_remote} master"
+		git pull $_remote master
 		echo
 		echo
 	fi
@@ -178,7 +184,7 @@ if [ "$startingBranch" == "master" ]; then
 	echo "$ git checkout -b $1"
 	git checkout -b $1
 	echo ${H2HL}${X}
-	git config branch.$1.remote $remote
+	git config branch.$1.remote $_remote
 	git config branch.$1.merge refs/heads/$1
 else
 	echo
@@ -217,13 +223,13 @@ else
 fi
 
 # if a remote exists, push to it.
-if [ -n "$remote" ]; then
+if [ -n "$_remote" ]; then
 	echo
 	echo
-	echo "Finally, your new branch will be pushed up to the remote: ${COL_GREEN}${remote}${COL_NORM}"
+	echo "Finally, your new branch will be pushed up to the remote: ${COL_GREEN}${_remote}${COL_NORM}"
 	echo ${O}${H2HL}
-	echo "$ git push ${remote} ${1}"
-	git push $remote $1
+	echo "$ git push ${_remote} ${1}"
+	git push $_remote $1
 	echo ${H2HL}${X}
 fi
 
