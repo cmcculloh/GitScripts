@@ -33,6 +33,7 @@ __menu() {
 
 	# build menu
 	local items=( $1 )
+	echo ${O}${H2HL}
 	for (( i = 1 ; i <= ${#items[@]} ; i++ ))
 		do
 		j=$(( i - 1 ))
@@ -47,6 +48,7 @@ __menu() {
 		fi
 		echo "${index}: ${item}"
 	done
+	echo ${H2HL}${X}
 
 	# check for custom message
 	msg=$2
