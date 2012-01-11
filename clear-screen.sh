@@ -20,3 +20,6 @@ fi
 if [ "$josephsCoatOfManyAnswersVariableHasA_VeryGoodName_Sir" == "y" ] ||  [ "$josephsCoatOfManyAnswersVariableHasA_VeryGoodName_Sir" == "Y" ] || [ "$josephsCoatOfManyAnswersVariableHasA_VeryGoodName_Sir" == "yes" ] ||  [ "$josephsCoatOfManyAnswersVariableHasA_VeryGoodName_Sir" == "Yes" ] ||  [ "$josephsCoatOfManyAnswersVariableHasA_VeryGoodName_Sir" == "Yes" ]; then
 	clear
 fi
+
+
+exit

@@ -31,7 +31,7 @@ $loadfuncs
 echo ${X}
 
 # set pushing branch if specified, otherwise...
-if [ -n "$1" ] && __branch_exists_locally "$1"; then
+if [ -n "$1" ] && __branch_exists_local "$1"; then
 	cb="$1"
 
 # ...grab current branch and validate

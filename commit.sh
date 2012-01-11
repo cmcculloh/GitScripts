@@ -56,7 +56,7 @@ if [ -z "$startingBranch" ]; then
 	fi
 
 
-			echo
+echo
 echo ${H1}${H1HL}
 echo "Committing changes to branch: \`${startingBranch}\`"
 echo ${H1HL}${X}

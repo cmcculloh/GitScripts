@@ -39,7 +39,7 @@ if [ -z "$1" ]; then
 		exit 1
 	fi
 
-elif __branch_exists_locally $1; then
+elif __branch_exists_local $1; then
 	# parameter supplied --- and branch exists
 	echo "Local branch exists!"
 	startingBranch=$1
