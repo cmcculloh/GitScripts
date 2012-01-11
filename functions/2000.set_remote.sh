@@ -1,68 +1,56 @@
-## /* @function
-#	@usage __get_remote
+## /*
+#	@usage __set_remote
 #
-#	@output true
+#	@output on error
+#
+#	@vars
+#	_remote
+#	vars@
 #
 #	@description
-#	This function searches all the remotes for a git project and will present a menu
+#	This script sets a variable that represents the name of a configured git remote repository.
+#	It first checks to see if the current branch is tracking a remote repository. If so, it
+#	"chooses" that remote. If not, it searches all the remotes for a git project and will present a menu
 #	to choose one if multiple remotes have been configured. If only one remote has been configured
 #	it will bypass the menu process and simply return that remote string. If no remotes are
-#	configured, there will be no output.
+#	configured, the $_remote variable will not be set.
 #	description@
 #
 #	@notes
-#	- This function is intended to be used for it's output, not in conditionals.
+#	- This file must be SOURCED to get access to the variable ($_remote) which is set for use.
+#	- This file is intended to be used for it's output, not in conditionals.
 #	notes@
 #
 #	@examples
 #	...
-#	remote=$(__get_remote)
+#	$set_remote
 #	git push $remote branch-name-to-push
 #	...
 #	examples@
 ## */
-function __get_remote {
-	local cb=$(__parse_git_branch)
-	local remote=$(git config branch.$cb.remote)
+
+function __set_remote {
+	remote=$(git config branch.$(__parse_git_branch).remote 2> /dev/null)
 
 	if [ ! $remote ]; then
-	remotes_string=$(git remote);
+		remotes=$(git remote)
 
-	# if no remotes are configured there's no reason to continue processing.
-	if [ -z "$remotes_string" ]; then
-		exit 1
+		# if no remotes are configured there's no reason to continue processing.
+		if [ -z "$remotes" ]; then
+			return 1
+		fi
+
+		if [ $(echo $remotes | wc -w) -gt 1 ]; then
+			__menu "$remotes" && { remote=$_menu_selection; } || {
+				echo
+				echo ${E}"  Unable to determine a remote!  "${X}
+				return 1
+			}
+		else
+			remote=$remote_string
+		fi
 	fi
 
-	c=0;
-	for remote in $remotes_string; do
-		remotes[$c]=$remote;
-		(( c++ ));
-	done
-
-	# if more than one remote exists, give the user a choice.
-	if [ ${#remotes[@]} -gt 1 ]; then
-		echo ${O}${H2HL}
-		for (( i = 0 ; i < ${#remotes[@]} ; i++ )); do
-			remote=$(echo ${remotes[$i]} | sed 's/[a-zA-Z0-9\-]+(\/\{1\}[a-zA-Z0-9\-]+)//p')
-
-			if [ $i -le "9" ]; then
-				index="  "$i
-			elif [ $i -le "99" ]; then
-				index=" "$i
-			else
-				index=$i
-			fi
-			echo "$index: $remote"
-		done
-		echo ${H2HL}${X}
-		echo ${I}"Choose a remote (or just hit enter to abort):"
-		read remote
-		echo ${X}
-
-		remote=$(echo ${remotes[$remote]} | sed 's/\// /')
-	else
-		remote=${remotes[0]}
-	fi
-	fi
-	echo "$remote"
+	export _remote=$remote
+	return 0
 }
