@@ -4,6 +4,7 @@
 $loadfuncs
 
 
+
 # If no branch name is provided as the first parameter, a list of branches from the
 # user's local repository are shown, giving them a choice of which to checkout. Users may
 # also view remote branches as well.
@@ -377,7 +378,8 @@ else
 	echo "Already on branch $1"
 
 	# Get updated changes from the remote (there should rarely be any for personal branches)
-	remote=$(__get_remote)
+	__set_remote
+	remote=$_remote
 	onremote=`git branch -r | grep "$1"`
 
 	if [ -n "$onremote" ]; then
