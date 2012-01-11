@@ -47,7 +47,7 @@ function __set_remote {
 				return 1
 			}
 		else
-			remote=$remote
+			remote=$remotes
 		fi
 	fi
 
