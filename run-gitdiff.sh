@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 branch="master"
 if [ -n $1 ] && [ "$1" != " " ] && [ "$1" != "" ]
