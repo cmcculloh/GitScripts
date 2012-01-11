@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Passing the following parameters to mergetool:
 #  local base remote merge_result
