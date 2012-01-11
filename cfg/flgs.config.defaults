@@ -1,0 +1,17 @@
+## /*
+#	@description
+#	This file is not used for anything other than a template for the initial config file.
+#	The settings in this file are all of the initial FLGitScripts settings and there
+#	may be changes from this file to the flgs.config file in the same directory. This file
+#	is under source control, but the flgs.config is not, as it will change with each user's
+#	preferences.
+#	description@
+#
+#	@notes
+#	- Should the active config file (flgs.config) ever be deleted, it will be re-created using
+#	this template. All user-specific settings cannot be recovered at this time.
+#	- Keep a trailing newline at the end of this file!
+#	notes@
+## */
+
+ssh-hosts=false

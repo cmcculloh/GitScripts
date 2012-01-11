@@ -173,6 +173,7 @@ alias makesprite="${gitscripts_path}swivel-images-maker.sh"
 # Utilities and Miscellaneous
 #########################################################################################################################
 alias fixbranch="${flgitscripts_path}fixbranch.sh"
+alias gsman="${gitscripts_path}gsman.sh"
 alias phone="${flgitscripts_path}phone.sh"
 
 # leave refresh_bash_profile as sourced, WITHOUT a shebang in the script, so sourced values are available immediately
