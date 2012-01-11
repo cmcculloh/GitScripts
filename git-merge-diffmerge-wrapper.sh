@@ -47,9 +47,9 @@ fi
 
 if [[ "$extension" == png ]]
   then
-	"C:/Program Files/TortoiseGit/bin/TortoiseIDiff.exe" $basefile $myfile $remotefile
+	"${TORTOISE_BIN}TortoiseIDiff.exe" $basefile $myfile $remotefile
 else
-	"C:/Program Files/TortoiseGit/bin/TortoiseMerge.exe" $basefile $myfile $remotefile
+	"${TORTOISE_BIN}TortoiseMerge.exe" $basefile $myfile $remotefile
 fi
 
 
