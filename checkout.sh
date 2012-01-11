@@ -7,7 +7,7 @@ $loadfuncs
 # If no branch name is provided as the first parameter, a list of branches from the
 # user's local repository are shown, giving them a choice of which to checkout. Users may
 # also view remote branches as well.
-if [ -z "$1" ] || [ "$1" = " " ]; then
+if [ -z "$1" ]; then
 	echo
 	echo ${H2}${H1HL}
 	echo "WARNING: Checkout requires a branch name                                            "
@@ -69,7 +69,7 @@ if [ -z "$1" ] || [ "$1" = " " ]; then
 		chosenBranchName2=${chosenBranchName2/#fl\//}
 		chosenbranchexists2=`git branch -r | grep "${remotebranches[$decision2]}"`
 
-		if [ -z "$decision2" ] || [ "$decision2" = "" ] ; then
+		if [ -z "$decision2" ]; then
 			echo ${E}${H1HL}
 			echo "ABORTING: checkout requires a branch name to continue                               "
 			echo ${H1HL}${X}
@@ -88,27 +88,27 @@ if [ -z "$1" ] || [ "$1" = " " ]; then
 		eval "${gitscripts_path}checkout.sh ${branches[$decision]}"
 
 	else
-		echo ${E}"You chose: ${COL_CYAN}${branches[${decision}]}${E}"
-		echo "Not sure what to do, as that does not appear to be a valid branch. Aborting."
-		echo ${X}
+		echo ${E}"  You chose: ${COL_CYAN}${branches[${decision}]}${E}"
+		echo "  Not sure what to do, as that does not appear to be a valid branch. Aborting...  "${X}
+		echo
 	fi
 
 	echo ${X}
-	exit -1
+	exit 1
 fi
 
 
 # If the user made it this far, they have passed the branch name as the first parameter to
 # the script. Additional processing occurs.
-echo ${H1}
-echo ${H1HL}
-echo "Checking out branch: ${COL_CYAN}$1${H1}"
-echo ${H1HL}
-echo ${X}
+echo
+echo ${H1}${H1HL}
+echo "Checking out branch: ${COL_CYAN}\`$1\`${H1}"
+echo ${H1HL}${X}
+echo
 echo
 
 # make sure branch exists
-if { __branch_exists "$1"; } then
+if __branch_exists "$1"; then
 
 	# check that the branch is not a protected branch (meaning, one you should always
 	# delete to protect against forced updates) by looking for the optional nomerge*
@@ -121,11 +121,11 @@ if { __branch_exists "$1"; } then
 	fi
 
 	if [ -n "$branchprotected" ]; then
-		echo ${Q}"Would you like to delete your local copy of ${COL_CYAN}$1${X}${Q} and pull"
-		echo ${Q}"down the newest version to protect against forced updates? (y) n"${X}
+		echo ${Q}"Would you like to delete your local copy of ${COL_CYAN}\`$1\`${X}${Q} and pull"
+		echo "down the newest version to protect against forced updates? (y) n"${X}
 		read deletelocal
 		if [ -z "$deletelocal" ] || [ "$decision" == "y" ] || [ "$decision" == "Y" ]; then
-			trydelete=`git branch -d $1 2>&1 | grep "error"`
+			trydelete=`git branch -d "$1" 2>&1 | grep "error"`
 			if [ -n "$trydelete" ]; then
 				echo ${E}"Delete failed!"${X}
 				echo ${E}"$trydelete"${X}
@@ -133,7 +133,7 @@ if { __branch_exists "$1"; } then
 				echo ${Q}"Force delete? y (n)"${X}
 				read forcedelete
 				if [ "$forcedelete" == "y" ] || [ "$forcedelete" == "Y" ]; then
-					trydelete=`git branch -D $1 2>&1 | grep "error"`
+					trydelete=`git branch -D "$1" 2>&1 | grep "error"`
 					if [ -n "$trydelete" ]; then
 						echo
 						echo ${E}"Force delete failed!"${X}
@@ -151,7 +151,7 @@ if { __branch_exists "$1"; } then
 					fi
 				else
 					echo
-					echo ${Q}"Continue checking out ${COL_CYAN}$1${COL_NORM}? y (n)"${X}
+					echo ${Q}"Continue checking out ${COL_CYAN}\`$1\`${COL_NORM}? y (n)"${X}
 					read continueanyways
 					if [ -z "$continueanyways" ] || [ "$continueanyways" = "n" ] || [ "$continueanyways" = "N" ]; then
 						return -1
@@ -164,7 +164,7 @@ if { __branch_exists "$1"; } then
 			fi
 		else
 			echo
-			echo "Keeping your local copy of ${COL_CYAN}$1${COL_NORM} ..."
+			echo "Keeping your local copy of ${COL_CYAN}\`$1\`${COL_NORM} ..."
 			echo
 		fi
 	fi
@@ -172,7 +172,7 @@ fi
 
 # check for "dirty" working directory and provide options if that is the case.
 echo
-if { ! __parse_git_status clean; }; then
+if ! __parse_git_status clean; then
 	echo
 	echo ${O}${H2HL}
 	echo "$ git status"
@@ -192,114 +192,141 @@ if { ! __parse_git_status clean; }; then
 	echo "You chose: ${decision}"
 	echo
 
-	# 1) Abort
-	if [ -z "$decision" ] || [ $decision -eq 1 ]; then
-		echo "Aborting checkout."
-		echo
-		exit -1
+	# will not accept anything other than a numeric choice. default to Abort.
+	! echo "$decision" | egrep -q '^[1-7]$' && decision=1
 
-	# 2) Commit changes and continue
-	elif [ $decision -eq 2 ]; then
-		echo ${Q}"Please enter a commit message: "${X}
-		read commitmessage
-		${gitscripts_path}commit.sh "$commitmessage" -a
+	case $decision in
+		#Abort
+		1)
+			echo "Aborting checkout..."
+			echo
+			exit 1;;
 
-	# 3) Stash changes and continue
-	elif [ $decision -eq 3 ]; then
-		echo "This stashes any local changes you might have made and forgot to commit."
-		echo "To access these changes at a later time you can choose between the following:"
-		echo "- reapply these changes to a ${STYLE_BRIGHT}new${STYLE_NORM} branch using: ${COL_CYAN}git stash branch <branch_name>"${COL_NORM}
-		echo "- OR apply these changes to any branch you are currently on using: ${COL_CYAN}git stash apply"${COL_NORM}
-		echo ${O}${H2HL}
-		echo "$ git stash"
-		git stash
-		echo
-		echo
-		echo "$ git status"
-		git status
-		echo ${H2HL}${X}
-		echo
+		# Commit changes and continue
+		2)
+			echo ${Q}"Please enter a commit message: "${X}
+			read commitmessage
+			${gitscripts_path}commit.sh "$commitmessage" -a;;
 
-	# 4) Reset changes to tracked files and continue
-	elif [ $decision -eq 4 ]; then
-		echo "This attempts to reset your current branch to it's last stable hash, usually HEAD."
-		echo "If you have made changes to untracked files, they will be unaffected."
-		echo ${O}${H2HL}
-		echo "$ git reset --hard"
-		git reset --hard
-		echo
-		echo
-		echo "$ git status"
-		git status
-		echo ${H2HL}${X}
-		echo
+		# Stash changes and continue
+		3)
+			echo "This stashes any local changes you might have made and forgot to commit."
+			echo "To access these changes at a later time you can choose between the following:"
+			echo "- reapply these changes to a ${STYLE_BRIGHT}new${STYLE_NORM} branch using: ${COL_CYAN}git stash branch <branch_name>"${COL_NORM}
+			echo "- OR apply these changes to any branch you are currently on using: ${COL_MAG}git stash apply"${COL_NORM}
+			echo ${O}${H2HL}
+			echo "$ git stash"
+			git stash
+			echo
+			echo
+			echo "$ git status"
+			git status
+			echo ${H2HL}${X}
+			echo;;
 
-	# 5) Clean (delete) untracked files and continue
-	elif [ $decision -eq 5 ]; then
-		echo "This attempts to clean your current branch of all untracked files by deleting them."
-		echo ${O}${H2HL}
-		echo "$ git clean -f"
-		git clean -f
-		echo
-		echo
-		echo "$ git status"
-		git status
-		echo ${H2HL}${X}
-		echo
+		# Reset changes to tracked files and continue
+		4)
+			echo "This attempts to reset your current branch to it's last stable hash, usually HEAD."
+			echo "If you have made changes to untracked files, they will be unaffected."
+			echo ${O}${H2HL}
+			echo "$ git reset --hard"
+			git reset --hard
+			echo
+			echo
+			echo "$ git status"
+			git status
+			echo ${H2HL}${X}
+			echo;;
 
-	# 6) Reset, clean, and continue
-	elif [ $decision -eq 6 ]; then
-		echo "This attempts to reset your current branch to the last stable commit (HEAD)"
-		echo "and attempts to clean your current branch of all untracked files."
-		echo ${H2HL}${O}
-		echo "$ git reset --hard"
-		git reset --hard
-		echo
-		echo
-		echo "$ git clean -f"
-		git clean -f
-		echo
-		echo
-		echo "$ git status"
-		git status
-		echo ${H2HL}${X}
-		echo
+		# Clean (delete) untracked files and continue
+		5)
+			echo "This attempts to clean your current branch of all untracked files by deleting them."
+			echo ${O}${H2HL}
+			echo "$ git clean -f"
+			git clean -f
+			echo
+			echo
+			echo "$ git status"
+			git status
+			echo ${H2HL}${X}
+			echo;;
 
-	# 7) Ignore warning and continue
-	elif [ $decision -eq 7 ]; then
-		echo "Continuing..."
-	else
-		exit 1
-	fi
+		# Reset, clean, and continue
+		6)
+			echo "This attempts to reset your current branch to the last stable commit (HEAD)"
+			echo "and attempts to clean your current branch of all untracked files."
+			echo ${H2HL}${O}
+			echo "$ git reset --hard"
+			git reset --hard
+			echo
+			echo
+			echo "$ git clean -f"
+			git clean -f
+			echo
+			echo
+			echo "$ git status"
+			git status
+			echo ${H2HL}${X}
+			echo;;
+
+		# Ignore warning and continue
+		7)
+			echo "Continuing..."
+			echo;;
+	esac
+
 else
 	echo "Working directory is ${COL_GREEN}clean${COL_NORM}."
-	echo
 	echo
 fi
 # END - uncommitted changes/untracked files
 
 
-# Get up-to-date info from the remote
-echo "This tells your local git about all changes on remote"
+# Get updated changes from the remote (there should rarely be any for personal branches)
+#TODO: Update this to use our remote choosing function (maybe?)
+echo "Gathering information about remote(s), if any..."
 echo ${O}${H2HL}
-echo "$ git fetch --all --prune"
-git fetch --all --prune
+__set_remote
 echo ${H2HL}${X}
-echo
-echo
+
+# Get up-to-date info from the remote, if any
+if [ $_remote ]; then
+	echo
+	echo "This tells your local git about all changes on ${COL_GREEN}${_remote}${COL_NORM}..."
+	echo ${O}${H2HL}
+	echo "$ git fetch --all --prune"
+	git fetch --all --prune
+	echo ${H2HL}${X}
+	echo
+	echo
+fi
 
 
 # Test checkout of branch. Then checkout the chosen branch if possible.
-echo "This checks out the ${COL_CYAN}$1${COL_NORM} branch."
+echo "This checks out the ${COL_CYAN}\`$1\`${COL_NORM} branch."
 echo ${O}${H2HL}
 echo "$ git checkout $1"
+git checkout "$1"
+echo ${H2HL}${X}
 
 # Get updated changes from the remote (there should rarely be any for personal branches)
-#TODO: Update this to use our remote choosing function (maybe?)
-remote=$(git remote)
-onremote=`git branch -r | grep "$1"`
+if [ $_remote ]; then
+	if __branch_exists_remote $1; then
+		echo
+		echo
+		echo "Get updated branch changes from ${COL_GREEN}${_remote}${COL_NORM}, if any."
+		echo ${O}${H2HL}
+		echo "$ git pull ${remote} $1"
+		git pull $remote $1
+	else
 
-trycheckout=`git checkout $1 2>&1 | grep "error: "`
+	fi
+fi
+
+
+__branch_exists_remote $1 && onremote=true
+__branch_exists_local $1 && onlocal=true
+
 if [ -n "$trycheckout" ]; then
 	nolocal=`git checkout $1 2>&1 | grep "error: pathspec "`
 	if [ -n "$nolocal" ]; then
@@ -309,8 +336,8 @@ if [ -n "$trycheckout" ]; then
 		remotes_string=$(git branch -a | grep "$1");
 		c=0;
 
-		for remote in $remotes_string; 
-		do 
+		for remote in $remotes_string;
+		do
 		#echo "$c: $remote";
 		remotes[$c]=$remote;
 		c=$((c+1));
@@ -376,19 +403,7 @@ if [ -n "$trycheckout" ]; then
 else
 	echo "Already on branch $1"
 
-	# Get updated changes from the remote (there should rarely be any for personal branches)
-	remote=$(__get_remote)
-	onremote=`git branch -r | grep "$1"`
 
-	if [ -n "$onremote" ]; then
-		echo ${H2HL}${X}
-		echo
-		echo
-		echo "Get updated branch changes from ${COL_CYAN}${remote}${COL_NORM}, if any."
-		echo ${O}${H2HL}
-		echo "$ git pull ${remote} $1"
-		git pull $remote $1
-	fi
 fi
 
 
