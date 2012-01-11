@@ -105,6 +105,10 @@ if [ -n "$2" ]; then
 			exit 1
 			;;
 	esac
+elif ! parse_git_status staged; then
+	echo
+	echo ${E}"  You haven't staged any files for commit! Try adding the '-a' or -A' options next time. Aborting...  "${X}
+	exit 1
 fi
 
 
@@ -132,6 +136,11 @@ echo ${I}"Would you like to push? y (n)"${X}
 read YorN
 echo
 if [ "$YorN" == "y" ] || [ "$YorN" == "Y" ]; then
+	if [ $protectpushto_path ] && cat $protectpushto_path | grep -q "$startingBranch"; then
+		echo ${E}"  This branch is protected from pushing to the remote. Aborting...  "
+		exit 1
+	fi
+
 	__set_remote
 	if [ -n "$_remote" ]; then
 		echo
