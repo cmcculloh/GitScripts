@@ -139,6 +139,8 @@ if [ "$YorN" == "y" ] || [ "$YorN" == "Y" ]; then
 		echo ${O}${H2HL}
 		echo "$ git push ${_remote} ${startingBranch}"
 		git push $_remote $startingBranch
+		echo ${H2HL}${X}
+		echo
 
 	else
 		echo ${E}"  No remote could be found. Push aborted.  "${X}
