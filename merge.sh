@@ -32,7 +32,7 @@ $loadfuncs
 
 
 # check for minimum requirements
-ignoreprotect=false
+
 [ $# -eq 1 ] && oneArg=true
 [ $# -eq 2 ] && ([ "$2" = "-i" ] || [ "$2" = "--ignore-protections"]) && oneArg=true && ignoreprotect=true
 [ $# -eq 3 ] && threeArg=true
@@ -64,17 +64,13 @@ mergeBranch=$1
 
 # check protected branches
 [ -z "${protectmergefrom_path}" ] || isProtectedFrom=`grep "$mergeBranch" ${protectmergefrom_path}`
-if [ !$ignoreprotect ] && [ $isProtectedFrom ]; then
+if [ ! $ignoreprotect ] && [ $isProtectedFrom ]; then
 	echo "  ${COL_RED}WARNING:${COL_NORM} Merging ${COL_YELLOW}from${COL_NORM} ${COL_CYAN}$1${COL_NORM} not allowed. Aborting..."
 	exit 1
 fi
 
 [ -z "${protectmergeto_path}" ] || isProtectedTo=`grep "$baseBranch" ${protectmergeto_path}`
-if [ !$ignoreprotect ]; then
-	echo "ignoring protection!"
-fi
-echo "isProtectedTo: ${isProtectedTo}"
-if [ !$ignoreprotect ] && [ $isProtectedTo ]; then
+if [ ! $ignoreprotect ] && [ $isProtectedTo ]; then
 	echo "${COL_RED}WARNING:${COL_NORM} merging ${COL_YELLOW}into${COL_NORM} ${COL_CYAN}$3${COL_NORM} not allowed."
 	exit 1
 fi
