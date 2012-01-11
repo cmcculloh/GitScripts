@@ -27,6 +27,7 @@
 $loadfuncs
 
 
+# reset styles
 echo ${X}
 
 # set pushing branch if specified, otherwise...
@@ -56,7 +57,7 @@ if [ "$YorN" == "y" ] || [ "$YorN" == "Y" ]; then
 		echo "Now pushing to:${X} ${COL_GREEN} ${_remote} ${COL_NORM}"
 		echo ${O}${H2HL}
 		echo "$ git push ${_remote} ${cb}"
-		git push "${_remote} ${cb}"
+		git push "${_remote}" "${cb}"
 		echo ${H2HL}${X}
 		echo
 	else
