@@ -10,7 +10,7 @@
 for file in "${gitscripts_functions_path}"*; do
 
 	if [ ! -d "$file" ] && [ -s "$file" ]; then
-		echo "Going to source: ${file}"
+		# echo "Going to source: ${file}"
 		source $file
 	fi
 
