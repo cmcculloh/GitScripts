@@ -34,9 +34,9 @@ $loadfuncs
 # check for minimum requirements
 ignoreprotect=false
 [ $# -eq 1 ] && oneArg=true
-[ $# -eq 2 ] && [[ "$2" = "-i" ] || [ "$2" = "--ignore-protections"]] && oneArg=true && ignoreprotect=true
+[ $# -eq 2 ] && ([ "$2" = "-i" ] || [ "$2" = "--ignore-protections"]) && oneArg=true && ignoreprotect=true
 [ $# -eq 3 ] && threeArg=true
-[ $# -eq 4 ] && [[ "$4" = "-i" ] || [ "$4" = "--ignore-protections"]] && threeArg=true && ignoreprotect=true
+[ $# -eq 4 ] && ([ "$4" = "-i" ] || [ "$4" = "--ignore-protections"]) && threeArg=true && ignoreprotect=true
 # must have 1 arg (merge $1 into current branch) or 3 (merge $1 into $2)
 if [ ! $oneArg ] && [ ! $threeArg ]; then
 	echo
@@ -70,6 +70,10 @@ if [ !$ignoreprotect ] && [ $isProtectedFrom ]; then
 fi
 
 [ -z "${protectmergeto_path}" ] || isProtectedTo=`grep "$baseBranch" ${protectmergeto_path}`
+if [ !$ignoreprotect ]; then
+	echo "ignoring protection!"
+fi
+echo "isProtectedTo: ${isProtectedTo}"
 if [ !$ignoreprotect ] && [ $isProtectedTo ]; then
 	echo "${COL_RED}WARNING:${COL_NORM} merging ${COL_YELLOW}into${COL_NORM} ${COL_CYAN}$3${COL_NORM} not allowed."
 	exit 1
