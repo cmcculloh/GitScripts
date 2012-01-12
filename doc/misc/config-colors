@@ -1,0 +1,86 @@
+# For setting colors, use a white-space separated list with at most two colors and at most one attribute.
+# The first color given is the foreground, the second is the background. The position of the attribute,
+# if any, doesn’t matter.
+
+#Colors:
+  black   green     red
+  blue    magenta   white
+  cyan    normal    yellow
+
+#Attributes
+  blink   reverse
+  bold    ul
+  dim
+
+
+--------------------------------------------------------------------------------------
+# The different status categories for color, along with their respective targets, are:
+--------------------------------------------------------------------------------------
+  branch
+    current       # current branch
+    local         # local branch
+    remote        # a remote-tracking branch in refs/remotes/
+    plain         # other refs
+
+  decorate
+    branch        # local branches
+    remoteBranch  # remote branches
+    tag           # tags
+    stash         # stash
+    HEAD          # HEAD
+
+  diff
+    plain         # context text
+    meta          # metainformation
+    frag          # hunk header
+    func          # function in hunk header
+    old           # removed lines
+    new           # added lines
+    commit        # commit headers
+    whitespace    # ighlighting whitespace errors
+
+  grep
+    context       # non-matching text in context lines (when using -A, -B, or -C)
+    filename      # filename prefix (when not using -h)
+    function      # function name lines (when using -p)
+    linenumber    # line number prefix (when using -n)
+    match         # matching text
+    selected      # non-matching text in selected lines
+    separator     # separators between fields on a line (:, -, and =) and between hunks (--)
+
+  interactive   # git add --interactive
+    prompt
+    header
+    help
+    error
+
+  status
+    header        # the header text of the status message
+    added         # files which are added but not committed
+    updated       # files which are added but not committed
+    changed       # files which are changed but not added in the index
+    untracked     # files which are not tracked by git
+    branch        # the current branch
+    nobranch      # the color the no branch warning is shown in, defaulting to red
+
+
+
+--------------------------------------------------------------------------------------
+# Below is an example of how these colors may be configured in a user's .git/config or ~/.gitconfig
+--------------------------------------------------------------------------------------
+
+[color "branch"]
+  current = yellow black
+  local = yellow
+  remote = magenta
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red reverse
+  new = green reverse
+  whitespace = white reverse
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan reverse
+  branch = magenta
