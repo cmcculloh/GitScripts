@@ -44,38 +44,42 @@ function __parse_git_branch_state {
 	bits=
 
 
-	if [ $staged ]; then
-		bits="${bits} ${X}${STYLE_COMMITTED} ++ (staged) ${X}"
-
-		if [ $newfile ]; then
-			bits="${bits} ${X}${STYLE_NEWFILE} * (new files) ${X}"
-		fi
-		if [ $renamed ]; then
-			bits="${bits} ${X}${STYLE_RENAMEDFILE} > (renamed) ${X}"
-		fi
-		if [ $modified ]; then
-			bits="${bits} ${X}${STYLE_DIRTY} +- (dirty) ${X}"
-		fi
-	fi
-
-	if [ $deleted ]; then
-		bits="${bits} ${X}${STYLE_DELETEDFILE} !* (deleted files) ${X}"
-	fi
-
-	if [ $modified ] && [ ! $staged ]; then
-		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified) ${X}"
-	fi
-
-	if [ $untracked ]; then
-		bits="${bits} ${X}${STYLE_UNTRACKED} ? (untracked) ${X}"
-	fi
-
 	if [ $ahead ]; then
-		bits="${bits} ${X}${STYLE_AHEAD} + (ahead) ${X}"
+		bits="${bits} ${X}${STYLE_AHEAD} (ahead of remote)${X}"
 	fi
 
 	if [ $behind ]; then
-		bits="${bits} ${X}${STYLE_AHEAD} - (behind) ${X}"
+		bits="${bits} ${X}${STYLE_AHEAD} (behind remote)${X}"
+	fi
+
+	if [ $staged ]; then
+		#bits="${bits} ${X}${STYLE_COMMITTED} (um.. staged)${X}"
+
+		if [ $newfile ]; then
+			bits="${bits} ${X}${STYLE_NEWFILE} (new files)${X}"
+		fi
+		if [ $renamed ]; then
+			bits="${bits} ${X}${STYLE_RENAMEDFILE} > (renamed)${X}"
+		fi
+		# if [ $modified ]; then
+		# 	bits="${bits} ${X}${STYLE_DIRTY} +- (dirty) ${X}"
+		# fi
+	fi
+
+	if [ $deleted ]; then
+		bits="${bits} ${X}${STYLE_DELETEDFILE} (deleted files)${X}"
+	fi
+
+	if [ $modified ]; then
+		bits="${bits} ${X}${STYLE_MODIFIED} (modified)${X}"
+	fi
+
+	# if [ $modified ] && [ ! $staged ]; then
+	# 	bits="${bits} ${X}${STYLE_MODIFIED} >> (modified) ${X}"
+	# fi
+
+	if [ $untracked ]; then
+		bits="${bits} ${X}${STYLE_UNTRACKED} (untracked)${X}"
 	fi
 
 	echo "$bits"
