@@ -38,6 +38,8 @@
 $loadfuncs
 
 
+echo ${X}
+
 # conditions that should cause the script to halt immediately:
 # missing commit message
 if [ -z "$1" ]; then
@@ -56,14 +58,14 @@ fi
 
 startingBranch=$(__parse_git_branch)
 if [ -z "$startingBranch" ]; then
-	echo ${E}"Unable to determine current branch."${X}
+	echo ${E}"  Unable to determine current branch.  "${X}
 	exit 1
 fi
 
 
 echo
 echo ${H1}${H1HL}
-echo "Committing changes to branch: \`${startingBranch}\`"
+echo "Committing changes to branch: ${H1B}\`${startingBranch}\`${H1}"
 echo ${H1HL}${X}
 
 echo
@@ -72,7 +74,7 @@ echo "Checking status..."
 echo ${O}${H2HL}
 echo "$ git status"
 git status
-echo ${H2HL}${X}
+echo ${O}${H2HL}${X}
 
 # check to see if user wants to add all modified/deleted files
 if [ -n "$2" ]; then
@@ -82,7 +84,7 @@ if [ -n "$2" ]; then
 			if __parse_git_status untracked; then
 				echo
 				echo
-				echo ${Q}"Would you like to run ${COL_MAG}git add -A${COL_NORM} to add untracked files as well? y (n)"${X}
+				echo ${Q}"Would you like to run ${A}git add -A${Q} to add untracked files as well? y (n)"${X}
 			read yn
 			if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
 				echo
@@ -91,7 +93,7 @@ if [ -n "$2" ]; then
 					echo ${O}${H2HL}
 					echo "$ git add -A"
 					git add -A
-					echo ${H2HL}${X}
+					echo ${O}${H2HL}${X}
 			fi
 		fi
 			;;
@@ -102,7 +104,7 @@ if [ -n "$2" ]; then
 			echo ${O}${H2HL}
 			echo "$ git add -A"
 			git add -A
-			echo ${H2HL}${X}
+			echo ${O}${H2HL}${X}
 			;;
 
 		*)
@@ -132,25 +134,8 @@ echo "$ git status"
 git status
 echo ${H2HL}${X}
 echo
-echo
-echo ${I}"Would you like to push? y (n)"${X}
-read YorN
-echo
-if [ "$YorN" == "y" ] || [ "$YorN" == "Y" ]; then
-	__set_remote
-	if [ -n "$_remote" ]; then
-		echo
-		echo "Now pushing to:${X} ${COL_GREEN} ${_remote} ${COL_NORM}"
-		echo ${O}${H2HL}
-		echo "$ git push ${_remote} ${startingBranch}"
-		git push "$_remote" "$startingBranch"
-		echo ${H2HL}${X}
 
-	else
-		echo ${E}"  No remote could be found. Push aborted.  "${X}
-
-	fi
-fi
+"${gitscripts_path}push.sh ${startingBranch}"
 
 "${gitscripts_path}clear-screen.sh"
 
