@@ -24,8 +24,12 @@
 #	examples@
 #
 #	@dependencies
-#	gitscripts/gsfunctions.sh
-#	gitscripts/clear-screen.sh
+#	checkout.sh
+#	clear-screen.sh
+#	functions/0100.bad_usage.sh
+#	functions/5000.branch_exists.sh
+#	functions/5000.parse_git_branch.sh
+#	functions/5000.set_remote.sh
 #	dependencies@
 ## */
 $loadfuncs

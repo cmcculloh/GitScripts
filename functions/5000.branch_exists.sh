@@ -22,6 +22,10 @@
 #
 #	#...
 #	examples@
+#
+#	@dependencies
+#	functions/0200.gslog.sh
+#	dependencies@
 ## */
 function __branch_exists {
 	if [ -z "$1" ]; then

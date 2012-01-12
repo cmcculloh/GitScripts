@@ -31,6 +31,10 @@
 #		echo "The current branch has the following state(s): ${branch_state}"
 #	>> output (with colors): The current branch has the following state(s):  + (dirty)  ++ (staged)  ? (untracked)
 #	examples@
+#
+#	@dependencies
+#	functions/5000.parse_git_status.sh
+#	dependencies@
 ## */
 function __parse_git_branch_state {
 	__parse_git_status ahead 		&& local ahead=true

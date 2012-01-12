@@ -1,6 +1,25 @@
 #!/bin/bash
-# checkout
-# checks out a git branch + bunches more!
+## /*
+#	@usage checkout [branch-name]
+#
+#	@description
+#
+#	description@
+#
+#	@notes
+#	-
+#	notes@
+#
+#	@examples
+#	1)
+#	examples@
+#
+#	@dependencies
+#	functions/5000.branch_exists.sh
+#	functions/5000.parse_git_status.sh
+#	functions/5000.set_remote.sh
+#	dependencies@
+## */
 $loadfuncs
 
 
@@ -310,8 +329,8 @@ if [ -n "$trycheckout" ]; then
 		remotes_string=$(git branch -a | grep "$1");
 		c=0;
 
-		for remote in $remotes_string; 
-		do 
+		for remote in $remotes_string;
+		do
 		#echo "$c: $remote";
 		remotes[$c]=$remote;
 		c=$((c+1));
