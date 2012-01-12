@@ -1,9 +1,31 @@
+#!/bin/bash
+## /*
+#	@usage delete <branch-name>
+#
+#	@description
+#
+#	description@
+#
+#	@notes
+#	-
+#	notes@
+#
+#	@examples
+#	1)
+#	examples@
+#
+#	@dependencies
+#	checkout.sh
+#	functions/0100.bad_usage.sh
+#	dependencies@
+## */
 
-$loadfuncs
 
 if [ -z "$1" ]; then
 	__bad_usage delete "Branch name to delete is required as the only parameter."
 	exit 1
+else
+	$loadfuncs
 fi
 
 echo
@@ -95,4 +117,4 @@ fi
 
 #used to be an option to delete remote branch automagically here, but I trashed it because it was too dangerous
 
-exit 1
+exit

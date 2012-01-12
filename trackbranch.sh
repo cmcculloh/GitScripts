@@ -23,7 +23,13 @@
 #	examples@
 #
 #	@dependencies
-#	gitscripts/gsfunctions.sh
+#	*checkout.sh
+#	clear-screen.sh
+#	functions/5000.branch_merge_set.sh
+#	functions/5000.branch_exists_locally.sh
+#	functions/5000.branch_exists_remote.sh
+#	functions/5000.parse_git_branch.sh
+#	functions/5000.set_remote.sh
 #	dependencies@
 ## */
 $loadfuncs
@@ -87,7 +93,7 @@ else
 		echo ${O}${H2HL}
 		echo "$ git fetch --all --prune"
 		git fetch --all --prune
-		echo ${H2HL}${X}
+		echo ${O}${H2HL}${X}
 		echo
 		echo
 		# if a remote exists, push to it.
@@ -95,7 +101,7 @@ else
 		echo ${O}${H2HL}
 		echo "$ git push ${_remote} ${startingBranch}"
 		git push $_remote $startingBranch
-		echo ${H2HL}${X}
+		echo ${O}${H2HL}${X}
 	fi
 
 	echo ${H2HL}${X}

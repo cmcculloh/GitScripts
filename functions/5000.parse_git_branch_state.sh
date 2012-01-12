@@ -31,6 +31,10 @@
 #		echo "The current branch has the following state(s): ${branch_state}"
 #	>> output (with colors): The current branch has the following state(s):  + (dirty)  ++ (staged)  ? (untracked)
 #	examples@
+#
+#	@dependencies
+#	functions/5000.parse_git_status.sh
+#	dependencies@
 ## */
 function __parse_git_branch_state {
 	__parse_git_status ahead 		&& local ahead=true
@@ -44,42 +48,38 @@ function __parse_git_branch_state {
 	bits=
 
 
-	if [ $ahead ]; then
-		bits="${bits} ${X}${STYLE_AHEAD} (ahead of remote)${X}"
-	fi
-
-	if [ $behind ]; then
-		bits="${bits} ${X}${STYLE_AHEAD} (behind remote)${X}"
-	fi
-
 	if [ $staged ]; then
-		#bits="${bits} ${X}${STYLE_COMMITTED} (um.. staged)${X}"
+		bits="${bits} ${STYLE_STAGED} ++ (staged) ${X}"
 
 		if [ $newfile ]; then
-			bits="${bits} ${X}${STYLE_NEWFILE} (new files)${X}"
+			bits="${bits} ${STYLE_NEWFILE} * (new files) ${X}"
 		fi
 		if [ $renamed ]; then
-			bits="${bits} ${X}${STYLE_RENAMEDFILE} > (renamed)${X}"
+			bits="${bits} ${STYLE_RENAMEDFILE} > (renamed) ${X}"
 		fi
-		# if [ $modified ]; then
-		# 	bits="${bits} ${X}${STYLE_DIRTY} +- (dirty) ${X}"
-		# fi
+		if [ $modified ]; then
+			bits="${bits} ${STYLE_DIRTY} +- (dirty) ${X}"
+		fi
 	fi
 
 	if [ $deleted ]; then
-		bits="${bits} ${X}${STYLE_DELETEDFILE} (deleted files)${X}"
+		bits="${bits} ${X}${STYLE_DELETEDFILE} !* (deleted files) ${X}"
 	fi
 
-	if [ $modified ]; then
-		bits="${bits} ${X}${STYLE_MODIFIED} (modified)${X}"
+	if [ $modified ] && [ ! $staged ]; then
+		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified) ${X}"
 	fi
-
-	# if [ $modified ] && [ ! $staged ]; then
-	# 	bits="${bits} ${X}${STYLE_MODIFIED} >> (modified) ${X}"
-	# fi
 
 	if [ $untracked ]; then
-		bits="${bits} ${X}${STYLE_UNTRACKED} (untracked)${X}"
+		bits="${bits} ${X}${STYLE_UNTRACKED} ? (untracked) ${X}"
+	fi
+
+	if [ $ahead ]; then
+		bits="${bits} ${X}${STYLE_AHEAD} + (ahead) ${X}"
+	fi
+
+	if [ $behind ]; then
+		bits="${bits} ${X}${STYLE_BEHIND} - (behind) ${X}"
 	fi
 
 	echo "$bits"

@@ -27,7 +27,12 @@
 #	examples@
 #
 #	@dependencies
-#	gitscripts/gsfunctions.sh
+#	clear-screen.sh
+#	functions/0100.bad_usage.sh
+#	functions/5000.branch_exists.sh
+#	functions/5000.parse_git_branch.sh
+#	functions/5000.parse_git_status.sh
+#	functions/5000.set_remote.sh
 #	dependencies@
 ## */
 $loadfuncs
@@ -43,7 +48,7 @@ fi
 
 # make sure SOMETHING is staged if user doesn't specify flag
 if ! __parse_git_status staged && [ -z "$2" ]; then
-echo
+	echo
 	echo ${E}"  You haven't staged any changes to commit! Aborting...  "${X}
 	exit 1
 fi
@@ -52,8 +57,8 @@ fi
 startingBranch=$(__parse_git_branch)
 if [ -z "$startingBranch" ]; then
 	echo ${E}"Unable to determine current branch."${X}
-		exit 1
-	fi
+	exit 1
+fi
 
 
 echo
@@ -140,7 +145,6 @@ if [ "$YorN" == "y" ] || [ "$YorN" == "Y" ]; then
 		echo "$ git push ${_remote} ${startingBranch}"
 		git push $_remote $startingBranch
 		echo ${H2HL}${X}
-		echo
 
 	else
 		echo ${E}"  No remote could be found. Push aborted.  "${X}

@@ -22,6 +22,10 @@
 #
 #	#...
 #	examples@
+#
+#	@dependencies
+#	functions/0200.gslog.sh
+#	dependencies@
 ## */
 function __branch_merge_set {
 	if [ -z "$1" ]; then
@@ -35,5 +39,4 @@ function __branch_merge_set {
 	else
 		return 1
 	fi
-	return 1
 }

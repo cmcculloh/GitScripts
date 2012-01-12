@@ -23,6 +23,10 @@
 #
 #		echo "You selected: ${_menu_selection}"
 #	examples@
+#
+#	@dependencies
+#	functions/0200.gslog.sh
+#	dependencies@
 ## */
 
 __menu() {
@@ -33,7 +37,7 @@ __menu() {
 
 	# build menu
 	local items=( $1 )
-	echo ${O}${H2HL}
+	echo ${STYLE_MENU_HL}${H2HL}${X}
 	for (( i = 1 ; i <= ${#items[@]} ; i++ ))
 		do
 		j=$(( i - 1 ))
@@ -46,34 +50,36 @@ __menu() {
 		else
 			index=$i
 		fi
-		echo "${index}: ${item}"
+		echo "${STYLE_MENU_INDEX}${index}:${X} ${STYLE_MENU_OPTION}${item}${X}"
 	done
-	echo ${H2HL}${X}
+	echo ${STYLE_MENU_HL}${H2HL}${X}
 
 	# check for custom message
 	msg=$2
 	if [ -z "$2" ]; then
 		msg="Please make a selection (or press Enter to abort): "
 	fi
-	echo $msg
+	echo ${STYLE_MENU_PROMPT}"$msg"${X}
 	read selection
 
 	# validate response
 	if [ -z "$selection" ]; then
-		echo "No selection made. Aborting..."
+		echo
+		echo ${E}"  No selection made. Aborting...  "${X}
 		return 0
 	else
 		if echo $selection | egrep -q '^[[:digit:]]+$'; then
 			(( selection-- ))
 			_menu_selection=${items[$selection]}
 		else
+			echo
 			echo ${E}"  Invalid selection! Aborting...  "${X}
 			return 1
 		fi
 	fi
 
 	#wrap up...
-	echo "You chose: ${_menu_selection}"
+	echo ${O}"You chose:${X} ${_menu_selection}"
 	export _menu_selection
 
 	return 0
