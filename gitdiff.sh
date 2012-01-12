@@ -42,6 +42,8 @@ hashTo=$(git rev-parse --short HEAD)
 
 echo ${O}${H2HL}
 echo "$ git diff --name-status $hashFrom..$hashTo"
+echo
+echo "git diff --name-status ${hashFrom}..${hashTo}"
 git diff --name-status $hashFrom..$hashTo
 echo
 echo "git diff -w $hashFrom..$hashTo"
