@@ -1,7 +1,27 @@
 #!/bin/bash
-# checkout
-# checks out a git branch + bunches more!
+## /*
+#	@usage checkout [branch-name]
+#
+#	@description
+#
+#	description@
+#
+#	@notes
+#	-
+#	notes@
+#
+#	@examples
+#	1)
+#	examples@
+#
+#	@dependencies
+#	functions/5000.branch_exists.sh
+#	functions/5000.parse_git_status.sh
+#	functions/5000.set_remote.sh
+#	dependencies@
+## */
 $loadfuncs
+
 
 
 # If no branch name is provided as the first parameter, a list of branches from the
@@ -403,6 +423,10 @@ if [ -n "$trycheckout" ]; then
 else
 	echo "Already on branch $1"
 
+	# Get updated changes from the remote (there should rarely be any for personal branches)
+	__set_remote
+	remote=$_remote
+	onremote=`git branch -r | grep "$1"`
 
 fi
 

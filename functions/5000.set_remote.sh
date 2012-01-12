@@ -37,6 +37,8 @@ function __set_remote {
 
 		# if no remotes are configured there's no reason to continue processing.
 		if [ -z "$remotes" ]; then
+			echo
+			echo ${E}"  No remotes configured!  "${X}
 			return 1
 		fi
 

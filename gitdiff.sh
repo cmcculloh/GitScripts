@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 ## /*
 #	@usage gitdiff
 #
@@ -18,7 +18,7 @@
 #	examples@
 #
 #	@dependencies
-#	gitscripts/gsfunctions.sh
+#	functions/5000.branch_exists.sh
 #	dependencies@
 ## */
 $loadfuncs

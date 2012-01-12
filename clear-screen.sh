@@ -11,12 +11,12 @@ else
 fi
 
 echo ${I}"Clear screen?"${defO}${X};
-read yn
+read josephsCoatOfManyAnswersVariableHasA_VeryGoodName_Sir
 
-if [ -z "$YorN" ]; then
-	yn=$defA
+if [ -z "$josephsCoatOfManyAnswersVariableHasA_VeryGoodName_Sir" ]; then
+	josephsCoatOfManyAnswersVariableHasA_VeryGoodName_Sir=$defA
 fi
 
-if [ "$yn" == "y" ]; then
+if [ "$josephsCoatOfManyAnswersVariableHasA_VeryGoodName_Sir" == "y" ] ||  [ "$josephsCoatOfManyAnswersVariableHasA_VeryGoodName_Sir" == "Y" ] || [ "$josephsCoatOfManyAnswersVariableHasA_VeryGoodName_Sir" == "yes" ] ||  [ "$josephsCoatOfManyAnswersVariableHasA_VeryGoodName_Sir" == "Yes" ] ||  [ "$josephsCoatOfManyAnswersVariableHasA_VeryGoodName_Sir" == "Yes" ]; then
 	clear
 fi
