@@ -3,35 +3,47 @@
 #	@usage checkout [branch-name]
 #
 #	@description
-#
+#	This script assists with checking out a branch in several ways. Firstly, if you
+#	don't know the specific name of the branch for whatever reason, you can omit the
+#	branch name as the first parameter to view a list of all branches, even branches
+#	on the remote, if any. Secondly, You are automatically prompted to merge master into
+#	the branch which you are checking out to keep it current. In addition, safeguards
+#	are in place to prevent unnecessary processing if, for instance, you are already
+#	on the branch you are trying to checkout or the branch doesn't exist locally,
+#	remotely, or at all.
 #	description@
 #
-#	@notes
-#	-
-#	notes@
 #
 #	@examples
-#	1)
+#	1) checkout
+#	   # Will show a list of branches available for checkout.
+#	2) checkout my-big-project-changes
+#	   # checks out my-big-project-changes and will attempt to merge master into it
+#	   # or rebase it onto master.
 #	examples@
 #
 #	@dependencies
-#	functions/5000.branch_exists.sh
+#	functions/5000.branch_exists_remote.sh
+#	functions/5000.branch_exists_local.sh
+#	functions/5000.parse_git_branch.sh
 #	functions/5000.parse_git_status.sh
 #	functions/5000.set_remote.sh
 #	dependencies@
+#
+#	@file checkout.sh
 ## */
 $loadfuncs
 
+
+echo ${X}
 
 
 # If no branch name is provided as the first parameter, a list of branches from the
 # user's local repository are shown, giving them a choice of which to checkout. Users may
 # also view remote branches as well.
 if [ -z "$1" ]; then
+	echo ${W}"WARNING: Checkout requires a branch name                                            "${X}
 	echo
-	echo ${H2}${H1HL}
-	echo "WARNING: Checkout requires a branch name                                            "
-	echo ${H1HL}${X}
 
 	echo ${O}${H2HL}
 	echo "Choose a branch (or just hit enter to abort):"
@@ -81,10 +93,9 @@ if [ -z "$1" ]; then
 			echo "$index: " ${remotebranches[$i]}
 		done
 		echo ${H2HL}${X}
-		echo ${I}${H2HL}
-		echo "Choose a remote branch (or just hit enter to abort):"
+		echo ${I}"Choose a remote branch (or just hit enter to abort):"${X}
 		read decision2
-		echo ${H2HL}${X}
+		echo ${O}${H2HL}${X}
 		chosenBranchName2=${remotebranches[$decision2]}
 		chosenBranchName2=${chosenBranchName2/#fl\//}
 		chosenbranchexists2=`git branch -r | grep "${remotebranches[$decision2]}"`
@@ -98,17 +109,17 @@ if [ -z "$1" ]; then
 		fi
 
 		if [ -n "$chosenbranchexists2" ] ; then
-			echo ${H2}"You chose: ${COL_CYAN}${chosenBranchName2}"${X}
+			echo "You chose: ${B}\`${chosenBranchName2}\`"${X}
 			echo
 			eval "${gitscripts_path}checkout.sh ${chosenBranchName2}"
 		fi
 	elif [ -n "$chosenbranchexists" ] ; then
-		echo ${H2}"You chose: ${COL_CYAN}${branches[$decision]}"${X}
+		echo "You chose: ${B}\`${branches[$decision]}\`"${X}
 		echo
 		eval "${gitscripts_path}checkout.sh ${branches[$decision]}"
 
 	else
-		echo ${E}"  You chose: ${COL_CYAN}${branches[${decision}]}${E}"
+		echo ${E}"  You chose: \`${branches[${decision}]}\`"
 		echo "  Not sure what to do, as that does not appear to be a valid branch. Aborting...  "${X}
 		echo
 	fi
@@ -119,10 +130,26 @@ fi
 
 
 # If the user made it this far, they have passed the branch name as the first parameter to
-# the script. Additional processing occurs.
+# the script. Additional processing occurs. Begin by establishing where the branch exists.
+__branch_exists_remote $1 && onremote=true
+__branch_exists_local $1 && onlocal=true
+
+# Don't try checking out a branch you are already on...
+cb=$(__parse_git_branch)
+if [ "$cb" = "$1" ]; then
+	echo ${E}"  You are already on branch \`$1\`! Aborting...  "${X}
+	exit 1
+
+# ...and hopefully the branch exists SOMEWHERE.
+elif [ ! $onlocal ] && [ ! $onremote ]; then
+	echo ${E}"  The branch \`$1\` does not exist! Aborting...  "${X}
+	exit 1
+fi
+
+
 echo
 echo ${H1}${H1HL}
-echo "Checking out branch: ${COL_CYAN}\`$1\`${H1}"
+echo "Checking out branch: ${H1B}\`$1\`${H1}  "
 echo ${H1HL}${X}
 echo
 echo
@@ -140,29 +167,29 @@ if __branch_exists "$1"; then
 		branchprotected=`grep "$1" ${mpaths}`
 	fi
 
-	if [ -n "$branchprotected" ]; then
-		echo ${Q}"Would you like to delete your local copy of ${COL_CYAN}\`$1\`${X}${Q} and pull"
+	if [ -n "$branchprotected" ] && [ $onlocal ]; then
+		echo ${Q}"Would you like to ${A}delete${Q} your local copy of ${B}\`$1\`${Q} and ${A}pull${Q}"
 		echo "down the newest version to protect against forced updates? (y) n"${X}
 		read deletelocal
 		if [ -z "$deletelocal" ] || [ "$decision" == "y" ] || [ "$decision" == "Y" ]; then
 			trydelete=`git branch -d "$1" 2>&1 | grep "error"`
 			if [ -n "$trydelete" ]; then
-				echo ${E}"Delete failed!"${X}
-				echo ${E}"$trydelete"${X}
+				echo ${E}"Delete failed!"
+				echo "$trydelete"${X}
 				echo
-				echo ${Q}"Force delete? y (n)"${X}
+				echo ${Q}"Force ${A}delete${Q} ${B}\`$1\`${Q}? y (n)"${X}
 				read forcedelete
-				if [ "$forcedelete" == "y" ] || [ "$forcedelete" == "Y" ]; then
+				if [ "$forcedelete" = "y" ] || [ "$forcedelete" = "Y" ]; then
 					trydelete=`git branch -D "$1" 2>&1 | grep "error"`
 					if [ -n "$trydelete" ]; then
 						echo
-						echo ${E}"Force delete failed!"${X}
-						echo ${E}"$trydelete"${X}
+						echo ${E}"Force delete failed!"
+						echo "$trydelete"${X}
 						echo
 						echo ${Q}"Continue anyways? y (n)"${X}
 						read continueanyways
-						if [ -z "$continueanyways" ] || [ "$continueanyways" = "n" ] || [ "$continueanyways" = "N" ]; then
-							return -1
+						if [ "$continueanyways" != "y" ] && [ "$continueanyways" != "Y" ]; then
+							exit
 						fi
 					else
 						echo
@@ -171,10 +198,10 @@ if __branch_exists "$1"; then
 					fi
 				else
 					echo
-					echo ${Q}"Continue checking out ${COL_CYAN}\`$1\`${COL_NORM}? y (n)"${X}
+					echo ${Q}"Continue checking out ${B}\`$1\`${Q}? y (n)"${X}
 					read continueanyways
-					if [ -z "$continueanyways" ] || [ "$continueanyways" = "n" ] || [ "$continueanyways" = "N" ]; then
-						return -1
+					if [ "$continueanyways" != "y" ] && [ "$continueanyways" != "Y" ]; then
+						exit
 					fi
 				fi
 			else
@@ -184,20 +211,20 @@ if __branch_exists "$1"; then
 			fi
 		else
 			echo
-			echo "Keeping your local copy of ${COL_CYAN}\`$1\`${COL_NORM} ..."
+			echo "Keeping your local copy of ${B}\`$1\`${X} ..."
 			echo
 		fi
 	fi
+	echo
 fi
 
 # check for "dirty" working directory and provide options if that is the case.
-echo
 if ! __parse_git_status clean; then
 	echo
 	echo ${O}${H2HL}
 	echo "$ git status"
 	git status
-	echo ${H2HL}${X}
+	echo ${O}${H2HL}${X}
 	echo
 
 	echo "You appear to have uncommited changes."
@@ -224,29 +251,29 @@ if ! __parse_git_status clean; then
 
 		# Commit changes and continue
 		2)
-			echo ${Q}"Please enter a commit message: "${X}
+			echo ${I}"Please enter a commit message: "${X}
 			read commitmessage
 			${gitscripts_path}commit.sh "$commitmessage" -a;;
 
 		# Stash changes and continue
 		3)
-			echo "This stashes any local changes you might have made and forgot to commit."
+			echo "This ${A}stashes${X} any local changes you might have made and forgot to commit."
 			echo "To access these changes at a later time you can choose between the following:"
-			echo "- reapply these changes to a ${STYLE_BRIGHT}new${STYLE_NORM} branch using: ${COL_CYAN}git stash branch <branch_name>"${COL_NORM}
-			echo "- OR apply these changes to any branch you are currently on using: ${COL_MAG}git stash apply"${COL_NORM}
+			echo "- reapply these changes to a ${STYLE_BRIGHT}new${STYLE_NORM} branch using: ${A}git stash branch <branch_name>"${X}
+			echo "- OR apply these changes to any branch you are currently on using: ${A}git stash apply"${X}
 			echo ${O}${H2HL}
 			echo "$ git stash"
 			git stash
-			echo
+			echo ${O}
 			echo
 			echo "$ git status"
 			git status
-			echo ${H2HL}${X}
+			echo ${O}${H2HL}${X}
 			echo;;
 
 		# Reset changes to tracked files and continue
 		4)
-			echo "This attempts to reset your current branch to it's last stable hash, usually HEAD."
+			echo "This attempts to ${A}reset${X} your current branch to it's last stable hash, usually HEAD."
 			echo "If you have made changes to untracked files, they will be unaffected."
 			echo ${O}${H2HL}
 			echo "$ git reset --hard"
@@ -260,21 +287,21 @@ if ! __parse_git_status clean; then
 
 		# Clean (delete) untracked files and continue
 		5)
-			echo "This attempts to clean your current branch of all untracked files by deleting them."
+			echo "This attempts to ${A}clean${X} ${B}\`$1\`${X} of all untracked files by deleting them."
 			echo ${O}${H2HL}
 			echo "$ git clean -f"
 			git clean -f
-			echo
+			echo ${O}
 			echo
 			echo "$ git status"
 			git status
-			echo ${H2HL}${X}
+			echo ${O}${H2HL}${X}
 			echo;;
 
 		# Reset, clean, and continue
 		6)
-			echo "This attempts to reset your current branch to the last stable commit (HEAD)"
-			echo "and attempts to clean your current branch of all untracked files."
+			echo "This attempts to ${A}reset${X} your current branch to the last stable commit (HEAD)"
+			echo "and attempts to ${A}clean${X} your current branch of all untracked files."
 			echo ${H2HL}${O}
 			echo "$ git reset --hard"
 			git reset --hard
@@ -304,10 +331,9 @@ fi
 
 # Get updated changes from the remote (there should rarely be any for personal branches)
 #TODO: Update this to use our remote choosing function (maybe?)
-echo "Gathering information about remote(s), if any..."
-echo ${O}${H2HL}
+echo "Configuring remote(s), if any..."
 __set_remote
-echo ${H2HL}${X}
+echo
 
 # Get up-to-date info from the remote, if any
 if [ $_remote ]; then
@@ -316,142 +342,47 @@ if [ $_remote ]; then
 	echo ${O}${H2HL}
 	echo "$ git fetch --all --prune"
 	git fetch --all --prune
-	echo ${H2HL}${X}
+	echo ${O}${H2HL}${X}
 	echo
 	echo
 fi
 
 
-# Test checkout of branch. Then checkout the chosen branch if possible.
-echo "This checks out the ${COL_CYAN}\`$1\`${COL_NORM} branch."
+# Checkout the chosen branch if possible.
+echo "This checks out the ${B}\`$1\`${X} branch."
 echo ${O}${H2HL}
 echo "$ git checkout $1"
 git checkout "$1"
-echo ${H2HL}${X}
+echo ${O}${H2HL}${X}
+
 
 # Get updated changes from the remote (there should rarely be any for personal branches)
-if [ $_remote ]; then
-	if __branch_exists_remote $1; then
-		echo
-		echo
-		echo "Get updated branch changes from ${COL_GREEN}${_remote}${COL_NORM}, if any."
-		echo ${O}${H2HL}
-		echo "$ git pull ${remote} $1"
-		git pull $remote $1
-	else
-
-	fi
+if [ $onremote ]; then
+	echo
+	echo
+	echo "Get updated branch changes from ${COL_GREEN}${_remote}${COL_NORM}, if any."
+	echo ${O}${H2HL}
+	echo "$ git pull ${remote} $1"
+	git pull $remote $1
+	echo ${O}${H2HL}${X}
 fi
 
 
-__branch_exists_remote $1 && onremote=true
-__branch_exists_local $1 && onlocal=true
-
-if [ -n "$trycheckout" ]; then
-	nolocal=`git checkout $1 2>&1 | grep "error: pathspec "`
-	if [ -n "$nolocal" ]; then
-		echo "No local version of $1, attempting to create new local from remote"
-
-		git branch -a | grep "$1"
-		remotes_string=$(git branch -a | grep "$1");
-		c=0;
-
-		for remote in $remotes_string;
-		do
-		#echo "$c: $remote";
-		remotes[$c]=$remote;
-		c=$((c+1));
-		done
-
-		if [ ${#remotes[@]} -gt 1 ]
-			then
-			echo ${O}"------------------------------------------------------------------------------------"
-			echo "Choose a remote (or just hit enter to abort):"
-			echo "------------------------------------------------------------------------------------"
-			for (( i = 0 ; i < ${#remotes[@]} ; i++ ))
-				do
-				remote=$(echo ${remotes[$i]} | sed 's/[a-zA-Z0-9\-]+(\/\{1\}[a-zA-Z0-9\-]+)//p' | sed 's/fl\///' | sed 's/remotes\///')
-
-				if [ $i -le "9" ] ; then
-					index="  "$i
-				elif [ $i -le "99" ] ; then
-					index=" "$i
-				else
-					index=$i
-				fi
-				echo "$index: $remote"
-			done
-			echo ${I}"Choose a remote (or just hit enter to abort):"
-			read remote
-			echo ${X}
-
-			remote=$(echo ${remotes[$remote]} | sed 's/remotes\// /')
-		fi
-
-		echo""
-		echo "  Checkout ${remote}? y (n)"
-		read YorN
-		if [ "$YorN" = "y" ]
-			then
-			noremote=`git checkout -b $1 ${remote} 2>&1 | grep "error: "`
-			if [ -n "$noremote" ]; then
-				echo
-				echo ${X}${E}"Checkout failed!"
-				echo "$noremote"${X}
-				echo ${O}${H2HL}${X}
-				echo
-				echo
-				exit -1
-			else
-				git checkout -b "$1" "${remote}"
-			fi
-		else
-			echo "Aborting"
-			exit -1
-		fi
-
-
-	else
-		echo
-		echo ${X}${E}"Checkout failed!"
-		echo "$trycheckout"${X}
-		echo ${O}${H2HL}${X}
-		echo
-		echo
-		exit -1
-	fi
-else
-	echo "Already on branch $1"
-
-	# Get updated changes from the remote (there should rarely be any for personal branches)
-	__set_remote
-	remote=$_remote
-	onremote=`git branch -r | grep "$1"`
-
-fi
-
-
-if [ "$1" == "master" ]; then
-	# do nothing, already on master
-	# echo ${H2HL}${X}
-	echo
-	echo
-else
-	# if checkout branch is on the remote, MERGE master in...
-	echo ${H2HL}${X}
-	echo
-	echo
-	if [ -n "$onremote" ]; then
-		echo ${Q}"${COL_MAG}Merge${COL_NORM} branch ${COL_CYAN}master${COL_NORM} into ${COL_CYAN}$1${COL_NORM}? (y) n"${X}
+# MERGE master into branch to keep it up to date
+echo
+echo
+if [ "$1" != "master" ]; then
+	if [ $onremote ]; then
+		echo ${Q}"${A}Merge${Q} branch ${B}\`master\`${Q} into ${B}\`$1\`${Q}? (y) n"${X}
 		read decision
 
 		if [ -z "$decision" ] || [ "$decision" = "y" ] || [ "$decision" = "Y" ]; then
 			echo
-			echo "Merging ${COL_CYAN}${remote}/master${COL_NORM} into ${COL_CYAN}$1${COL_NORM} ..."
+			echo "${A}Merging${X} ${B}\`${remote}/master\`${X} into ${B}\`$1\`${X} ..."
 			echo ${O}${H2HL}
 			echo "$ git merge ${remote}/master"
 			git merge "${remote}/master"
-			echo
+			echo ${O}
 			echo
 		else
 			echo
@@ -465,23 +396,24 @@ else
 
 		if [ -z "$decision" ] || [ "$decision" = "y" ] || [ "$decision" = "y" ]; then
 			echo
-			echo "Rebasing ${COL_CYAN}$1${COL_NORM} onto ${COL_CYAN}${remote}/master${COL_NORM} ..."
+			echo "${A}Rebasing${X} ${B}\`$1\`${X} onto ${B}\`${remote}/master\`${X} ..."
 			echo ${O}${H2HL}
 			echo "$ git rebase ${remote}/master"
 			git rebase "${remote}/master"
-			echo
+			echo ${O}
 			echo
 		else
 			echo
 			echo ${O}${H2HL}
 		fi
 	fi
-
-fi
+fi # END if [ "$1" != "master" ]
 
 
 # Show status for informational purposes
 echo "$ git status"
 git status
-echo ${H2HL}${X}
-echo
+echo ${O}${H2HL}${X}
+
+
+exit
