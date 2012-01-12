@@ -135,7 +135,7 @@ git status
 echo ${H2HL}${X}
 echo
 
-"${gitscripts_path}push.sh ${startingBranch}"
+eval "${gitscripts_path}push.sh ${startingBranch}"
 
 "${gitscripts_path}clear-screen.sh"
 
