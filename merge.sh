@@ -34,9 +34,9 @@ $loadfuncs
 # check for minimum requirements
 
 [ $# -eq 1 ] && oneArg=true
-[ $# -eq 2 ] && ([ "$2" = "-i" ] || [ "$2" = "--ignore-protections"]) && oneArg=true && ignoreprotect=true
+[ $# -eq 2 ] && [ "$2" = "--admin" ] && [ $ADMIN ] && oneArg=true && ignoreprotect=true
 [ $# -eq 3 ] && threeArg=true
-[ $# -eq 4 ] && ([ "$4" = "-i" ] || [ "$4" = "--ignore-protections"]) && threeArg=true && ignoreprotect=true
+[ $# -eq 4 ] && [ "$4" = "--admin" ] && [ $ADMIN ] && threeArg=true && ignoreprotect=true
 # must have 1 arg (merge $1 into current branch) or 3 (merge $1 into $2)
 if [ ! $oneArg ] && [ ! $threeArg ]; then
 	echo
