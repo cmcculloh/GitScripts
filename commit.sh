@@ -135,8 +135,8 @@ git status
 echo ${H2HL}${X}
 echo
 
+# wrap up...
 eval "${gitscripts_path}push.sh ${startingBranch}"
-
-"${gitscripts_path}clear-screen.sh"
+eval "${gitscripts_path}clear-screen.sh"
 
 exit
