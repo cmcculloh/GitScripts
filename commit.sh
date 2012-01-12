@@ -143,7 +143,7 @@ if [ "$YorN" == "y" ] || [ "$YorN" == "Y" ]; then
 		echo "Now pushing to:${X} ${COL_GREEN} ${_remote} ${COL_NORM}"
 		echo ${O}${H2HL}
 		echo "$ git push ${_remote} ${startingBranch}"
-		git push $_remote $startingBranch
+		git push "$_remote" "$startingBranch"
 		echo ${H2HL}${X}
 
 	else

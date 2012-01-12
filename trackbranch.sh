@@ -26,7 +26,7 @@
 #	*checkout.sh
 #	clear-screen.sh
 #	functions/5000.branch_merge_set.sh
-#	functions/5000.branch_exists_locally.sh
+#	functions/5000.branch_exists_local.sh
 #	functions/5000.branch_exists_remote.sh
 #	functions/5000.parse_git_branch.sh
 #	functions/5000.set_remote.sh
