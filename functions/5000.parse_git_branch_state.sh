@@ -45,16 +45,16 @@ function __parse_git_branch_state {
 
 
 	if [ $staged ]; then
-		bits="${bits} ${X}${STYLE_COMMITTED} ++ (staged) ${X}"
+		bits="${bits} ${STYLE_STAGED} ++ (staged) ${X}"
 
 		if [ $newfile ]; then
-			bits="${bits} ${X}${STYLE_NEWFILE} * (new files) ${X}"
+			bits="${bits} ${STYLE_NEWFILE} * (new files) ${X}"
 		fi
 		if [ $renamed ]; then
-			bits="${bits} ${X}${STYLE_RENAMEDFILE} > (renamed) ${X}"
+			bits="${bits} ${STYLE_RENAMEDFILE} > (renamed) ${X}"
 		fi
 		if [ $modified ]; then
-			bits="${bits} ${X}${STYLE_DIRTY} +- (dirty) ${X}"
+			bits="${bits} ${STYLE_DIRTY} +- (dirty) ${X}"
 		fi
 	fi
 
@@ -75,7 +75,7 @@ function __parse_git_branch_state {
 	fi
 
 	if [ $behind ]; then
-		bits="${bits} ${X}${STYLE_AHEAD} - (behind) ${X}"
+		bits="${bits} ${X}${STYLE_BEHIND} - (behind) ${X}"
 	fi
 
 	echo "$bits"
