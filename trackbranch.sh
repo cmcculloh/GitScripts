@@ -23,7 +23,13 @@
 #	examples@
 #
 #	@dependencies
-#	gitscripts/gsfunctions.sh
+#	*checkout.sh
+#	clear-screen.sh
+#	functions/5000.branch_merge_set.sh
+#	functions/5000.branch_exists_local.sh
+#	functions/5000.branch_exists_remote.sh
+#	functions/5000.parse_git_branch.sh
+#	functions/5000.set_remote.sh
 #	dependencies@
 ## */
 $loadfuncs
@@ -39,7 +45,7 @@ if [ -z "$1" ]; then
 		exit 1
 	fi
 
-elif __branch_exists_locally $1; then
+elif __branch_exists_local $1; then
 	# parameter supplied --- and branch exists
 	echo "Local branch exists!"
 	startingBranch=$1
@@ -50,16 +56,16 @@ elif __branch_exists_remote $1; then
 	echo ${Q}"Branch does not exist locally, but it does on the remote -- check it out? (y) n"${X}
 	echo ${O}${H2HL}${X}
 	read decision
-	if [ -z "$decision" ] || [ "$decision" = "" ] || [ "$decision" = "1" ] ; then
-		${gitscripts_path}/checkout.sh $1
+	if [ -z "$decision" ] || [ "$decision" = "" ] || [ "$decision" = "1" ]; then
+		"${gitscripts_path}"checkout.sh "$1"
 	fi
 	echo
-	startingBranch=$1
+	startingBranch="$1"
 
 else
 	# parameter supplied --- and branch does not exist
-	echo ${E}"  Error: a failure has occurred.  "${X}
-	echo ${E}"  The branch supplied ${COL_CYAN}\`${1}\`${COL_NORM}) does not appear to exist. Exiting now...  "${X}
+	echo ${E}"  Error: a failure has occurred.  "
+	echo "  The branch \`${1}\` does not appear to exist. Exiting now...  "${X}
 	exit 1
 
 fi
@@ -67,17 +73,17 @@ fi
 
 echo
 echo ${H1}${H1HL}
-echo "Going to set up a remote tracking branch for: ${COL_CYAN}\`${startingBranch}\`${COL_NORM}"
+echo "  Going to set up a remote tracking branch for: ${H1B}\`${startingBranch}\`${H1}  "
 echo ${H1HL}${X}
 echo
 echo
 
 
 if __branch_merge_set $startingBranch; then
-	echo ${STYLE_WARNING}"Alert: the branch ${COL_CYAN}\`${startingBranch}\`${COL_NORM}${STYLE_WARNING} is already tracking a remote branch. Exiting now."${X}
+	echo ${W}"Alert:${X} the branch ${B}\`${startingBranch}\`${X} is already tracking a remote branch. Exiting now..."
 	exit 1
 else
-	echo "The branch ${COL_CYAN}\`${startingBranch}\`${COL_NORM} is not yet tracking a remote branch. Determining remote now..."
+	echo "The branch ${B}\`${startingBranch}\`${X} is not yet tracking a remote branch. Determining remote now..."
 	__set_remote
 
 	if [ -n "$_remote" ]; then
@@ -87,7 +93,7 @@ else
 		echo ${O}${H2HL}
 		echo "$ git fetch --all --prune"
 		git fetch --all --prune
-		echo ${H2HL}${X}
+		echo ${O}${H2HL}${X}
 		echo
 		echo
 		# if a remote exists, push to it.
@@ -95,24 +101,24 @@ else
 		echo ${O}${H2HL}
 		echo "$ git push ${_remote} ${startingBranch}"
 		git push $_remote $startingBranch
-		echo ${H2HL}${X}
+		echo ${O}${H2HL}${X}
 	fi
 
-	echo ${H2HL}${X}
+	echo ${O}${H2HL}${X}
 	git config branch.$startingBranch.remote $_remote
 	git config branch.$startingBranch.merge refs/heads/$startingBranch
 
-	if __branch_merge_set $startingBranch; then
+	if __branch_merge_set "$startingBranch"; then
 		exit 0
 	else
 		echo
-		echo ${E}"  Error: a failure has occurred.  "${X}
-		echo ${E}"  Unable to set a tracking branch. Exiting now.  "${X}
+		echo ${E}"  Error: a failure has occurred.  "
+		echo "  Unable to set a tracking branch. Exiting now...  "${X}
 		exit 1
 	fi
 
 fi
 
-${gitscripts_path}clear-screen.sh
+"${gitscripts_path}"clear-screen.sh
 
 exit

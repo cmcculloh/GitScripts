@@ -10,7 +10,8 @@
 #	description@
 #
 #	@dependencies
-#	gitscripts/gsfunctions.sh
+#	functions/5000.parse_git_branch.sh
+#	functions/5000.parse_git_status.sh
 #	dependencies@
 #
 #	@file pullscripts.sh
@@ -30,7 +31,7 @@ if __parse_git_status clean || { ! __parse_git_status modified && ! __parse_git_
 
 	echo ${H1}${H1HL}
 	echo " Pulling in GitScripts master changes... "
-	echo ${H1HL}${X}
+	echo ${H1}${H1HL}${X}
 	echo
 	echo
 	echo "Checkout ${COL_CYAN}master${COL_NORM}, ${COL_MAG}fetch${COL_NORM} changes, and ${COL_MAG}pull${COL_NORM} them in..."
@@ -45,18 +46,18 @@ if __parse_git_status clean || { ! __parse_git_status modified && ! __parse_git_
 	echo
 	echo "$ git pull origin master"
 	git pull origin master
-	echo ${H2HL}${X}
+	echo ${O}${H2HL}${X}
 	echo
 	echo
 
 	if [ -n "$cb" ] && [ "$cb" != "master" ]; then
 		# we will NOT use checkout.sh since it might be a file with a change. this can cause script failure.
-		echo "Now returning you to your original branch: ${STYLE_OLDBRANCH_H2}\`${cb}\`${X}"
-		echo "It is recommended that you manually ${COL_MAG}pull${COL_NORM} in ${COL_CYAN}master${COL_NORM} to this branch afterwards."
+		echo "Now returning you to your original branch: ${B}\`${cb}\`${X}"
+		echo "It is recommended that you manually ${A}pull${X} in ${B}master${X} to this branch afterwards."
 		echo ${O}${H2HL}
-		echo "$ git checkout $cb"
-		git checkout $cb
-		echo ${H2HL}${X}
+		echo "$ git checkout ${cb}"
+		git checkout "$cb"
+		echo ${O}${H2HL}${X}
 		echo
 		echo
 	fi

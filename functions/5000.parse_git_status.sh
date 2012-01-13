@@ -27,6 +27,10 @@
 #
 #	# ...
 #	examples@
+#
+#	@dependencies
+#	functions/0200.gslog.sh
+#	dependencies@
 ## */
 function __parse_git_status {
 	if [ -z "$1" ]; then

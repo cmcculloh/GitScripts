@@ -1,16 +1,37 @@
+#!/bin/bash
+## /*
+#	@usage delete <branch-name>
+#
+#	@description
+#
+#	description@
+#
+#	@notes
+#	-
+#	notes@
+#
+#	@examples
+#	1)
+#	examples@
+#
+#	@dependencies
+#	checkout.sh
+#	functions/0100.bad_usage.sh
+#	dependencies@
+## */
 
-$loadfuncs
 
 if [ -z "$1" ]; then
 	__bad_usage delete "Branch name to delete is required as the only parameter."
 	exit 1
+else
+	$loadfuncs
 fi
 
 echo
 echo ${H1}${H1HL}
-echo "Deleting branch: $1"
-echo ${H1HL}{X}
-
+echo "  Deleting branch: ${H1B}\`$1\`${H1}  "
+echo ${H1HL}${X}
 echo
 echo
 checkbranch=`git status | grep "$1"`
@@ -20,7 +41,7 @@ if [ -n "$checkbranch" ]
 	then
 	echo
 	echo
-	echo "You are currently on branch $1. You cannot delete a branch you are on."
+	echo "You are currently on branch \`$1\`. You cannot delete a branch you are on."
 	echo "(1) Checkout master"
 	echo "2 Checkout another branch"
 	echo "3 Abort"
@@ -95,4 +116,4 @@ fi
 
 #used to be an option to delete remote branch automagically here, but I trashed it because it was too dangerous
 
-exit 1
+exit

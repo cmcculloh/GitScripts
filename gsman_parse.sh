@@ -9,6 +9,9 @@ fi
 # Find possible files in possible directories.
 both_paths="${gsman_paths_default} ${gsman_paths_user}"
 file_list=""
+tmp="${gitscripts_temp_path}tmp"
+cat /dev/null > $tmp
+
 for gsman_path in $both_paths; do
 	for listing in `ls -p "$gsman_path" | grep -v '/' | egrep "$1\\.[_[:alnum:]]+$"`; do
 		#conditional eliminates excessive spaces

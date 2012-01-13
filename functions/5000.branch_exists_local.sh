@@ -1,5 +1,5 @@
 ## /* @function
-#	@usage __branch_exists_locally <branch_name>
+#	@usage __branch_exists_local <branch_name>
 #
 #	@output false
 #
@@ -15,16 +15,20 @@
 #	@examples
 #	# ...
 #
-#	if __branch_exists_locally master; then
+#	if __branch_exists_local master; then
 #		echo "local branch 'master' exists!"
 #	fi
 #
 #	#...
 #	examples@
+#
+#	@dependencies
+#	functions/0200.gslog.sh
+#	dependencies@
 ## */
-function __branch_exists_locally {
+function __branch_exists_local {
 	if [ -z "$1" ]; then
-		__gslog "__branch_exists_locally: First parameter must be branch name."
+		__gslog "__branch_exists_local: First parameter must be branch name."
 		return 1
 	fi
 

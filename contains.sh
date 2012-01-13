@@ -1,6 +1,23 @@
 #!/bin/bash
-# contains
-# checks to see which other branches the branch you specify has merged into it
+## /*
+#	@usage contains <branch-name>
+#	checks to see which other branches the branch you specify has merged into it
+#	@description
+#
+#	description@
+#
+#	@notes
+#	-
+#	notes@
+#
+#	@examples
+#	1)
+#	examples@
+#
+#	@dependencies
+#	functions/5000.parse_git_branch.sh
+#	dependencies@
+## */
 
 branchtocheck=$1
 if [ -z "$branchtocheck" ]; then

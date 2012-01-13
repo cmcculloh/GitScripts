@@ -23,6 +23,10 @@
 #
 #		echo "You selected: ${_menu_selection}"
 #	examples@
+#
+#	@dependencies
+#	functions/0200.gslog.sh
+#	dependencies@
 ## */
 
 __menu() {
