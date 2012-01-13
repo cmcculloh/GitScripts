@@ -103,6 +103,22 @@ if [ -n "$checkbranch" ]
 	fi
 fi
 
+cb=$(git name-rev --name-only HEAD)
+swallow=$(git checkout $deleteBranch)
+__parse_git_status behind && behind=true
+swallow=$(git checkout $cb)
+if [ $behind ]; then
+	echo
+	echo "${W}Your local copy of this $deleteBranch"
+	echo "is behind the remote. Continue anyways? (y) n${X}"
+	read yn
+	if [ "$yn" != "y" ]; then
+		echo "Aborting delete of $deleteBranch"
+		exit 1
+	fi
+fi
+
+
 
 trydelete=`git branch -d $deleteBranch 2>&1 | grep "error"`
 echo "$trydelete"
