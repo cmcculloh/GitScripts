@@ -180,7 +180,7 @@ alias phone="${flgitscripts_path}phone.sh"
 alias refresh_bash_profile="source ${flgitscripts_path}refresh_bash_profile.sh"
 
 alias switchenv="${flgitscripts_path}/switchenvironment.sh"
-alias varsreset="source ${flgitscripts_path}vars_reset.sh"
+alias flvarsreset="source ${flgitscripts_path}fl-vars-reset.sh"
 alias whichenv="${flgitscripts_path}/whichenvironment.sh"
 
 #alias syncmywork="/d/workspaces/helios_workspace/myscripts/syncmyapp.sh"
