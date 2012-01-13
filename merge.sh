@@ -1,11 +1,19 @@
 #!/bin/bash
 ## /*
-#	@usage merge <branch_name> [into <branch_name2>]
+#	@usage merge [<branch_name> [into <branch_name2>]]
 #
 #	@description
-#	This script is a helpful wrapper for merging one branch into another. The command itself
-#	is more intuitive because it uses "into" to clearly distinguish which branch is getting
-#	merged into the other.  There are some helpful safeties included as well. Referenced branches
+#	This script is a helpful wrapper for merging one branch into another.
+#
+#	If you have merge conflicts and you want to resolve them, running this command will get that
+#	started as long as you have your mergetool configured [TODO: Add documentation or link to
+#	documentation. For now, here is a link that I have not read the contents of, but this might
+#	get you started: http://www.davesquared.net/2009/02/setting-up-diff-and-merge-tools-for-git.html]
+#
+#	If you are trying to initiate a merge of two branches, this script will do that too. The command
+#	is more intuitive (than "git merge") because it uses "into" to clearly distinguish merge direction.
+#	
+#	There are some helpful safeties included as well. Referenced branches
 #	are checked for existence before the script gets too far along, protected branches are checked,
 #	and merge conflicts are determined after the merge. If merge conflicts should arise, the
 #	user is prompted to resolve them using the native git mergetool.
@@ -18,9 +26,10 @@
 #	notes@
 #
 #	@examples
-#	1) merge master                     # Merges master into current branch
-#	2) merge my-branch into master      # Merges my-branch into master (unless master is a protected branch)
-#	3) merge my-branch another-branch   # This will fail. The second "action" parameter (into) must be included.
+#	1) merge                             # Runs your pre-configured merge tool (because McCulloh can't remember how to make it run otherwise)
+#	2) merge master                     # Merges master into current branch
+#	3) merge my-branch into master      # Merges my-branch into master (unless master is a protected branch)
+#	4) merge my-branch another-branch   # This will fail. The second "action" parameter (into) must be included.
 #	examples@
 #
 #	@dependencies
@@ -32,11 +41,26 @@ $loadfuncs
 
 
 # check for minimum requirements
-
+[ $# -eq 0 ] && runmergetool=true
 [ $# -eq 1 ] && oneArg=true
 [ $# -eq 2 ] && [ "$2" = "--admin" ] && [ $ADMIN ] && oneArg=true && ignoreprotect=true
 [ $# -eq 3 ] && threeArg=true
 [ $# -eq 4 ] && [ "$4" = "--admin" ] && [ $ADMIN ] && threeArg=true && ignoreprotect=true
+
+# McCulloh just wants to run the merge tool
+if [ $runmergetool ]; then
+	echo "Run merge tool? (y) n"
+	read yn
+	if[ "$yn" -z ] || [ "$yn" = "y" ]; then
+		git mergetool
+	else
+		__bad_usage merge "Invalid number of parameters."
+	fi
+
+	exit 1
+fi
+
+
 # must have 1 arg (merge $1 into current branch) or 3 (merge $1 into $2)
 if [ ! $oneArg ] && [ ! $threeArg ]; then
 	echo
