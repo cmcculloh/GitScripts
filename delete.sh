@@ -104,24 +104,20 @@ if [ -n "$checkbranch" ]
 fi
 
 if __branch_exists_local $deleteBranch; then
-	#Find the current branch
-	cb=$(git name-rev --name-only HEAD)
-	git stash save "auto stash for branch deleting purposes" > /dev/null
-	git checkout $deleteBranch > /dev/null
-	__parse_git_status behind && behind=true
-	git checkout $cb > /dev/null
-	git stash apply > /dev/null
 
-	if [ $behind ]; then
-		echo
-		echo "${W}Your local copy of this $deleteBranch"
-		echo "is behind the remote. Continue anyways? (y) n${X}"
-		read yn
-		if [ "$yn" != "y" ]; then
-			echo "Aborting delete of $deleteBranch"
-			exit 1
-		fi
-	fi
+
+	# TODO: determine if your local copy is behind remote
+
+	# if [ $behind ]; then
+	# 	echo
+	# 	echo "${W}Your local copy of this $deleteBranch"
+	# 	echo "is behind the remote. Continue anyways? (y) n${X}"
+	# 	read yn
+	# 	if [ "$yn" != "y" ]; then
+	# 		echo "Aborting delete of $deleteBranch"
+	# 		exit 1
+	# 	fi
+	# fi
 
 
 
