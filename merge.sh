@@ -47,9 +47,9 @@ $loadfuncs
 # check for minimum requirements
 [ $# -eq 0 ] && runmergetool=true
 [ $# -eq 1 ] && oneArg=true
-[ $# -eq 2 ] && [ "$2" = "--admin" ] && [ $ADMIN ] && oneArg=true && ignoreprotect=true
+[ $# -eq 2 ] && [ "$2" = "--admin" ] && [ $ADMIN ] && oneArg=true && isAdmin=true
 [ $# -eq 3 ] && threeArg=true
-[ $# -eq 4 ] && [ "$4" = "--admin" ] && [ $ADMIN ] && threeArg=true && ignoreprotect=true
+[ $# -eq 4 ] && [ "$4" = "--admin" ] && [ $ADMIN ] && threeArg=true && isAdmin=true
 
 # McCulloh just wants to run the merge tool
 if [ $runmergetool ]; then
@@ -91,12 +91,12 @@ mergeBranch=$1
 [ $oneArg ] && { baseBranch=$current_branch; } || { baseBranch=$3; }
 
 # check protected branches
-if [ ! $ignoreprotect ] && __is_branch_protected --merge-from "$mergeBranch"; then
+if [ ! $isAdmin ] && __is_branch_protected --merge-from "$mergeBranch"; then
 	echo "  ${W}WARNING:${X} Merging ${COL_YELLOW}from${COL_NORM} ${B}\`$1\`${X} not allowed. Aborting..."
 	exit 1
 fi
 
-if [ ! $ignoreprotect ] && __is_branch_protected --merge-to "$baseBranch"; then
+if [ ! $isAdmin ] && __is_branch_protected --merge-to "$baseBranch"; then
 	echo "  ${W}WARNING:${X} Merging ${COL_YELLOW}into${COL_NORM} ${B}\`$3\`${X} not allowed. Aborting..."
 	exit 1
 fi
