@@ -103,10 +103,14 @@ if [ -n "$checkbranch" ]
 	fi
 fi
 
+#Find the current branch
 cb=$(git name-rev --name-only HEAD)
-swallow=$(git checkout $deleteBranch)
+git stash save "auto stash for branch deleting purposes" > /dev/null
+git checkout $deleteBranch > /dev/null
 __parse_git_status behind && behind=true
-swallow=$(git checkout $cb)
+git checkout $cb > /dev/null
+git stash apply > /dev/null
+
 if [ $behind ]; then
 	echo
 	echo "${W}Your local copy of this $deleteBranch"
