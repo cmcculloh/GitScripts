@@ -25,23 +25,24 @@ if [ -z "$1" ]; then
 	__bad_usage delete "Branch name to delete is required as the only parameter."
 	exit 1
 else
+	deleteBranch=$1
 	$loadfuncs
 fi
 
 echo
 echo ${H1}${H1HL}
-echo "  Deleting branch: ${H1B}\`$1\`${H1}  "
+echo "  Deleting branch: ${H1B}\`$deleteBranch\`${H1}  "
 echo ${H1HL}${X}
 echo
 echo
-checkbranch=`git status | grep "$1"`
+checkbranch=`git status | grep "$deleteBranch"`
 echo "$checkbranch"
 
 if [ -n "$checkbranch" ]
 	then
 	echo
 	echo
-	echo "You are currently on branch \`$1\`. You cannot delete a branch you are on."
+	echo "You are currently on branch \`$deleteBranch\`. You cannot delete a branch you are on."
 	echo "(1) Checkout master"
 	echo "2 Checkout another branch"
 	echo "3 Abort"
@@ -64,7 +65,7 @@ if [ -n "$checkbranch" ]
 			exit 0
 		fi
 		echo
-		echo checking out $enteredBranchName before deleting branch $1
+		echo checking out $enteredBranchName before deleting branch $deleteBranch
 		echo
 		echo
 
@@ -87,7 +88,7 @@ if [ -n "$checkbranch" ]
 fi
 
 
-trydelete=`git branch -d $1 2>&1 | grep "error"`
+trydelete=`git branch -d $deleteBranch 2>&1 | grep "error"`
 echo "$trydelete"
 echo
 if [ -n "$trydelete" ]
@@ -97,7 +98,7 @@ if [ -n "$trydelete" ]
 	read forcedelete
 	if [ "$forcedelete" = "y" ]
 		then
-		trydelete=`git branch -D $1 2>&1 | grep "error:"`
+		trydelete=`git branch -D $deleteBranch 2>&1 | grep "error:"`
 		echo "$trydelete"
 		echo
 		if [ -n "$trydelete" ]
@@ -119,8 +120,9 @@ numArgs=$#
 # parse arguments
 if (( numArgs > 0 && numArgs < 4 )); then
 	until [ -z "$1" ]; do
-		[ "$1" == "--admin" ] && [ $ADMIN ] && isAdmin=true
-#		{ [ "$1" == "-a" ] || [ "$1" == "-A" ]; } && flag=$1
+		if [ "$1" == "--admin" ] && [ $ADMIN ];then
+			isAdmin=true
+		fi
 		! echo "$1" | egrep -q "^-" && msg="$1"
 		shift
 	done
@@ -130,7 +132,7 @@ if (( numArgs > 0 && numArgs < 4 )); then
 fi
 
 if [ $isAdmin ]; then
-	onremote=`git branch -r | grep "$1"`
+	onremote=`git branch -r | grep "$deleteBranch"`
 	if [ -n "$onremote" ]
 		then
 		echo
@@ -140,22 +142,26 @@ if [ $isAdmin ]; then
 		if [ -n "$deleteremote" ] && [ "$deleteremote" = "y" ]
 			then
 
-			__is_branch_protected --push "$startingBranch" && isProtected=true
+			__is_branch_protected --all "$startingBranch" && isProtected=true
 			if [ $isProtected ]; then
-				echo "${W}WARNING: This is a protected branch. Are you SURE you want to delete remote? yes (n)${X}"
+				echo "${W}WARNING: $deleteBranch is a protected branch."
+				echo "Are you SURE you want to delete remote copy? yes (n)${X}"
 				read yn
-				if [ -z "$yn" ][ "$yn" != "yes" ]
+				if [ -z "$yn" ] || [ "$yn" != "yes" ]
 					then
+					echo "aborting delete of remote branch..."
 					exit 1
 				fi
 			fi
 
+
+			__set_remote
 			echo
-			echo "deleting remote!"
+			echo "deleting $deleteBranch on $_remote!"
 			echo
-			remote=$(git remote)
-			echo "git push $remote :$1"
-			git push $remote :$1
+			remote=$_remote
+			echo "git push $remote :$deleteBranch"
+			git push $remote :$deleteBranch
 		fi
 	fi
 fi
