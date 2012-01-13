@@ -92,7 +92,7 @@ echo ${I}"Type the number of the choice you want and hit enter: "${X}
 read decision
 
 # must be a number or nothing, otherwise abort
-{ ! echo "$decision" | egrep -q '^[1-5]$' && decision=5 } || {
+{ echo "$decision" | egrep -q '^[1-5]$'; } || {
 	[ -z "$decision" ] && decision=1
 } || { decision=5; }
 

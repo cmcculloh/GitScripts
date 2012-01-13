@@ -67,12 +67,12 @@ mergeBranch=$1
 [ $oneArg ] && { baseBranch=$current_branch; } || { baseBranch=$3; }
 
 # check protected branches
-if [ ! $ignoreprotect ] && __is_protected_branch --merge-from "$mergeBranch"; then
+if [ ! $ignoreprotect ] && __is_branch_protected --merge-from "$mergeBranch"; then
 	echo "  ${W}WARNING:${X} Merging ${COL_YELLOW}from${COL_NORM} ${B}\`$1\`${X} not allowed. Aborting..."
 	exit 1
 fi
 
-if [ ! $ignoreprotect ] && __is_protected_branch --merge-to "$baseBranch"; then
+if [ ! $ignoreprotect ] && __is_branch_protected --merge-to "$baseBranch"; then
 	echo "  ${W}WARNING:${X} Merging ${COL_YELLOW}into${COL_NORM} ${B}\`$3\`${X} not allowed. Aborting..."
 	exit 1
 fi
@@ -140,7 +140,7 @@ echo
 echo
 
 # wrapping up...
-__is_protected_branch --push "$startingBranch" && isProtected=true
+__is_branch_protected --push "$startingBranch" && isProtected=true
 if [ $isProtected ] && [ ! $isAdmin ]; then
 	echo ${E}"  The branch \`${startingBranch}\` is protected and cannot be pushed. Aborting...  "${X}
 elif [ ! $isProtected ] || [ $isAdmin ]; then
