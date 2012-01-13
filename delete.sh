@@ -30,9 +30,8 @@ fi
 
 echo
 echo ${H1}${H1HL}
-echo "Deleting branch: $1"
-echo ${H1HL}{X}
-
+echo "  Deleting branch: ${H1B}\`$1\`${H1}  "
+echo ${H1HL}${X}
 echo
 echo
 checkbranch=`git status | grep "$1"`
@@ -42,7 +41,7 @@ if [ -n "$checkbranch" ]
 	then
 	echo
 	echo
-	echo "You are currently on branch $1. You cannot delete a branch you are on."
+	echo "You are currently on branch \`$1\`. You cannot delete a branch you are on."
 	echo "(1) Checkout master"
 	echo "2 Checkout another branch"
 	echo "3 Abort"
