@@ -55,7 +55,7 @@ $loadfuncs
 if [ $runmergetool ]; then
 	echo "Run merge tool? (y) n"
 	read yn
-	if[ "$yn" -z ] || [ "$yn" = "y" ]; then
+	if [  -z "$yn" ] || [ "$yn" = "y" ]; then
 		git mergetool
 	else
 		__bad_usage merge "Invalid number of parameters."

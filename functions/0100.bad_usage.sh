@@ -40,8 +40,10 @@ function __bad_usage {
 			local space=$(echo $1 | grep '[- ]')
 			if [ -n "$space" ]; then
 				echo ${hcolor}"__bad_usage: Invalid usage."${X}" Use \""${hcolor}"gsman gsfunctions"${X}"\" for usage instructions."
+				fun="gsfunctions"
 			else
 				echo ${hcolor}"${1}: "${X}"Invalid usage. Use \""${hcolor}"gsman ${1}"${X}"\" for usage instructions."
+				fun="${1}"
 			fi
 			;;
 
@@ -51,24 +53,38 @@ function __bad_usage {
 				local space=$(echo $2 | grep '[ ]')
 				if [ -n "$space" ]; then
 					echo ${hcolor}"__bad_usage: Invalid usage."${X}" Use \""${hcolor}"gsman gsfunctions"${X}"\" for usage instructions."
+					fun="gsfunctions"
 				else
 					echo ${hcolor}"${2}: "${X}"Invalid usage."
+					fun="gsfunctions"
 				fi
 			else
 				echo ${hcolor}"${1}: "${X}"${2} Use \""${hcolor}"gsman ${1}"${X}"\" for usage instructions."
+				fun="${1}"
 			fi
 			;;
 
 		3)
 			if [ "$1" == "-o" ]; then
 				echo ${hcolor}"${2}: "${X}"${3}"
+				fun="gsfunctions"
 			else
 				echo ${hcolor}"__bad_usage: Invalid usage."${X}" Use \""${hcolor}"gsman gsfunctions"${X}"\" for usage instructions."
+				fun="gsfunctions"
 			fi
 			;;
 
 		*)
 			echo "Error: Invalid usage. Use \""${hcolor}"gsman <command>"${X}"\" for usage instructions."
+			fun="gsfunctions"
 			;;
 	esac
+
+	echo
+	echo "Run gsman $fun? y (n)"
+	read yn
+	if [ "$yn" = "y" ]
+		then
+		"${gitscripts_path}"gsman.sh "$fun"
+	fi
 }
