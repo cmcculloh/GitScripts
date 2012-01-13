@@ -24,6 +24,7 @@
 $loadfuncs
 
 
+
 numArgs=$#
 # parse arguments
 if (( numArgs > 0 && numArgs < 4 )); then
@@ -47,7 +48,6 @@ fi
 echo
 echo
 echo
-
 
 echo ${H1}
 echo ${H1HL}
