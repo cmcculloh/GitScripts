@@ -142,7 +142,7 @@ echo ${O}${H2HL}${X}
 echo
 
 # wrap up...
-__is_protected_branch --push "$startingBranch" && isProtected=true
+__is_branch_protected --push "$startingBranch" && isProtected=true
 if [ $isProtected ] && [ ! $isAdmin ]; then
 	echo ${E}"  The branch \`${startingBranch}\` is protected and cannot be pushed. Aborting...  "${X}
 elif [ ! $isProtected ] || [ $isAdmin ]; then
