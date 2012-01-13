@@ -85,7 +85,7 @@ echo
 echo ${I}" (1) -  Create branch ${STYLE_NEWBRANCH}\`${1}\`${I} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`${I}"
 echo "  2  -  Create branch ${STYLE_NEWBRANCH}\`${1}\`${I} from the current branch ${STYLE_OLDBRANCH_H1}\`${currentBranch}\`${I}"
 echo "  3  -  Stash Changes and create branch ${STYLE_NEWBRANCH}\`$1\`${I} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`${I}"
-echo "  4  -  Revert all changes to tracked files \(ignores untracked files\), and create branch ${STYLE_NEWBRANCH}\`$1\`${I} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`${I}"
+echo "  4  -  Revert all changes to tracked files (ignores untracked files), and create branch ${STYLE_NEWBRANCH}\`$1\`${I} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`${I}"
 echo "  5  -  Abort creation of branch ${STYLE_NEWBRANCH}\`$1\`${I} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`${I}"${X}
 echo
 echo ${I}"Type the number of the choice you want and hit enter: "${X}
