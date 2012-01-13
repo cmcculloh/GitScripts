@@ -63,7 +63,7 @@ fi
 
 echo
 echo ${H1}${H1HL}
-echo "Committing changes to branch: \`${startingBranch}\`"
+echo "Committing changes to branch: ${H1B}\`${startingBranch}\`${H1}  "
 echo ${H1HL}${X}
 
 echo
