@@ -103,7 +103,7 @@ if [ -n "$checkbranch" ]
 	fi
 fi
 
-if [  __branch_exists_local ]; then
+if __branch_exists_local $deleteBranch; then
 	#Find the current branch
 	cb=$(git name-rev --name-only HEAD)
 	git stash save "auto stash for branch deleting purposes" > /dev/null
@@ -190,8 +190,6 @@ if [ $isAdmin ]; then
 	else
 		echo "not on remote"
 	fi
-else
-	echo "\$isAdmin=$isAdmin"
 fi
 
 exit
