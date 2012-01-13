@@ -10,6 +10,7 @@
 #	description@
 #
 #	@options
+#	-c, --checkout  Prompt user to checkout branch after selecting it.
 #	-l, --local     Show only local branches.
 #	-r, --remote    Show only remote branches.
 #	options@
