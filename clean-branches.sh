@@ -118,10 +118,10 @@ do
 				if [ -z $decision ] || [ "$decision" = "y" ]
 					then
 					if [ $isAdmin ]; then
-						echo "git branch -d $branch --admin"
+						echo "delete $branch --admin"
 						${gitscripts_path}delete.sh $branch "--admin"
 					else
-						echo "git branch -d $branch"
+						echo "delete $branch"
 						${gitscripts_path}delete.sh $branch
 					fi
 				fi

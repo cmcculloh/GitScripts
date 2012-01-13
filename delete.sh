@@ -29,6 +29,22 @@ else
 	$loadfuncs
 fi
 
+numArgs=$#
+# parse arguments
+if (( numArgs > 0 && numArgs < 4 )); then
+	until [ -z "$1" ]; do
+		if [ "$1" == "--admin" ] && [ $ADMIN ];then
+			isAdmin=true
+			echo "set isAdmin to true"
+		fi
+		! echo "$1" | egrep -q "^-" && msg="$1"
+		shift
+	done
+#else
+#	__bad_usage commit "Invalid number of parameters."
+#	exit 1
+fi
+
 echo
 echo ${H1}${H1HL}
 echo "  Deleting branch: ${H1B}\`$deleteBranch\`${H1}  "
@@ -116,21 +132,6 @@ else
 fi
 
 
-numArgs=$#
-# parse arguments
-if (( numArgs > 0 && numArgs < 4 )); then
-	until [ -z "$1" ]; do
-		if [ "$1" == "--admin" ] && [ $ADMIN ];then
-			isAdmin=true
-		fi
-		! echo "$1" | egrep -q "^-" && msg="$1"
-		shift
-	done
-#else
-#	__bad_usage commit "Invalid number of parameters."
-#	exit 1
-fi
-
 if [ $isAdmin ]; then
 	onremote=`git branch -r | grep "$deleteBranch"`
 	if [ -n "$onremote" ]
@@ -142,7 +143,7 @@ if [ $isAdmin ]; then
 		if [ -n "$deleteremote" ] && [ "$deleteremote" = "y" ]
 			then
 
-			__is_branch_protected --all "$startingBranch" && isProtected=true
+			__is_branch_protected --all "$deleteremote" && isProtected=true
 			if [ $isProtected ]; then
 				echo "${W}WARNING: $deleteBranch is a protected branch."
 				echo "Are you SURE you want to delete remote copy? yes (n)${X}"
@@ -163,7 +164,11 @@ if [ $isAdmin ]; then
 			echo "git push $remote :$deleteBranch"
 			git push $remote :$deleteBranch
 		fi
+	else
+		echo "not on remote"
 	fi
+else
+	echo "\$isAdmin=$isAdmin"
 fi
 
 exit
