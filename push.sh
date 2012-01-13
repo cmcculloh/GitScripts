@@ -20,7 +20,8 @@
 #	examples@
 #
 #	@dependencies
-#	functions/5000.branch_exists.sh
+#	functions/5000.branch_exists_local.sh
+#	functions/5000.parse_git_branch.sh
 #	functions/5000.set_remote.sh
 #	dependencies@
 ## */
@@ -31,7 +32,7 @@ $loadfuncs
 echo ${X}
 
 # set pushing branch if specified, otherwise...
-if [ -n "$1" ] && __branch_exists_locally "$1"; then
+if [ -n "$1" ] && __branch_exists_local "$1"; then
 	cb="$1"
 
 # ...grab current branch and validate
@@ -48,17 +49,17 @@ if ! __set_remote; then
 	exit 1
 fi
 
-echo ${Q}"Would you like to push ${STYLE_NEWBRANCH}\`${cb}\`${STYLE_NORM} to ${COL_GREEN}${_remote}${COL_NORM}? y (n)"${X}
+echo ${Q}"Would you like to push ${STYLE_NEWBRANCH}\`${cb}\`${Q} to ${COL_GREEN}${_remote}${Q}? y (n)"${X}
 read YorN
 echo
 if [ "$YorN" == "y" ] || [ "$YorN" == "Y" ]; then
 	if [ -n "$_remote" ]; then
 		echo
-		echo "Now pushing to:${X} ${COL_GREEN} ${_remote} ${COL_NORM}"
+		echo "Now pushing to:${X} ${COL_GREEN} ${_remote} ${X}"
 		echo ${O}${H2HL}
 		echo "$ git push ${_remote} ${cb}"
 		git push "${_remote}" "${cb}"
-		echo ${H2HL}${X}
+		echo ${O}${H2HL}${X}
 		echo
 	else
 		echo ${E}"  No remote could be found. Push aborted.  "${X}

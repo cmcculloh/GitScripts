@@ -27,6 +27,10 @@
 #
 #	# ...
 #	examples@
+#
+#	@dependencies
+#	functions/0200.gslog.sh
+#	dependencies@
 ## */
 function __parse_git_status {
 	if [ -z "$1" ]; then
@@ -47,7 +51,7 @@ function __parse_git_status {
 
 		"modified")
 			# first pattern for older versions of Git
-			searchstr="Changed but not updated\\|Changes not staged for commit";;
+			searchstr="Changed but not updated|Changes not staged for commit";;
 
 		"newfile")
 			# only returns true if file has been staged
@@ -72,5 +76,5 @@ function __parse_git_status {
 	esac
 
 	# use the return value of the grep as the return value of the function
-	git status 2> /dev/null | grep -q "$searchstr" 2> /dev/null
+	git status 2> /dev/null | egrep -q "$searchstr" 2> /dev/null
 }

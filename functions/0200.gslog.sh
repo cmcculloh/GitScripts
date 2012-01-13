@@ -18,7 +18,7 @@
 #	examples@
 #
 #	@dependencies
-#	[vars] $gslog (path to log file)
+#	[vars] $gitscripts_log (path to log file)
 #	dependencies@
 ## */
 function __gslog {

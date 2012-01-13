@@ -24,16 +24,23 @@
 #	examples@
 #
 #	@dependencies
-#	gitscripts/gsfunctions.sh
-#	gitscripts/clear-screen.sh
+#	checkout.sh
+#	clear-screen.sh
+#	functions/0100.bad_usage.sh
+#	functions/5000.branch_exists.sh
+#	functions/5000.parse_git_branch.sh
+#	functions/5000.set_remote.sh
 #	dependencies@
 ## */
 $loadfuncs
 
 
 # check for minimum requirements
+
 [ $# -eq 1 ] && oneArg=true
+[ $# -eq 2 ] && [ "$2" = "--admin" ] && [ $ADMIN ] && oneArg=true && ignoreprotect=true
 [ $# -eq 3 ] && threeArg=true
+[ $# -eq 4 ] && [ "$4" = "--admin" ] && [ $ADMIN ] && threeArg=true && ignoreprotect=true
 # must have 1 arg (merge $1 into current branch) or 3 (merge $1 into $2)
 if [ ! $oneArg ] && [ ! $threeArg ]; then
 	echo
@@ -61,13 +68,13 @@ mergeBranch=$1
 
 # check protected branches
 [ -z "${protectmergefrom_path}" ] || isProtectedFrom=`grep "$mergeBranch" ${protectmergefrom_path}`
-if [ $isProtectedFrom ]; then
+if [ ! $ignoreprotect ] && [ $isProtectedFrom ]; then
 	echo "  ${COL_RED}WARNING:${COL_NORM} Merging ${COL_YELLOW}from${COL_NORM} ${COL_CYAN}$1${COL_NORM} not allowed. Aborting..."
 	exit 1
 fi
 
 [ -z "${protectmergeto_path}" ] || isProtectedTo=`grep "$baseBranch" ${protectmergeto_path}`
-if [ $isProtectedTo ]; then
+if [ ! $ignoreprotect ] && [ $isProtectedTo ]; then
 	echo "${COL_RED}WARNING:${COL_NORM} merging ${COL_YELLOW}into${COL_NORM} ${COL_CYAN}$3${COL_NORM} not allowed."
 	exit 1
 fi

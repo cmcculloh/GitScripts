@@ -16,7 +16,9 @@
 #	examples@
 #
 #	@dependencies
-#	gitscripts/gsfunctions.sh
+#	checkout.sh
+#	*delete.sh
+#	functions/5000.parse_git_branch.sh
 #	dependencies@
 ## */
 $loadfuncs

@@ -18,7 +18,7 @@
 #	examples@
 #
 #	@dependencies
-#	gitscripts/gsfunctions.sh
+#	functions/5000.branch_exists.sh
 #	dependencies@
 ## */
 $loadfuncs
@@ -42,6 +42,8 @@ hashTo=$(git rev-parse --short HEAD)
 
 echo ${O}${H2HL}
 echo "$ git diff --name-status $hashFrom..$hashTo"
+echo
+echo "git diff --name-status ${hashFrom}..${hashTo}"
 git diff --name-status $hashFrom..$hashTo
 echo
 echo "git diff -w $hashFrom..$hashTo"
