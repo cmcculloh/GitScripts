@@ -114,6 +114,50 @@ else
 	echo
 fi
 
-#used to be an option to delete remote branch automagically here, but I trashed it because it was too dangerous
+
+numArgs=$#
+# parse arguments
+if (( numArgs > 0 && numArgs < 4 )); then
+	until [ -z "$1" ]; do
+		[ "$1" == "--admin" ] && [ $ADMIN ] && isAdmin=true
+#		{ [ "$1" == "-a" ] || [ "$1" == "-A" ]; } && flag=$1
+		! echo "$1" | egrep -q "^-" && msg="$1"
+		shift
+	done
+#else
+#	__bad_usage commit "Invalid number of parameters."
+#	exit 1
+fi
+
+if [ $isAdmin ]; then
+	onremote=`git branch -r | grep "$1"`
+	if [ -n "$onremote" ]
+		then
+		echo
+		echo "delete remote copy of branch? y (n)"
+		read deleteremote
+
+		if [ -n "$deleteremote" ] && [ "$deleteremote" = "y" ]
+			then
+
+			__is_branch_protected --push "$startingBranch" && isProtected=true
+			if [ $isProtected ]; then
+				echo "${W}WARNING: This is a protected branch. Are you SURE you want to delete remote? yes (n)${X}"
+				read yn
+				if [ -z "$yn" ][ "$yn" != "yes" ]
+					then
+					exit 1
+				fi
+			fi
+
+			echo
+			echo "deleting remote!"
+			echo
+			remote=$(git remote)
+			echo "git push $remote :$1"
+			git push $remote :$1
+		fi
+	fi
+fi
 
 exit
