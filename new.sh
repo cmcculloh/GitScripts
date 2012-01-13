@@ -47,7 +47,7 @@ if [ -z "$1" ]; then
 #no reason to continue if user is trying to create a branch that already exists
 elif __branch_exists $1; then
 	echo
-	echo ${E}"Branch \`$1\` already exists! Aborting..."${X}
+	echo ${E}"  Branch \`$1\` already exists! Aborting...  "${X}
 	exit 1
 fi
 
@@ -61,8 +61,7 @@ if [ -n "$2" ] && [ "$2" == "from" ]; then
 		startingBranch=$3
 	else
 		echo
-		echo ${E}"The base branch specified ($3) does not exist. Aborting..."${X}
-		echo
+		echo ${E}"  The base branch specified ($3) does not exist. Aborting...  "${X}
 		exit 1
 	fi
 fi
@@ -82,14 +81,14 @@ echo
 echo "$ git status"
 git status
 echo ${O}${H2HL}${X}
-echo ${I}
-echo " (1) -  Create branch ${STYLE_NEWBRANCH}\`${1}\`${I} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`${I}"
+echo
+echo ${I}" (1) -  Create branch ${STYLE_NEWBRANCH}\`${1}\`${I} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`${I}"
 echo "  2  -  Create branch ${STYLE_NEWBRANCH}\`${1}\`${I} from the current branch ${STYLE_OLDBRANCH_H1}\`${currentBranch}\`${I}"
 echo "  3  -  Stash Changes and create branch ${STYLE_NEWBRANCH}\`$1\`${I} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`${I}"
 echo "  4  -  Revert all changes to tracked files \(ignores untracked files\), and create branch ${STYLE_NEWBRANCH}\`$1\`${I} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`${I}"
-echo "  5  -  Abort creation of branch ${STYLE_NEWBRANCH}\`$1\`${I} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`${I}"
-echo ${X}
-echo ${I}"Type the number of the choice you want and hit enter: "
+echo "  5  -  Abort creation of branch ${STYLE_NEWBRANCH}\`$1\`${I} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`${I}"${X}
+echo
+echo ${I}"Type the number of the choice you want and hit enter: "${X}
 read decision
 
 # must be a number or nothing, otherwise abort
@@ -150,7 +149,7 @@ case $decision in
 
 	# input invalid. abort process
 	*)
-		echo "Invalid or no choice given. Aborting..."${X}
+		echo "Invalid or no choice given. Aborting..."
 		exit 1;;
 
 esac

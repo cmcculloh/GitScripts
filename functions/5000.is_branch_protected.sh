@@ -10,6 +10,7 @@
 #	description@
 #
 #	@options
+#	--all			Checks to see if branch is protected ANYWHERE.
 #	--merge-from	Checks for protected branches that merge into other branches.
 #	--merge-to		Checks for protected branches that shouldn't be merged into.
 #	--push			Checks for protected branches that cannot be pushed to.
@@ -19,6 +20,7 @@
 #	- This function returns SUCCESS on error as the safest option is to
 #	protect the branch if something goes wrong. FAILURE is returned if
 #	the branch is not protected.
+#	- Paths with spaces will cause a SUCCESS.
 #	- Echoing an error is preferred to logging it with __gslog to better debug
 #	script errors.
 #	notes@
@@ -41,10 +43,16 @@ function __is_branch_protected {
 	fi
 
 	case "$1" in
+		"--all")
+			local checkPath="$protectpushto_path $protectmergeto_path $protectmergefrom_path";;
+
 		"--push")
 			local checkPath="$protectpushto_path";;
 
-		"--merge-in")
+		"--merge")
+			local checkPath="$protectmergeto_path $protectmergefrom_path";;
+
+		"--merge-to")
 			local checkPath="$protectmergeto_path";;
 
 		"--merge-from")
@@ -55,7 +63,12 @@ function __is_branch_protected {
 			return 0;;
 	esac
 
-	if [ -s "$checkPath" ] && cat $checkPath | grep -q "$2"; then
+	# since multiple paths can be given, we should loops through them
+	for path in $checkPath; do
+		[ -s "$path" ] && cat $path | grep -q "$2" && local protected=true
+	done
+
+	if [ $protected ]; then
 		return 0
 	else
 		return 1

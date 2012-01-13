@@ -30,6 +30,7 @@
 #	clear-screen.sh
 #	functions/0100.bad_usage.sh
 #	functions/5000.branch_exists.sh
+#	functions/5000.is_branch_protected.sh
 #	functions/5000.parse_git_branch.sh
 #	functions/5000.parse_git_status.sh
 #	functions/5000.set_remote.sh
@@ -39,22 +40,28 @@ $loadfuncs
 
 
 echo ${X}
+numArgs=$#
 
-# conditions that should cause the script to halt immediately:
-# missing commit message
-if [ -z "$1" ]; then
-	__bad_usage commit "Commit message is required."
+# parse arguments
+if (( numArgs > 0 && numArgs < 4)); then
+	until [ -z "$1" ]; do
+		[ "$1" == "--admin" ] && isAdmin=true
+		{ [ "$1" == "-a" ] || [ "$1" == "-A" ]; } && flag=$1
+		! echo "$1" | egrep -q "^-" && msg="$1"
+		shift
+	done
+else
+	__bad_usage commit "Invalid number of parameters."
 	exit 1
 fi
 
-
+# conditions that should cause the script to halt immediately:
 # make sure SOMETHING is staged if user doesn't specify flag
-if ! __parse_git_status staged && [ -z "$2" ]; then
+if ! __parse_git_status staged && [ ! $flag ]; then
 	echo
 	echo ${E}"  You haven't staged any changes to commit! Aborting...  "${X}
 	exit 1
 fi
-
 
 startingBranch=$(__parse_git_branch)
 if [ -z "$startingBranch" ]; then
@@ -65,7 +72,7 @@ fi
 
 echo
 echo ${H1}${H1HL}
-echo "Committing changes to branch: ${H1B}\`${startingBranch}\`${H1}  "
+echo "  Committing changes to branch: ${H1B}\`${startingBranch}\`${H1}  "
 echo ${H1HL}${X}
 
 echo
@@ -77,9 +84,8 @@ git status
 echo ${O}${H2HL}${X}
 
 # check to see if user wants to add all modified/deleted files
-if [ -n "$2" ]; then
-	flag=$2
-	case $2 in
+if [ $flag ]; then
+	case $flag in
 		"-a")
 			if __parse_git_status untracked; then
 				echo
@@ -108,7 +114,7 @@ if [ -n "$2" ]; then
 			;;
 
 		*)
-			__bad_usage commit "Invalid value for second parameter."
+			__bad_usage commit "Invalid parameter ($flag)."
 			exit 1
 			;;
 	esac
@@ -121,22 +127,28 @@ echo "Committing and displaying branch changes..."
 echo ${O}${H2HL}
 echo "$ git commit -q -m \"($startingBranch) $1\" $flag"
 git commit -q -m "(${startingBranch}) $1" $flag
-echo
+echo ${O}
 echo
 echo "$ git diff-tree --stat HEAD"
 git diff-tree --stat HEAD
-echo ${H2HL}${X}
+echo ${O}${H2HL}${X}
 echo
 echo
 echo "Checking status..."
 echo ${O}${H2HL}
 echo "$ git status"
 git status
-echo ${H2HL}${X}
+echo ${O}${H2HL}${X}
 echo
 
 # wrap up...
-eval "${gitscripts_path}push.sh ${startingBranch}"
-eval "${gitscripts_path}clear-screen.sh"
+__is_protected_branch --push "$startingBranch" && isProtected=true
+if [ $isProtected ] && [ ! $isAdmin ]; then
+	echo ${E}"  The branch \`${startingBranch}\` is protected and cannot be pushed. Aborting...  "${X}
+elif [ ! $isProtected ] || [ $isAdmin ]; then
+	"${gitscripts_path}"push.sh "$startingBranch"
+fi
+
+"${gitscripts_path}"clear-screen.sh
 
 exit

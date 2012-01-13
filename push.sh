@@ -32,8 +32,13 @@ $loadfuncs
 echo ${X}
 
 # set pushing branch if specified, otherwise...
-if [ -n "$1" ] && __branch_exists_local "$1"; then
-	cb="$1"
+if [ -n "$1" ]; then
+	if __branch_exists_local "$1"; then
+		cb="$1"
+	else
+		echo ${E}"  The branch \`${1}\` does not exist locally! Aborting...  "${X}
+		exit 1
+	fi
 
 # ...grab current branch and validate
 else
@@ -49,7 +54,7 @@ if ! __set_remote; then
 	exit 1
 fi
 
-echo ${Q}"Would you like to push ${STYLE_NEWBRANCH}\`${cb}\`${Q} to ${COL_GREEN}${_remote}${Q}? y (n)"${X}
+echo ${Q}"Would you like to push ${B}\`${cb}\`${Q} to ${COL_GREEN}${_remote}${Q}? y (n)"${X}
 read YorN
 echo
 if [ "$YorN" == "y" ] || [ "$YorN" == "Y" ]; then
@@ -63,7 +68,6 @@ if [ "$YorN" == "y" ] || [ "$YorN" == "Y" ]; then
 		echo
 	else
 		echo ${E}"  No remote could be found. Push aborted.  "${X}
-		echo
 		exit 1
 	fi
 fi
