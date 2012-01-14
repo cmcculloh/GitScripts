@@ -37,6 +37,7 @@ echo ${X}
 
 # parse params
 numArgs=$#
+flag="-a"
 if (( numArgs > 0 && numArgs < 3 )); then
 	until [ -z "$1" ]; do
 		{ [ "$1" = "-l" ] || [ "$1" = "--local" ]; } && getLocal=true
@@ -45,7 +46,6 @@ if (( numArgs > 0 && numArgs < 3 )); then
 		shift
 	done
 
-	flag="-a"
 	if [ $getLocal ] && [ ! $getRemote ]; then
 		flag=""
 	elif [ $getRemote ] && [ ! $getLocal ]; then
