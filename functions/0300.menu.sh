@@ -35,14 +35,26 @@ __menu() {
 		return 1
 	fi
 
+	# reset output variable
+	_menu_selection=""
+
+	# check for custom message
+	msg=$2
+	if [ -z "$2" ]; then
+		msg="Please make a selection (or press Enter to abort)"
+	fi
+
 	# build menu
 	local items=( $1 )
+	echo ${STYLE_MENU_HL}${H2HL}${X}
+	echo ${STYLE_MENU_HEADER}"  $msg  "${X}
 	echo ${STYLE_MENU_HL}${H2HL}${X}
 	for (( i = 1 ; i <= ${#items[@]} ; i++ ))
 		do
 		j=$(( i - 1 ))
 		item="${items[$j]}"
 
+		# make indexes right-aligned. works for up to 999 choices.
 		if (( i < 10 )); then
 			index="  "$i
 		elif (( i < 100 )); then
@@ -50,16 +62,11 @@ __menu() {
 		else
 			index=$i
 		fi
-		echo "${STYLE_MENU_INDEX}${index}:${X} ${STYLE_MENU_OPTION}${item}${X}"
+		echo "  ${STYLE_MENU_INDEX}${index}:${X}  ${STYLE_MENU_OPTION}${item}${X}"
 	done
 	echo ${STYLE_MENU_HL}${H2HL}${X}
 
-	# check for custom message
-	msg=$2
-	if [ -z "$2" ]; then
-		msg="Please make a selection (or press Enter to abort): "
-	fi
-	echo ${STYLE_MENU_PROMPT}"$msg"${X}
+	echo -n ${STYLE_MENU_PROMPT}"  $msg:  "${X}
 	read selection
 
 	# validate response
@@ -79,7 +86,8 @@ __menu() {
 	fi
 
 	#wrap up...
-	echo ${O}"You chose:${X} ${_menu_selection}"
+	echo
+	echo ${O}"  You chose:${X} ${_menu_selection}  "
 	export _menu_selection
 
 	return 0

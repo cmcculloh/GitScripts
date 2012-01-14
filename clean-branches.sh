@@ -23,6 +23,22 @@
 ## */
 $loadfuncs
 
+
+
+numArgs=$#
+# parse arguments
+if (( numArgs > 0 && numArgs < 4 )); then
+	until [ -z "$1" ]; do
+		[ "$1" == "--admin" ] && [ $ADMIN ] && isAdmin=true
+#		{ [ "$1" == "-a" ] || [ "$1" == "-A" ]; } && flag=$1
+		! echo "$1" | egrep -q "^-" && msg="$1"
+		shift
+	done
+#else
+#	__bad_usage commit "Invalid number of parameters."
+#	exit 1
+fi
+
 startingBranch=$(__parse_git_branch)
 if [ -z "$startingBranch" ]; then
 	echo ${E}"Unable to determine current branch."${X}
@@ -32,7 +48,6 @@ fi
 echo
 echo
 echo
-
 
 echo ${H1}
 echo ${H1HL}
@@ -102,8 +117,13 @@ do
 				read decision
 				if [ -z $decision ] || [ "$decision" = "y" ]
 					then
-					echo "git branch -d $branch"
-					${gitscripts_path}delete.sh $branch
+					if [ $isAdmin ]; then
+						echo "delete $branch --admin"
+						${gitscripts_path}delete.sh $branch "--admin"
+					else
+						echo "delete $branch"
+						${gitscripts_path}delete.sh $branch
+					fi
 				fi
 			fi
 		fi

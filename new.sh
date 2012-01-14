@@ -36,6 +36,8 @@
 $loadfuncs
 
 
+echo ${X}
+
 # first parameter required.
 if [ -z "$1" ]; then
 	echo
@@ -45,7 +47,7 @@ if [ -z "$1" ]; then
 #no reason to continue if user is trying to create a branch that already exists
 elif __branch_exists $1; then
 	echo
-	echo ${E}"Branch \`$1\` already exists! Aborting..."${X}
+	echo ${E}"  Branch \`$1\` already exists! Aborting...  "${X}
 	exit 1
 fi
 
@@ -59,41 +61,43 @@ if [ -n "$2" ] && [ "$2" == "from" ]; then
 		startingBranch=$3
 	else
 		echo
-		echo ${E}"The base branch specified ($3) does not exist. Aborting..."${X}
-		echo
+		echo ${E}"  The base branch specified ($3) does not exist. Aborting...  "${X}
 		exit 1
 	fi
 fi
 
 
-echo ${H1}
-echo ${H1HL}
-echo "Creating new branch: ${STYLE_NEWBRANCH_H1}\`${1}\`${H1}   "
-echo ${H1HL}
-echo ${X}
+echo ${H1}${H1HL}
+echo "Creating new branch: ${H1B}\`${1}\`${H1}   "
+echo ${H1HL}${X}
 echo
 echo
 echo "This tells your local git about all changes on the remote. Then we'll check your git status."
 echo ${O}${H2HL}
 echo "$ git fetch --all --prune"
 git fetch --all --prune
-echo
+echo ${O}
 echo
 echo "$ git status"
 git status
-echo ${H2HL}${X}${I}
+echo ${O}${H2HL}${X}
 echo
-echo " (1) -  Create branch ${STYLE_NEWBRANCH}\`${1}\`${I} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`${I}"
+echo ${I}" (1) -  Create branch ${STYLE_NEWBRANCH}\`${1}\`${I} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`${I}"
 echo "  2  -  Create branch ${STYLE_NEWBRANCH}\`${1}\`${I} from the current branch ${STYLE_OLDBRANCH_H1}\`${currentBranch}\`${I}"
 echo "  3  -  Stash Changes and create branch ${STYLE_NEWBRANCH}\`$1\`${I} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`${I}"
-echo "  4  -  Revert all changes to tracked files \(ignores untracked files\), and create branch ${STYLE_NEWBRANCH}\`$1\`${I} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`${I}"
-echo "  5  -  Abort creation of branch ${STYLE_NEWBRANCH}\`$1\`${I} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`${I}"
-echo ${X}
-echo ${I}"Type the number of the choice you want and hit enter: "
+echo "  4  -  Revert all changes to tracked files (ignores untracked files), and create branch ${STYLE_NEWBRANCH}\`$1\`${I} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`${I}"
+echo "  5  -  Abort creation of branch ${STYLE_NEWBRANCH}\`$1\`${I} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`${I}"${X}
+echo
+echo ${I}"Type the number of the choice you want and hit enter: "${X}
 read decision
-[ -n "$decision" ] || decision=1
-echo ${X}
-echo ${O}"You chose:${X} $decision"
+
+# must be a number or nothing, otherwise abort
+{ echo "$decision" | egrep -q '^[1-5]$'; } || {
+	[ -z "$decision" ] && decision=1
+} || { decision=5; }
+
+echo
+echo ${O}"You chose: $decision"${X}
 echo
 
 # handle decision cases
@@ -106,63 +110,61 @@ case $decision in
 	# create new branch from whatever branch user is currently on
 	2)
 		startingBranch=$currentBranch
-		echo "Base branch changed to: ${COL_CYAN}${startingBranch}${COL_NORM}"
+		echo "Base branch changed to: ${B}\`${startingBranch}\`${X}"
 		echo
 		echo "Continuing...";;
 
 	# stash changes and create branch from master or specified branch
 	3)
-		echo ${X}"This stashes any local changes you might have made and forgot to commit."
-		echo "To apply these changes later, use: ${COL_MAG}git stash apply"${X}
+		echo "This ${A}stashes${X} any local changes you might have made and forgot to commit."
+		echo "To apply these changes later, use: ${A}git stash apply"${X}
 		echo ${O}${H2HL}
 		echo "$ git stash"
 		git stash
-		echo
+		echo ${O}
 		echo
 
 		echo "$ git status"
 		git status
-		echo ${H2HL}${X};;
+		echo ${O}${H2HL}${X};;
 
 	# revert changes to tracked files and create new branch from master or specified branch
 	4)
-		echo ${X}"This attempts to reset your current branch to the last check-in."
+		echo "This attempts to ${A}reset${X} your current branch to the last check-in."
 		echo "If you have made any changes to untracked files, they will NOT be affected."
 		echo ${O}${H2HL}
 		echo "$ git reset --hard"
 		git reset --hard
-		echo
+		echo ${O}
 		echo
 
 		echo "$ git status"
 		git status
-		echo ${H2HL}${X};;
+		echo ${O}${H2HL}${X};;
 
 	# abort process
 	5)
-		echo "Aborting creation of branch ${STYLE_NEWBRANCH}\`${1}\`${X}"
+		echo "Aborting creation of branch ${B}\`${1}\`"${X}
 		exit 1;;
 
 	# input invalid. abort process
 	*)
-		echo "Invalid or no choice given. Aborting..."${X}
+		echo "Invalid or no choice given. Aborting..."
 		exit 1;;
 
 esac
 
 echo
 echo
-echo "Attempting to configure remote for future use..."
-echo ${O}${H2HL}
+echo "Configuring remotes, if any..."
 __set_remote
-echo ${H2HL}${X}
 
 
-if [ "$startingBranch" == "master" ]; then
+if [ "$startingBranch" = "master" ]; then
 	echo
 	echo
-	echo "This branches master to create a new branch named ${COL_CYAN}$1${COL_NORM}"
-	echo "and then checks out the ${COL_CYAN}$1${COL_NORM} branch. We will make sure"
+	echo "This branches master to create a new branch named ${B}\`$1\`${X}"
+	echo "and then checks out the ${B}\`$1\`${X} branch. We will make sure"
 	echo "to get all updates (if available) to master as well."
 	echo ${O}${H2HL}
 
@@ -170,39 +172,39 @@ if [ "$startingBranch" == "master" ]; then
 	if [ "$currentBranch" != "master" ]; then
 		echo "$ git checkout master"
 		git checkout master
-		echo
+		echo ${O}
 		echo
 	fi
 
 	if [ -n "$_remote" ]; then
-		echo "Remote: ${COL_GREEN}${_remote}${COL_NORM}"
+		echo "Remote: ${COL_GREEN}${_remote}${O}"
 		echo
 		echo
-		echo ${O}"$ git pull ${_remote} master"
+		echo "$ git pull ${_remote} master"
 		git pull $_remote master
-		echo
+		echo ${O}
 		echo
 	fi
 
 	echo "$ git checkout -b $1"
-	git checkout -b $1
-	echo ${H2HL}${X}
+	git checkout -b "$1"
+	echo ${O}${H2HL}${X}
 	git config branch.$1.remote $_remote
 	git config branch.$1.merge refs/heads/$1
 else
 	echo
 	echo
-	echo "You are about to checkout branch ${COL_CYAN}${startingBranch}${COL_NORM} in order to create a new branch named ${COL_CYAN}$1${COL_NORM}."
+	echo "You are about to ${A}checkout${X} branch ${B}\`${startingBranch}\`${X} in order to create a new branch named ${B}\`$1\`${X}."
 	echo "Do not do this unless you truly know what you are doing, and why!"
-	echo "The only reason to do this is if your new branch relies on branch ${COL_CYAN}${startingBranch}${COL_NORM}."
-	echo "Please type '${I}I understand${X}' (case sensitive!) and hit enter to continue. Any other input"
-	echo 'will abort this process:'
+	echo "The only reason to do this is if your new branch relies on branch ${B}\`${startingBranch}\`${X}."
+	echo "Please type '${I}I understand${X}' (${W}case sensitive!${X}) and hit enter to continue. Any other input"
+	echo "will abort this process:"
 	read iunderstand
 
 	if [ "$iunderstand" == "I understand" ]; then
 		echo
 		echo
-		echo "This branches ${COL_CYAN}${startingBranch}${COL_NORM} to create a new branch named ${COL_CYAN}$1${COL_NORM}"
+		echo "This branches ${B}\`${startingBranch}\`${X} to create a new branch named ${B}\`$1\`${X}"
 		echo ${O}${H2HL}
 		if [ "$currentBranch" != "$startingBranch" ]; then
 			echo "$ git checkout -b ${1} ${startingBranch}"
@@ -210,14 +212,14 @@ else
 		else
 			echo "$ git branch ${1}"
 			git branch $1
-			echo
+			echo ${O}
 			echo
 			echo "$ git checkout ${1}"
 			git checkout $1
 		fi
 		git config branch.$1.remote $remote
 		git config branch.$1.merge refs/heads/$1
-		echo ${H2HL}${X}
+		echo ${O}${H2HL}${X}
 	else
 		echo
 		echo 'You have chosen.... wisely. Exiting script...'
@@ -232,8 +234,8 @@ if [ -n "$_remote" ]; then
 	echo "Finally, your new branch will be pushed up to the remote: ${COL_GREEN}${_remote}${COL_NORM}"
 	echo ${O}${H2HL}
 	echo "$ git push ${_remote} ${1}"
-	git push $_remote $1
-	echo ${H2HL}${X}
+	git push "$_remote" "$1"
+	echo ${O}${H2HL}${X}
 fi
 
 exit

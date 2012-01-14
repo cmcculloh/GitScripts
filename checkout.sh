@@ -160,14 +160,7 @@ if __branch_exists "$1"; then
 	# check that the branch is not a protected branch (meaning, one you should always
 	# delete to protect against forced updates) by looking for the optional nomerge*
 	# paths set by the user.
-	branchprotected=""
-	if [ -s "${protectmergefrom_path}" ]; then mpaths="${protectmergefrom_path} "; fi
-	if [ -s "${protectmergeto_path}" ]; then mpaths="${mpaths}${protectmergeto_path}"; fi
-	if [ -n "${mpaths}" ]; then
-		branchprotected=`grep "$1" ${mpaths}`
-	fi
-
-	if [ -n "$branchprotected" ] && [ $onlocal ]; then
+	if __is_branch_protected --merge "$1" && [ $onlocal ]; then
 		echo ${Q}"Would you like to ${A}delete${Q} your local copy of ${B}\`$1\`${Q} and ${A}pull${Q}"
 		echo "down the newest version to protect against forced updates? (y) n"${X}
 		read deletelocal
@@ -253,7 +246,7 @@ if ! __parse_git_status clean; then
 		2)
 			echo ${I}"Please enter a commit message: "${X}
 			read commitmessage
-			${gitscripts_path}commit.sh "$commitmessage" -a;;
+			"${gitscripts_path}"commit.sh "$commitmessage" -a;;
 
 		# Stash changes and continue
 		3)
@@ -278,11 +271,11 @@ if ! __parse_git_status clean; then
 			echo ${O}${H2HL}
 			echo "$ git reset --hard"
 			git reset --hard
-			echo
+			echo ${O}
 			echo
 			echo "$ git status"
 			git status
-			echo ${H2HL}${X}
+			echo ${O}${H2HL}${X}
 			echo;;
 
 		# Clean (delete) untracked files and continue
@@ -305,15 +298,15 @@ if ! __parse_git_status clean; then
 			echo ${H2HL}${O}
 			echo "$ git reset --hard"
 			git reset --hard
-			echo
+			echo ${O}
 			echo
 			echo "$ git clean -f"
 			git clean -f
-			echo
+			echo ${O}
 			echo
 			echo "$ git status"
 			git status
-			echo ${H2HL}${X}
+			echo ${O}${H2HL}${X}
 			echo;;
 
 		# Ignore warning and continue

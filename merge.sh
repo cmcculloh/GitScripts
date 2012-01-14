@@ -1,11 +1,19 @@
 #!/bin/bash
 ## /*
-#	@usage merge <branch_name> [into <branch_name2>]
+#	@usage merge [<branch_name> [into <branch_name2>]]
 #
 #	@description
-#	This script is a helpful wrapper for merging one branch into another. The command itself
-#	is more intuitive because it uses "into" to clearly distinguish which branch is getting
-#	merged into the other.  There are some helpful safeties included as well. Referenced branches
+#	This script is a helpful wrapper for merging one branch into another.
+#
+#	If you have merge conflicts and you want to resolve them, running this command will get that
+#	started as long as you have your mergetool configured [TODO: Add documentation or link to
+#	documentation. For now, here is a link that I have not read the contents of, but this might
+#	get you started: http://www.davesquared.net/2009/02/setting-up-diff-and-merge-tools-for-git.html]
+#
+#	If you are trying to initiate a merge of two branches, this script will do that too. The command
+#	is more intuitive (than "git merge") because it uses "into" to clearly distinguish merge direction.
+#	
+#	There are some helpful safeties included as well. Referenced branches
 #	are checked for existence before the script gets too far along, protected branches are checked,
 #	and merge conflicts are determined after the merge. If merge conflicts should arise, the
 #	user is prompted to resolve them using the native git mergetool.
@@ -18,9 +26,10 @@
 #	notes@
 #
 #	@examples
-#	1) merge master                     # Merges master into current branch
-#	2) merge my-branch into master      # Merges my-branch into master (unless master is a protected branch)
-#	3) merge my-branch another-branch   # This will fail. The second "action" parameter (into) must be included.
+#	1) merge                             # Runs your pre-configured merge tool (because McCulloh can't remember how to make it run otherwise)
+#	2) merge master                     # Merges master into current branch
+#	3) merge my-branch into master      # Merges my-branch into master (unless master is a protected branch)
+#	4) merge my-branch another-branch   # This will fail. The second "action" parameter (into) must be included.
 #	examples@
 #
 #	@dependencies
@@ -36,11 +45,26 @@ $loadfuncs
 
 
 # check for minimum requirements
-
+[ $# -eq 0 ] && runmergetool=true
 [ $# -eq 1 ] && oneArg=true
-[ $# -eq 2 ] && [ "$2" = "--admin" ] && [ $ADMIN ] && oneArg=true && ignoreprotect=true
+[ $# -eq 2 ] && [ "$2" = "--admin" ] && [ $ADMIN ] && oneArg=true && isAdmin=true
 [ $# -eq 3 ] && threeArg=true
-[ $# -eq 4 ] && [ "$4" = "--admin" ] && [ $ADMIN ] && threeArg=true && ignoreprotect=true
+[ $# -eq 4 ] && [ "$4" = "--admin" ] && [ $ADMIN ] && threeArg=true && isAdmin=true
+
+# McCulloh just wants to run the merge tool
+if [ $runmergetool ]; then
+	echo "Run merge tool? (y) n"
+	read yn
+	if [  -z "$yn" ] || [ "$yn" = "y" ]; then
+		git mergetool
+	else
+		__bad_usage merge "Invalid number of parameters."
+	fi
+
+	exit 1
+fi
+
+
 # must have 1 arg (merge $1 into current branch) or 3 (merge $1 into $2)
 if [ ! $oneArg ] && [ ! $threeArg ]; then
 	echo
@@ -67,22 +91,20 @@ mergeBranch=$1
 [ $oneArg ] && { baseBranch=$current_branch; } || { baseBranch=$3; }
 
 # check protected branches
-[ -z "${protectmergefrom_path}" ] || isProtectedFrom=`grep "$mergeBranch" ${protectmergefrom_path}`
-if [ ! $ignoreprotect ] && [ $isProtectedFrom ]; then
-	echo "  ${COL_RED}WARNING:${COL_NORM} Merging ${COL_YELLOW}from${COL_NORM} ${COL_CYAN}$1${COL_NORM} not allowed. Aborting..."
+if [ ! $isAdmin ] && __is_branch_protected --merge-from "$mergeBranch"; then
+	echo "  ${W}WARNING:${X} Merging ${COL_YELLOW}from${COL_NORM} ${B}\`$1\`${X} not allowed. Aborting..."
 	exit 1
 fi
 
-[ -z "${protectmergeto_path}" ] || isProtectedTo=`grep "$baseBranch" ${protectmergeto_path}`
-if [ ! $ignoreprotect ] && [ $isProtectedTo ]; then
-	echo "${COL_RED}WARNING:${COL_NORM} merging ${COL_YELLOW}into${COL_NORM} ${COL_CYAN}$3${COL_NORM} not allowed."
+if [ ! $isAdmin ] && __is_branch_protected --merge-to "$baseBranch"; then
+	echo "  ${W}WARNING:${X} Merging ${COL_YELLOW}into${COL_NORM} ${B}\`$3\`${X} not allowed. Aborting..."
 	exit 1
 fi
 
 # do the merge
 echo
 echo ${H1}${H1HL}
-echo "Beginning merge from \`${COL_MAG}${mergeBranch}${COL_NORM}\` into \`${COL_MAG}${baseBranch}${COL_NORM}\`  "
+echo "  Beginning merge from ${B}\`${mergeBranch}\`${H1} into ${B}\`${baseBranch}\`${H1}  "
 echo ${H1HL}${X}
 echo
 echo
@@ -90,40 +112,40 @@ echo "This tells your local git about all changes on the remote..."
 echo ${O}${H2HL}
 echo "$ git fetch --all --prune"
 git fetch --all --prune
-echo ${H2HL}${X}
+echo ${O}${H2HL}${X}
 echo
 echo
-echo "This checks out the \`${mergeBranch}\` branch..."
+echo "This checks out the ${B}\`${mergeBranch}\`${X} branch..."
 echo ${O}${H2HL}
-echo "$ checkout $mergeBranch"
-${gitscripts_path}checkout.sh $mergeBranch
+echo "$ checkout ${mergeBranch}"
+"${gitscripts_path}"checkout.sh "$mergeBranch"
+echo ${X}
 echo
-echo
-echo "This checks out the \`${baseBranch}\` branch..."
+echo "This checks out the ${B}\`${baseBranch}\`${X} branch..."
 echo ${O}${H2HL}
 echo "$ checkout $baseBranch"
-${gitscripts_path}checkout.sh $baseBranch
+"${gitscripts_path}"checkout.sh "$baseBranch"
+echo ${X}
 echo
-echo
-echo "This merges from ${mergeBranch} into ${baseBranch}..."
+echo "This merges from ${B}\`${mergeBranch}\`${X} into ${B}\`${baseBranch}\`${X}..."
 echo ${O}${H2HL}
 echo "$ git merge --no-ff ${mergeBranch}"
 git merge --no-ff $mergeBranch
 
 # check for merge conflicts
 if git status | grep -q "Unmerged paths"; then
-	echo
+	echo ${O}
 	echo
 	echo "$ git status"
 	git status
-	echo ${H2HL}${X}
+	echo ${O}${H2HL}${X}
 	echo
 	echo
-	echo "${COL_YELLOW}WARNING: You have unmerged paths!${COL_NORM}"
+	echo "${W}WARNING:${X} You have unmerged paths!"
 	echo
-	echo "Please ${COL_MAG}resolve your merge conflicts${COL_NORM}, then ${COL_MAG}run a build and test your build before pushing${COL_NORM} back out."
+	echo "Please ${A}resolve your merge conflicts${X}, then ${A}run a build and test your build before pushing${X} back out."
 	echo
-	echo "Would you like to run the merge tool? (y) n"
+	echo ${Q}"Would you like to run the merge tool? (y) n"${X}
 	read yn
 	if [ -z "$yn" ] || [ "$yn" = "y" ] || [ "$yn" = "Y" ]; then
 		git mergetool
@@ -133,42 +155,37 @@ if git status | grep -q "Unmerged paths"; then
 fi
 
 
-echo
 echo ${O}
+echo
 echo "$ git status"
 git status
-echo ${H2HL}${X}
+echo ${O}${H2HL}${X}
 echo
 echo
-echo ${I}"Would you like to push? y (n)"${X}
-read yn
-if [ "$yn" = "y" ] || [ "$yn" = "Y" ]; then
-	__set_remote
-	if [ $_remote ]; then
-		echo ${O}${H2HL}
-		echo "$ git push ${_remote} ${baseBranch}"
-		git push $_remote $baseBranch
-		echo ${H2HL}${X}
-	else
-		echo ${E}"  No remote could be found. Push aborted.  "${X}
-	fi
+
+# wrapping up...
+__is_branch_protected --push "$startingBranch" && isProtected=true
+if [ $isProtected ] && [ ! $isAdmin ]; then
+	echo ${E}"  The branch \`${startingBranch}\` is protected and cannot be pushed. Aborting...  "${X}
+elif [ ! $isProtected ] || [ $isAdmin ]; then
+	"${gitscripts_path}"push.sh "$baseBranch"
 fi
 
+# user may wish to return to original branch
 if [ "$current_branch" != "$baseBranch" ]; then
 	echo
 	echo
-	echo ${I}"Would you like to check \`${COL_CYAN}${current_branch}${COL_NORM}\` back out? y (n)"${X}
+	echo ${Q}"Would you like to check ${B}\`${current_branch}\`${Q} back out? y (n)"${X}
 	read decision
 	if [ "$decision" = "y" ] || [ "$decision" = "Y" ]; then
 		echo
-		echo "Checking out \`${COL_CYAN}${current_branch}${COL_NORM}\`..."
+		echo "Checking out ${B}\`${current_branch}\`${X}..."
 		echo "$ checkout ${current_branch}"
-		${gitscripts_path}checkout.sh $current_branch
-	else
-		"${gitscripts_path}clear-screen.sh"
+		"${gitscripts_path}"checkout.sh "$current_branch"
+		# checkout does not prompt for clearing screen so we can include it at the end
 	fi
-else
-	"${gitscripts_path}clear-screen.sh"
 fi
+
+"${gitscripts_path}"clear-screen.sh
 
 exit

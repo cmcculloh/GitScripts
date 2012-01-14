@@ -27,6 +27,8 @@
 #	dependencies@
 ## */
 function __branch_exists_remote {
+	git fetch --all
+
 	if [ -z "$1" ]; then
 		__gslog "__branch_exists_remote: First parameter must be branch name."
 		return 1

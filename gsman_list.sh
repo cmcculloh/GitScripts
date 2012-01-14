@@ -8,6 +8,7 @@ echo
 
 both_paths="${gsman_paths_default} ${gsman_paths_user}"
 file_list=""
+tmp="${gitscripts_temp_path}tmp"
 cat /dev/null > $tmp
 
 for gsman_path in $both_paths; do
