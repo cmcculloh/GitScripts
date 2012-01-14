@@ -103,34 +103,53 @@ if [ -n "$checkbranch" ]
 	fi
 fi
 
+if __branch_exists_local $deleteBranch; then
 
-trydelete=`git branch -d $deleteBranch 2>&1 | grep "error"`
-echo "$trydelete"
-echo
-if [ -n "$trydelete" ]
-	then
-	echo "Delete failed!"
-	echo "force delete? y (n)"
-	read forcedelete
-	if [ "$forcedelete" = "y" ]
+
+	# TODO: determine if your local copy is behind remote
+
+	# if [ $behind ]; then
+	# 	echo
+	# 	echo "${W}Your local copy of this $deleteBranch"
+	# 	echo "is behind the remote. Continue anyways? (y) n${X}"
+	# 	read yn
+	# 	if [ "$yn" != "y" ]; then
+	# 		echo "Aborting delete of $deleteBranch"
+	# 		exit 1
+	# 	fi
+	# fi
+
+
+
+	trydelete=`git branch -d $deleteBranch 2>&1 | grep "error"`
+	echo "$trydelete"
+	echo
+	if [ -n "$trydelete" ]
 		then
-		trydelete=`git branch -D $deleteBranch 2>&1 | grep "error:"`
-		echo "$trydelete"
-		echo
-		if [ -n "$trydelete" ]
+		echo "Delete failed!"
+		echo "force delete? y (n)"
+		read forcedelete
+		if [ "$forcedelete" = "y" ]
 			then
-			echo "force delete failed!"
-			exit -1
-		else
-			echo "force delete succeeded!"
+			trydelete=`git branch -D $deleteBranch 2>&1 | grep "error:"`
+			echo "$trydelete"
 			echo
+			if [ -n "$trydelete" ]
+				then
+				echo "force delete failed!"
+				exit -1
+			else
+				echo "force delete succeeded!"
+				echo
+			fi
 		fi
+	else
+		echo "delete succeeded!"
+		echo
 	fi
 else
-	echo "delete succeeded!"
-	echo
+	echo "branch does not exist. Skipping delete..."
 fi
-
 
 if [ $isAdmin ]; then
 	onremote=`git branch -r | grep "$deleteBranch"`
@@ -167,8 +186,6 @@ if [ $isAdmin ]; then
 	else
 		echo "not on remote"
 	fi
-else
-	echo "\$isAdmin=$isAdmin"
 fi
 
 exit
