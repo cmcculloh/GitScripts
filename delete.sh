@@ -119,21 +119,14 @@ if __branch_exists_local $deleteBranch; then
 		fi
 	fi
 
-
-	trydelete=`git branch -d $deleteBranch 2>&1 | grep "error"`
-	echo "$trydelete"
-	echo
-	if [ -n "$trydelete" ]
+	if ! git branch -d $deleteBranch
 		then
-		echo "Delete failed!"
-		echo "force delete? y (n)"
+		echo ${W}"Delete failed! Would you like to force-delete the branch?  y (n)"${X}
+		echo
 		read forcedelete
-		if [ "$forcedelete" = "y" ]
+		if [ "$forgo cedelete" = "y" ]
 			then
-			trydelete=`git branch -D $deleteBranch 2>&1 | grep "error:"`
-			echo "$trydelete"
-			echo
-			if [ -n "$trydelete" ]
+			if ! git branch -D $deleteBranch
 				then
 				echo "force delete failed!"
 				exit -1
