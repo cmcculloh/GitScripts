@@ -8,10 +8,6 @@
 #	first parameter when using this script.
 #	description@
 #
-#	@notes
-#	-
-#	notes@
-#
 #	@examples
 #	1) push
 #	   # pushes current branch
@@ -54,10 +50,24 @@ if ! __set_remote; then
 	exit 1
 fi
 
-echo ${Q}"Would you like to push ${B}\`${cb}\`${Q} to ${COL_GREEN}${_remote}${Q}? y (n)"${X}
-read YorN
+# setup default answers
+if [ "$pushanswer" == "y" ] || [ "$pushanswer" == "Y" ]; 	then
+	defO=" (y) n"
+	defA="y"
+else
+	defO=" y (n)"
+	defA="n"
+fi
+
+echo ${Q}"Would you like to push ${B}\`${cb}\`${Q} to ${COL_GREEN}${_remote}${Q}?${defO}"${X}
+read yn
+
+if [ -z "$yn" ]; then
+	yn=$defA
+fi
+
 echo
-if [ "$YorN" == "y" ] || [ "$YorN" == "Y" ]; then
+if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
 	if [ -n "$_remote" ]; then
 		echo
 		echo "Now pushing to:${X} ${COL_GREEN} ${_remote} ${X}"

@@ -14,6 +14,10 @@
 ## */
 
 
+# Default answers
+export clearscreenanswer="n"
+export pushanswer="y"
+
 # Bash colors
 export CFG_NORM=""
 export CFG_BRIGHT=""
