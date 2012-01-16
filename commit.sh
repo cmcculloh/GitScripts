@@ -142,13 +142,11 @@ echo ${O}${H2HL}${X}
 echo
 
 # wrap up...
-__is_branch_protected --push "$startingBranch" && isProtected=true
-if [ $isProtected ] && [ ! $isAdmin ]; then
-	echo ${E}"  The branch \`${startingBranch}\` is protected and cannot be pushed. Aborting...  "${X}
-elif [ ! $isProtected ] || [ $isAdmin ]; then
+if [ $isAdmin ]; then
+	"${gitscripts_path}"push.sh --admin "$startingBranch"
+else
 	"${gitscripts_path}"push.sh "$startingBranch"
 fi
-
 "${gitscripts_path}"clear-screen.sh
 
 exit

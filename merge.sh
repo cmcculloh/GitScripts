@@ -12,7 +12,7 @@
 #
 #	If you are trying to initiate a merge of two branches, this script will do that too. The command
 #	is more intuitive (than "git merge") because it uses "into" to clearly distinguish merge direction.
-#	
+#
 #	There are some helpful safeties included as well. Referenced branches
 #	are checked for existence before the script gets too far along, protected branches are checked,
 #	and merge conflicts are determined after the merge. If merge conflicts should arise, the
@@ -164,10 +164,9 @@ echo
 echo
 
 # wrapping up...
-__is_branch_protected --push "$startingBranch" && isProtected=true
-if [ $isProtected ] && [ ! $isAdmin ]; then
-	echo ${E}"  The branch \`${startingBranch}\` is protected and cannot be pushed. Aborting...  "${X}
-elif [ ! $isProtected ] || [ $isAdmin ]; then
+if [ $isAdmin ]; then
+	"${gitscripts_path}"push.sh --admin "$baseBranch"
+else
 	"${gitscripts_path}"push.sh "$baseBranch"
 fi
 

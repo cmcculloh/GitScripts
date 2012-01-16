@@ -27,11 +27,19 @@ $loadfuncs
 # reset styles
 echo ${X}
 
+# parse params
+numArgs=$#
+if (( numArgs > 0 && numArgs < 3 )); then
+	until [ -z "$1" ]; do
+		[ "$1" = "--admin" ] && [ "$ADMIN" = "true" ] && isAdmin=true
+		! echo "$1" | egrep -q "^-" && branch="$1"
+		shift
+	done
+fi
+
 # set pushing branch if specified, otherwise...
-if [ -n "$1" ]; then
-	if __branch_exists_local "$1"; then
-		cb="$1"
-	else
+if [ -n "$branch" ]; then
+	if ! __branch_exists_local "$branch"; then
 		echo ${E}"  The branch \`${1}\` does not exist locally! Aborting...  "${X}
 		exit 1
 	fi
@@ -39,19 +47,26 @@ if [ -n "$1" ]; then
 # ...grab current branch and validate
 else
 	cb=$(__parse_git_branch)
-	[ $cb ] || {
+	[ $cb ] && { branch="$cb"; } || {
 		echo ${E}"  Could not determine current branch!  "${X}
 		exit 1
 	}
 fi
 
+# check for protected branches
+if __is_branch_protected --push "$branch" && [ ! $isAdmin ]; then
+	echo "  ${W}WARNING:${X} Pushing to ${B}\`${branch}\`${X} is not allowed. Aborting..."
+	exit 1
+fi
+
+# a remote is required to push to
 if ! __set_remote; then
 	echo ${E}"  Aborting...  "${X}
 	exit 1
 fi
 
 # setup default answers
-if [ "$pushanswer" == "y" ] || [ "$pushanswer" == "Y" ]; 	then
+if [ "$pushanswer" == "y" ] || [ "$pushanswer" == "Y" ]; then
 	defO=" (y) n"
 	defA="y"
 else
