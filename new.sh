@@ -45,7 +45,7 @@ if [ -z "$1" ]; then
 	exit 1
 
 #no reason to continue if user is trying to create a branch that already exists
-elif __branch_exists $1; then
+elif __branch_exists_local "$1"; then
 	echo
 	echo ${E}"  Branch \`$1\` already exists! Aborting...  "${X}
 	exit 1
@@ -58,10 +58,10 @@ currentBranch=$(__parse_git_branch)
 #user may specify a different base branch
 if [ -n "$2" ] && [ "$2" == "from" ]; then
 	if [ -n "$3" ] && __branch_exists "$3"; then
-		startingBranch=$3
+		startingBranch="$3"
 	else
 		echo
-		echo ${E}"  The base branch specified ($3) does not exist. Aborting...  "${X}
+		echo ${E}"  The specified base branch \`$3\` does not exist. Aborting...  "${X}
 		exit 1
 	fi
 fi
@@ -181,7 +181,7 @@ if [ "$startingBranch" = "master" ]; then
 		echo
 		echo
 		echo "$ git pull ${_remote} master"
-		git pull $_remote master
+		git pull "$_remote" master
 		echo ${O}
 		echo
 	fi
@@ -189,7 +189,7 @@ if [ "$startingBranch" = "master" ]; then
 	echo "$ git checkout -b $1"
 	git checkout -b "$1"
 	echo ${O}${H2HL}${X}
-	git config branch.$1.remote $_remote
+	git config branch.$1.remote "$_remote"
 	git config branch.$1.merge refs/heads/$1
 else
 	echo
