@@ -36,7 +36,6 @@ if (( numArgs > 0 && numArgs < 3 )); then
 		shift
 	done
 fi
-
 # set pushing branch if specified, otherwise...
 if [ -n "$branch" ]; then
 	if ! __branch_exists_local "$branch"; then
@@ -52,6 +51,7 @@ else
 		exit 1
 	}
 fi
+echo "$isAdmin $branch"; exit
 
 # check for protected branches
 if __is_branch_protected --push "$branch" && [ ! $isAdmin ]; then
@@ -74,7 +74,7 @@ else
 	defA="n"
 fi
 
-echo ${Q}"Would you like to push ${B}\`${cb}\`${Q} to ${COL_GREEN}${_remote}${Q}?${defO}"${X}
+echo ${Q}"Would you like to push ${B}\`${branch}\`${Q} to ${COL_GREEN}${_remote}${Q}?${defO}"${X}
 read yn
 
 if [ -z "$yn" ]; then
@@ -87,8 +87,8 @@ if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
 		echo
 		echo "Now pushing to:${X} ${COL_GREEN} ${_remote} ${X}"
 		echo ${O}${H2HL}
-		echo "$ git push ${_remote} ${cb}"
-		git push "${_remote}" "${cb}"
+		echo "$ git push ${_remote} ${branch}"
+		git push "${_remote}" "${branch}"
 		echo ${O}${H2HL}${X}
 		echo
 	else

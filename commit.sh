@@ -125,7 +125,7 @@ echo
 echo
 echo "Committing and displaying branch changes..."
 echo ${O}${H2HL}
-echo "$ git commit -q -m \"($startingBranch) $1\" $flag"
+echo "$ git commit -q -m \"(${startingBranch}) $1\" $flag"
 git commit -q -m "(${startingBranch}) $1" $flag
 echo ${O}
 echo
