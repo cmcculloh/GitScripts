@@ -104,7 +104,7 @@ fi
 # do the merge
 echo
 echo ${H1}${H1HL}
-echo "  Beginning merge from ${B}\`${mergeBranch}\`${H1} into ${B}\`${baseBranch}\`${H1}  "
+echo "  Beginning merge from ${H1B}\`${mergeBranch}\`${H1} into ${H1B}\`${baseBranch}\`${H1}  "
 echo ${H1HL}${X}
 echo
 echo
