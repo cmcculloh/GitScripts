@@ -13,7 +13,8 @@
 #	notes@
 ## */
 
-# Colors
+
+# Bash colors
 export CFG_NORM=""
 export CFG_BRIGHT=""
 export CFG_DIM=""
