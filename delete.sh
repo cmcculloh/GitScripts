@@ -106,19 +106,18 @@ fi
 if __branch_exists_local $deleteBranch; then
 
 
-	# TODO: determine if your local copy is behind remote
-
-	# if [ $behind ]; then
-	# 	echo
-	# 	echo "${W}Your local copy of this $deleteBranch"
-	# 	echo "is behind the remote. Continue anyways? (y) n${X}"
-	# 	read yn
-	# 	if [ "$yn" != "y" ]; then
-	# 		echo "Aborting delete of $deleteBranch"
-	# 		exit 1
-	# 	fi
-	# fi
-
+	#Determine if your local copy is behind remote
+	isbehind=`git branch --abbrev=7 | grep "$deleteBranch" | grep "\[behind\ [0-9]*\]"
+	if [ $behind ]; then
+		echo
+		echo "${W}Your local copy of this $deleteBranch"
+		echo "is behind the remote. Continue anyways? (y) n${X}"
+		read yn
+		if [ "$yn" != "y" ]; then
+			echo "Aborting delete of $deleteBranch"
+			exit 1
+		fi
+	fi
 
 
 	trydelete=`git branch -d $deleteBranch 2>&1 | grep "error"`
@@ -144,11 +143,11 @@ if __branch_exists_local $deleteBranch; then
 			fi
 		fi
 	else
-		echo "delete succeeded!"
+		echo "Delete succeeded!"
 		echo
 	fi
 else
-	echo "branch does not exist. Skipping delete..."
+	echo "Branch does not exist. Skipping delete..."
 fi
 
 if [ $isAdmin ]; then
