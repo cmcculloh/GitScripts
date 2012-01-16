@@ -13,7 +13,34 @@
 #	notes@
 ## */
 
-# Colors
+
+# git config colors
+git config --unset --global color.status.added
+git config --unset --global color.status.branch
+git config --unset --global color.status.changed
+git config --unset --global color.status.header
+git config --unset --global color.status.nobranch
+git config --unset --global color.status.untracked
+# git config --unset --global color.status.updated
+
+# git branch
+git config --unset --global color.branch.current
+git config --unset --global color.branch.local
+# git config --unset --global color.branch.plain
+git config --unset --global color.branch.remotereen
+
+# git diff
+# git config --unset --global color.diff.commit
+# git config --unset --global color.diff.frag
+# git config --unset --global color.diff.func
+# git config --unset --global color.diff.meta
+git config --unset --global color.diff.new
+git config --unset --global color.diff.old
+# git config --unset --global color.diff.plain
+git config --unset --global color.diff.whitespace
+
+
+# Bash colors
 export CFG_NORM=""
 export CFG_BRIGHT=""
 export CFG_DIM=""
