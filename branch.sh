@@ -4,14 +4,13 @@
 #
 #	@description
 #	This is a handy tool to filter local and/or remote branch names in your repository.
-#	It shows all branches as a menu and allows you to choose the branch by index.
-#	Default behavior is to show BOTH local and remote branches. To filter further, use
-#	one of the options below
+#	It leverages the __get_branch function to let the user choose a branch. For more
+#	information on that part of the process, @see functions/5000.get_branch.sh.
 #	description@
 #
 #	@options
-#	-c, --checkout  Prompt user to checkout branch after selecting it.
 #	-l, --local     Show only local branches.
+#	-q, --quiet     Do not show the informational message containing search query.
 #	-r, --remote    Show only remote branches.
 #	options@
 #
@@ -28,56 +27,32 @@
 #	examples@
 #
 #	@dependencies
-#	functions/0300.menu.sh
+#	*checkout.sh
+#	function/5000.get_branch.sh
 #	dependencies@
 ## */
 $loadfuncs
 
+
 echo ${X}
 
-# parse params
-numArgs=$#
-flag="-a"
-if (( numArgs > 0 && numArgs < 3 )); then
-	until [ -z "$1" ]; do
-		{ [ "$1" = "-l" ] || [ "$1" = "--local" ]; } && getLocal=true
-		{ [ "$1" = "-r" ] || [ "$1" = "--remote" ]; } && getRemote=true
-		! echo "$1" | egrep -q "^-" && search="$1"
-		shift
-	done
+# send params through to __get_branch
+__get_branch $@
 
-	if [ $getLocal ] && [ ! $getRemote ]; then
-		flag=""
-	elif [ $getRemote ] && [ ! $getLocal ]; then
-		flag="-r"
-	fi
-fi
-
-# grab and parse meta from branches
-branches=$(git branch $flag | grep "$search" | sed 's/*/ /' | sed 's/remotes\///' | awk '{ if ($0 !~ /.+ -> .+/) print; }');
-
-# generate menu
-[ -n "$branches" ] && __menu "$branches" || {
-	echo ${O}"No branches found!"${X}
+# if no selection was made or no branch could be found, exit.
+if [ ! $_branch_selection ]; then
+	echo ${E}"  Unable to acquire a branch name. Aborting...  "${X}
 	exit 1
-}
-
-# process selection
-if [ $_menu_selection ]; then
-	# gather remotes to remove the name from the branch before checking it out
-	remotes=$(git remote)
-	branch="$_menu_selection"
-	for remote in $remotes; do
-		branch=$(echo "$branch" | sed "s/${remote}\///")
-	done
-
-	echo
-	echo ${Q}"  Checkout ${B}\`${branch}\`${Q}? y (n)  "${X}
-	read yn
-	if [ "$yn" = "y" ] || [ "$yn" = "Y" ]; then
-		echo
-		"${gitscripts_path}"checkout.sh "$branch"
-	fi
 fi
+
+# prompt to checkout branch
+echo
+echo ${Q}"  ${A}Checkout${X} ${B}\`${_branch_selection}\`${Q}? y (n)  "${X}
+read yn
+if [ "$yn" = "y" ] || [ "$yn" = "Y" ]; then
+	echo
+	"${gitscripts_path}"checkout.sh "$_branch_selection"
+fi
+
 
 exit

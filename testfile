@@ -1,3 +1,0 @@
-#!/bin/bash
-
-git branch -v --abbrev=7
