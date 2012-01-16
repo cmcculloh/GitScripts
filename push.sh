@@ -8,6 +8,10 @@
 #	first parameter when using this script.
 #	description@
 #
+#	@options
+#	-q, --quiet	Suppress the "Pushing not allowed" warning message and silently exit.
+#	options@
+#
 #	@examples
 #	1) push
 #	   # pushes current branch
@@ -32,17 +36,19 @@ numArgs=$#
 if (( numArgs > 0 && numArgs < 3 )); then
 	until [ -z "$1" ]; do
 		[ "$1" = "--admin" ] && [ "$ADMIN" = "true" ] && isAdmin=true
+		{ [ "$1" = "-q" ] ||  [ "$1" = "--quiet" ]; } && isQuiet=true
 		! echo "$1" | egrep -q "^-" && branch="$1"
 		shift
 	done
 fi
+
+# setup FAILURE conditions
 # set pushing branch if specified, otherwise...
 if [ -n "$branch" ]; then
 	if ! __branch_exists_local "$branch"; then
 		echo ${E}"  The branch \`${1}\` does not exist locally! Aborting...  "${X}
 		exit 1
 	fi
-
 # ...grab current branch and validate
 else
 	cb=$(__parse_git_branch)
@@ -51,18 +57,17 @@ else
 		exit 1
 	}
 fi
-
 # check for protected branches
 if __is_branch_protected --push "$branch" && [ ! $isAdmin ]; then
-	echo "  ${W}WARNING:${X} Pushing to ${B}\`${branch}\`${X} is not allowed. Aborting..."
+	[ ! $isQuiet ] && echo "  ${W}WARNING:${X} Pushing to ${B}\`${branch}\`${X} is not allowed. Aborting..."
 	exit 1
 fi
-
 # a remote is required to push to
 if ! __set_remote; then
 	echo ${E}"  Aborting...  "${X}
 	exit 1
 fi
+
 
 # setup default answers
 if [ "$pushanswer" == "y" ] || [ "$pushanswer" == "Y" ]; then
