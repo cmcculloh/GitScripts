@@ -51,7 +51,6 @@ else
 		exit 1
 	}
 fi
-echo "$isAdmin $branch"; exit
 
 # check for protected branches
 if __is_branch_protected --push "$branch" && [ ! $isAdmin ]; then
