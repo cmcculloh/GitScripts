@@ -84,9 +84,9 @@ function __parse_git_branch_state {
 	fi
 
 	if [ $noremote ]; then
-		bits="${bits} ${X}${STYLE_NOREMOTE} - (no remote) ${X}"
+		bits="${bits} ${X}(no remote) ${X}"
 	else
-		bits="${bits} ${X}${STYLE_REMOTE} - (everything good) ${X}"
+		bits="${bits} ${X}(everything good) ${X}"
 	fi
 
 	echo "$bits"
