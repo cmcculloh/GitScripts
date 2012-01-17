@@ -154,13 +154,13 @@ case $decision in
 
 esac
 
-echo
-echo
-echo "Configuring remotes, if any..."
-__set_remote
-
 
 if [ "$startingBranch" = "master" ]; then
+	echo
+	echo
+	echo "Configuring remotes, if any..."
+	__set_remote
+
 	echo
 	echo
 	echo "This branches master to create a new branch named ${B}\`$1\`${X}"
@@ -171,7 +171,7 @@ if [ "$startingBranch" = "master" ]; then
 	# only checkout master if it isn't already
 	if [ "$currentBranch" != "master" ]; then
 		echo "$ git checkout master"
-		git checkout master
+		git checkout ${_remote}/master master
 		echo ${O}
 		echo
 	fi

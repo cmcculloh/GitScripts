@@ -68,6 +68,10 @@ if ! __set_remote; then
 	exit 1
 fi
 
+if [ ! ${_remote} ]
+	then
+	exit 1
+fi
 
 # setup default answers
 if [ "$pushanswer" == "y" ] || [ "$pushanswer" == "Y" ]; then
@@ -98,6 +102,17 @@ if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
 	else
 		echo ${E}"  No remote could be found. Push aborted.  "${X}
 		exit 1
+	fi
+fi
+
+hasRemote=$(git config branch.$branch.remote 2> /dev/null)
+if [ -z "$hasRemote" ]
+	then
+	echo "Setup remote tracking of ${_remote} for $branch? (y) n"
+	read yn
+	if [ -z "$yn" ] || [ "$yn" = "y" ]
+		then
+		git branch --set-upstream $branch $_remote/$branch
 	fi
 fi
 
