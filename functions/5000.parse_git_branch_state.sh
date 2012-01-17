@@ -45,7 +45,7 @@ function __parse_git_branch_state {
 	__parse_git_status renamed 		&& local renamed=true
 	__parse_git_status staged 		&& local staged=true
 	__parse_git_status untracked	&& local untracked=true
-	__parse_git_status remote		|| local noremote=true
+	__parse_git_status remote		&& local noremote=true
 	bits=
 
 

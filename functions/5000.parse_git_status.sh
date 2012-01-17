@@ -30,6 +30,7 @@
 #
 #	@dependencies
 #	functions/0200.gslog.sh
+#	functions/1000.parse_git_branch.sh
 #	dependencies@
 ## */
 function __parse_git_status {
@@ -70,7 +71,13 @@ function __parse_git_status {
 			searchstr="Untracked files";;
 
 		"remote")
-			return git config branch.$(__parse_git_branch).remote;;
+			hasremote=$(git config branch.$(__parse_git_branch).remote)
+			if [ -z "$hasremote" ]; then
+				return
+			else
+				return 1
+			fi
+			;;
 
 		*)
 			__gslog "__parse_git_status: Invalid parameter given  <$1>"
