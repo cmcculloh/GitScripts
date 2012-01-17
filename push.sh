@@ -105,4 +105,15 @@ if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
 	fi
 fi
 
+hasRemote=$(git config branch.$branch.remote 2> /dev/null)
+if [ -z "$hasRemote" ]
+	then
+	echo "Setup remote tracking of ${_remote} for this branch? (y) n"
+	read yn
+	if [ -z "$yn" ] || [ "$yn" = "y" ]
+		then
+		git branch --set-upstream $currbranch $_remote/$currbranch
+	fi
+fi
+
 exit
