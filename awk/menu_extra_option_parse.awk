@@ -1,8 +1,3 @@
-BEGIN {
-	if (ndxLen !~ /[[:digit:]]+/) {
-		ndxLen = 3
-	}
-}
 {
 	# expected input is of the format :index:value
 	if (match($0, /^:[[:alnum:]]+:/) == 1) {

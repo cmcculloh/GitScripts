@@ -1,6 +1,8 @@
 ## /* @function
 #	@usage __menu [options] <list> [extra-list]
 #
+#	@output true
+#
 #	@vars
 #	$_menu_selection
 #	vars@
@@ -42,10 +44,24 @@
 #
 #	@dependencies
 #	functions/0200.gslog.sh
+#	functions/0400.in_array.sh
 #	dependencies@
+#
+#	@file functions/0300.menu.sh
 ## */
 
 __menu() {
+	local extraList
+	local i
+	local index
+	local item
+	local items
+	local j
+	local list
+	local opt
+	local pair
+	local prompt
+
 	numArgs=$#
 	if (( numArgs > 0 && numArgs < 4 )); then
 		until [ -z "$1" ]; do
@@ -66,18 +82,17 @@ __menu() {
 	_menu_selection=""
 
 	# check for custom message
-	msg="Please make a selection (or press Enter to abort)"
+	local msg="Please make a selection (or press Enter to abort)"
 	if [ -n "$prompt" ]; then
 		msg="$prompt"
 	fi
 
 	# build menu
-	local items=( $list )
+	items=( $list )
 	echo ${STYLE_MENU_HL}${H2HL}${X}
 	echo ${STYLE_MENU_HEADER}"  $msg  "${X}
 	echo ${STYLE_MENU_HL}${H2HL}${X}
-	for (( i = 1 ; i <= ${#items[@]} ; i++ ))
-		do
+	for (( i = 1 ; i <= ${#items[@]} ; i++ )); do
 		j=$(( i - 1 ))
 		item="${items[$j]}"
 
@@ -96,40 +111,50 @@ __menu() {
 	# If extra list is given, parse
 	if [ -n "$extraList" ]; then
 		declare -a extraItems
+		declare -a ndxes
+		declare -a vals
 		i=0
 		for pair in $extraList; do
 			extraItems[$i]=$(echo "$pair" | awk -f "${gitscripts_awk_path}menu_extra_option_parse.awk")
 			# echo "${extraItems[$i]}"
-			ndx=$(echo "${extraItems[$i]}" | cut -f 1 -d" ")
-			val=$(echo "${extraItems[$i]}" | cut -f 2- -d" ")
+			ndxes[$i]=$(echo "${extraItems[$i]}" | cut -f 1 -d" ")
+			vals[$i]=$(echo "${extraItems[$i]}" | cut -f 2- -d" ")
 
+			# printf was not working when providing the field width specifier. Scripts that call this
+			# function are most likely getting called as subprocesses, which have some leading/trailing
+			# whitespace removed when output to the parent script. The fix below seems to work, however.
 			echo -n ${STYLE_MENU_INDEX}
-			echo | awk -v ndx="$ndx" '{ printf("  %3s:",ndx); }'
-			echo ${STYLE_MENU_OPTION}"  ${val}"${X}
-			#echo "    ${STYLE_MENU_INDEX}${index}:${X}  ${STYLE_MENU_OPTION}${val}${X}"
+			echo | awk -v ndx="${ndxes[$i]}" '{ printf("  %3s:",ndx); }'
+			echo ${STYLE_MENU_OPTION}"  ${vals[$i]}"${X}
 			(( i++ ))
 		done
 		echo ${STYLE_MENU_HL}${H2HL}${X}
 	fi
-	return 0
 
 	echo -n ${STYLE_MENU_PROMPT}"  $msg:  "${X}
-	read selection
+	read opt
 
 	# validate response
-	if [ -z "$selection" ]; then
+	if [ -z "$opt" ]; then
 		echo
 		echo ${E}"  No selection made. Aborting...  "${X}
 		return 0
-	else
-		if echo $selection | egrep -q '^[[:digit:]]+$'; then
-			(( selection-- ))
-			_menu_selection=${items[$selection]}
-		else
-			echo
-			echo ${E}"  Invalid selection! Aborting...  "${X}
-			return 1
+
+	elif [ -n "$extraList" ] && __in_array "$opt" "${ndxes[@]}"; then
+		_menu_selection="${vals[${_in_array_index}]}"
+
+	elif echo "$opt" | egrep -q '^[[:digit:]]+$'; then
+		(( optndx = opt - 1 ))
+		if [ -n "${items[$optndx]}" ]; then
+			_menu_selection="${items[$optndx]}"
 		fi
+	fi
+
+	# if the export variable hasn't been set, there was a problem
+	if [ -z "$_menu_selection" ]; then
+		echo
+		echo ${E}"  Invalid selection! Aborting...  "${X}
+		return 1
 	fi
 
 	#wrap up...
