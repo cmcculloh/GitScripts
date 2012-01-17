@@ -68,6 +68,10 @@ if ! __set_remote; then
 	exit 1
 fi
 
+if [ ! ${_remote} ]
+	then
+	exit 1
+fi
 
 # setup default answers
 if [ "$pushanswer" == "y" ] || [ "$pushanswer" == "Y" ]; then
