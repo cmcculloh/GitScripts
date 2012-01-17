@@ -3,62 +3,64 @@
 #	@usage delete <branch-name>
 #
 #	@description
-#
+#	This script isa  wrapper for removing branches locally. Removing them locally requires a bit of
+#	magic, which can be determined by observing the source code carefully. This obfuscation is
+#	included to prevent team members without sufficient access from deleting important remote
+#	branches.
 #	description@
 #
 #	@notes
 #	-
 #	notes@
 #
-#	@examples
-#	1)
-#	examples@
-#
 #	@dependencies
 #	checkout.sh
 #	functions/0100.bad_usage.sh
+#	functions/5000.branch_exists_local.sh
+#	functions/5000.branch_exists_remote.sh
+#	functions/5000.parse_git_branch.sh
 #	dependencies@
+#
+#	@file delete.sh
 ## */
+$loadfuncs
 
 
-if [ -z "$1" ]; then
+echo ${X}
+
+# parse arguments
+numArgs=$#
+if (( numArgs > 0 && numArgs < 3 )); then
+	until [ -z "$1" ]; do
+		if [ "$1" == "--admin" ] && [ $ADMIN ] && isAdmin=true
+		! echo "$1" | egrep -q "^-" && deleteBranch="$1"
+		shift
+	done
+fi
+
+# make sure branch name was included
+if [ -z "$deleteBranch" ]; then
 	__bad_usage delete "Branch name to delete is required as the only parameter."
 	exit 1
 else
-	deleteBranch=$1
-	$loadfuncs
+	__branch_exists_local "$deleteBranch" && isLocal=true
+	__branch_exists_remote "$deleteBranch" && isRemote=true
+	[ ! $isLocal ] && [ ! $isRemote ] && {
+		echo ${E}"  The branch \`${deleteBranch}\` exists neither locally or remotely! Aborting...  "${X}
+		exit 1
+	}
 fi
 
-numArgs=$#
-# parse arguments
-if (( numArgs > 0 && numArgs < 4 )); then
-	until [ -z "$1" ]; do
-		if [ "$1" == "--admin" ] && [ $ADMIN ];then
-			isAdmin=true
-			echo "set isAdmin to true"
-		fi
-		! echo "$1" | egrep -q "^-" && msg="$1"
-		shift
-	done
-#else
-#	__bad_usage commit "Invalid number of parameters."
-#	exit 1
-fi
 
-echo
 echo ${H1}${H1HL}
-echo "  Deleting branch: ${H1B}\`$deleteBranch\`${H1}  "
+echo "  Deleting branch: ${H1B}\`${deleteBranch}\`${H1}  "
 echo ${H1HL}${X}
 echo
 echo
-checkbranch=`git status | grep "$deleteBranch"`
-echo "$checkbranch"
 
-if [ -n "$checkbranch" ]
-	then
-	echo
-	echo
-	echo "You are currently on branch \`$deleteBranch\`. You cannot delete a branch you are on."
+# check to see if already on branch to delete
+if [ -n "$(__parse_git_branch)" ]; then
+	echo "You are currently on branch ${B}\`$deleteBranch\`${X} so it cannot currently be deleted."
 	echo "(1) Checkout master"
 	echo "2 Checkout another branch"
 	echo "3 Abort"
@@ -107,7 +109,7 @@ if __branch_exists_local $deleteBranch; then
 
 
 	#Determine if your local copy is behind remote
-	isbehind=`git branch --abbrev=7 | grep "$deleteBranch" | grep "\[behind\ [0-9]*\]"
+	isbehind=$(git branch -v --abbrev=7 | grep "$deleteBranch" | grep "\[behind\ [0-9]*\]")
 	if [ $behind ]; then
 		echo
 		echo "${W}Your local copy of this $deleteBranch"
