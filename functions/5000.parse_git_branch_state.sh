@@ -45,6 +45,7 @@ function __parse_git_branch_state {
 	__parse_git_status renamed 		&& local renamed=true
 	__parse_git_status staged 		&& local staged=true
 	__parse_git_status untracked	&& local untracked=true
+	__parse_git_status remote		|| local noremote=true
 	bits=
 
 
@@ -80,6 +81,10 @@ function __parse_git_branch_state {
 
 	if [ $behind ]; then
 		bits="${bits} ${X}${STYLE_BEHIND} - (behind) ${X}"
+	fi
+
+	if [ $noremote ]; then
+		bits="${bits} ${X}${STYLE_NOREMOTE} - (no remote) ${X}"
 	fi
 
 	echo "$bits"

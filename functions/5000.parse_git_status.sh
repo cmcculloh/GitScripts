@@ -38,6 +38,8 @@ function __parse_git_status {
 		return 1
 	fi
 
+	echo "here"
+
 	# check for given status
 	case $1 in
 		"ahead")
@@ -68,6 +70,10 @@ function __parse_git_status {
 
 		"untracked")
 			searchstr="Untracked files";;
+
+		"remote")
+			echo "here"
+			return git config branch.$(__parse_git_branch).remote
 
 		*)
 			__gslog "__parse_git_status: Invalid parameter given  <$1>"
