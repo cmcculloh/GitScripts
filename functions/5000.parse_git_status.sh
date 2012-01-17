@@ -73,7 +73,7 @@ function __parse_git_status {
 
 		"remote")
 			echo "here"
-			return git config branch.$(__parse_git_branch).remote
+			return git config branch.$(__parse_git_branch).remote;;
 
 		*)
 			__gslog "__parse_git_status: Invalid parameter given  <$1>"
