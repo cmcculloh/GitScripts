@@ -164,9 +164,9 @@ __set_remote
 if [ "$startingBranch" = "master" ]; then
 	echo
 	echo
-	echo "This branches master to create a new branch named ${B}\`$1\`${X}"
+	echo "This branches ${B}\`master\`${X} to create a new branch named ${B}\`$1\`${X}"
 	echo "and then checks out the ${B}\`$1\`${X} branch. We will make sure"
-	echo "to get all updates (if available) to master as well."
+	echo "to get all updates (if available) to ${B}\`master\`${X} as well."
 	echo ${O}${H2HL}
 
 	echo "$ git checkout -b $1 $_remote/master"
