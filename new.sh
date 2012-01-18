@@ -155,12 +155,13 @@ case $decision in
 esac
 
 
-if [ "$startingBranch" = "master" ]; then
-	echo
-	echo
-	echo "Configuring remotes, if any..."
-	__set_remote
+echo
+echo
+echo "Configuring remotes, if any..."
+__set_remote
 
+
+if [ "$startingBranch" = "master" ]; then
 	echo
 	echo
 	echo "This branches master to create a new branch named ${B}\`$1\`${X}"
@@ -168,11 +169,9 @@ if [ "$startingBranch" = "master" ]; then
 	echo "to get all updates (if available) to master as well."
 	echo ${O}${H2HL}
 
-	echo "$ git checkout -b $1"
-	git checkout -b "$1" ${_remote}/master
+	echo "$ git checkout -b $1 $_remote/master"
+	git checkout -b "$1" "$_remote"/master
 	echo ${O}${H2HL}${X}
-	git config branch.$1.remote "$_remote"
-	git config branch.$1.merge refs/heads/$1
 else
 	echo
 	echo
@@ -188,19 +187,8 @@ else
 		echo
 		echo "This branches ${B}\`${startingBranch}\`${X} to create a new branch named ${B}\`$1\`${X}"
 		echo ${O}${H2HL}
-		if [ "$currentBranch" != "$startingBranch" ]; then
-			echo "$ git checkout -b ${1} ${startingBranch}"
-			git checkout -b $1 $startingBranch
-		else
-			echo "$ git branch ${1}"
-			git branch $1
-			echo ${O}
-			echo
-			echo "$ git checkout ${1}"
-			git checkout $1
-		fi
-		git config branch.$1.remote $remote
-		git config branch.$1.merge refs/heads/$1
+		echo "$ git checkout -b ${1} ${startingBranch}"
+		git checkout -b $1 $startingBranch
 		echo ${O}${H2HL}${X}
 	else
 		echo
@@ -209,15 +197,25 @@ else
 	fi
 fi
 
+
+#set up tracking for when the branch later gets pushed
+git config branch.$1.remote $_remote
+git config branch.$1.merge refs/heads/$1
+
+
+# do this later in the push.sh script. Leaving here in case
+# we want a flag that you can set in your config that auto-pushes
+# new branches...
+
 # if a remote exists, push to it.
-if [ -n "$_remote" ]; then
-	echo
-	echo
-	echo "Finally, your new branch will be pushed up to the remote: ${COL_GREEN}${_remote}${COL_NORM}"
-	echo ${O}${H2HL}
-	echo "$ git push ${_remote} ${1}"
-	git push "$_remote" "$1"
-	echo ${O}${H2HL}${X}
-fi
+# if [ -n "$_remote" ]; then
+# 	echo
+# 	echo
+# 	echo "Finally, your new branch will be pushed up to the remote: ${COL_GREEN}${_remote}${COL_NORM}"
+# 	echo ${O}${H2HL}
+# 	echo "$ git push ${_remote} ${1}"
+# 	git push "$_remote" "$1"
+# 	echo ${O}${H2HL}${X}
+# fi
 
 exit
