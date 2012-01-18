@@ -344,7 +344,7 @@ fi
 # Checkout the chosen branch if possible.
 echo "This checks out the ${B}\`$1\`${X} branch."
 echo ${O}${H2HL}
-if [ __branch_exists_local ]; then
+if __branch_exists_local master; then
 	echo "$ git checkout $1"
 	git checkout "$1"
 else
