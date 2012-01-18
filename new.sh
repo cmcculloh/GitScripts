@@ -163,15 +163,15 @@ if [ "$startingBranch" = "master" ]; then
 
 	echo
 	echo
-	echo "This branches master to create a new branch named ${B}\`$1\`${X}"
+	echo "This branches ${B}\`master\`${X} to create a new branch named ${B}\`$1\`${X}"
 	echo "and then checks out the ${B}\`$1\`${X} branch. We will make sure"
-	echo "to get all updates (if available) to master as well."
+	echo "to get all updates (if available) to ${B}\`master\`${X} as well."
 	echo ${O}${H2HL}
 
 	# only checkout master if it isn't already
 	if [ "$currentBranch" != "master" ]; then
 		echo "$ git checkout master"
-		git checkout ${_remote}/master master
+		git checkout master
 		echo ${O}
 		echo
 	fi
