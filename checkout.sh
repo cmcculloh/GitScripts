@@ -342,7 +342,15 @@ fi
 
 
 # Checkout the chosen branch if possible.
-${gitscripts_path}checkout.sh $1
+echo "This checks out the ${B}\`$1\`${X} branch."
+echo ${O}${H2HL}
+if [ __branch_exists_local ]; then
+	echo "$ git checkout $1"
+	git checkout "$1"
+else
+	${gitscripts_path}new.sh "$1"
+fi
+echo ${O}${H2HL}${X}
 
 
 # Get updated changes from the remote (there should rarely be any for personal branches)
