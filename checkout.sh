@@ -342,11 +342,7 @@ fi
 
 
 # Checkout the chosen branch if possible.
-echo "This checks out the ${B}\`$1\`${X} branch."
-echo ${O}${H2HL}
-echo "$ git checkout $1"
-git checkout "$1"
-echo ${O}${H2HL}${X}
+${gitscripts_path}checkout.sh $1
 
 
 # Get updated changes from the remote (there should rarely be any for personal branches)
