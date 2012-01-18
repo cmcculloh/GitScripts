@@ -168,26 +168,8 @@ if [ "$startingBranch" = "master" ]; then
 	echo "to get all updates (if available) to master as well."
 	echo ${O}${H2HL}
 
-	# only checkout master if it isn't already
-	if [ "$currentBranch" != "master" ]; then
-		echo "$ git checkout master"
-		git checkout ${_remote}/master master
-		echo ${O}
-		echo
-	fi
-
-	if [ -n "$_remote" ]; then
-		echo "Remote: ${COL_GREEN}${_remote}${O}"
-		echo
-		echo
-		echo "$ git pull ${_remote} master"
-		git pull "$_remote" master
-		echo ${O}
-		echo
-	fi
-
 	echo "$ git checkout -b $1"
-	git checkout -b "$1"
+	git checkout -b "$1" ${_remote}/master
 	echo ${O}${H2HL}${X}
 	git config branch.$1.remote "$_remote"
 	git config branch.$1.merge refs/heads/$1
