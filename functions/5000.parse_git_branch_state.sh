@@ -37,53 +37,43 @@
 #	dependencies@
 ## */
 function __parse_git_branch_state {
-	__parse_git_status ahead 		&& local ahead=true
-	__parse_git_status behind 		&& local behind=true
-	__parse_git_status deleted 		&& local deleted=true
-	__parse_git_status modified 	&& local modified=true
-	__parse_git_status newfile 		&& local newfile=true
-	__parse_git_status renamed 		&& local renamed=true
-	__parse_git_status staged 		&& local staged=true
-	__parse_git_status untracked	&& local untracked=true
-	__parse_git_status remote		&& local noremote=true
-	bits=
+	__parse_git_status all
+	local bits=
 
-
-	if [ $staged ]; then
+	if [ $_pgs_staged ]; then
 		bits="${bits} ${STYLE_STAGED} ++ (staged) ${X}"
 
-		if [ $newfile ]; then
+		# these two don't HAVE to be here, but we know they won't be triggered unless
+		# staged state is triggered. saves a bit of processing power.
+		if [ $_pgs_newfile ]; then
 			bits="${bits} ${STYLE_NEWFILE} * (new files) ${X}"
 		fi
-		if [ $renamed ]; then
+		if [ $_pgs_renamed ]; then
 			bits="${bits} ${STYLE_RENAMEDFILE} > (renamed) ${X}"
-		fi
-		if [ $modified ]; then
-			bits="${bits} ${STYLE_DIRTY} +- (dirty) ${X}"
 		fi
 	fi
 
-	if [ $deleted ]; then
+	if [ $_pgs_deleted ]; then
 		bits="${bits} ${X}${STYLE_DELETEDFILE} !* (deleted files) ${X}"
 	fi
 
-	if [ $modified ] && [ ! $staged ]; then
+	if [ $_pgs_modified ]; then
 		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified) ${X}"
 	fi
 
-	if [ $untracked ]; then
+	if [ $_pgs_untracked ]; then
 		bits="${bits} ${X}${STYLE_UNTRACKED} ? (untracked) ${X}"
 	fi
 
-	if [ $ahead ]; then
+	if [ $_pgs_ahead ]; then
 		bits="${bits} ${X}${STYLE_AHEAD} + (ahead) ${X}"
 	fi
 
-	if [ $behind ]; then
+	if [ $_pgs_behind ]; then
 		bits="${bits} ${X}${STYLE_BEHIND} - (behind) ${X}"
 	fi
 
-	if [ $noremote ]; then
+	if [ "$showremotestatus" = "y" ] && [ ! $_pgs_onremote ]; then
 		bits="${bits} ${X}${STYLE_NO_REMOTE} X> (no remote) ${X}"
 	fi
 
