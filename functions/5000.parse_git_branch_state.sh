@@ -73,7 +73,7 @@ function __parse_git_branch_state {
 		bits="${bits} ${X}${STYLE_BEHIND} - (behind) ${X}"
 	fi
 
-	if [ "$showremotestatus" = "y" ] && [ ! $_pgs_onremote ]; then
+	if [ "$showremotestate" = "y" ] && [ ! $_pgs_onremote ]; then
 		bits="${bits} ${X}${STYLE_NO_REMOTE} X> (no remote) ${X}"
 	fi
 

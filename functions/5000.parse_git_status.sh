@@ -69,7 +69,7 @@ function __parse_git_status {
 
 			# non-grepping statuses
 			_pgs_onremote=
-			[ "$showremotestatus" = "y" ] && [ -n "$(git branch -r --list */$(__parse_git_branch))" ] && _pgs_onremote=true
+			[ "$showremotestate" = "y" ] && [ -n "$(git branch -r --list */$(__parse_git_branch))" ] && _pgs_onremote=true
 			export _pgs_onremote
 
 			# should this be an option?
