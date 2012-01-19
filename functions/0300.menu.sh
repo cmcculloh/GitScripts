@@ -136,8 +136,6 @@ __menu() {
 
 	# validate response
 	if [ -z "$opt" ]; then
-		echo
-		echo ${E}"  No selection made. Aborting...  "${X}
 		return 0
 
 	elif [ -n "$extraList" ] && __in_array "$opt" "${ndxes[@]}"; then
