@@ -1,7 +1,7 @@
 ## /* @function
 #	@usage __get_branch [options] [search-string]
 #
-#	@output on error
+#	@output true
 #
 #	@vars
 #	$_branch_selection
@@ -30,9 +30,9 @@
 #	notes@
 #
 #	@examples
-#	1) _get_branch --local part-of-bran
+#	1) __get_branch --local part-of-bran
 #	   # filters local branches that match "part-of-bran" anywhere in the branch name
-#	2) _get_branch -r
+#	2) __get_branch -r
 #	   # shows ALL remote branches
 #	3) __get_branch -q
 #	   # shows both local and remote branches without displaying informational message before
@@ -42,6 +42,8 @@
 #	@dependencies
 #	functions/0300.menu.sh
 #	dependencies@
+#
+#	@file functions/5000.get_branch.sh
 ## */
 function __get_branch {
 	# declare local vars
@@ -67,7 +69,7 @@ function __get_branch {
 		done
 
 		if [ $getLocal ] && [ ! $getRemote ]; then
-			flag=""
+			flag=
 			listType="local"
 		elif [ $getRemote ] && [ ! $getLocal ]; then
 			flag="-r"
@@ -76,21 +78,22 @@ function __get_branch {
 	fi
 
 	# grab and parse meta from branches
-	[ $search ] && [ ! $isQuiet ] && { echo "Searching ${O}${listType}${X} branches for branch names like: ${STYLE_BRIGHT}${COL_YELLOW}${query}"${X}; echo; }
-	branches=$(git branch $flag | grep "$query" | sed 's/*/ /' | sed 's/remotes\///' | awk '{ if ($0 !~ /.+ -> .+/) print; }')
+	[ $query ] && [ ! $isQuiet ] && { echo "Searching ${O}${listType}${X} branches for branch names like: ${STYLE_BRIGHT}${COL_YELLOW}${query}"${X}; echo; }
+	branchArr=( $(git branch $flag | grep "$query" | sed 's/*/ /' | sed 's/remotes\///' | awk '{ if ($0 !~ /.+ -> .+/) print; }') )
 
-	# generate menu. the "no branches found" message only triggered if an invalid selection is made from __menu or $branches is empty
-	[ -n "$branches" ] && __menu "$branches" || {
-		echo ${O}"No branches found!"${X}
+	# generate menu. the "no branches found" message only triggered if an invalid
+	# selection is made from __menu or $branches is empty
+	[ ${#branchArr[@]} -gt 0 ] && __menu ${branchArr[@]} || {
+		echo ${W}"  No branches found!  "${X}
 		return 1
 	}
 
 	# process selection and export variable
-	[ $_menu_selection ] && {
-		export _branch_selection="$_menu_selection"
+	[ $_menu_sel_value ] && {
+		export _branch_selection="$_menu_sel_value"
 		return 0
 	} || {
-		export _branch_selection=""
+		export _branch_selection=
 		return 1
 	}
 }

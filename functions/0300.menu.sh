@@ -1,5 +1,5 @@
 ## /* @function
-#	@usage __menu [options] <list> [extra-list]
+#	@usage __menu [options] <list-item> [list-item] [list-item] ...
 #
 #	@output true
 #
@@ -9,16 +9,20 @@
 #	vars@
 #
 #	@description
-#	Takes a white-space separated list and outputs each element as a selectable item
-#	in a menu. The message for selecting a menu item can be passed as a parameter as well.
-#	If you require a second list that has user-specified indexes, you can pass it as a
-#	white-space separated list with the following format:
+#	Each parameter is considered a list item in the order in which they are passed.
+#	The script stores each parameter and outputs each element as a selectable item
+#	in a menu. By default, a numeric-based list is generated for each list-item.
+#	If you require a second list that has user-specified indexes (non-numeric), you
+#	can pass them using the following format:
 #
-#		":index1:list item description :index2:list item description ..."
+#		__menu ":key1:list item description" ":key2:list item description ..."
 #
 #	Each index must be contained within colons. The leading colon is used when parsing
 #	parameters, and to ensure the desired index is what will appear in the menu. If this
 #	leading colon isn't provided, the extra-list may get interpreted as the menu prompt!
+#
+#	The message for selecting a menu item can be passed as a parameter as well using
+#	the syntax described below.
 #	description@
 #
 #	@options
@@ -26,15 +30,25 @@
 #	options@
 #
 #	@notes
-#	- If 'list' and/or 'extra-list' have been stored in a variable, be sure to enclose
-#	the variable name in double quotes!
+#	- If you wish to pass an array as a parameter, be sure to enclose the variable name
+#	in double quotes! Otherwise, the contents will not get expanded!
+#	- User-specified indexes using the colon-based format are displayed below any numeric-
+#	based list.
 #	- For custom prompts, do NOT include a trailing colon. It is added automatically.
 #	notes@
 #
 #	@examples
-#	list="bolah lah blah"
+#	list="oolah boolah boo"
 #	msg="this is a message"
-#	__menu "$list" "$msg"
+#	__menu $list --prompt="$msg"
+#
+#	# output of __menu command (snippet) would be
+#	# ...
+#	# 1.  oolah
+#	# 2.  boolah
+#	# 3.  boo
+#	# --------------------------------------------
+#	# this is a message:
 #
 #	echo "You selected: ${_menu_selection}"
 #
@@ -63,7 +77,7 @@ __menu() {
 	local prompt
 
 	numArgs=$#
-	if (( numArgs > 0 && numArgs < 4 )); then
+	if (( numArgs > 0 )); then
 		until [ -z "$1" ]; do
 			echo "$1" | egrep -q "^--prompt=" && prompt=$( echo "$1" | awk '{ print substr($0,10); }' )
 			echo "$1" | egrep -q "^:" && extraItems[${#extraItems[@]}]="$1"
@@ -74,6 +88,7 @@ __menu() {
 
 	if [ ${#items[@]} -eq 0 ] && [ ${#extraItems[@]} -eq 0 ]; then
 		__gslog "__menu: No lists given. Given: $@"
+		echo
 		echo ${E}"  __menu did not detect any list items to display. Aborting...  "${X}
 		return 1
 	fi
@@ -83,14 +98,14 @@ __menu() {
 	export _menu_sel_value=
 
 	# check for custom message
-	local msg="Please make a selection (or press Enter to abort)"
+	local msg="Please make a selection"
 	if [ -n "$prompt" ]; then
 		msg="$prompt"
 	fi
 
 	# build menu
 	echo ${STYLE_MENU_HL}${H2HL}${X}
-	echo ${STYLE_MENU_HEADER}"  $msg  "${X}
+	echo ${STYLE_MENU_HEADER}"  $msg (or press Enter to abort):  "${X}
 	echo ${STYLE_MENU_HL}${H2HL}${X}
 
 	if [ ${#items[@]} -gt 0 ]; then
@@ -134,7 +149,7 @@ __menu() {
 		echo ${STYLE_MENU_HL}${H2HL}${X}
 	fi
 
-	echo -n ${STYLE_MENU_PROMPT}"  $msg:  "${X}
+	echo -n ${STYLE_MENU_PROMPT}"  $msg  (or press Enter to abort):  "${X}
 	read opt
 
 	# validate response
@@ -155,11 +170,15 @@ __menu() {
 			echo ${E}"  Invalid selection! Aborting...  "${X}
 			return 1
 		fi
+
+		echo
+		echo ${X}"  You chose: ${_menu_sel_index}"
+	else
+		echo
+		echo ${X}"  You chose to abort.  "
 	fi
 
 	#wrap up...
-	echo
-	echo ${X}"  You chose: ${_menu_sel_index}"
 	export _menu_sel_index
 	export _menu_sel_value
 
