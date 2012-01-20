@@ -5,25 +5,29 @@
 #
 #	@description
 #	Determine various states of files in your current working tree and your current
-#	repository. Currently supported state_flags are below.
+#	repository. Currently supported <state_flag> values are below.
 #	(see __parse_git_branch_state function definition for how states are determined)
 #
 #	ahead, behind, clean, deleted, modified, newfile, onremote, renamed, staged,
-#	tracking, untracked
+#	*tracking, untracked
 #	description@
 #
 #	@notes
 #	- If no parameter or an invalid parameter is given, the failure is logged and the
 #	the function returns status 1.
-#	- The output of the grep command is intentionally suppressed as this function
+#	- The output of the egrep command is intentionally suppressed as this function
 #	is intended to be used as a boolean in conditional expressions.
+#	- The data parsed is git status with the --short and -b flags included. This
+#	format will remain constant through Git versions and was intended for script
+#	parsing.
 #	notes@
 #
 #	@examples
 #	# ... user makes some changes and attempts to switch branches ...
 #
-#	if __parse_git_status dirty; then
+#	if __parse_git_status modified; then
 #		echo "Are you sure you want to change branches? You have uncommitted changes."
+#		read answer
 #		# ... parse answer and act accordingly ...
 #	fi
 #
@@ -34,6 +38,8 @@
 #	functions/0200.gslog.sh
 #	functions/1000.parse_git_branch.sh
 #	dependencies@
+#
+#	@file functions/5000.parse_git_status.sh
 ## */
 function __parse_git_status {
 	if [ -z "$1" ]; then
@@ -80,11 +86,12 @@ function __parse_git_status {
 			return 0
 			;;
 
+		# the vast majority of states can be grepped directly
 		ahead | behind | deleted | modified | newfile | renamed | staged | untracked)
 			eval "searchstr=$"$1;;
 
 		clean)
-			! git status -sb 2> /dev/null | egrep '^[^#]' 2> /dev/null
+			! git status -sb 2>/dev/null | egrep -q '^[^#]'  2>/dev/null
 			return $?
 			;;
 
@@ -104,63 +111,6 @@ function __parse_git_status {
 			return 1
 			;;
 	esac
-
-	# check for given status
-	# case $1 in
-	# 	"ahead")
-	# 		searchstr="Your branch is ahead of";;
-
-	# 	"all")
-	# 		local i
-	# 		for (( i = 0; i < ${#states[@]}; i++ )); do
-
-
-	# 	"behind")
-	# 		searchstr="Your branch is behind";;
-
-	# 	"clean")
-	# 		searchstr="working directory clean";;
-
-	# 	"deleted")
-	# 		searchstr="deleted:";;
-
-	# 	"modified")
-	# 		# first pattern for older versions of Git
-	# 		searchstr="Changed but not updated|Changes not staged for commit";;
-
-	# 	"newfile")
-	# 		# only returns true if file has been staged
-	# 		searchstr="new file:";;
-
-	# 	# is a version of this branch on the remote?
-	# 	"onremote")
-	# 		# __gslog "git branch -r --list *"$(__parse_git_branch)"* >/dev/null"
-	# 		[ -n "$(git branch -r --list */$(__parse_git_branch))" ]
-	# 		# local cb="$(__parse_git_branch)"
-	# 		# git branch -r --list *"/${cb}" | grep -q "/${cb}"
-	# 		return $?
-	# 		;;
-
-	# 	"renamed")
-	# 		searchstr="renamed:";;
-
-	# 	"staged")
-	# 		searchstr="Changes to be committed";;
-
-	# 	# is the current branch tracking a remote branch?
-	# 	"tracking")
-	# 		git config branch.$(__parse_git_branch).remote >/dev/null
-	# 		return $?
-	# 		;;
-
-	# 	"untracked")
-	# 		searchstr="Untracked files";;
-
-	# 	*)
-	# 		__gslog "__parse_git_status: Invalid parameter given  <$1>"
-	# 		return 1
-	# 		;;
-	# esac
 
 	# use the return value of the grep as the return value of the function
 	git status -sb 2> /dev/null | egrep -q "$searchstr" 2> /dev/null
