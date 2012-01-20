@@ -55,11 +55,13 @@ function __get_branch {
 	local numArgs
 	local query
 
+	_branch_selection=
+
 	# parse params
 	numArgs=$#
 	flag="-a"
 	listType="local and remote"
-	if (( numArgs > 0 && numArgs < 5 )); then
+	if [ $numArgs -gt 0 ]; then
 		until [ -z "$1" ]; do
 			{ [ "$1" = "-l" ] || [ "$1" = "--local" ]; } && getLocal=true
 			{ [ "$1" = "-r" ] || [ "$1" = "--remote" ]; } && getRemote=true
@@ -79,11 +81,21 @@ function __get_branch {
 
 	# grab and parse meta from branches
 	[ $query ] && [ ! $isQuiet ] && { echo "Searching ${O}${listType}${X} branches for branch names like: ${STYLE_BRIGHT}${COL_YELLOW}${query}"${X}; echo; }
-	branchArr=( $(git branch $flag | grep "$query" | sed 's/*/ /' | sed 's/remotes\///' | awk '{ if ($0 !~ /.+ -> .+/) print; }') )
 
+	# case $flag in
+	# 	"-a")
+
+	# 	"-r")
+	# 	*)
+	# branchArr=( `git branch $flag | grep "$query" | sed 's/*/ /' | sed 's/remotes\///' | awk '{ if ($0 !~ /.+ -> .+/) print; }'` )
+	[ $query ] && query=*"$query"*
+	branchArr=( `git branch $flag --list --no-color $query | awk '$0 !~ /.+ -> .+/ { sub(/^(\*|remotes\/)/,""); print; }'` )
+	#branchArr=( `git branch $flag | grep $query | sed 's/*/ /' | sed 's/remotes\///' | awk '{ if ($0 !~ /.+ -> .+/) print; }'` )
+#[ "$flag" == "-a" ] &&
 	# generate menu. the "no branches found" message only triggered if an invalid
 	# selection is made from __menu or $branches is empty
-	[ ${#branchArr[@]} -gt 0 ] && __menu ${branchArr[@]} || {
+
+	[ ${#branchArr[@]} -gt 0 ] && __menu --prompt="I am the prompt" "${branchArr[@]}" || {
 		echo ${W}"  No branches found!  "${X}
 		return 1
 	}
@@ -93,7 +105,7 @@ function __get_branch {
 		export _branch_selection="$_menu_sel_value"
 		return 0
 	} || {
-		export _branch_selection=
+		export _branch_selection
 		return 1
 	}
 }

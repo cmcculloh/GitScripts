@@ -20,13 +20,18 @@
 #	@dependencies
 #	[vars] $gitscripts_log (path to log file)
 #	dependencies@
+#
+#	@file functions/0200.gslog.sh
 ## */
 function __gslog {
-	if [ -n "$1" -a -f "$gitscripts_log" ]; then
+	if [ $# -gt 0 ] && [ -f "$gitscripts_log" ]; then
 		echo >> $gitscripts_log
 		echo "###################################  "$(date)"  ###################################" >> $gitscripts_log
 		echo >> $gitscripts_log
-		echo $1 >> $gitscripts_log
+		until [ -z "$1" ]; do
+			echo "$1" >> $gitscripts_log
+			shift
+		done
 		echo >> $gitscripts_log
 		echo >> $gitscripts_log
 	fi

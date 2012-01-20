@@ -1,7 +1,7 @@
 ## /* @function
 #	@usage __branch_exists_local <branch_name>
 #
-#	@output false
+#	@output on error
 #
 #	@description
 #	Determine if the given branch exists locally.
@@ -22,19 +22,13 @@
 #	#...
 #	examples@
 #
-#	@dependencies
-#	functions/0200.gslog.sh
-#	dependencies@
+#	@file functions/5000.branch_exists_local.sh
 ## */
 function __branch_exists_local {
 	if [ -z "$1" ]; then
-		__gslog "__branch_exists_local: First parameter must be branch name."
+		echo ${E}"  __branch_exists_local: First parameter must be branch name. Nothing given.  "${X}
 		return 1
 	fi
 
-	local locally=$(git branch | grep "$1")
-	if [ -n "$locally" ]; then
-		return 0
-	fi
-	return 1
+	git branch | grep -q "$1" 2>/dev/null
 }

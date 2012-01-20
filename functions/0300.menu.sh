@@ -42,7 +42,7 @@
 #	msg="this is a message"
 #	__menu $list --prompt="$msg"
 #
-#	# output of __menu command (snippet) would be
+#	# output of __menu command (snippet) above would be
 #	# ...
 #	# 1.  oolah
 #	# 2.  boolah
@@ -52,9 +52,30 @@
 #
 #	echo "You selected: ${_menu_selection}"
 #
-#	### ...OR... ###
+#	### ...OR we could add an extra option... ###
 #
-#	__menu "$list" ":N:Show me something new!"
+#	__menu $list ":N:Show me something new!"
+#
+#	### Can be effectively used in conditional scripts as well ###
+#
+#	if __menu $list ":N:Show me something new!"; then
+#	    case $_menu_sel_index in
+#	        1)
+#	            ...
+#
+#	        ...
+#	        # don't forget your custom option!
+#	        N) ...;;
+#
+#	        # the only other success in this case is if the user pressed enter to abort.
+#	        # remember __menu will output "You chose to abort."
+#	        *)
+#	            echo "Exiting..."; exit 0;;
+#		esac
+#	else
+#	    echo "Sorry, your choice was not understood. Exiting..."
+#	    exit 1
+#	fi
 #	examples@
 #
 #	@dependencies
@@ -76,10 +97,9 @@ __menu() {
 	local pair
 	local prompt
 
-	numArgs=$#
-	if (( numArgs > 0 )); then
+	if [ $# -gt 0 ]; then
+		echo "$1" | egrep -q "^--prompt=" && { prompt=$( echo "$1" | awk '{ print substr($0,10); }' ); shift; }
 		until [ -z "$1" ]; do
-			echo "$1" | egrep -q "^--prompt=" && prompt=$( echo "$1" | awk '{ print substr($0,10); }' )
 			echo "$1" | egrep -q "^:" && extraItems[${#extraItems[@]}]="$1"
 			! echo "$1" | egrep -q "^(--prompt|:)" && items[${#items[@]}]="$1"
 			shift
@@ -94,8 +114,8 @@ __menu() {
 	fi
 
 	# reset output variables
-	export _menu_sel_index=
-	export _menu_sel_value=
+	_menu_sel_index=
+	_menu_sel_value=
 
 	# check for custom message
 	local msg="Please make a selection"
@@ -163,11 +183,11 @@ __menu() {
 			(( optndx = opt - 1 ))
 			if [ -n "${items[$optndx]}" ]; then
 				_menu_sel_value="${items[$optndx]}"
+			else
+				return 1
 			fi
 
 		else
-			echo
-			echo ${E}"  Invalid selection! Aborting...  "${X}
 			return 1
 		fi
 

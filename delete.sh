@@ -32,7 +32,7 @@ echo ${X}
 numArgs=$#
 if (( numArgs > 0 && numArgs < 3 )); then
 	until [ -z "$1" ]; do
-		if [ "$1" == "--admin" ] && [ $ADMIN ] && isAdmin=true
+		[ "$1" = "--admin" ] && [ "$ADMIN" = "true" ] && isAdmin=true
 		! echo "$1" | egrep -q "^-" && deleteBranch="$1"
 		shift
 	done
@@ -44,7 +44,7 @@ if [ -z "$deleteBranch" ]; then
 	exit 1
 else
 	__branch_exists_local "$deleteBranch" && isLocal=true
-	__branch_exists_remote "$deleteBranch" && isRemote=true
+	__set_remote && __branch_exists_remote "$deleteBranch" && isRemote=true
 	[ ! $isLocal ] && [ ! $isRemote ] && {
 		echo ${E}"  The branch \`${deleteBranch}\` exists neither locally or remotely! Aborting...  "${X}
 		exit 1
@@ -63,14 +63,64 @@ cb=$(__parse_git_branch)
 if [ -n "$cb" ] && [ "$cb" = "$deleteBranch" ]; then
 	echo ${W}"  You are currently on branch \`${deleteBranch}\` so it cannot be deleted.  "${X}
 	echo
-	__menu "Checkout branch \`master\`" "Checkout a different branch"
+
+	# create choices. third choice only available if a remote is configured.
+	declare -a choices
+	choices=( "Checkout branch \`master\`" "Checkout a local branch" )
+	[ $isRemote ] && choices[2]="Checkout a remote branch"
+
+	if __menu "${choices[@]}"; then
+
+		# This case will not get executed unless the menu selection is valid.
+		checkoutBranch=
+		case $_menu_sel_index in
+			# checkout master
+			1)
+				checkoutBranch="master";;
+
+			# checkout a local branch
+			2)
+				echo
+				echo "Loading local branches..."
+				__get_branch -l && checkoutBranch=$_branch_selection || {
+					echo
+					echo ${E}"  No branch chosen to switch to. Aborting...  "${X}
+					exit 1
+				};;
+
+			# checkout a remote branch (if remote is configured)
+			3)
+				echo
+				echo "  Loading remote branches..."
+				__get_branch -r && checkoutBranch=$(echo $_branch_selection | sed "s/${_remote}\\//") || {
+					echo
+					echo ${E}"  No branch chosen to switch to. Aborting...  "${X}
+					exit 1
+				};;
+
+			*)
+				echo "  Now exiting...  ";
+				exit 0
+				;;
+		esac
+		echo "Branch selected: $checkoutBranch"
+		exit
+		echo
+		"${gitscripts_path}"checkout.sh $checkoutBranch
+		echo
+		echo
+
+	else
+		echo
+		echo ${E}"  Your selection could not be interpreted. Exiting...  "${X}
+		exit 0
+	fi
 	# echo "(1) Checkout master"
 	# echo "2 Checkout another branch"
 	# echo "3 Abort"
 	# read choice
 
-	if [ -z "$_menu_selection" ] || [ $choice -eq 1 ]
-		then
+	if [ -z "$_menu_selection" ] || [ $choice -eq 1 ]; then
 		echo
 		echo "git checkout master"
 		${gitscripts_path}checkout.sh master

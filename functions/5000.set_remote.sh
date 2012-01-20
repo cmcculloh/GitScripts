@@ -39,16 +39,12 @@ function __set_remote {
 
 		# if no remotes are configured there's no reason to continue processing.
 		if [ -z "$remotes" ]; then
-			echo
-			echo ${E}"  No remotes configured!  "${X}
 			return 1
 		fi
 
 		if [ $(echo $remotes | wc -w) -gt 1 ]; then
 			local msg="Please choose a remote from the list above"
 			__menu --prompt="$msg" $remotes && { remote=$_menu_sel_value; } || {
-				echo
-				echo ${E}"  Unable to determine a remote!  "${X}
 				return 1
 			}
 		else
