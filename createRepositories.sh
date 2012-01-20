@@ -54,7 +54,7 @@ read createRepos
 echo
 if [ -z $createRepos ] || [ $createRepos = "y" ]
 	then
-	git clone -o origin ssh://git@flgit.finishline.com/git/flgitscripts.git gitscripts
+	git clone -o origin ssh://git@flgit.finishline.com/git/flgitscripts.git flgitscripts
 	echo "cloned gitscripts"
 	git clone -o origin ssh://git@flgit.finishline.com/git/fl_deploy_scripts.git deploys
 	echo "cloned deploys"
