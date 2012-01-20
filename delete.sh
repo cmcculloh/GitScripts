@@ -59,14 +59,17 @@ echo
 echo
 
 # check to see if already on branch to delete
-if [ -n "$(__parse_git_branch)" ]; then
-	echo "You are currently on branch ${B}\`$deleteBranch\`${X} so it cannot currently be deleted."
-	echo "(1) Checkout master"
-	echo "2 Checkout another branch"
-	echo "3 Abort"
-	read choice
+cb=$(__parse_git_branch)
+if [ -n "$cb" ] && [ "$cb" = "$deleteBranch" ]; then
+	echo ${W}"  You are currently on branch \`${deleteBranch}\` so it cannot be deleted.  "${X}
+	echo
+	__menu "Checkout branch \`master\`" "Checkout a different branch"
+	# echo "(1) Checkout master"
+	# echo "2 Checkout another branch"
+	# echo "3 Abort"
+	# read choice
 
-	if [ -z "$choice" ] || [ $choice -eq 1 ]
+	if [ -z "$_menu_selection" ] || [ $choice -eq 1 ]
 		then
 		echo
 		echo "git checkout master"
