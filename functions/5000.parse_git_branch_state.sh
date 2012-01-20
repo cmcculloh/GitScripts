@@ -6,84 +6,83 @@
 #	@description
 #	Outputs flags of the current branch state. Currently flagged states are:
 #
-#	ahead, dirty, modified, newfile, renamed, staged, untracked
+#	ahead, behind, deleted files, modified, new files, no remote, renamed, staged, untracked
 #
 #	origin of work http://henrik.nyh.se/2008/12/git-dirty-prompt
 #	These are the character codes we use for the different states. States with the same codes
 #	have been set to differ in color by default.
 #
-#	 + (ahead)     Local branch is ahead (contains additional commits) of remote branch
-#	 - (behind)     Local branch is behind (missing commits) that are on the remote branch
-#	+- (dirty)     Tracked files have been modified but not staged.
-#	>> (modified)  Tracked files have been modified
-#	 * (newfile)   A new file has been staged (if unstaged the file is considered untracked).
-#	 > (renamed)   A tracked file has been identified as being renamed. Applies to staged/unstaged.
-#	!* (deleted)   A tracked file has been identified as being deleted. Applies to staged/unstaged.
-#	++ (staged)    A file has been staged for the next commit.
-#	 ? (untracked) One or more untracked files have been identified.
+#	 + (ahead)           Local branch is ahead (contains additional commits) of remote branch
+#	 - (behind)          Local branch is behind (missing commits) that are on the remote branch
+#	!* (deleted files)   A tracked file has been identified as being deleted. Applies to staged/unstaged.
+#	>> (modified)        Tracked files have been modified
+#	 * (new files)       A new file has been staged (if unstaged the file is considered untracked).
+#	X> (no remote)       (optional) The branch is not tracking a remote branch
+#	 > (renamed files)   A tracked file has been identified as being renamed. Applies to staged/unstaged.
+#	++ (staged)          A file has been staged for the next commit.
+#	?? (untracked)       One or more untracked files have been identified.
 #	description@
 #
 #	@examples
 #	- Assume a tracked file has been staged, another has been modified, and a new file has been
-#	created in the working tree. A user might write a script like so:
-#		source ${gitscripts_path}gsfunctions.sh
+#	created in the working tree. Consider the following snippet:
+#
+#		source ${gitscripts_lib_path}source_files.sh
 #		export branch_state=$(__parse_git_branch_state)
-#		echo "The current branch has the following state(s): ${branch_state}"
-#	>> output (with colors): The current branch has the following state(s):  + (dirty)  ++ (staged)  ? (untracked)
+#		echo "The current branch has the following state(s):"
+#		echo "${branch_state}"
+#
+#		# output:
+#		# The current branch has the following state(s):
+#		#  >> (modified)  ++ (staged)  ?? (untracked)
 #	examples@
 #
 #	@dependencies
 #	functions/5000.parse_git_status.sh
 #	dependencies@
+#
+#	@file functions/5000.parse_git_branch_state.sh
 ## */
 function __parse_git_branch_state {
-	__parse_git_status ahead 		&& local ahead=true
-	__parse_git_status behind 		&& local behind=true
-	__parse_git_status deleted 		&& local deleted=true
-	__parse_git_status modified 	&& local modified=true
-	__parse_git_status newfile 		&& local newfile=true
-	__parse_git_status renamed 		&& local renamed=true
-	__parse_git_status staged 		&& local staged=true
-	__parse_git_status untracked	&& local untracked=true
-	__parse_git_status remote		&& local noremote=true
-	bits=
+	# this function call exports all the state variables prefixed with _pgs_ below
+	__parse_git_status all
 
+	local bits=
 
-	if [ $staged ]; then
+	if [ $_pgs_staged ]; then
 		bits="${bits} ${STYLE_STAGED} ++ (staged) ${X}"
 
-		if [ $newfile ]; then
+		# these two don't HAVE to be here, but we know they won't be triggered unless
+		# staged state is triggered. saves a bit of processing power.
+		if [ $_pgs_newfile ]; then
 			bits="${bits} ${STYLE_NEWFILE} * (new files) ${X}"
 		fi
-		if [ $renamed ]; then
-			bits="${bits} ${STYLE_RENAMEDFILE} > (renamed) ${X}"
-		fi
-		if [ $modified ]; then
-			bits="${bits} ${STYLE_DIRTY} +- (dirty) ${X}"
+		if [ $_pgs_renamed ]; then
+			bits="${bits} ${STYLE_RENAMEDFILE} > (renamed files) ${X}"
 		fi
 	fi
 
-	if [ $deleted ]; then
+	if [ $_pgs_deleted ]; then
 		bits="${bits} ${X}${STYLE_DELETEDFILE} !* (deleted files) ${X}"
 	fi
 
-	if [ $modified ] && [ ! $staged ]; then
+	if [ $_pgs_modified ]; then
 		bits="${bits} ${X}${STYLE_MODIFIED} >> (modified) ${X}"
 	fi
 
-	if [ $untracked ]; then
-		bits="${bits} ${X}${STYLE_UNTRACKED} ? (untracked) ${X}"
+	if [ $_pgs_untracked ]; then
+		bits="${bits} ${X}${STYLE_UNTRACKED} ?? (untracked) ${X}"
 	fi
 
-	if [ $ahead ]; then
+	if [ $_pgs_ahead ]; then
 		bits="${bits} ${X}${STYLE_AHEAD} + (ahead) ${X}"
 	fi
 
-	if [ $behind ]; then
+	if [ $_pgs_behind ]; then
 		bits="${bits} ${X}${STYLE_BEHIND} - (behind) ${X}"
 	fi
 
-	if [ $noremote ]; then
+	if [ "$showremotestate" = "y" ] && [ ! $_pgs_onremote ]; then
 		bits="${bits} ${X}${STYLE_NO_REMOTE} X> (no remote) ${X}"
 	fi
 

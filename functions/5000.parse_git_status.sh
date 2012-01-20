@@ -4,24 +4,30 @@
 #	@output false
 #
 #	@description
-#	Determine various states of files in your current working tree. Currently supported
-#	state_flags are (see function definition for how states are determined):
+#	Determine various states of files in your current working tree and your current
+#	repository. Currently supported <state_flag> values are below.
+#	(see __parse_git_branch_state function definition for how states are determined)
 #
-#	ahead, clean, dirty, newfile, renamed, staged, untracked
+#	ahead, behind, clean, deleted, modified, newfile, onremote, renamed, staged,
+#	*tracking, untracked
 #	description@
 #
 #	@notes
 #	- If no parameter or an invalid parameter is given, the failure is logged and the
 #	the function returns status 1.
-#	- The output of the grep command is intentionally suppressed as this function
+#	- The output of the egrep command is intentionally suppressed as this function
 #	is intended to be used as a boolean in conditional expressions.
+#	- The data parsed is git status with the --short and -b flags included. This
+#	format will remain constant through Git versions and was intended for script
+#	parsing.
 #	notes@
 #
 #	@examples
 #	# ... user makes some changes and attempts to switch branches ...
 #
-#	if __parse_git_status dirty; then
+#	if __parse_git_status modified; then
 #		echo "Are you sure you want to change branches? You have uncommitted changes."
+#		read answer
 #		# ... parse answer and act accordingly ...
 #	fi
 #
@@ -32,6 +38,8 @@
 #	functions/0200.gslog.sh
 #	functions/1000.parse_git_branch.sh
 #	dependencies@
+#
+#	@file functions/5000.parse_git_status.sh
 ## */
 function __parse_git_status {
 	if [ -z "$1" ]; then
@@ -39,44 +47,63 @@ function __parse_git_status {
 		return 1
 	fi
 
-	# check for given status
+	# these are required when checking for these specific states (not "all")
+	local ahead="\[ahead [[:digit:]]+\]$"
+	local behind="\[behind [[:digit:]]+\]$"
+	local deleted="^([ A-Z]D|D[ A-Z])"
+	local modified="^[ A-Z]M"
+	local newfile="^A[ A-Z]"
+	local renamed="^R[ A-Z]"
+	local staged="^[A-Z]"
+	local untracked="^\?\?"
+
+	local grepstates=( ahead behind deleted modified newfile renamed staged untracked )
+	local statestring=( "$ahead" "$behind" "$deleted" "$modified" "$newfile" "$renamed" "$staged" "$untracked" )
+
 	case $1 in
-		"ahead")
-			searchstr="Your branch is ahead of";;
+		all)
+			local gs=$(git status -sb)
+			local i
+			local val
+			for (( i = 0; i < ${#grepstates[@]}; i++ )); do
+				val=
+				if echo "$gs" | egrep -q "${statestring[i]}"; then
+					val="true"
+				fi
+				eval "export _pgs_${grepstates[i]}=$val"
+			done
 
-		"behind")
-			searchstr="Your branch is behind";;
+			# non-grepping statuses
+			_pgs_onremote=
+			[ "$showremotestate" = "y" ] && [ -n "$(git branch -r --list */$(__parse_git_branch))" ] && _pgs_onremote=true
+			export _pgs_onremote
 
-		"clean")
-			searchstr="working directory clean";;
+			# should this be an option?
+			# _pgs_tracking=
+			# [ "$showtrackingstatus" = "y" ] && git config branch.$(__parse_git_branch).remote >/dev/null && _pgs_tracking=true
+			# export _pgs_tracking
 
-		"modified")
-			# first pattern for older versions of Git
-			searchstr="Changed but not updated|Changes not staged for commit";;
+			return 0
+			;;
 
-		"newfile")
-			# only returns true if file has been staged
-			searchstr="new file:";;
+		# the vast majority of states can be grepped directly
+		ahead | behind | deleted | modified | newfile | renamed | staged | untracked)
+			eval "searchstr=$"$1;;
 
-		"renamed")
-			searchstr="renamed:";;
+		clean)
+			! git status -sb 2>/dev/null | egrep -q '^[^#]'  2>/dev/null
+			return $?
+			;;
 
-		"deleted")
-			searchstr="deleted:";;
+		# is a version of this branch on the remote?
+		onremote)
+			[ -n "$(git branch -r --list */$(__parse_git_branch))" ]
+			return $?
+			;;
 
-		"staged")
-			searchstr="Changes to be committed";;
-
-		"untracked")
-			searchstr="Untracked files";;
-
-		"remote")
-			hasremote=$(git config branch.$(__parse_git_branch).remote)
-			if [ -z "$hasremote" ]; then
-				return
-			else
-				return 1
-			fi
+		tracking)
+			git config branch.$(__parse_git_branch).remote >/dev/null
+			return $?
 			;;
 
 		*)
@@ -86,5 +113,5 @@ function __parse_git_status {
 	esac
 
 	# use the return value of the grep as the return value of the function
-	git status 2> /dev/null | egrep -q "$searchstr" 2> /dev/null
+	git status -sb 2> /dev/null | egrep -q "$searchstr" 2> /dev/null
 }
