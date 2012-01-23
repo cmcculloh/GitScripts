@@ -1,5 +1,5 @@
 ## /* @function
-#	@usage __menu [options] <list-item> [list-item] [list-item] ...
+#	@usage __menu [--prompt=msg] [ [list-item] [list-item] ... ] &| [-k [list-item] [list-item] ...]
 #
 #	@output true
 #
@@ -13,9 +13,9 @@
 #	The script stores each parameter and outputs each element as a selectable item
 #	in a menu. By default, a numeric-based list is generated for each list-item.
 #	If you require a second list that has user-specified indexes (non-numeric), you
-#	can pass them using the following format:
+#	can pass them using the following format (note the -k option):
 #
-#		__menu ":key1:list item description" ":key2:list item description ..."
+#		__menu -k ":key1:list item description" ":key2:list item description ..."
 #
 #	Each index must be contained within colons. The leading colon is used when parsing
 #	parameters, and to ensure the desired index is what will appear in the menu. If this
@@ -27,6 +27,8 @@
 #
 #	@options
 #	--prompt=msg	Change the default promp to msg. Be sure to enclose msg in double quotes.
+#	-k          	Begin the list of key-defined list items. These must come AFTER any
+#	            	numeric-based list items, if included.
 #	options@
 #
 #	@notes
@@ -34,13 +36,14 @@
 #	in double quotes! Otherwise, the contents will not get expanded!
 #	- User-specified indexes using the colon-based format are displayed below any numeric-
 #	based list.
+#	- Formatting allows for all keys to be at most 3 characters long.
 #	- For custom prompts, do NOT include a trailing colon. It is added automatically.
 #	notes@
 #
 #	@examples
 #	list="oolah boolah boo"
 #	msg="this is a message"
-#	__menu $list --prompt="$msg"
+#	__menu --prompt="$msg" $list
 #
 #	# output of __menu command (snippet) above would be
 #	# ...
@@ -54,7 +57,7 @@
 #
 #	### ...OR we could add an extra option... ###
 #
-#	__menu $list ":N:Show me something new!"
+#	__menu $list -k ":N:Show me something new!"
 #
 #	### Can be effectively used in conditional scripts as well ###
 #
@@ -93,17 +96,31 @@ __menu() {
 	local item
 	declare -a items
 	local j
+	local k=
 	local opt
 	local pair
-	local prompt
+	local prompt=
 
 	if [ $# -gt 0 ]; then
-		echo "$1" | egrep -q "^--prompt=" && { prompt=$( echo "$1" | awk '{ print substr($0,10); }' ); shift; }
+		egrep -q "^--prompt=" <<< "$1" && { prompt=$( awk '{ print substr($0,10); }' <<< "$1"); shift; }
+		egrep -q ' -k :' <<< "$@" && k=true
+
+		if [ $k ]; then
+			until [ "$1" = "-k" ]; do
+				items[${#items[@]}]="$1"
+				shift
+			done
+			shift
 		until [ -z "$1" ]; do
-			echo "$1" | egrep -q "^:" && extraItems[${#extraItems[@]}]="$1"
-			! echo "$1" | egrep -q "^(--prompt|:)" && items[${#items[@]}]="$1"
+				extraItems[${#extraItems[@]}]="$1"
 			shift
 		done
+		else
+			until [ -z "$1" ]; do
+				items[${#items[@]}]="$1"
+				shift
+			done
+	fi
 	fi
 
 	if [ ${#items[@]} -eq 0 ] && [ ${#extraItems[@]} -eq 0 ]; then
@@ -119,7 +136,7 @@ __menu() {
 
 	# check for custom message
 	local msg="Please make a selection"
-	if [ -n "$prompt" ]; then
+	if [ $prompt ]; then
 		msg="$prompt"
 	fi
 
@@ -148,22 +165,20 @@ __menu() {
 
 	# If extra list is given, parse
 	if [ ${#extraItems[@]} -gt 0 ]; then
-		declare -a parsedItems
+		local parsedItem
 		declare -a ndxes
 		declare -a vals
 		i=0
-		for pair in ${extraItems[@]}; do
-			parsedItems[$i]=$(echo "$pair" | awk -f "${gitscripts_awk_path}menu_extra_option_parse.awk")
+		for pair in "${extraItems[@]}"; do
+			# which is faster?
+			parsedItem=$(awk -f "${gitscripts_awk_path}menu_extra_option_parse.awk" <<< "$pair")
+			# parsedItem=$(sed -e 's/://1' -e 's/:/ /1' <<< "$pair")
 			# echo "${extraItems[$i]}"
-			ndxes[$i]=$(echo "${parsedItems[$i]}" | cut -f 1 -d" ")
-			vals[$i]=$(echo "${parsedItems[$i]}" | cut -f 2- -d" ")
+			ndxes[$i]=$(cut -f 1 -d" " <<< "${parsedItem}")
+			vals[$i]=$(cut -f 2- -d" " <<< "${parsedItem}")
 
-			# printf was not working when providing the field width specifier. Scripts that call this
-			# function are most likely getting called as subprocesses, which have some leading/trailing
-			# whitespace removed when output to the parent script. The fix below seems to work, however.
-			echo -n ${STYLE_MENU_INDEX}
-			echo | awk -v ndx="${ndxes[$i]}" '{ printf("  %3s:",ndx); }'
-			echo ${STYLE_MENU_OPTION}"  ${vals[$i]}"${X}
+			# printf fails if colors inserted. make the output echo separately.
+			echo -n ${STYLE_MENU_INDEX}; printf '  %3s:' "${ndxes[$i]}"; echo ${STYLE_MENU_OPTION}"  ${vals[$i]}"${X}
 			(( i++ ))
 		done
 		echo ${STYLE_MENU_HL}${H2HL}${X}
