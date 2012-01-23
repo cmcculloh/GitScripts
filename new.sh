@@ -228,7 +228,7 @@ else
 fi
 
 # if a remote exists, push to it.
-if [ -n "$_remote" ]; then
+if [ -n "$_remote" ] && [ "$autopushnewbranch" = "true" ]; then
 	echo
 	echo
 	echo "Finally, your new branch will be pushed up to the remote: ${COL_GREEN}${_remote}${COL_NORM}"
