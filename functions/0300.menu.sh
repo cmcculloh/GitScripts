@@ -1,5 +1,5 @@
 ## /* @function
-#	@usage __menu [options] [ [list-item] [list-item] ... ] &| [-k [list-item] [list-item] ...]
+#	@usage __menu [--prompt=msg] [ [list-item] [list-item] ... ] &| [-k [list-item] [list-item] ...]
 #
 #	@output true
 #
@@ -156,13 +156,8 @@ __menu() {
 			ndxes[$i]=$(cut -f 1 -d" " <<< "${parsedItem}")
 			vals[$i]=$(cut -f 2- -d" " <<< "${parsedItem}")
 
-			# printf was not working when providing the field width specifier. Scripts that call this
-			# function are most likely getting called as subprocesses, which have some leading/trailing
-			# whitespace removed when output to the parent script. The fix below seems to work, however.
-			echo -n ${STYLE_MENU_INDEX}
-			printf '  %3s:' "${ndxes[$i]}"
-			# echo | awk -v ndx="${ndxes[$i]}" '{ printf("  %3s:",ndx); }'
-			echo ${STYLE_MENU_OPTION}"  ${vals[$i]}"${X}
+			# printf fails if colors inserted. make the output echo separately.
+			echo -n ${STYLE_MENU_INDEX}; printf '  %3s:' "${ndxes[$i]}"; echo ${STYLE_MENU_OPTION}"  ${vals[$i]}"${X}
 			(( i++ ))
 		done
 		echo ${STYLE_MENU_HL}${H2HL}${X}
