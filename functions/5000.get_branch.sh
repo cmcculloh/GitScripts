@@ -95,7 +95,7 @@ function __get_branch {
 	# generate menu. the "no branches found" message only triggered if an invalid
 	# selection is made from __menu or $branches is empty
 
-	[ ${#branchArr[@]} -gt 0 ] && __menu --prompt="I am the prompt" "${branchArr[@]}" || {
+	[ ${#branchArr[@]} -gt 0 ] && __menu "${branchArr[@]}" || {
 		echo ${W}"  No branches found!  "${X}
 		return 1
 	}

@@ -45,13 +45,22 @@ if [ -z "$deleteBranch" ]; then
 else
 	__branch_exists_local "$deleteBranch" && isLocal=true
 	__set_remote && __branch_exists_remote "$deleteBranch" && isRemote=true
-	[ ! $isLocal ] && [ ! $isRemote ] && {
-		echo ${E}"  The branch \`${deleteBranch}\` exists neither locally or remotely! Aborting...  "${X}
+	[ ! $isLocal ] && [ ! $isAdmin ] && {
+		echo ${E}"  The branch \`${deleteBranch}\` does not exist locally! Aborting...  "${X}
 		exit 1
 	}
 fi
 
+# give the user a chance to cancel
+echo ${Q}"Are you sure you want to ${A}delete${Q} branch ${B}\`${deleteBranch}\`${Q}? y (n)"${X}
+read yn
+echo
+if [ "$yn" != "y" ] && [ "$yn" != "Y" ]; then
+	echo "You got it. Aborting ${A}delete${X}..."
+	exit 1
+fi
 
+echo
 echo ${H1}${H1HL}
 echo "  Deleting branch: ${H1B}\`${deleteBranch}\`${H1}  "
 echo ${H1HL}${X}
@@ -113,125 +122,83 @@ if [ -n "$cb" ] && [ "$cb" = "$deleteBranch" ]; then
 	else
 		echo
 		echo ${E}"  Your selection could not be interpreted. Exiting...  "${X}
-		exit 0
-	fi
-	# echo "(1) Checkout master"
-	# echo "2 Checkout another branch"
-	# echo "3 Abort"
-	# read choice
-
-	if [ -z "$_menu_selection" ] || [ $choice -eq 1 ]; then
-		echo
-		echo "git checkout master"
-		${gitscripts_path}checkout.sh master
-		echo
-		echo
-	elif [ $choice -eq 2 ]
-		then
-		echo "please specify the branch you wish to check out,"
-		echo "or enter \"abort\" to quit"
-		read enteredBranchName
-		if [ "$enteredBranchName" = "abort" ]
-			then
-			exit 0
-		fi
-		echo
-		echo checking out $enteredBranchName before deleting branch $deleteBranch
-		echo
-		echo
-
-		${gitscripts_path}checkout.sh $enteredBranchName
-	elif [ $choice -eq 3 ]
-		then
-		exit 0
+		exit 1
 	fi
 
-	if [ $? -lt 0 ]
-		then
-		echo
-		echo "something went wrong!"
-		echo
-		echo "git status"
-		git status
+fi # END if current branch is the same as branch to delete
 
-		exit -1
-	fi
-fi
 
-if __branch_exists_local $deleteBranch; then
-
+if [ $isLocal ]; then
 
 	#Determine if your local copy is behind remote
-	isbehind=$(git branch -v --abbrev=7 | grep "$deleteBranch" | grep "\[behind\ [0-9]*\]")
-	if [ $behind ]; then
-		echo
-		echo "${W}Your local copy of this $deleteBranch"
-		echo "is behind the remote. Continue anyways? (y) n${X}"
+	if [ $isRemote ] && git branch -v --abbrev=7 | egrep -q "$deleteBranch.*\[behind\ [0-9]*\]"; then
+		echo ${W}"Your local copy of this \`${deleteBranch}\` is behind the remote."
+		echo "Continue anyways? (y) n"${X}
 		read yn
-		if [ "$yn" != "y" ]; then
-			echo "Aborting delete of $deleteBranch"
+		if [ -n "$yn" ] && { [ "$yn" != "y" ] || [ "$yn" != "Y" ]; }; then
+			echo
+			echo "Aborting delete of ${B}\`${deleteBranch}\`"${X}
 			exit 1
 		fi
 	fi
 
-	if ! git branch -d $deleteBranch
-		then
+	if ! git branch -d "$deleteBranch" > /dev/null; then
 		echo ${W}"Delete failed! Would you like to force-delete the branch?  y (n)"${X}
+		read yn
 		echo
-		read forcedelete
-		if [ "$forgo cedelete" = "y" ]
-			then
-			if ! git branch -D $deleteBranch
-				then
-				echo "force delete failed!"
-				exit -1
+		if [ "$yn" = "y" ] || [ "$yn" = "Y" ]; then
+			if ! git branch -D $deleteBranch; then
+				echo ${E}"  Force delete failed! Exiting... "${X}
+				exit 1
 			else
-				echo "force delete succeeded!"
+				echo ${COL_GREEN}"Force delete succeeded!"${X}
 				echo
 			fi
+		elif [ ! $isAdmin ]; then
+			echo "Exiting..."
+			exit 0
 		fi
 	else
-		echo "Delete succeeded!"
+		echo ${COL_GREEN}"Delete succeeded!"${X}
 		echo
 	fi
+
 else
-	echo "Branch does not exist. Skipping delete..."
+	[ ! $isAdmin ] && echo ${E}"  Branch does not exist locally. Skipping delete...  "${X}
 fi
 
 if [ $isAdmin ]; then
-	onremote=`git branch -r | grep "$deleteBranch"`
-	if [ -n "$onremote" ]
-		then
+	if [ $isRemote ]; then
 		echo
-		echo "delete remote copy of branch? y (n)"
-		read deleteremote
+		echo ${Q}"Delete ${B}\`${_remote}/${deleteBranch}\`${Q}? y (n)"${X}
+		read yn
+		echo
 
-		if [ -n "$deleteremote" ] && [ "$deleteremote" = "y" ]
-			then
+		if [ "$yn" = "y" ] || [ "$yn" = "Y" ]; then
 
-			__is_branch_protected --all "$deleteremote" && isProtected=true
-			if [ $isProtected ]; then
-				echo "${W}WARNING: $deleteBranch is a protected branch."
-				echo "Are you SURE you want to delete remote copy? yes (n)${X}"
+			if __is_branch_protected --all "$deleteBranch"; then
+				echo ${W}"WARNING: \`${deleteBranch}\` is a protected branch."
+				echo "Are you SURE you want to delete the remote copy? yes (n)${X}"${X}
 				read yn
-				if [ -z "$yn" ] || [ "$yn" != "yes" ]
-					then
-					echo "aborting delete of remote branch..."
+				if [ -z "$yn" ] || [ "$yn" != "yes" ]; then
+					echo "Aborting delete of remote branch..."
 					exit 1
 				fi
 			fi
 
-
-			__set_remote
 			echo
-			echo "deleting $deleteBranch on $_remote!"
-			echo
-			remote=$_remote
-			echo "git push $remote :$deleteBranch"
-			git push $remote :$deleteBranch
+			echo "Deleting ${B}\`${_remote}/${deleteBranch}\`${X} ..."
+			echo ${O}${H2HL}
+			echo "$ git push ${remote} :${deleteBranch}"
+			git push "$remote" :"$deleteBranch"
+			echo ${H2HL}${X}
+		else
+			echo "Delete aborted. Exiting..."
+			exit 1
 		fi
 	else
-		echo "not on remote"
+		echo "Branch \`${deleteBranch}\` is not on a remote. Now exiting..."
+		exit 1
 	fi
 fi
 

@@ -111,16 +111,16 @@ __menu() {
 				shift
 			done
 			shift
-		until [ -z "$1" ]; do
+			until [ -z "$1" ]; do
 				extraItems[${#extraItems[@]}]="$1"
-			shift
-		done
+				shift
+			done
 		else
 			until [ -z "$1" ]; do
 				items[${#items[@]}]="$1"
 				shift
 			done
-	fi
+		fi
 	fi
 
 	if [ ${#items[@]} -eq 0 ] && [ ${#extraItems[@]} -eq 0 ]; then
@@ -136,7 +136,7 @@ __menu() {
 
 	# check for custom message
 	local msg="Please make a selection"
-	if [ $prompt ]; then
+	if [ -n "$prompt" ]; then
 		msg="$prompt"
 	fi
 
@@ -170,10 +170,7 @@ __menu() {
 		declare -a vals
 		i=0
 		for pair in "${extraItems[@]}"; do
-			# which is faster?
 			parsedItem=$(awk -f "${gitscripts_awk_path}menu_extra_option_parse.awk" <<< "$pair")
-			# parsedItem=$(sed -e 's/://1' -e 's/:/ /1' <<< "$pair")
-			# echo "${extraItems[$i]}"
 			ndxes[$i]=$(cut -f 1 -d" " <<< "${parsedItem}")
 			vals[$i]=$(cut -f 2- -d" " <<< "${parsedItem}")
 
@@ -204,6 +201,7 @@ __menu() {
 
 		else
 			return 1
+
 		fi
 
 		echo
