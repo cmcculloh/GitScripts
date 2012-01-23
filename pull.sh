@@ -40,16 +40,16 @@ if [ -n "$1" ]; then
 fi
 
 # give the user an opportunity to abort
-echo ${Q}"Are you sure you want to ${A}pull${Q} changes from ${STYLE_NEWBRANCH}\`${_remote}/${pullBranch}\`${Q} in ${STYLE_OLDBRANCH}\`${cb}\`${Q}? y (n)"
+echo ${Q}"Are you sure you want to ${A}pull${Q} changes from ${STYLE_NEWBRANCH}\`${_remote}/${pullBranch}\`${Q} into ${STYLE_OLDBRANCH}\`${cb}\`${Q}? (y) n"
 read yn
 echo
-if [ "$yn" != "y" ] && [ "$yn" != "Y" ]; then
+if [ -n "$yn" ] && [ "$yn" != "y" ] && [ "$yn" != "Y" ]; then
 	echo "Better safe than sorry! Aborting..."
 	exit 0
 fi
 
 echo ${H1}${H1HL}
-echo " Pulling in changes from ${H1B}\`${_remote}/${pullBranch}\`${H1}  "
+echo "  Pulling in changes from ${H1B}\`${_remote}/${pullBranch}\`${H1}  "
 echo ${H1HL}${X}
 echo
 echo
@@ -60,7 +60,7 @@ git fetch --all --prune
 echo
 echo
 echo ${O}"$ git pull ${remote} ${pullBranch}"
-git pull "$remote" "$cb"
+git pull "$remote" "$pullBranch"
 echo ${O}${H2HL}${X}
 
 
