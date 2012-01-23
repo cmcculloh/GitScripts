@@ -36,12 +36,15 @@
 #
 #	@dependencies
 #	functions/0200.gslog.sh
+#	functions/0500.is_repo.sh
 #	functions/1000.parse_git_branch.sh
 #	dependencies@
 #
 #	@file functions/5000.parse_git_status.sh
 ## */
 function __parse_git_status {
+	! __is_repo && exit
+
 	if [ -z "$1" ]; then
 		__gslog "__parse_git_status: Invalid usage. A parameter matching status type is required."
 		return 1

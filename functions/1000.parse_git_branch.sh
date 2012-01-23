@@ -13,8 +13,12 @@
 #	- When using this function, capture the output (the branch name, if any).
 #	notes@
 #
+#	@dependencies
+#	functions/0500.is_repo.sh
+#	dependencies@
+#
 #	@file functions/1000.parse_git_status.sh
 ## */
 function __parse_git_branch {
-	git status --porcelain >/dev/null 2>&1 && expr "$(git symbolic-ref HEAD)" : 'refs/heads/\(.*\)'
+	__is_repo && expr "$(git symbolic-ref HEAD)" : 'refs/heads/\(.*\)'
 }

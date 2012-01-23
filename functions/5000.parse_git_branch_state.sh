@@ -38,12 +38,15 @@
 #	examples@
 #
 #	@dependencies
+#	functions/0500.is_repo.sh
 #	functions/5000.parse_git_status.sh
 #	dependencies@
 #
 #	@file functions/5000.parse_git_branch_state.sh
 ## */
 function __parse_git_branch_state {
+	! __is_repo && echo ${COL_MAGENTA}"not a repository"${X} && exit
+
 	# this function call exports all the state variables prefixed with _pgs_ below
 	__parse_git_status all
 
