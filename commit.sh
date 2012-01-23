@@ -99,18 +99,47 @@ if [ $flag ]; then
 					echo ${O}${H2HL}
 					echo "$ git add -A"
 					git add -A
+					gitAddResult=$?
+					exit
 					echo ${O}${H2HL}${X}
+					if [ $gitAddResult -gt 0 ]; then
+						echo
+						echo ${W}"  The command to add ALL tracked and untracked files failed (see above).  "
+						echo "  It is unlikely that your desired outcome will result from this commit.  "${X}
+						echo ${Q}"  Do you still want to continue with the ${A}commit${Q}? y (n)"${X}
+						read yn
+						if [ "$yn" != "y" ] && [ "$yn" != "Y" ]; then
+							echo
+							echo "It's probably for the best. Aborting..."
+							exit 1
+						fi
+					fi
 			fi
 		fi
 			;;
 
 		"-A")
-			flag=""
+			flag=
+			echo
+			echo
 			echo "Adding all modified and untracked files..."
 			echo ${O}${H2HL}
 			echo "$ git add -A"
 			git add -A
+			gitAddResult=$?
 			echo ${O}${H2HL}${X}
+			if [ $gitAddResult -gt 0 ]; then
+				echo
+				echo ${W}"  The command to add ALL tracked and untracked files failed (see above).  "
+				echo "  It is unlikely that your desired outcome will result from this commit.  "${X}
+				echo ${Q}"  Do you still want to continue with the ${A}commit${Q}? y (n)"${X}
+				read yn
+				if [ "$yn" != "y" ] && [ "$yn" != "Y" ]; then
+					echo
+					echo "It's probably for the best. Aborting..."
+					exit 1
+				fi
+			fi
 			;;
 
 		*)
