@@ -20,7 +20,7 @@ cb=$(__parse_git_branch)
 pullBranch="$cb"
 
 echo ${X}
-echo ${O}"Configuring remote... "${X}
+echo ${O}"Configuring remote(s), if any... "${X}
 __set_remote
 echo
 echo
@@ -59,8 +59,8 @@ echo "$ git fetch --all --prune"
 git fetch --all --prune
 echo
 echo
-echo ${O}"$ git pull ${remote} ${pullBranch}"
-git pull "$remote" "$pullBranch"
+echo ${O}"$ git pull ${_remote} ${pullBranch}"
+git pull "$_remote" "$pullBranch"
 echo ${O}${H2HL}${X}
 
 

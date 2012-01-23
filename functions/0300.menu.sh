@@ -170,9 +170,10 @@ __menu() {
 		declare -a vals
 		i=0
 		for pair in "${extraItems[@]}"; do
-			parsedItem=$(awk -f "${gitscripts_awk_path}menu_extra_option_parse.awk" <<< "$pair")
-			ndxes[$i]=$(cut -f 1 -d" " <<< "${parsedItem}")
-			vals[$i]=$(cut -f 2- -d" " <<< "${parsedItem}")
+			parsedItem="${pair:1}"
+			parsedItem="${parsedItem/:/ }"
+			ndxes[$i]="${parsedItem%% *}"
+			vals[$i]="${parsedItem#* }"
 
 			# printf fails if colors inserted. make the output echo separately.
 			echo -n ${STYLE_MENU_INDEX}; printf '  %3s:' "${ndxes[$i]}"; echo ${STYLE_MENU_OPTION}"  ${vals[$i]}"${X}
@@ -181,7 +182,7 @@ __menu() {
 		echo ${STYLE_MENU_HL}${H2HL}${X}
 	fi
 
-	echo -n ${STYLE_MENU_PROMPT}"  $msg  (or press Enter to abort):  "${X}
+	echo -n ${STYLE_MENU_PROMPT}"  $msg (or press Enter to abort):  "${X}
 	read opt
 
 	# validate response
@@ -190,16 +191,18 @@ __menu() {
 		if [ ${#extraItems[@]} -gt 0 ] && __in_array "$opt" "${ndxes[@]}"; then
 			_menu_sel_value="${vals[${_in_array_index}]}"
 
-		elif echo "$opt" | egrep -q '^[[:digit:]]+$'; then
+		elif egrep -q '^[[:digit:]]+$' <<< "$opt"; then
 			local optndx
 			(( optndx = opt - 1 ))
 			if [ -n "${items[$optndx]}" ]; then
 				_menu_sel_value="${items[$optndx]}"
 			else
+				# invalid selection. no *numeric* key matches what user typed in.
 				return 1
 			fi
 
 		else
+			# invalid selection. no key matches what user typed in.
 			return 1
 
 		fi
