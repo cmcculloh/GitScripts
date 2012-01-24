@@ -171,6 +171,9 @@ if [ ! $checkoutremote ]; then
 	declare -a choices
 	choices[0]="Create branch ${STYLE_NEWBRANCH}\`${1}\`${STYLE_MENU_OPTION} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`"${X}
 	choices[1]="Create branch ${STYLE_NEWBRANCH}\`${1}\`${STYLE_MENU_OPTION} from the current branch ${STYLE_OLDBRANCH_H1}\`${currentBranch}\`"${X}
+	if [ "$startingBranch" != "master" ]; then
+		choices[2]="Create branch ${STYLE_NEWBRANCH}\`${1}\`${STYLE_MENU_OPTION} from ${STYLE_OLDBRANCH_H1}\`master\`"${X}
+	fi
 
 	if __menu "${choices[@]}"; then
 		echo ${X}
@@ -180,14 +183,18 @@ if [ ! $checkoutremote ]; then
 
 			# create new branch from specified branch
 			1)
-				echo "Continuing on to base new branch off of ${B}\`${startingBranch}\`...";;
+				#nothing to do here since startingBranch is already at the correct value
+			;;
 
 			# create new branch from whatever branch user is currently on
 			2)
 				startingBranch="$currentBranch"
-				echo "Base branch changed to: ${B}\`${startingBranch}\`${X}"
-				echo
-				echo "Continuing...";;
+			;;
+
+			#create the branch from master
+			3)
+				startingBranch="master"
+			;;
 
 			# abort process
 			*)
@@ -200,6 +207,8 @@ if [ ! $checkoutremote ]; then
 		exit 1
 	fi
 fi
+
+echo "Base new branch off of ${B}\`${startingBranch}\`${X}"
 
 
 if [ "$startingBranch" = "master" ]; then
