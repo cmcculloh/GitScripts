@@ -191,7 +191,7 @@ __menu() {
 		if [ ${#extraItems[@]} -gt 0 ] && __in_array "$opt" "${ndxes[@]}"; then
 			_menu_sel_value="${vals[${_in_array_index}]}"
 
-		elif egrep -q '^[[:digit:]]+$' <<< "$opt"; then
+		elif egrep -q '^[[:digit:]]+$' <<< "$opt" && [ $opt -gt 0 ]; then
 			local optndx
 			(( optndx = opt - 1 ))
 			if [ -n "${items[$optndx]}" ]; then
