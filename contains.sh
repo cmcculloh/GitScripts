@@ -17,6 +17,8 @@
 #	@dependencies
 #	functions/5000.parse_git_branch.sh
 #	dependencies@
+#
+#	@file contains.sh
 ## */
 
 branchtocheck=$1

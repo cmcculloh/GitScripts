@@ -11,6 +11,8 @@
 #	specified as the only parameter when calling this script. The script specifying numbers is
 #	followed by another color script which does not have numbers specified.
 #	description@
+#
+#	@file see-colors.sh
 ## */
 
 

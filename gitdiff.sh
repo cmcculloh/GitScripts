@@ -20,6 +20,8 @@
 #	@dependencies
 #	functions/5000.branch_exists.sh
 #	dependencies@
+#
+#	@file gitdiff.sh
 ## */
 $loadfuncs
 

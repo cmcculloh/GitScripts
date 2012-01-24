@@ -1,5 +1,4 @@
 #!/bin/bash
-
 ## /*
 #	@usage clean-branches
 #
@@ -11,22 +10,19 @@
 #	- You will end on the same branch you started out on.
 #	notes@
 #
-#	@examples
-#	1) clean-branches
-#	examples@
-#
 #	@dependencies
 #	checkout.sh
 #	*delete.sh
 #	functions/5000.parse_git_branch.sh
 #	dependencies@
+#
+#	@file clean-branches.sh
 ## */
 $loadfuncs
 
 
-
-numArgs=$#
 # parse arguments
+numArgs=$#
 if (( numArgs > 0 && numArgs < 4 )); then
 	until [ -z "$1" ]; do
 		[ "$1" == "--admin" ] && [ $ADMIN ] && isAdmin=true

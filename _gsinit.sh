@@ -1,5 +1,5 @@
 ## /*
-#	@usage command [options] <req>
+#	@usage source _gsinit.sh
 #
 #	@description
 #	This file is the main controller for all GitScripts. It loads the necessary environment
@@ -24,6 +24,8 @@
 #	@dependencies
 #	cfg/vars.cfg
 #	dependencies@
+#
+#	@file _gsinit.sh
 ## */
 
 

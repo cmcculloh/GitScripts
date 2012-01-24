@@ -27,17 +27,16 @@
 #	3) __bad_usage
 #		>> Error: Invalid usage. Use "gsman <command>" for usage instructions.
 #	examples@
+#
+#	@file functions/0100.gslog.sh
 ## */
 function __bad_usage {
-	# custom __bad_usage function for gitscript commands which implement gsman comments
-	#	$1 - command name (optional)
-	#	$2 - custom message (optional)
 	hcolor=${COL_MAG}
 
 	case $# in
 		1)
 			# 1st argument MUST be script/command name which has NO spaces and is not an option (-o)
-			local space=$(echo $1 | grep '[- ]')
+			local space=$(grep '[- ]' <<< "$1")
 			if [ -n "$space" ]; then
 				echo ${hcolor}"__bad_usage: Invalid usage."${X}" Use \""${hcolor}"gsman gsfunctions"${X}"\" for usage instructions."
 				fun="gsfunctions"
@@ -50,7 +49,7 @@ function __bad_usage {
 		2)
 			if [ "$1" == "-o" ]; then
 				# 2nd argument MUST be script/command name which has NO spaces
-				local space=$(echo $2 | grep '[ ]')
+				local space=$(grep '[ ]' <<< "$2")
 				if [ -n "$space" ]; then
 					echo ${hcolor}"__bad_usage: Invalid usage."${X}" Use \""${hcolor}"gsman gsfunctions"${X}"\" for usage instructions."
 					fun="gsfunctions"

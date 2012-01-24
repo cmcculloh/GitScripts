@@ -1,4 +1,4 @@
-## /*
+## /* @function
 #	@usage __is_branch_protected <keyword> <branch-name>
 #
 #	@output false

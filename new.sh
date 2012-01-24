@@ -1,5 +1,4 @@
 #!/bin/bash
-
 ## /*
 #	@usage new <branch_name> [from <existing_branch>]
 #
@@ -32,6 +31,8 @@
 #	functions/5000.parse_git_status.sh
 #	functions/5000.set_remote.sh
 #	dependencies@
+#
+#	@file new.sh
 ## */
 $loadfuncs
 
