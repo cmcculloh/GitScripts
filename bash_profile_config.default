@@ -111,6 +111,7 @@ alias mediahome="cd ${media_path}"
 alias naturaldocshome="cd ${naturaldocs_path}"
 alias promoeditorhome="cd ${promo_editor_path}"
 alias storehome="cd ${webappwar}"
+alias qahome="cd ${qa_path}"
 
 
 #########################################################################################################################
@@ -185,3 +186,11 @@ alias whichenv="${flgitscripts_path}/whichenvironment.sh"
 
 #alias syncmywork="/d/workspaces/helios_workspace/myscripts/syncmyapp.sh"
 #alias synctree="/d/workspaces/helios_workspace/myscripts/synctree.sh"
+
+
+
+
+
+#QA project aliases
+alias updatedev="source ${qa_path}/utils/updateServer.sh dev DEV"
+alias updateqa="source ${qa_path}/utils/updateServer.sh qa QA"

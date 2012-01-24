@@ -70,6 +70,7 @@ if [ -s "${flgitscripts_path}gitscripts/_gsinit.sh" ]; then
 	# We require protection on branches during merges
 	export protectmergefrom_path="${flgitscripts_path}input/_gs_protectmergefrom"
 	export protectmergeto_path="${flgitscripts_path}input/_gs_protectmergeto"
+	export protectpushto_path="${flgitscripts_path}input/_gs_protectpushto"
 
 	source "${flgitscripts_path}gitscripts/_gsinit.sh"
 else
@@ -202,6 +203,7 @@ fi
 [ -n "$csr_path" ] || export csr_path="${workspace_path}finishline_csr/"
 [ -n "$promo_editor_path" ] || export promo_editor_path="${workspace_path}promo_editor/"
 [ -n "$naturaldocs_path" ] || export naturaldocs_path="${workspace_path}naturaldocs/"
+[ -n "$qa_path" ] || export qa_path="${workspace_path}qa/"
 [ -n "$inputdir" ] || export inputdir="${flgitscripts_path}input/"
 [ -n "$outputdir" ] || export outputdir="${flgitscripts_path}output/"
 [ -n "$awkdir" ] || export awkdir="${flgitscripts_path}awkscripts/"
