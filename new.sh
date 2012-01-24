@@ -62,8 +62,6 @@ if __branch_exists_local "$1"; then
 	read checkoutdecision
 	if [ -z "$checkoutdecision" ] || [ "$checkoutdecision" = "y" ]; then
 		${gitscripts_path}checkout.sh "$1"
-	else
-		exit 1
 	fi
 	#don't create new branch since we checked the local copy out, just exit...
 	exit 1
@@ -108,73 +106,99 @@ git status
 echo ${O}${H2HL}${X}
 echo
 
-declare -a choices
-
-if [ $checkoutremote ]; then
-	choices[0]="Create local branch ${STYLE_NEWBRANCH}\`${1}\`${STYLE_MENU_OPTION} from remote branch ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`"${X}
-	choices[1]=""
-else
-	choices[0]="Create branch ${STYLE_NEWBRANCH}\`${1}\`${STYLE_MENU_OPTION} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`"${X}
-	choices[1]="Create branch ${STYLE_NEWBRANCH}\`${1}\`${STYLE_MENU_OPTION} from the current branch ${STYLE_OLDBRANCH_H1}\`${currentBranch}\`"${X}
-fi
 
 if  ! __parse_git_status clean; then
-	choices[2]="${A}Stash${STYLE_MENU_OPTION} changes and create branch ${STYLE_NEWBRANCH}\`$1\`${STYLE_MENU_OPTION} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`"${X}
-	choices[3]="${A}Reset${STYLE_MENU_OPTION} (revert) all changes to ONLY tracked files, and create branch ${STYLE_NEWBRANCH}\`$1\`${STYLE_MENU_OPTION} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`"${X}
+	declare -a choices
+	choices[0]="${A}Stash${STYLE_MENU_OPTION} changes and and contiue "${X}
+	choices[1]="${A}Reset${STYLE_MENU_OPTION} (revert) all changes to ONLY tracked files and continue"${X}
+	choices[2]="${A}Commit${STYLE_MENU_OPTION} ALL changes and continue "${X}
+	choices[3]="${A}Just continue, I want to move all my changes to the new branch..."${X}
+
+	if __menu "${choices[@]}"; then
+		echo ${X}
+
+		# handle decision cases
+		case $_menu_sel_index in
+			# stash changes and continue
+			1)
+				echo "This ${A}stashes${X} any local changes you might have made and forgot to commit."
+				echo "To apply these changes later, use: ${A}git stash apply"${X}
+				echo ${O}${H2HL}
+				echo "$ git stash"
+				git stash
+				echo ${O}
+				echo
+				echo "$ git status"
+				git status
+				echo ${O}${H2HL}${X};;
+
+			# revert changes to tracked files and continue
+			2)
+				echo "This attempts to ${A}reset${X} your current branch to the last stable commit."
+				echo "If you have made any changes to untracked files, they will NOT be affected."
+				echo ${O}${H2HL}
+				echo "$ git reset --hard"
+				git reset --hard
+				echo ${O}
+				echo
+				echo "$ git status"
+				git status
+				echo ${O}${H2HL}${X};;
+			
+			#commit changes and continue
+			3)
+				echo "Please enter a commit message"
+				read commitmsg
+				${gitscripts_path}commit.sh "$commitmsg" "-A";;
+
+			#just keep going
+			4)
+				echo "Ignoring changes and continuing";;
+
+			#abort process
+			*)
+				echo "Aborting creation of ${B}\`$1\`${X}..."
+				exit 0;;
+		esac
+	else
+		echo ${E}"  Unable to determine a course of action. Aborting...  "${X}
+		exit 1
+	fi
 fi
 
-if __menu "${choices[@]}"; then
-	echo ${X}
+#if the branch is not on the remote, allow them to create it
+if [ ! $checkoutremote ]; then
+	declare -a choices
+	choices[0]="Create branch ${STYLE_NEWBRANCH}\`${1}\`${STYLE_MENU_OPTION} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`"${X}
+	choices[1]="Create branch ${STYLE_NEWBRANCH}\`${1}\`${STYLE_MENU_OPTION} from the current branch ${STYLE_OLDBRANCH_H1}\`${currentBranch}\`"${X}
 
-	# handle decision cases
-	case $_menu_sel_index in
+	if __menu "${choices[@]}"; then
+		echo ${X}
 
-		# create new branch from master or specified branch
-		1)
-			echo "Continuing on to base new branch off of ${B}\`master\`...";;
+		# handle decision cases
+		case $_menu_sel_index in
 
-		# create new branch from whatever branch user is currently on
-		2)
-			startingBranch="$currentBranch"
-			echo "Base branch changed to: ${B}\`${startingBranch}\`${X}"
-			echo
-			echo "Continuing...";;
+			# create new branch from specified branch
+			1)
+				echo "Continuing on to base new branch off of ${B}\`${startingBranch}\`...";;
 
-		# stash changes and create branch from master or specified branch
-		3)
-			echo "This ${A}stashes${X} any local changes you might have made and forgot to commit."
-			echo "To apply these changes later, use: ${A}git stash apply"${X}
-			echo ${O}${H2HL}
-			echo "$ git stash"
-			git stash
-			echo ${O}
-			echo
-			echo "$ git status"
-			git status
-			echo ${O}${H2HL}${X};;
+			# create new branch from whatever branch user is currently on
+			2)
+				startingBranch="$currentBranch"
+				echo "Base branch changed to: ${B}\`${startingBranch}\`${X}"
+				echo
+				echo "Continuing...";;
 
-		# revert changes to tracked files and create new branch from master or specified branch
-		4)
-			echo "This attempts to ${A}reset${X} your current branch to the last stable commit."
-			echo "If you have made any changes to untracked files, they will NOT be affected."
-			echo ${O}${H2HL}
-			echo "$ git reset --hard"
-			git reset --hard
-			echo ${O}
-			echo
-			echo "$ git status"
-			git status
-			echo ${O}${H2HL}${X};;
+			# abort process
+			*)
+				echo "Aborting creation of ${B}\`$1\`${X}..."
+				exit 0;;
 
-		# abort process
-		*)
-			echo "Aborting creation of ${B}\`$1\`${X}..."
-			exit 0;;
-
-	esac
-else
-	echo ${E}"  Unable to determine a course of action. Aborting...  "${X}
-	exit 1
+		esac
+	else
+		echo ${E}"  Unable to determine a course of action. Aborting...  "${X}
+		exit 1
+	fi
 fi
 
 
