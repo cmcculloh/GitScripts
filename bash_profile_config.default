@@ -61,12 +61,25 @@ shopt -s checkwinsize
 
 
 # some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-alias cd..="cd .."
-alias cls="clear"
-
+if [ $SYSTEM_TYPE == "linux" ]; then
+	alias ll='ls -alF'
+	alias la='ls -A'
+	alias l='ls -CF'
+	alias cd..="cd .."
+	alias cls="clear"
+elif [ $SYSTEM_TYPE == "darwin" ]; then
+	alias ll='ls -alFG'
+	alias la='ls -AG'
+	alias l='ls -CFG'
+	alias cd..="cd .."
+	alias cls="clear"
+elif [ $SYSTEM_TYPE == "windows" ]; then
+	alias ll='ls -alF'
+	alias la='ls -A'
+	alias l='ls -CF'
+	alias cd..="cd .."
+	alias cls="clear"
+fi
 
 #########################################################################################################################
 #ssh shortcuts
