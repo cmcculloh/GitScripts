@@ -1,21 +1,26 @@
 #!/bin/bash
 ## /*
-#	@usage contains <branch-name>
+#	@usage contains [--not] <branch-name>
 #
 #	@description
 #	Checks to see which other branches the branch you specify has merged into it. If
 #	no branch is specified, the current branch is used.
 #	description@
 #
-#	@notes
-#	-
-#	notes@
+#	@options
+#	--not	Pass this option to view a list of all branches which do NOT contain
+#	     	the specified (or current) branch.
+#	options@
 #
 #	@examples
-#	1)
+#	1) contains --not my-branch
+#	    # will display all branches that don't contain my-branch
+#	2) contains
+#	    # will display all branches which contain the current branch
 #	examples@
 #
 #	@dependencies
+#	functions/5000.branch_exists_local.sh
 #	functions/5000.parse_git_branch.sh
 #	dependencies@
 #
