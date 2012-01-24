@@ -108,8 +108,6 @@ git status
 echo ${O}${H2HL}${X}
 echo
 
-thestatus=__parse_git_branch_state (deleted|modified|newfile|renamed)
-
 declare -a choices
 
 if [ $checkoutremote ]; then
@@ -120,7 +118,7 @@ else
 	choices[1]="Create branch ${STYLE_NEWBRANCH}\`${1}\`${STYLE_MENU_OPTION} from the current branch ${STYLE_OLDBRANCH_H1}\`${currentBranch}\`"${X}
 fi
 
-if [ -z "$thestatus" ]; then
+if  ! __parse_git_status clean; then
 	choices[2]="${A}Stash${STYLE_MENU_OPTION} changes and create branch ${STYLE_NEWBRANCH}\`$1\`${STYLE_MENU_OPTION} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`"${X}
 	choices[3]="${A}Reset${STYLE_MENU_OPTION} (revert) all changes to ONLY tracked files, and create branch ${STYLE_NEWBRANCH}\`$1\`${STYLE_MENU_OPTION} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`"${X}
 fi
