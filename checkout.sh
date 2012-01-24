@@ -296,24 +296,6 @@ if [ $onremote ]; then
 	echo ${O}${H2HL}${X}
 fi
 
-function __merge_master {
-	echo ${Q}"${A}Merge${Q} branch ${B}\`master\`${Q} into ${B}\`${branch}\`${Q}? (y) n"${X}
-	read decision
-
-	if [ -z "$decision" ] || [ "$decision" = "y" ] || [ "$decision" = "Y" ]; then
-		echo
-		echo "${A}Merging${X} ${B}\`${remote}/master\`${X} into ${B}\`${branch}\`${X} ..."
-		echo ${O}${H2HL}
-		echo "$ git merge ${remote}/master"
-		git merge "${remote}/master"
-		echo ${O}
-		echo
-	else
-		echo
-		echo ${O}${H2HL}
-	fi
-}
-
 # MERGE master into branch to keep it up to date
 echo
 echo
