@@ -1,6 +1,6 @@
 #!/bin/bash
 ## /*
-#	@usage gitdiff
+#	@usage gitdiff [base-branch-name]
 #
 #	@description
 #	This script is used to get a quick look at all the files that have been added,
@@ -33,7 +33,7 @@ if [ -n "$1" ]; then
 fi
 
 # make sure branch exists
-if ! __branch_exists $branch; then
+if ! __branch_exists "$branch"; then
 	echo ${E}"  Branch \`$branch\` does not exist! Aborting...  "${X}
 	exit 1
 fi
