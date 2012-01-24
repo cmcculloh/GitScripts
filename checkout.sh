@@ -319,7 +319,7 @@ echo
 echo
 if [ "$branch" != "master" ]; then
 	if [ $onremote ]; then
-		__merge_master()
+		__merge_master
 
 	# ...otherwise rebase this branch's changes onto master ("cleaner" option)
 	else
@@ -337,7 +337,7 @@ if [ "$branch" != "master" ]; then
 		else
 			echo
 			echo ${O}${H2HL}
-			__merge_master()
+			__merge_master
 		fi
 	fi
 fi # END if [ "$branch" != "master" ]
