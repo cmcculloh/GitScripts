@@ -276,7 +276,7 @@ fi
 # Checkout the chosen branch if possible.
 echo "This checks out the ${B}\`${branch}\`${X} branch."
 echo ${O}${H2HL}
-if __branch_exists_local master; then
+if __branch_exists_local $1; then
 	echo "$ git checkout $1"
 	git checkout "$1"
 else
@@ -296,27 +296,12 @@ if [ $onremote ]; then
 	echo ${O}${H2HL}${X}
 fi
 
-
 # MERGE master into branch to keep it up to date
 echo
 echo
 if [ "$branch" != "master" ]; then
 	if [ $onremote ]; then
-		echo ${Q}"${A}Merge${Q} branch ${B}\`master\`${Q} into ${B}\`${branch}\`${Q}? (y) n"${X}
-		read decision
-
-		if [ -z "$decision" ] || [ "$decision" = "y" ] || [ "$decision" = "Y" ]; then
-			echo
-			echo "${A}Merging${X} ${B}\`${remote}/master\`${X} into ${B}\`${branch}\`${X} ..."
-			echo ${O}${H2HL}
-			echo "$ git merge ${remote}/master"
-			git merge "${remote}/master"
-			echo ${O}
-			echo
-		else
-			echo
-			echo ${O}${H2HL}
-		fi
+		__merge_master
 
 	# ...otherwise rebase this branch's changes onto master ("cleaner" option)
 	else
@@ -334,6 +319,7 @@ if [ "$branch" != "master" ]; then
 		else
 			echo
 			echo ${O}${H2HL}
+			__merge_master
 		fi
 	fi
 fi # END if [ "$branch" != "master" ]

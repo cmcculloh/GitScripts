@@ -28,7 +28,7 @@
 #	...
 #	examples@
 #
-#	@file functions/5000.set_remote.sh
+#	@file functions/1000.set_remote.sh
 ## */
 
 function __set_remote {
