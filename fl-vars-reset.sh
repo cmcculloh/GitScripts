@@ -20,6 +20,4 @@ export development_root=""
 
 
 
-
-
 echo "Variables reset!"
