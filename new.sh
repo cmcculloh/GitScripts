@@ -60,7 +60,7 @@ if __branch_exists_local "$1"; then
 	echo
 	echo ${E}"  Branch \`$1\` already exists!  "${X}
 	read checkoutdecision
-	if [[ -z "$checkoutdecision" ] || [ "$checkoutdecision" = "y" ]]; then
+	if [ -z "$checkoutdecision" ] || [ "$checkoutdecision" = "y" ]; then
 		${gitscripts_path}checkout.sh "$1"
 	else
 		exit 1
@@ -72,7 +72,7 @@ elif __branch_exists_remote "$1"; then
 	echo ${E}"  Branch \`$1\` already exists on the remote!  "${X}
 	echo ${Q}"  Check \`$1\` out from remote? (y) n "${Q}
 	read checkoutremotedecision
-	if [[ -z "$checkoutremotedecision" ] || [ "$checkoutremotedecision" = "y" ]]; then
+	if [ -z "$checkoutremotedecision" ] || [ "$checkoutremotedecision" = "y" ]; then
 		startingBranch="${_remote}/${1}"
 		checkoutremote=true
 	else
@@ -112,7 +112,7 @@ thestatus=__parse_git_branch_state (deleted|modified|newfile|renamed)
 
 declare -a choices
 
-if [[ $checkoutremote ]]; then
+if [ $checkoutremote ]; then
 	choices[0]="Create local branch ${STYLE_NEWBRANCH}\`${1}\`${STYLE_MENU_OPTION} from remote branch ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`"${X}
 	choices[1]=""
 else
@@ -120,7 +120,7 @@ else
 	choices[1]="Create branch ${STYLE_NEWBRANCH}\`${1}\`${STYLE_MENU_OPTION} from the current branch ${STYLE_OLDBRANCH_H1}\`${currentBranch}\`"${X}
 fi
 
-if [[ -z "$thestatus" ]]; then
+if [ -z "$thestatus" ]; then
 	choices[2]="${A}Stash${STYLE_MENU_OPTION} changes and create branch ${STYLE_NEWBRANCH}\`$1\`${STYLE_MENU_OPTION} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`"${X}
 	choices[3]="${A}Reset${STYLE_MENU_OPTION} (revert) all changes to ONLY tracked files, and create branch ${STYLE_NEWBRANCH}\`$1\`${STYLE_MENU_OPTION} from ${STYLE_OLDBRANCH_H1}\`${startingBranch}\`"${X}
 fi
@@ -191,7 +191,7 @@ if [ "$startingBranch" = "master" ]; then
 	echo "$ git checkout -b $1 $_remote/master"
 	git checkout -b "$1" "$_remote"/master
 	echo ${O}${H2HL}${X}
-elif [[ $checkoutremote ]]; then
+elif [ $checkoutremote ]; then
 	echo
 	echo
 	echo "This checks out the remote ${B}\`${startingBranch}\`${X} to create a new local branch named ${B}\`$1\`${X}"
