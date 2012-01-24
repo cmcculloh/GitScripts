@@ -17,10 +17,6 @@
 #	2) if [ $myage -lt 40 ]; then __gslog "You've still got time..."; fi
 #	examples@
 #
-#	@dependencies
-#	[vars] $gitscripts_log (path to log file)
-#	dependencies@
-#
 #	@file functions/0200.gslog.sh
 ## */
 function __gslog {

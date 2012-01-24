@@ -16,8 +16,8 @@
 #	@examples
 #	# ...
 #
-#	if __branch_exists master; then
-#		echo "Branch 'master' exists!"
+#	if __branch_merge_set my-branch; then
+#		echo "Branch my-branch's config set correctly."
 #	fi
 #
 #	#...
@@ -26,6 +26,8 @@
 #	@dependencies
 #	functions/0200.gslog.sh
 #	dependencies@
+#
+#	@file functions/5000.branch_merge_set.sh
 ## */
 function __branch_merge_set {
 	if [ -z "$1" ]; then

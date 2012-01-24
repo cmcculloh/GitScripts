@@ -23,6 +23,7 @@
 #	examples@
 #
 #	@dependencies
+#	functions/0300.menu.sh
 #	functions/5000.branch_exists_remote.sh
 #	functions/5000.branch_exists_local.sh
 #	functions/5000.parse_git_branch.sh

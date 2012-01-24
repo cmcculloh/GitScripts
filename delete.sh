@@ -9,12 +9,8 @@
 #	branches.
 #	description@
 #
-#	@notes
-#	-
-#	notes@
-#
 #	@dependencies
-#	checkout.sh
+#	*checkout.sh
 #	functions/0100.bad_usage.sh
 #	functions/5000.branch_exists_local.sh
 #	functions/5000.branch_exists_remote.sh

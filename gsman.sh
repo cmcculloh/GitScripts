@@ -1,5 +1,4 @@
 #!/bin/bash
-
 ## /*
 #	@usage gsman [options|flags] <required command>
 #
