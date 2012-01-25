@@ -21,6 +21,4 @@ export qa_path=""
 
 
 
-
-
 echo "Variables reset!"

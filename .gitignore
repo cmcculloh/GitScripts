@@ -3,5 +3,5 @@
 cfg/flgs.config
 input/*
 !input/_*
-temp/
-output/
+temp/*
+output/*
