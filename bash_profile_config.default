@@ -205,5 +205,12 @@ alias whichenv="${flgitscripts_path}/whichenvironment.sh"
 
 
 #QA project aliases
-alias updatedev="source ${qa_path}/utils/updateServer.sh dev DEV"
-alias updateqa="source ${qa_path}/utils/updateServer.sh qa QA"
+alias updatedev="source ${qa_path}/utils/updateServer.sh dev dev"
+alias dev-update="source ${qa_path}/utils/updateServer.sh dev dev"
+alias updateqa="source ${qa_path}/utils/updateServer.sh qa qa"
+alias qa-update="source ${qa_path}/utils/updateServer.sh qa qa"
+alias addbranch="${qa_path}/utils/buildBranchList.sh $1 $2"
+alias addbranchqa="${qa_path}/utils/buildBranchList.sh qa $2"
+alias qa-addbranch="${qa_path}/utils/buildBranchList.sh qa $2"
+alias addbranchdev="${qa_path}/utils/buildBranchList.sh dev $2"
+alias dev-addbranch="${qa_path}/utils/buildBranchList.sh dev $2"
