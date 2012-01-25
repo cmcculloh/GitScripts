@@ -99,10 +99,10 @@ while read branch; do
 	if git branch --contains "${pieces[1]}" | egrep -q "${target}"; then
 
 		[ "$targetHash" = "${pieces[1]}" ] && {
-			op="${STYLE_BRIGHT}=="
+			op="${STYLE_BRIGHT}==="
 			bHash="${STYLE_BRIGHT}${pieces[1]}"
 		} || {
-			op=">>"
+			op="\\__"
 			bHash="${pieces[1]}"
 		}
 
