@@ -25,6 +25,7 @@
 #	functions/1000.parse_git_branch.sh
 #	functions/1000.set_remote.sh
 #	functions/5000.merge_master.sh
+#	push.sh
 #	dependencies@
 #
 #	@file merge.sh
@@ -38,8 +39,4 @@ cb=$(__parse_git_branch)
 git pull ${_remote} $cb
 git pull ${_remote} master
 git status
-echo "push? y (n)"
-read push
-if [ "$push" = "y" ]; then
-	git push ${_remote} $cb
-fi 
+"${gitscripts_path}"push.sh
