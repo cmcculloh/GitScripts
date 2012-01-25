@@ -4,7 +4,14 @@
 #
 #	@description
 #	This script brings your local working branch copy up to date with
-#	it's remote branch and master
+#	it's remote branch and master.
+#
+#	This script:
+#	1) Fetches all
+#	2) Sets your remote
+#	3) Pulls the remote version of you current branch
+#	4) Pulls the remote master
+#	5) Asks if you want to push (and then pushes if so)
 #	description@
 #
 #	@notes
