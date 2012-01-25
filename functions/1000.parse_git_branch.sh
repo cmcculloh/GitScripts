@@ -13,6 +13,10 @@
 #	- When using this function, capture the output (the branch name, if any).
 #	notes@
 #
+#	@examples
+#	cb=$(__parse_git_branch)
+#	examples@
+#
 #	@dependencies
 #	functions/0500.is_repo.sh
 #	dependencies@
