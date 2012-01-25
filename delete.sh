@@ -29,7 +29,7 @@ numArgs=$#
 if (( numArgs > 0 && numArgs < 3 )); then
 	until [ -z "$1" ]; do
 		[ "$1" = "--admin" ] && [ "$ADMIN" = "true" ] && isAdmin=true
-		! echo "$1" | egrep -q "^-" && deleteBranch="$1"
+		[ "$1" != "--admin" ] && deleteBranch="$1"
 		shift
 	done
 fi
