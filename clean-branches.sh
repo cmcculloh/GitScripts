@@ -30,7 +30,7 @@ $loadfuncs
 if [ $# -lt 3 ]; then
 	until [ -z "$1" ]; do
 		[ "$1" == "--admin" ] && [ $ADMIN ] && aFlag="--admin"
-		[ "$1" != "--admin" ] && target="$1"
+		grep -q '^--base=' <<< "$1" && target="${1:7}"
 		shift
 	done
 else
@@ -39,20 +39,8 @@ else
 fi
 [ -z "$target" ] && target="master"
 
-# not being returned to the current branch is not crucial, it's only a convenience...
+# to show current branch in output
 cb=$(__parse_git_branch)
-if [ -z "$cb" ]; then
-	echo ${W}"  Unable to determine current branch. You will not be returned to your"
-	echo "  current branch after script completion.  "${X}
-	echo
-	echo ${Q}"  Would you like to continue anyway? y (n)"${X}
-	read yn
-	if [ "$yn" != "y" ] && [ "$yn" != "Y" ]; then
-		echo
-		echo "Aye, aye, cap'n! Aborting..."
-		exit 1
-	fi
-fi
 
 
 # start it up
@@ -89,9 +77,11 @@ while read branch; do
 			bHash="${pieces[1]}"
 		}
 
+		[ "${pieces[0]}" = "$cb" ] && star="*" || star=" "
+
 		branchNames[${#branchNames[@]}]="${pieces[0]}"
 		branchHashes[${#branchHashes[@]}]="${pieces[1]}"
-		echo "${STYLE_BRIGHT}${COL_MAGENTA}${targetHash}${X} ${COL_YELLOW}${op}${X} ${COL_MAGENTA}${bHash}${X} :: ${B}${pieces[0]}"${X}
+		echo "${STYLE_BRIGHT}${COL_MAGENTA}${targetHash}${X} ${COL_YELLOW}${op}${X} ${COL_MAGENTA}${bHash}${X} ::${B}${star}${pieces[0]}"${X}
 	fi
 done <"$tmp"
 
