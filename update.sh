@@ -39,4 +39,4 @@ cb=$(__parse_git_branch)
 git pull ${_remote} $cb
 git pull ${_remote} master
 git status
-"${gitscripts_path}"push.sh
+"${gitscripts_path}"push.sh "$1"
