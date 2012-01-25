@@ -55,43 +55,26 @@ if [ -z "$cb" ]; then
 fi
 
 
-#delete branches fully merged into $target
-
+# start it up
 echo ${X}
 echo ${H1}${H1HL}
 echo "  Clean-Branches will iterate through your local branches and prompt you to  "
-echo "  delete branches that are merged into ${H1B}\`${target}\`${H1}.  "
+echo "  delete branches that have already been merged into ${H1B}\`${target}\`${H1}.  "
 echo ${H1HL}${X}
 echo
 echo
 
-# if [ "$cb" != "$target" ]; then
-# 	"${gitscripts_path}"checkout.sh "$target"
-# fi
-
-# git branch -v --abbrev=7 --merged "$target" | awk '$0 !~ /'$target'/ { gsub(/^\* /,""); print; }' | while read bLine; do
-# 	pieces=( $bLine )
-# 	echo ${COL_MAGENTA}${pieces[1]}${COL_NORM}" :: "${B}${pieces[0]}${X}
-# done
-# git branch --merged "$target"
-
+# get target branch hash for display/comparison purposes
 targetHash=$(git show --oneline "$target")
-targetHash="${targetHash%% *}"
-echo "${B}\`${target}\`${X} Hash: ${STYLE_BRIGHT}${COL_MAGENTA}${targetHash}"${X}
+targetHash="${targetHash:0:7}"
+echo "${B}\`${target}\`${X} hash: ${STYLE_BRIGHT}${COL_MAGENTA}${targetHash}"${X}
 echo
 
-# a piped while loop was the only way to get the entire line of the git branch
-# output in each iteration of the loop in an easily-parsable form. unfortunately,
-# the loop runs in a subshell preventing variable data from being exported. to
-# circumvent this problem, we can use I/O redirection
+# send branch data to temp file
 tmp="${gitscripts_temp_path}vbranch"
-# set stdin to new file descriptor
-# exec 3<&0
-
-# send data to new file descriptor
 git branch -v | awk '{gsub(/^\* /, "");print;}' > $tmp
 
-# run loop. "read" reads from redirected stdin.
+# run loop. reads from temp file.
 declare -a branchNames
 declare -a branchHashes
 while read branch; do
@@ -112,12 +95,11 @@ while read branch; do
 	fi
 done <"$tmp"
 
-# restore stdin and close temporary file descriptor
-# exec 1>&3
-# exec 3>&-
+# temp file no longer necessary
+rm "$tmp"
 
 echo
-echo ${Q}"Would you like to begin deleting ${#branchNames[@]} branches? y (n)"${X}
+echo ${Q}"Would you like to begin deleting branches? y (n)"${X}
 read yn
 echo
 if [ "$yn" != "y" ] && [ "$yn" != "Y" ]; then
@@ -126,10 +108,8 @@ if [ "$yn" != "y" ] && [ "$yn" != "Y" ]; then
 fi
 
 # let's get this party started...
-echo "deleting ${#branchNames[@]} branches..."
 for (( i = 0; i < ${#branchNames[@]}; i++ )); do
 	"${gitscripts_path}"delete.sh $aFlag "${branchNames[$i]}"
 done
 
 exit
-#git checkout $startingBranch
