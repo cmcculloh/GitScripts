@@ -55,8 +55,6 @@ echo
 echo
 
 if [ $isNot ]; then
-	bHash=$(git show --oneline "$branch")
-	bHash="${bHash:0:7}"
 	echo "The following branches ${COL_RED}DO NOT${COL_NORM} contain the latest version of ${B}\`${branch}\`${X}:"
 	echo ${O}${H2HL}${X}
 

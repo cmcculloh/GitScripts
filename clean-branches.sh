@@ -1,11 +1,16 @@
 #!/bin/bash
 ## /*
-#	@usage clean-branches
+#	@usage clean-branches [--base=<branch-name>]
 #
 #	@description
 #	This script iterates through your local branches and prompts you to delete
 #	branches that are fully merged into master.
 #	description@
+#
+#	@options
+#	--base=<branch-name>    By default, the base branch for merged branches is
+#	                        master. It can be changed using this option.
+#	options@
 #
 #	@notes
 #	- You will end on the same branch you started out on.
@@ -16,7 +21,6 @@
 #	notes@
 #
 #	@dependencies
-#	checkout.sh
 #	*delete.sh
 #	functions/5000.parse_git_branch.sh
 #	dependencies@
