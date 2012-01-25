@@ -1,10 +1,12 @@
 #!/bin/bash
 ## /*
-#	@usage pull
+#	@usage pull [branch-name]
 #
 #	@description
 #	This is a quick script that pulls in changes from the current branch's remote
-#	tracking branch if it exists. It will abort otherwise.
+#	tracking branch if it exists. User can also specify another branch to pull
+#	in changes from. Pull branch is verified to exist on the remote first. If
+#	it doesn't, the script is aborted.
 #	description@
 #
 #	@dependencies
@@ -12,6 +14,8 @@
 #	functions/5000.parse_git_branch.sh
 #	functions/5000.set_remote.sh
 #	dependencies@
+#
+#	@file pull.sh
 ## */
 $loadfuncs
 
@@ -20,7 +24,7 @@ cb=$(__parse_git_branch)
 pullBranch="$cb"
 
 echo ${X}
-echo ${O}"Configuring remote... "${X}
+echo ${O}"Configuring remote(s), if any... "${X}
 __set_remote
 echo
 echo
@@ -40,16 +44,16 @@ if [ -n "$1" ]; then
 fi
 
 # give the user an opportunity to abort
-echo ${Q}"Are you sure you want to ${A}pull${Q} changes from ${STYLE_NEWBRANCH}\`${_remote}/${pullBranch}\`${Q} in ${STYLE_OLDBRANCH}\`${cb}\`${Q}? y (n)"
+echo ${Q}"Are you sure you want to ${A}pull${Q} changes from ${STYLE_NEWBRANCH}\`${_remote}/${pullBranch}\`${Q} into ${STYLE_OLDBRANCH}\`${cb}\`${Q}? (y) n"
 read yn
 echo
-if [ "$yn" != "y" ] && [ "$yn" != "Y" ]; then
+if [ -n "$yn" ] && [ "$yn" != "y" ] && [ "$yn" != "Y" ]; then
 	echo "Better safe than sorry! Aborting..."
 	exit 0
 fi
 
 echo ${H1}${H1HL}
-echo " Pulling in changes from ${H1B}\`${_remote}/${pullBranch}\`${H1}  "
+echo "  Pulling in changes from ${H1B}\`${_remote}/${pullBranch}\`${H1}  "
 echo ${H1HL}${X}
 echo
 echo
@@ -59,8 +63,8 @@ echo "$ git fetch --all --prune"
 git fetch --all --prune
 echo
 echo
-echo ${O}"$ git pull ${remote} ${pullBranch}"
-git pull "$remote" "$cb"
+echo ${O}"$ git pull ${_remote} ${pullBranch}"
+git pull "$_remote" "$pullBranch"
 echo ${O}${H2HL}${X}
 
 

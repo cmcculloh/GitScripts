@@ -1,7 +1,7 @@
 ## /* @function
 #	@usage __branch_exists_remote <branch_name>
 #
-#	@output false
+#	@output on error
 #
 #	@description
 #	Determine if the given branch exists on the remote.
@@ -10,6 +10,7 @@
 #	@notes
 #	- Since this function does not echo anything to be captured, it is most useful if
 #	used directly in conditional statements. See example below.
+#	- Calling scripts are responsible for running `git fetch --all`.
 #	notes@
 #
 #	@examples
@@ -22,21 +23,13 @@
 #	#...
 #	examples@
 #
-#	@dependencies
-#	functions/0200.gslog.sh
-#	dependencies@
+#	@file functions/5000.branch_exists_remote.sh
 ## */
 function __branch_exists_remote {
-	git fetch --all
-
 	if [ -z "$1" ]; then
-		__gslog "__branch_exists_remote: First parameter must be branch name."
+		echo ${E}"  __branch_exists_remote: First parameter must be branch name. Nothing given.  "${X}
 		return 1
 	fi
 
-	local onRemote=$(git branch -r | grep "$1")
-	if [ -n "$onRemote" ]; then
-		return 0
-	fi
-	return 1
+	git branch -r | grep -q "$1" 2>/dev/null
 }

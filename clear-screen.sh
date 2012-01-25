@@ -10,6 +10,8 @@
 #	@notes
 #	- This script is meant to be included in other scripts and not called directly.
 #	notes@
+#
+#	@file clear-screen.sh
 ## */
 
 echo

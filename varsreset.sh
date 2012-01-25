@@ -11,9 +11,16 @@
 #	- The gitscripts_path variable should not be included as it is determined programmatically
 #	by the location of the _gsinit.sh file.
 #	notes@
+#
+#	@file varsreset.sh
 ## */
 
-# Colors
+
+# Default answers
+export clearscreenanswer="n"
+export pushanswer="y"
+
+# Bash colors
 export CFG_NORM=""
 export CFG_BRIGHT=""
 export CFG_DIM=""

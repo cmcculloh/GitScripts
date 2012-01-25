@@ -35,6 +35,8 @@
 #	functions/5000.parse_git_status.sh
 #	functions/5000.set_remote.sh
 #	dependencies@
+#
+#	@file commit.sh
 ## */
 $loadfuncs
 
@@ -99,18 +101,47 @@ if [ $flag ]; then
 					echo ${O}${H2HL}
 					echo "$ git add -A"
 					git add -A
+					gitAddResult=$?
+					exit
 					echo ${O}${H2HL}${X}
+					if [ $gitAddResult -gt 0 ]; then
+						echo
+						echo ${W}"  The command to add ALL tracked and untracked files failed (see above).  "
+						echo "  It is unlikely that your desired outcome will result from this commit.  "${X}
+						echo ${Q}"  Do you still want to continue with the ${A}commit${Q}? y (n)"${X}
+						read yn
+						if [ "$yn" != "y" ] && [ "$yn" != "Y" ]; then
+							echo
+							echo "It's probably for the best. Aborting..."
+							exit 1
+						fi
+					fi
 			fi
 		fi
 			;;
 
 		"-A")
-			flag=""
+			flag=
+			echo
+			echo
 			echo "Adding all modified and untracked files..."
 			echo ${O}${H2HL}
 			echo "$ git add -A"
 			git add -A
+			gitAddResult=$?
 			echo ${O}${H2HL}${X}
+			if [ $gitAddResult -gt 0 ]; then
+				echo
+				echo ${W}"  The command to add ALL tracked and untracked files failed (see above).  "
+				echo "  It is unlikely that your desired outcome will result from this commit.  "${X}
+				echo ${Q}"  Do you still want to continue with the ${A}commit${Q}? y (n)"${X}
+				read yn
+				if [ "$yn" != "y" ] && [ "$yn" != "Y" ]; then
+					echo
+					echo "It's probably for the best. Aborting..."
+					exit 1
+				fi
+			fi
 			;;
 
 		*)
@@ -125,8 +156,8 @@ echo
 echo
 echo "Committing and displaying branch changes..."
 echo ${O}${H2HL}
-echo "$ git commit -q -m \"($startingBranch) $1\" $flag"
-git commit -q -m "(${startingBranch}) $1" $flag
+echo "$ git commit -q -m \"(${startingBranch}) $msg\" $flag"
+git commit -q -m "(${startingBranch}) $msg" $flag
 echo ${O}
 echo
 echo "$ git diff-tree --stat HEAD"
@@ -142,13 +173,11 @@ echo ${O}${H2HL}${X}
 echo
 
 # wrap up...
-__is_branch_protected --push "$startingBranch" && isProtected=true
-if [ $isProtected ] && [ ! $isAdmin ]; then
-	echo ${E}"  The branch \`${startingBranch}\` is protected and cannot be pushed. Aborting...  "${X}
-elif [ ! $isProtected ] || [ $isAdmin ]; then
+if [ $isAdmin ]; then
+	"${gitscripts_path}"push.sh --admin "$startingBranch"
+else
 	"${gitscripts_path}"push.sh "$startingBranch"
 fi
-
 "${gitscripts_path}"clear-screen.sh
 
 exit

@@ -26,6 +26,8 @@
 #	@dependencies
 #	functions/0200.gslog.sh
 #	dependencies@
+#
+#	@file functions.5000.branch_exists.sh
 ## */
 function __branch_exists {
 	if [ -z "$1" ]; then

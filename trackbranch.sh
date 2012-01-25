@@ -1,5 +1,4 @@
 #!/bin/bash
-
 ## /*
 #	@usage trackbranch [<branch_name>]
 #
@@ -31,6 +30,8 @@
 #	functions/5000.parse_git_branch.sh
 #	functions/5000.set_remote.sh
 #	dependencies@
+#
+#	@file trackbranch.sh
 ## */
 $loadfuncs
 
@@ -40,23 +41,20 @@ if [ -z "$1" ]; then
 	# no parameter supplied, we shall determine current branch
 	startingBranch=$(__parse_git_branch)
 	if [ -z "$startingBranch" ]; then
-		echo ${E}"  Error: A failure has occurred.  "${X}
-		echo ${E}"  Unable to determine current branch, and a branch name was not supplied. Exiting now.  "${X}
+		echo ${E}"  Error: A failure has occurred.  "
+		echo "  Unable to determine current branch, and a branch name was not supplied. Exiting now.  "${X}
 		exit 1
 	fi
 
-elif __branch_exists_local $1; then
+elif __branch_exists_local "$1"; then
 	# parameter supplied --- and branch exists
-	echo "Local branch exists!"
-	startingBranch=$1
+	startingBranch="$1"
 
-elif __branch_exists_remote $1; then
+elif __branch_exists_remote "$1"; then
 	# parameter supplied --- and branch exists
-	echo ${O}${H2HL}${X}
 	echo ${Q}"Branch does not exist locally, but it does on the remote -- check it out? (y) n"${X}
-	echo ${O}${H2HL}${X}
 	read decision
-	if [ -z "$decision" ] || [ "$decision" = "" ] || [ "$decision" = "1" ]; then
+	if [ -z "$decision" ] || [ "$decision" = "y" ] || [ "$decision" = "Y" ]; then
 		"${gitscripts_path}"checkout.sh "$1"
 	fi
 	echo

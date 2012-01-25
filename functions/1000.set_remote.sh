@@ -1,10 +1,10 @@
-## /*
+## /* @function
 #	@usage __set_remote
 #
 #	@output on error
 #
 #	@vars
-#	_remote
+#	$_remote
 #	vars@
 #
 #	@description
@@ -23,10 +23,12 @@
 #
 #	@examples
 #	...
-#	$set_remote
-#	git push $remote branch-name-to-push
+#	__set_remote
+#	git push $_remote branch-name-to-push
 #	...
 #	examples@
+#
+#	@file functions/1000.set_remote.sh
 ## */
 
 function __set_remote {
@@ -37,15 +39,12 @@ function __set_remote {
 
 		# if no remotes are configured there's no reason to continue processing.
 		if [ -z "$remotes" ]; then
-			echo
-			echo ${E}"  No remotes configured!  "${X}
 			return 1
 		fi
 
 		if [ $(echo $remotes | wc -w) -gt 1 ]; then
-			__menu "$remotes" && { remote=$_menu_selection; } || {
-				echo
-				echo ${E}"  Unable to determine a remote!  "${X}
+			local msg="Please choose a remote from the list above"
+			__menu --prompt="$msg" $remotes && { remote=$_menu_sel_value; } || {
 				return 1
 			}
 		else

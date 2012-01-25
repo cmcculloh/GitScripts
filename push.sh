@@ -8,9 +8,9 @@
 #	first parameter when using this script.
 #	description@
 #
-#	@notes
-#	-
-#	notes@
+#	@options
+#	-q, --quiet	Suppress the "Pushing not allowed" warning message and silently exit.
+#	options@
 #
 #	@examples
 #	1) push
@@ -24,6 +24,8 @@
 #	functions/5000.parse_git_branch.sh
 #	functions/5000.set_remote.sh
 #	dependencies@
+#
+#	@file push.sh
 ## */
 $loadfuncs
 
@@ -31,44 +33,88 @@ $loadfuncs
 # reset styles
 echo ${X}
 
+# parse params
+numArgs=$#
+if (( numArgs > 0 && numArgs < 3 )); then
+	until [ -z "$1" ]; do
+		[ "$1" = "--admin" ] && [ "$ADMIN" = "true" ] && isAdmin=true
+		{ [ "$1" = "-q" ] ||  [ "$1" = "--quiet" ]; } && isQuiet=true
+		! echo "$1" | egrep -q "^-" && branch="$1"
+		shift
+	done
+fi
+
+# setup FAILURE conditions
 # set pushing branch if specified, otherwise...
-if [ -n "$1" ]; then
-	if __branch_exists_local "$1"; then
-		cb="$1"
-	else
+if [ -n "$branch" ]; then
+	if ! __branch_exists_local "$branch"; then
 		echo ${E}"  The branch \`${1}\` does not exist locally! Aborting...  "${X}
 		exit 1
 	fi
-
 # ...grab current branch and validate
 else
 	cb=$(__parse_git_branch)
-	[ $cb ] || {
+	[ $cb ] && { branch="$cb"; } || {
 		echo ${E}"  Could not determine current branch!  "${X}
 		exit 1
 	}
 fi
-
+# check for protected branches
+if __is_branch_protected --push "$branch" && [ ! $isAdmin ]; then
+	[ ! $isQuiet ] && echo "  ${W}WARNING:${X} Pushing to ${B}\`${branch}\`${X} is not allowed. Aborting..."
+	exit 1
+fi
+# a remote is required to push to
 if ! __set_remote; then
 	echo ${E}"  Aborting...  "${X}
 	exit 1
 fi
 
-echo ${Q}"Would you like to push ${B}\`${cb}\`${Q} to ${COL_GREEN}${_remote}${Q}? y (n)"${X}
-read YorN
+if [ ! ${_remote} ]
+	then
+	exit 1
+fi
+
+# setup default answers
+if [ "$pushanswer" == "y" ] || [ "$pushanswer" == "Y" ]; then
+	defO=" (y) n"
+	defA="y"
+else
+	defO=" y (n)"
+	defA="n"
+fi
+
+echo ${Q}"Would you like to push ${B}\`${branch}\`${Q} to ${COL_GREEN}${_remote}${Q}?${defO}"${X}
+read yn
+
+if [ -z "$yn" ]; then
+	yn=$defA
+fi
+
 echo
-if [ "$YorN" == "y" ] || [ "$YorN" == "Y" ]; then
+if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
 	if [ -n "$_remote" ]; then
 		echo
 		echo "Now pushing to:${X} ${COL_GREEN} ${_remote} ${X}"
 		echo ${O}${H2HL}
-		echo "$ git push ${_remote} ${cb}"
-		git push "${_remote}" "${cb}"
+		echo "$ git push ${_remote} ${branch}"
+		git push "${_remote}" "${branch}"
 		echo ${O}${H2HL}${X}
 		echo
 	else
 		echo ${E}"  No remote could be found. Push aborted.  "${X}
 		exit 1
+	fi
+fi
+
+hasRemote=$(git config branch.$branch.remote 2> /dev/null)
+if [ -z "$hasRemote" ]
+	then
+	echo "Setup remote tracking of ${_remote} for $branch? (y) n"
+	read yn
+	if [ -z "$yn" ] || [ "$yn" = "y" ]
+		then
+		git branch --set-upstream $branch $_remote/$branch
 	fi
 fi
 

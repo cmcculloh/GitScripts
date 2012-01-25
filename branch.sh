@@ -28,8 +28,10 @@
 #
 #	@dependencies
 #	*checkout.sh
-#	function/5000.get_branch.sh
+#	functions/5000.get_branch.sh
 #	dependencies@
+#
+#	@file branch.sh
 ## */
 $loadfuncs
 

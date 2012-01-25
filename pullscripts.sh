@@ -19,8 +19,9 @@
 $loadfuncs
 
 
+echo ${X}
+
 # make sure there are no current changes needing to be committed/staged.
-echo
 if __parse_git_status clean || { ! __parse_git_status modified && ! __parse_git_status staged; }; then
 
 	# if there is a space in the directory, storing it in a variable won't work with cd
@@ -29,27 +30,39 @@ if __parse_git_status clean || { ! __parse_git_status modified && ! __parse_git_
 
 	cb=$(__parse_git_branch)
 
+	# We are assuming no changes have been made to these files.
 	echo ${H1}${H1HL}
-	echo " Pulling in GitScripts master changes... "
-	echo ${H1}${H1HL}${X}
+	echo "  Pulling in GitScripts master changes...  "
+	echo ${H1HL}${X}
 	echo
 	echo
-	echo "Checkout ${COL_CYAN}master${COL_NORM}, ${COL_MAG}fetch${COL_NORM} changes, and ${COL_MAG}pull${COL_NORM} them in..."
+	echo "${A}Fetch${X} changes, ${A}checkout${X} ${B}master${X}, and ${A}pull${X} the changes in..."
 	echo ${O}${H2HL}
 	echo "$ git fetch --all --prune"
 	git fetch --all --prune
+
+	if [ "$cb" != "master" ]; then
+		echo
+		echo
+		echo ${O}"$ git checkout master"
+		git checkout master
+	fi
+
 	echo
 	echo
-	echo "$ git checkout master"
-	git checkout master
-	echo
-	echo
-	echo "$ git pull origin master"
-	git pull origin master
-	echo ${O}${H2HL}${X}
+	if __parse_git_status clean || { ! __parse_git_status modified && ! __parse_git_status staged; }; then
+		# The GitScripts project is expected to live at GitHub for the foreseeable future, so "origin" is hard-coded.
+		echo ${O}"$ git pull origin master"
+		git pull origin master
+		echo ${O}${H2HL}${X}
+	else
+		echo ${E}"  Error: Gitscripts files have been changed. Please reset or commit changes before trying again. Aborting...  "${X}
+		exit 1
+	fi
 	echo
 	echo
 
+	# Normal users will never mess with the gitscripts project, so the branch should always be master, but in case it isn't...
 	if [ -n "$cb" ] && [ "$cb" != "master" ]; then
 		# we will NOT use checkout.sh since it might be a file with a change. this can cause script failure.
 		echo "Now returning you to your original branch: ${B}\`${cb}\`${X}"
@@ -65,7 +78,7 @@ if __parse_git_status clean || { ! __parse_git_status modified && ! __parse_git_
 	echo "Now returning you to your original working directory..."
 	popd > /dev/null
 else
-	echo ${E}"  Error: Your working directory must be clean with the exception of untracked files. Aborting...  "
+	echo ${E}"  Error: Your working directory must be clean with the exception of untracked files before GitScripts can continue. Aborting...  "${X}
 	exit 1
 fi
 
