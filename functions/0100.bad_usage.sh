@@ -1,4 +1,4 @@
-## /*
+## /* @function
 #	@usage __bad_usage [options] [command_name [message]]
 #
 #	@output true

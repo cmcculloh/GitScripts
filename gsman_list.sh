@@ -1,51 +1,66 @@
 #!/bin/bash
+## /*
+#	@description
+#	This file is intended to list all of the keywords which have gsman comments
+#	associated with them, and will display using "gsman <keyword>".
+#	description@
+#
+#	@notes
+#	- This file is not intended to be used by itself.
+#	notes@
+#
+#	@dependencies
+#	functions/0300.menu.sh
+#	dependencies@
+## */
+$loadfuncs
 
-# Move through all specified directories and look for gsman comments.
-# Find possible files in possible directories.
-echo
-echo ${O}"Searching files. Please wait..."
-echo
 
-both_paths="${gsman_paths_default} ${gsman_paths_user}"
-file_list=""
-tmp="${gitscripts_temp_path}tmp"
-cat /dev/null > $tmp
-
-for gsman_path in $both_paths; do
-	echo "  IN: $gsman_path"
-	for listing in `ls -p "$gsman_path" | grep -v '/' | egrep "$1\\.[_[:alnum:]]+$"`; do
-		# gsman comments should be near the top of the page. we'll give it the first 5
-		# just to be safe.
-		if { head -5 "${gsman_path}$listing" | egrep -q "##[[:blank:]]*\\/[[:blank:]]*"; }; then
-			# conditional eliminates excessive spaces
-			name=$(echo $listing | awk '{ gsub(/\.[_a-zA-Z0-9]+$/,""); print }')
-			echo $name >> $tmp
-			[ -z "$file_list" ] && { file_list="$name"; } || {
-				file_list="${file_list} $name"
-			}
-		fi
-	done
-done
-file_list=$(cat $tmp | sort)
-file_array=( $file_list )
-
-# If there is more than one file in the array, user should get a choice of which to view.
-num=0
-echo
-echo ${H2HL}
-for li in $file_list; do
-	echo "$num:  $li"
-	(( num++ ))
-done
-echo ${H2HL}
-echo ${Q}"Please make a selection from the list (or press enter to abort): "${X}
-read choice
-if [ -n "$(echo $choice | egrep '^[[:digit:]]+$')" ]; then
-	file=${file_array[choice]}
-else
-	echo ${O}"No choice selected. Exiting gsman..."${X}
-	echo
-	exit
+flag="gs"
+if [ -n "$1" ]; then
+	[ "$1" = "all" ] && flag="all"
+	[ "$1" = "user" ] && flag="user"
 fi
 
-"${gitscripts_path}gsman.sh" $file
+tmp="${gitscripts_temp_path}cmdlist"
+
+declare -a indexes
+case $flag in
+	gs)
+		cat "${gitscripts_doc_path}gsman_index.txt" > "$tmp";;
+
+	user)
+		if [ -s "${gitscripts_doc_path}user/gsman_index.txt" ]; then
+			cat "${gitscripts_doc_path}user/gsman_index.txt" > "$tmp"
+		else
+			echo ${E}"  No user index file could be found! Aborting...  "${X}
+		fi;;
+
+	all)
+		cat "${gitscripts_doc_path}gsman_index.txt" "${gitscripts_doc_path}user/gsman_index.txt" | sort -r > "$tmp";;
+esac
+
+
+# build command array that will get sent to the __menu function
+declare -a cmds
+while read line; do
+	cmds[${#cmds[@]}]=${line%%:*}
+done <"$tmp"
+
+# clean up temp file
+rm "$tmp"
+
+if __menu --prompt="Choose a command to view it's documentation" "${cmds[@]}"; then
+	if [ -n "$_menu_sel_value" ]; then
+		echo
+		"${gitscripts_path}gsman.sh" "$_menu_sel_value"
+	else
+		echo
+		echo "  Until next time..."
+	fi
+else
+	echo ${E}"  There was an error displaying the gsman commands. Exiting...  "${X}
+fi
+
+
+exit

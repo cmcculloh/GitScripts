@@ -1,71 +1,59 @@
 #!/bin/bash
+## /*
+#	@description
+#	This script searches the command indexes for the specified command.
+#	Once the command is found, the help file is output to the screen
+#	with a colored interface.
+#	description@
+#
+#	@notes
+#	- This script is called from gsman.sh and is not intended to be a
+#	  standalone script.
+#	notes@
+#
+#	@dependencies
+#	functions/0100.bad_usage.sh
+#	functions/0200.gslog.sh
+#	dependencies@
+## */
+$loadfuncs
+
 
 if [ -z "$1" ]; then
-	echo "Error: gsman_parse.sh expects a file name in the gitscripts directory as a parameter."
+	__bad_usage gsman "Invalid number of parameters."
 	exit 1
 fi
-
+cmnd="$1"
 
 # Find possible files in possible directories.
-both_paths="${gsman_paths_default} ${gsman_paths_user}"
-file_list=""
-tmp="${gitscripts_temp_path}tmp"
-cat /dev/null > $tmp
+indexes=( "${gitscripts_doc_path}gsman_index.txt" )
+[ -s "${gitscripts_doc_path}user/gsman_index.txt" ] && indexes[1]="${gitscripts_doc_path}user/gsman_index.txt"
 
-for gsman_path in $both_paths; do
-	for listing in `ls -p "$gsman_path" | grep -v '/' | egrep "$1\\.[_[:alnum:]]+$"`; do
-		#conditional eliminates excessive spaces
-		[ -z "$file_list" ] && { file_list="${gsman_path}$listing"; } || {
-			file_list="${file_list} ${gsman_path}$listing"
-		}
-	done
+# check for command in index file and grab path if it exists
+for (( i = 0; i < ${#indexes[@]}; i++ )); do
+	line=$(grep "^$cmnd:" "${indexes[i]}")
+	[ -n "$line" ] && docPath="${line/$cmnd:/}"
 done
-file_array=( $file_list )
 
-# If there is more than one file in the array, user should get a choice of which to view.
-if [ ${#file_array[*]} -gt 1 ]; then
-	echo
-	echo ${O}"GSMan found multiple possible scripts for ${COL_MAG}$1${COL_NORM}${O}."
-	echo ${H2HL}
-	num=0
-	for li in $file_list; do
-		echo "$num:  $li"
-		(( num++ ))
-	done
-	echo ${H2HL}
-	echo ${Q}"Please make a selection from the list (or press enter to abort): "${X}
-	read choice
-	if [ -n "$(echo $choice | egrep '^[[:digit:]]+$')" ]; then
-		file=${file_array[choice]}
-	else
-		echo ${O}"No choice selected. Exiting gsman..."${X}
-		echo
-		exit
-	fi
-else
-	file=$file_list
-fi
-
-
-# awk does all the heavy lifting (parsing)
-# todo: check for $tmp file
-awkscript="${gitscripts_awk_path}gsman_parse.awk"
-result=$(awk -f $awkscript $file 2>&1 | tee $tmp)
-
-if [ -z "$result" ]; then
-	echo
-	echo ${E}" No documentation found for ${1}!"${X}
-	echo
-else
+# display help
+if [ -s "$docPath" ]; then
 	echo
 	echo ${H2}"## /*                                           "
 	echo "#   gsman: Geez man! Use the GitScripts MANual!   "
 	echo "## */                                               "${X}
 	echo
-	echo "SCRIPT/COMMAND: "${STYLE_BRIGHT}${COL_YELLOW}$1
-	echo ${X}
-	cat "$tmp"
+	echo "SCRIPT/COMMAND: "${STYLE_BRIGHT}${COL_YELLOW}${cmnd}${X}
+	echo
+	cat "$docPath"
 	echo
 	echo ${H2}"-END-"${X}
 	echo
+
+else
+	__gslog "Missing documentation for ${cmnd} at ${docPath}"
+	echo ${E}"  GSMan cannot find the documentation for this command.  "${X}
+	exit 1
 fi
+
+
+exit

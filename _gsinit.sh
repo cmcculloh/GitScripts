@@ -1,6 +1,4 @@
 ## /*
-#	@usage source _gsinit.sh
-#
 #	@description
 #	This file is the main controller for all GitScripts. It loads the necessary environment
 #	variables, aliases, and scripts that make GitScripts do it's thing. In order for

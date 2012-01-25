@@ -1,4 +1,4 @@
-## /*
+## /* @config
 #	@description
 #	This file, when copied into the same directory WITHOUT the .example extension will
 #	override virtually any variable set through the various *.cfg files. This is also
@@ -11,6 +11,8 @@
 #	- Aliases set in aliases.cfg cannot be overridden from this file. You will have to
 #	re-define them sometime after you have included the GitScripts bootstrap file (_gsinit.sh).
 #	notes@
+#
+#	@file cfg/user.overrides.example
 ## */
 
 
