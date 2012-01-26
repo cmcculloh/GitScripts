@@ -280,7 +280,7 @@ if __branch_exists_local $1; then
 	echo "$ git checkout $1"
 	git checkout "$1"
 else
-	${gitscripts_path}new.sh "$1"
+	${gitscripts_path}new.sh "$1" from master --no-questions
 fi
 echo ${O}${H2HL}${X}
 

@@ -66,10 +66,15 @@ if __branch_exists_local "$1"; then
 	#don't create new branch since we checked the local copy out, just exit...
 	exit 1
 elif __branch_exists_remote "$1"; then
-	echo
-	echo ${E}"  Branch \`$1\` already exists on the remote!  "${X}
-	echo ${Q}"  Check \`$1\` out from remote? (y) n "${Q}
-	read checkoutremotedecision
+	if [ "$4" != "--no-questions" ]; then
+		echo
+		echo ${E}"  Branch \`$1\` already exists on the remote!  "${X}
+		echo ${Q}"  Check \`$1\` out from remote? (y) n "${Q}
+		read checkoutremotedecision
+	else
+		checkoutremotedecision="y"
+	fi
+	
 	if [ -z "$checkoutremotedecision" ] || [ "$checkoutremotedecision" = "y" ]; then
 		startingBranch="${_remote}/${1}"
 		checkoutremote=true
