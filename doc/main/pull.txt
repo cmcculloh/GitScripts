@@ -1,0 +1,16 @@
+  [36m @usage [0;20;39m pull [branch-name]
+  
+  [36m @description [0;20;39m
+  This is a quick script that pulls in changes from the current branch's remote
+  tracking branch if it exists. User can also specify another branch to pull
+  in changes from. Pull branch is verified to exist on the remote first. If
+  it doesn't, the script is aborted.
+  
+  
+  [36m @dependencies [0;20;39m
+  functions/5000.branch_exists.sh
+  functions/5000.parse_git_branch.sh
+  functions/5000.set_remote.sh
+  
+  
+  [36m @file [0;20;39m pull.sh

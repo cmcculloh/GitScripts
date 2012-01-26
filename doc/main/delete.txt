@@ -1,0 +1,18 @@
+  [36m @usage [0;20;39m delete <branch-name>
+  
+  [36m @description [0;20;39m
+  This script isa  wrapper for removing branches locally. Removing them locally requires a bit of
+  magic, which can be determined by observing the source code carefully. This obfuscation is
+  included to prevent team members without sufficient access from deleting important remote
+  branches.
+  
+  
+  [36m @dependencies [0;20;39m
+  *checkout.sh
+  functions/0100.bad_usage.sh
+  functions/5000.branch_exists_local.sh
+  functions/5000.branch_exists_remote.sh
+  functions/5000.parse_git_branch.sh
+  
+  
+  [36m @file [0;20;39m delete.sh

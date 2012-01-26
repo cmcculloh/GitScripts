@@ -1,0 +1,15 @@
+  [36m @usage [0;20;39m pullscripts
+  
+  [36m @description [0;20;39m
+  This is a quick way to update the GitScripts master branch. It takes note of the current branch
+  and the current working directory of the user, updates master, then returns the user
+  to his/her previous working conditions. Furthermore, the script will fail if there are
+  changed/staged files in the working tree. Untracked files don't make a difference.
+  
+  
+  [36m @dependencies [0;20;39m
+  functions/5000.parse_git_branch.sh
+  functions/5000.parse_git_status.sh
+  
+  
+  [36m @file [0;20;39m pullscripts.sh

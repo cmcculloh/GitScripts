@@ -1,0 +1,23 @@
+  [36m @usage [0;20;39m __merge_master
+  
+  [36m @output [0;20;39m false
+  
+  [36m @description [0;20;39m
+  Merges remote/master into the current branch. Should be tied to
+  an alias "mergemaster"
+  
+  
+  [36m @notes [0;20;39m
+  
+  
+  [36m @examples [0;20;39m
+  # ...
+  __merge_master
+  #...
+  
+  
+  [36m @dependencies [0;20;39m
+  functions/1000.set_remote.sh
+  
+  
+  [36m @file [0;20;39m functions.5000.merge_master.sh

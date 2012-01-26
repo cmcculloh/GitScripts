@@ -1,0 +1,35 @@
+  [36m @usage [0;20;39m __is_branch_protected <keyword> <branch-name>
+  
+  [36m @output [0;20;39m false
+  
+  [36m @description [0;20;39m
+  Making basic checks for protected branches is an integral part of keeping
+  team projects as safe as possible. It's also helpful just to protect you
+  from yourself sometimes. This function provides those checks.
+  
+  
+  [36m @options [0;20;39m
+  --all			Checks to see if branch is protected ANYWHERE.
+  --merge-from	Checks for protected branches that merge into other branches.
+  --merge-to		Checks for protected branches that shouldn't be merged into.
+  --push			Checks for protected branches that cannot be pushed to.
+  
+  
+  [36m @notes [0;20;39m
+  - This function returns SUCCESS on error as the safest option is to
+  protect the branch if something goes wrong. FAILURE is returned if
+  the branch is not protected.
+  - Paths with spaces will cause a SUCCESS.
+  - Echoing an error is preferred to logging it with __gslog to better debug
+  script errors.
+  
+  
+  [36m @examples [0;20;39m
+  if __is_branch_protected --push master; then
+  echo "Sorry, you can't push to master."
+  else
+  eval "${gitscripts_path}push.sh master"
+  fi
+  
+  
+  [36m @file [0;20;39m functions/5000.is_branch_protected.sh

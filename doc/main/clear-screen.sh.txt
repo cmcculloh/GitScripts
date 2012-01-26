@@ -1,0 +1,12 @@
+  [36m @usage [0;20;39m clear-screen.sh
+  
+  [36m @description [0;20;39m
+  Gives the user an option to clear screen. Will check for the variable $clearscreenanswer
+  to alter the default answer. This variable can be set in user.overrides.
+  
+  
+  [36m @notes [0;20;39m
+  - This script is meant to be included in other scripts and not called directly.
+  
+  
+  [36m @file [0;20;39m clear-screen.sh

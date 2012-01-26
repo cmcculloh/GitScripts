@@ -1,0 +1,24 @@
+  [36m @usage [0;20;39m __branch_exists_local <branch_name>
+  
+  [36m @output [0;20;39m on error
+  
+  [36m @description [0;20;39m
+  Determine if the given branch exists locally.
+  
+  
+  [36m @notes [0;20;39m
+  - Since this function does not echo anything to be captured, it is most useful if
+  used directly in conditional statements. See example below.
+  
+  
+  [36m @examples [0;20;39m
+  # ...
+  
+  if __branch_exists_local master; then
+  echo "local branch 'master' exists!"
+  fi
+  
+  #...
+  
+  
+  [36m @file [0;20;39m functions/5000.branch_exists_local.sh

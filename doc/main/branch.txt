@@ -1,0 +1,32 @@
+  [36m @usage [0;20;39m branch [options] [search-string]
+  
+  [36m @description [0;20;39m
+  This is a handy tool to filter local and/or remote branch names in your repository.
+  It leverages the __get_branch function to let the user choose a branch. For more
+  information on that part of the process,[36m  @see [0;20;39m functions/5000.get_branch.sh.
+  
+  
+  [36m @options [0;20;39m
+  -l, --local     Show only local branches.
+  -q, --quiet     Do not show the informational message containing search query.
+  -r, --remote    Show only remote branches.
+  
+  
+  [36m @notes [0;20;39m
+  - Search string CANNOT begin with a hyphen!
+  - Passing both options above will result in showing ALL branches as expected.
+  
+  
+  [36m @examples [0;20;39m
+  1) branch --local part-of-bran
+  # filters local branches that match "part-of-bran"
+  2) branch -r
+  # shows ALL remote branches
+  
+  
+  [36m @dependencies [0;20;39m
+  *checkout.sh
+  functions/5000.get_branch.sh
+  
+  
+  [36m @file [0;20;39m branch.sh
