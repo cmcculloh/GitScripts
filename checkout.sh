@@ -276,11 +276,11 @@ fi
 # Checkout the chosen branch if possible.
 echo "This checks out the ${B}\`${branch}\`${X} branch."
 echo ${O}${H2HL}
-if __branch_exists_local $1; then
-	echo "$ git checkout $1"
-	git checkout "$1"
+if __branch_exists_local $branch; then
+	echo "$ git checkout $branch"
+	git checkout "$branch"
 else
-	${gitscripts_path}new.sh "$1" from master --no-questions
+	${gitscripts_path}new.sh "$branch" from "${_remote}/$branch" --no-questions
 fi
 echo ${O}${H2HL}${X}
 
