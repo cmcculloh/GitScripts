@@ -32,7 +32,7 @@ indexes=( "${gitscripts_doc_path}gsman_index.txt" )
 # check for command in index file and grab path if it exists
 for (( i = 0; i < ${#indexes[@]}; i++ )); do
 	line=$(grep "^$cmnd:" "${indexes[i]}")
-	[ -n "$line" ] && docPath="${line/$cmnd:/}"
+	[ -n "$line" ] && docPath="${gitscripts_path}${line/$cmnd:/}"
 done
 
 # display help

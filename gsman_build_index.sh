@@ -58,15 +58,16 @@ for (( i = 0; i < ${#paths[@]}; i++ )); do
 						docName="${line:5}"
 						if [ -n "$docName" ] && [ "$docName" != "source" ]; then
 							fileName="${docPath}${docType}/${docName}.txt"
-							echo -e "${docName}:${fileName}" >> "$docIndex"
+							rFileName="${fileName#${gitscripts_path}}"
+							echo -e "${docName}:${rFileName}" >> "$docIndex"
 						else
 							break
 						fi
 
 					# all other lines are the gsman comments
-					elif [ -n "$fileName" ]; then
+					elif [ -n "$rFileName" ]; then
 						[ $j -eq 2 ] && : > "$fileName"
-						echo -e "  $line" >> "$fileName"
+						echo "  $line" >> "$fileName"
 
 					fi
 
