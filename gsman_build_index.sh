@@ -8,14 +8,30 @@
 #	runs "gsman <command>".
 #	description@
 #
+#	@options
+#	user    Build only the user index
+#	main    Build only the main index
+#	options@
+#
 #	@notes
 #	- This script is not intended to be used on it's own.
 #	notes@
 ## */
 
 declare -a paths
-paths[0]="${gsman_paths_default}"
-paths[1]="${gsman_paths_user}"
+
+# user might want to build one of two indexes
+if [ -n "$1" ]; then
+	[ "$1" == "user" ] && paths[0]="${gsman_paths_user}" && userOnly=true
+	[ "$1" == "main" ] && paths[0]="${gsman_paths_default}" && mainOnly=true
+fi
+
+# if paths has an element, then the passed-in argument was validated.
+# otherwise, build all by default.
+if [ ${#paths[@]} -eq 0 ]; then
+	paths[0]="${gsman_paths_default}"
+	paths[1]="${gsman_paths_user}"
+fi
 
 docPath="${gitscripts_doc_path}"
 tmp="${gitscripts_temp_path}gsmantemp"
@@ -27,7 +43,8 @@ echo ${H1HL}${X}
 echo
 
 for (( i = 0; i < ${#paths[@]}; i++ )); do
-	[ $i -eq 1 ] && docPathPrefix="user/" || docPathPrefix=""
+	docPathPrefix=
+	{ [ $userOnly ] || [ $i -eq 1 ]; } && docPathPrefix="user/"
 	docPath="${docPath}${docPathPrefix}"
 	[ ! -d "$docPath" ] && mkdir "$docPath"
 	docIndex="${docPath}gsman_index.txt"
@@ -42,9 +59,7 @@ for (( i = 0; i < ${#paths[@]}; i++ )); do
 				docType=""
 				docName=""
 				awk -f "${gitscripts_awk_path}gsman_parse.awk" "${file}" > "$tmp"
-				if grep -q "_gsinit" "${file}"; then cp "$tmp" "${tmp}2"; fi
 				while read line; do
-					#echo "$line"
 					# first line -- type:...
 					if [ $j -eq 0 ]; then
 						docType="${line:5}"
@@ -59,7 +74,7 @@ for (( i = 0; i < ${#paths[@]}; i++ )); do
 						if [ -n "$docName" ] && [ "$docName" != "source" ]; then
 							fileName="${docPath}${docType}/${docName}.txt"
 							rFileName="${fileName#${gitscripts_path}}"
-							echo -e "${docName}:${rFileName}" >> "$docIndex"
+							echo "${docName}:${rFileName}" >> "$docIndex"
 						else
 							break
 						fi

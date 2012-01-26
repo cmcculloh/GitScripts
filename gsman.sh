@@ -34,14 +34,16 @@
 #	description@
 #
 #	@options
-#	--build-index          Build the files which are used for outputting gsman comments
-#	                       in an easy-to-read format. Also build command index files.
-#	--list[=user|all),     Show a list of all the files which contain gsman comments
-#	                       and are accessible using the gsman command. If "user" is
-#	                       specified, only show commands that have been indexed from
-#	                       paths set in the $gitscripts_paths_user variable. If "all" is
-#	                       specified, show both user AND GitScripts native command lists.
-#	-h, --help             Same as --list.
+#	--build-index[=main|user]    Build the files which are used for outputting gsman comments
+#	                             in an easy-to-read format. Also build command index files.
+#	                             If "user" is specified, only build the user index/help. If
+#	                             "main" is specified, only build the gitscripts core index/help.
+#	--list[=user|all),           Show a list of all the files which contain gsman comments
+#	                             and are accessible using the gsman command. If "user" is
+#	                             specified, only show commands that have been indexed from
+#	                             paths set in the $gitscripts_paths_user variable. If "all" is
+#	                             specified, show both user AND GitScripts native command lists.
+#	-h, --help                   Same as --list.
 #	options@
 #
 #	@notes
@@ -53,7 +55,7 @@
 #	@examples
 #	1) gsman phone
 #	2) gsman --help
-#	3) gsman --list=all
+#	3) gsman --list=all    # get a list of all commands that have gsman-available help
 #	examples@
 #
 #	@dependencies
@@ -85,6 +87,9 @@ case $# in
 
 			"--build-index")
 				"${gitscripts_path}"gsman_build_index.sh;;
+
+			"--build-index="*)
+				"${gitscripts_path}"gsman_build_index.sh ${1:14};;
 
 			*)
 				"${gitscripts_path}"gsman_parse.sh "$1";;
