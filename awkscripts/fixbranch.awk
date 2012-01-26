@@ -12,7 +12,7 @@
 	# 2) replace other special characters with a hyphen.
 	# 3) kill off trailing hyphens
 	gsub(/["']/,"",desc)
-	gsub(/[.,;:[:blank:]/\\]+/,"-",desc)
+	gsub(/[.,;:[:blank:]\/\\]+/,"-",desc)
 	gsub(/-+$/,"",desc)
 
 	print toupper(ticketNum) "---" tolower(desc)
