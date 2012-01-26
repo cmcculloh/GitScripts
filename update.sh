@@ -14,13 +14,6 @@
 #	5) Asks if you want to push (and then pushes if so)
 #	description@
 #
-#	@notes
-#	notes@
-#
-#	@examples
-#	1) update
-#	examples@
-#
 #	@dependencies
 #	functions/1000.parse_git_branch.sh
 #	functions/1000.set_remote.sh
@@ -28,15 +21,51 @@
 #	push.sh
 #	dependencies@
 #
-#	@file merge.sh
+#	@file update.sh
 ## */
 $loadfuncs
 
 
-git fetch --all
+echo ${X}
 __set_remote
-cb=$(__parse_git_branch)
-git pull ${_remote} $cb
-git pull ${_remote} master
-git status
-"${gitscripts_path}"push.sh "$1"
+
+if [ -n "$_remote" ]; then
+	echo "${A}Fetch${X} all updates from ${COL_GREEN}${_remote}${X}..."
+	echo ${O}${H2HL}
+	echo "$ git fetch --all --prune"
+	git fetch --all --prune
+	echo ${O}${H2HL}${X}
+	echo
+	echo
+
+	cb=$(__parse_git_branch)
+	if [ -z "$cb" ]; then
+		echo ${E}"  Unable to determine the current branch! Aborting...  "${X}
+		exit 1
+	fi
+
+	echo "${A}Pull${X} in changes from this branch and then from ${B}\`master\`${X},"
+	echo "check our status, and then optionally ${A}push${X} the updates back up."
+	echo ${O}${H2HL}${X}
+	echo "$ git pull ${_remote} ${cb}"
+	git pull ${_remote} $cb
+	echo ${O}
+	echo
+	echo "$ git pull ${_remote} master"
+	git pull ${_remote} master
+	echo ${O}
+	echo
+	echo "$ git status"
+	git status
+	echo
+	"${gitscripts_path}"push.sh "$1"
+	echo ${O}${H2HL}${X}
+	echo
+	echo "Update complete!"
+else
+	echo ${E}"  No remote configured for update! Aborting...  "${X}
+	exit 1
+fi
+
+
+exit
