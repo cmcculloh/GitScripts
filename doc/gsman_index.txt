@@ -1,7 +1,6 @@
 branch:doc/main/branch.txt
 checkout:doc/main/checkout.txt
 clean-branches:doc/main/clean-branches.txt
-clear-screen.sh:doc/main/clear-screen.sh.txt
 commit:doc/main/commit.txt
 contains:doc/main/contains.txt
 delete:doc/main/delete.txt
@@ -21,6 +20,7 @@ __gslog:doc/function/__gslog.txt
 __menu:doc/function/__menu.txt
 __in_array:doc/function/__in_array.txt
 __is_repo:doc/function/__is_repo.txt
+__clear:doc/function/__clear.txt
 __parse_git_branch:doc/function/__parse_git_branch.txt
 __set_remote:doc/function/__set_remote.txt
 __branch_exists:doc/function/__branch_exists.txt

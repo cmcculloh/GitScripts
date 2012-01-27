@@ -117,6 +117,6 @@ else
 
 fi
 
-"${gitscripts_path}"clear-screen.sh
+__clear
 
 exit

@@ -178,6 +178,7 @@ if [ $isAdmin ]; then
 else
 	"${gitscripts_path}"push.sh "$startingBranch"
 fi
-"${gitscripts_path}"clear-screen.sh
+
+__clear
 
 exit

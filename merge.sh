@@ -187,6 +187,6 @@ if [ "$current_branch" != "$baseBranch" ]; then
 	fi
 fi
 
-"${gitscripts_path}"clear-screen.sh
+__clear
 
 exit
