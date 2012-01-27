@@ -1,5 +1,5 @@
 #!/bin/bash
-## /* @alias synctree
+## /*
 #	@usage synctree <option> <path|name>
 #
 #	@description
@@ -30,46 +30,45 @@
 #
 #	@examples
 #	1) synctree -p college-sports-apparel
-#		#syncs the college-sports apparel
+#		#syncs the college-sports-apparel promo
 #	examples@
 #
 #	@dependencies
-#	gitscripts/path/to/file
+#	gitscripts/functions/0100.bad_usage.sh
+#	gitscripts/awk/dirname.awk
 #	dependencies@
 ## */
 $loadfuncs
 
 
 if [ -z "$1" ]; then
-	echo "Must provide sync keyword!"
+	__bad_usage synctree "Must provide sync option AND path!"
 	exit 1
 fi
-
-source /d/workspaces/helios_workspace/myscripts/vars.sh
 
 
 case "$1" in
 	"-a")
 		# user is syncing a directory/file from the webapp folder into the webapp war
 		if [ -n "$2" ]; then
-			appPath="${webappdir}/$2"
+			appPath="${webappwar_path}$2"
 			if [ -e "${appPath}" ]; then
-				export warPath="${jbosswebappwar}/$2"
+				export warPath="${JBOSS_WEBAPPWAR}/$2"
 
 				# if a directory is specified, some extra processing is required
 				if [ -d "${appPath}" ]; then
-					warPath=`echo $warPath | awk -f $awkscriptsdir/dirname.awk`
+					warPath=`echo "$warPath" | awk -f ${awkscripts_path}dirname.awk`
 				fi
 
-				echo -n "Syncing file(s) ($2  ->  ${warPath})..."
+				echo -n "${A}Syncing${X} file(s) ($2  ->  ${warPath})..."
 				cp -r "${appPath}" "${warPath}"
 				echo "done."
 			else
-				echo "File/folder at ${appPath} does not exist!"
+				echo ${E}"  File/folder at ${appPath} does not exist!  "${X}
 				exit 3
 			fi
 		else
-			echo "You must specify a file/folder relative to web-app.war/ to sync!"
+			__bad_usage synctree "You must specify a file/folder relative to web-app.war/ to sync!"
 			exit 2
 		fi
 		;;
@@ -78,85 +77,88 @@ case "$1" in
 	"-m")
 		# user is syncing a directory/file from the media folder into the media war
 		if [ -n "$2" ]; then
-			appPath="${mediadir}/$2"
+			appPath="${media_path}media/$2"
 			if [ -e "${appPath}" ]; then
-				export mediaPath="${jbossmediawar}/$2"
+				export mediaPath="${JBOSS_MEDIAWAR}$2"
 
 				# if a directory is specified, some extra processing is required
 				if [ -d "${appPath}" ]; then
-					mediaPath=`echo $mediaPath | awk -f $awkscriptsdir/dirname.awk`
+					mediaPath=`echo "$mediaPath" | awk -f "${awkscripts_path}"dirname.awk`
 				fi
 
-				echo -n "Syncing media ($2  ->  ${mediaPath})..."
+				echo -n "${A}Syncing${X} media ($2  ->  ${mediaPath})..."
 				cp -r "${appPath}" "${mediaPath}"
 				echo "done."
 			else
-				echo "File/folder at ${appPath} does not exist!"
+				echo ${E}"  File/folder at ${appPath} does not exist!  "${X}
 				exit 3
 			fi
 		else
-			echo "You must specify a media file/folder relative to finishline_media/media/ to sync!"
+			__bad_usage synctree "You must specify a media file/folder relative to finishline_media/media/ to sync!"
 			exit 2
 		fi
 		;;
 
 
 	"-p")
+		mediadir="${media_path}media/"
 		# user can specify a single promo
 		if [ -n "$2" ]; then
 			promo=$2
 
 			# check for promo and promo media, syncing if they exist
-			if [ -e "${promosdir}/${promo}" ]; then
+			if [ -e "${promos_path}${promo}" ]; then
 				sync=1
-				src="${promosdir}/${promo}"
-				srcjsp="${promosdir}/${promo}.jsp"
-				dest="${jbosswebappwar}/global/promos"
-				destjsp="${jbosswebappwar}/global/promos/${promo}.jsp"
+				src="${promos_path}${promo}"
+				srcjsp="${src}.jsp"
+				dest="${JBOSS_WEBAPPWAR}/global/promos"
+				destjsp="${dest}/${promo}.jsp"
 				echo
-				echo "Syncing promo: $promo ..."
+				echo "${A}Syncing${X} promo: $promo ..."
 				echo "    sources: $src"
 				echo "             $srcjsp"
 				echo "    dest:    $dest"
 				echo "             $destjsp"
-				cp -r $src $dest
-				cp -r $srcjsp $destjsp
+				cp -r "$src" "$dest"
+				cp -r "$srcjsp" "$destjsp"
 			fi
-			if [ -e "${mediadir}/landing-pages/${promo}" ]; then
+			if [ -e "${mediadir}landing-pages/${promo}" ]; then
 				sync=1
-				src="${mediadir}/landing-pages/${promo}"
-				dest="${jbossmediawar}/landing-pages"
+				src="${mediadir}landing-pages/${promo}"
+				dest="${JBOSS_MEDIAWAR}/landing-pages"
 				echo
-				echo "Syncing landing page media: $promo ..."
+				echo "${A}Syncing${X} landing page media: $promo ..."
 				echo "    source: $src"
 				echo "    dest:   $dest"
-				cp -r $src $dest
+				cp -r "$src" "$dest"
 			fi
-			if [ -e "${mediadir}/promos/${promo}" ]; then
+			if [ -e "${mediadir}promos/${promo}" ]; then
 				sync=1
-				src="${mediadir}/promos/${promo}"
-				dest="${jbossmediawar}/promos"
+				src="${mediadir}promos/${promo}"
+				dest="${JBOSS_MEDIAWAR}/promos"
 				echo
-				echo "Syncing promo media: $promo ..."
+				echo "${A}Syncing${X} promo media: $promo ..."
 				echo "    source: $src"
 				echo "    dest:   $dest"
-				cp -r $src $dest
+				cp -r "$src" "$dest"
 			fi
 
 			if [ "$sync" != "1" ]; then
-				echo "No promo or promo media found for promo '${promo}'."
+				echo ${E}"  No promo or promo media found for promo '${promo}'.  "${X}
 			fi
 		else
-			echo "Syncing all promos..."
-			cp -r "${promosdir}" "${jbosswebappwar}/global"
-			echo "Syncing 'landing-pages' media..."
-			cp -r "${mediadir}/landing-pages" $jbossmediawar
-			echo "Syncing 'promos' media..."
-			cp -r "${mediadir}/promos" $jbossmediawar
+			echo "${A}Syncing${X} all promos..."
+			cp -r "${promos_path}" "${JBOSS_WEBAPPWAR}global"
+			echo "${A}Syncing${X} 'landing-pages' media..."
+			cp -r "${mediadir}landing-pages" "$JBOSS_MEDIAWAR"
+			echo "${A}Syncing${X} 'promos' media..."
+			cp -r "${mediadir}promos" "$JBOSS_MEDIAWAR"
 		fi
 		;;
 
 
 	*)
-		echo "You must specify an option (-p, -m)."
+		__bad_usage synctree "You must specify an option (-a, -p, -m).";;
 esac
+
+exit

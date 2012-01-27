@@ -11,10 +11,15 @@ export development_root=""
 export native_motd_path=""
 export inputdir=""
 export outputdir=""
-export awkdir=""
+export awkscripts_path=""
+export promos_path=
+export webappwar_path=
 export tempdir=""
 export tmp=""
 export flgitscripts_temp_bash_profile_path=""
+export flgitscripts_config_path=
+export flgitscripts_config_defaults=
+export flgitscripts_config=
 export development_root=""
 export qa_path=""
 

@@ -138,7 +138,7 @@ alias createrepositories="source ${flgitscripts_path}createRepositories.sh"
 # Server interaction
 #########################################################################################################################
 alias startserver="source ${flgitscripts_path}startserver.sh"
-alias qstartserver="source ${flgitscripts_path}startserver.sh > /dev/null &"
+alias qstartserver="source ${flgitscripts_path}startserver.sh &> /dev/null &"
 alias stopserver="${JBOSS_HOME}shutdown.sh --shutdown"
 alias taillogs="source ${flgitscripts_path}tail_log.sh"
 alias modifygitexcludes="gedit .git/info/exclude"
@@ -188,12 +188,12 @@ alias makesprite="${gitscripts_path}swivel-images-maker.sh"
 # Utilities and Miscellaneous
 #########################################################################################################################
 alias fixbranch="${flgitscripts_path}fixbranch.sh"
+alias flvarsreset="source ${flgitscripts_path}fl-vars-reset.sh"
 alias phone="${flgitscripts_path}phone.sh"
 alias refresh_bash_profile="source ${flgitscripts_path}refresh_bash_profile.sh"
 #alias switchenv="${flgitscripts_path}/switchenvironment.sh"
 #alias syncmywork="/d/workspaces/helios_workspace/myscripts/syncmyapp.sh"
 alias synctree="${flgitscripts_path}synctree.sh"
-alias flvarsreset="source ${flgitscripts_path}fl-vars-reset.sh"
 #alias whichenv="${flgitscripts_path}/whichenvironment.sh"
 
 

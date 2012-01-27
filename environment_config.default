@@ -243,7 +243,7 @@ fi
 [ -n "$qa_path" ] || export qa_path="${workspace_path}qa/"
 [ -n "$inputdir" ] || export inputdir="${flgitscripts_path}input/"
 [ -n "$outputdir" ] || export outputdir="${flgitscripts_path}output/"
-[ -n "$awkdir" ] || export awkdir="${flgitscripts_path}awkscripts/"
+[ -n "$awkscripts_path" ] || export awkscripts_path="${flgitscripts_path}awkscripts/"
 [ -n "$tempdir" ] || export tempdir="${flgitscripts_path}temp/"
 [ -n "$tmp" ] || export tmp="${tempdir}tmp"
 [ -n "$flgitscripts_temp_bash_profile_path" ] || export flgitscripts_temp_bash_profile_path="${tempdir}temp_bash_profile"
@@ -272,8 +272,8 @@ fi
 
 
 # Project-specific
-[ -n "$webappwar" ] || export webappwar="${finishline_path}modules/base/j2ee-apps/base/web-app.war/"
-[ -n "$promosdir" ] || export promosdir="${webappwar}global/promos/"
+[ -n "$webappwar_path" ] || export webappwar_path="${finishline_path}modules/base/j2ee-apps/base/web-app.war/"
+[ -n "$promos_path" ] || export promos_path="${webappwar_path}global/promos/"
 [ -n "$mediaLandingPagesPath" ] || export mediaLandingPagesPath="${workspace_path}${mediaprojectname}/media/landing-pages/"
 
 
