@@ -1,26 +1,29 @@
 #1/bin/bash
+$loadfuncs
 
 # Expects first parameter to be the name of the promo (uri).
 if [ -z "$1" ]; then
-	echo "Error: First argument must be the name of the promo."
+	__bad_usage processpromohtml "First argument must be the name of the promo."
 	exit 1
 fi
 
-source $workspace_path/myscripts/promovars.sh
+promouri="$1"
+promodir="${promo_path}${promouri}"
+css="${mediaLandingPagesPath}${promouri}/css/styles.css"
 
-export promodir="${promowebappdir}/$1"
-export css="${promomediadir}/$1/css/styles.css"
+echo ${X}
 
-if [ ! -d $promodir ]; then
-	echo "Promo directory does not exist: ${promodir}"
+if [ ! -d "$promodir" ]; then
+	echo ${E}"  Promo directory does not exist: ${promodir}  "
+	echo "  Aborting...  "${X}
 	exit 5
 fi
 
 # check for an html file
-html=$(ls $promodir | awk '/\.html?$/ { print }')
+html=$(ls "$promodir" | awk '/\.html?$/ { print; }')
 
 if [ -z "$html" ]; then
-	echo "No HTML file found in promo directory."
+	echo ${E}"  No HTML file found in promo directory. Aborting...  "${X}
 	exit 6
 fi
 
@@ -32,27 +35,30 @@ htmlfile="${promodir}/${html}"
 
 # process the html, changing srcs and hrefs as necessary
 echo -n "Processing html..."
-awk -v promouri="$1" -f "${awkscriptsdir}/gethtml.awk" $htmlfile > "${promodir}/$1.index_body.jsp"
-echo "done."
+awk -v promouri="$promouri" -f "${awkscripts_path}gethtml.awk" "$htmlfile" > "${promodir}/${promouri}.index_body.jsp"
+echo ${COL_GREEN}"done${X}."
 
 # grab css, appending to the stylesheet if it already has data
 echo
 echo -n "Processing css..."
-if [ -s $htmlfile ]; then
-	echo "" >> $css
-	echo "/* imported from html */" >> $css
-	awk -v promouri="$1" -f "${awkscriptsdir}/getstyles.awk" $htmlfile >> $css
+if [ -s "$css" ]; then
+	echo "" >> "$css"
+	echo "/* imported from html */" >> "$css"
+	awk -v promouri="$promouri" -f "${awkscripts_path}getstyles.awk" "$htmlfile" >> "$css"
 else
-	awk -v promouri="$1" -f "${awkscriptsdir}/getstyles.awk" $htmlfile > $css
+	awk -v promouri="$promouri" -f "${awkscripts_path}getstyles.awk" "$htmlfile" > "$css"
 fi
-echo "done"
+echo ${COL_GREEN}"done${X}."
 
 echo
-echo "Delete original html file (Y/n)? "
+echo ${Q}"${A}Delete${Q} original html file? (y) n"
 read yesno
 
-if [ -z "$yesno" ]; then
-	rm $htmlfile
+if [ -z "$yesno" ] || [ "$yesno" = "y" ] || [ "$yesno" = "Y" ]; then
+	rm "$htmlfile"
 fi
+
+echo
+echo "HTML processing is complete."
 
 exit 0

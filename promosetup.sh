@@ -229,12 +229,13 @@ if [ ! -e "$indexfile" ]; then
 	exit 7
 fi
 # check for _.index_body.jsp
-if [ ! -e $curbodyfile ]; then
+if [ ! -e "$curbodyfile" ]; then
 	echo ${E}"failed."
 	echo "${curbodyfile} does not exist!"${X}
 	exit 7
 fi
 
+# replace tokens with values user chose
 awk -v token="${token}" -v titletoken="${titletoken}" -v desctoken="${desctoken}" -v kwtoken="${kwtoken}" -f "${awkscripts_path}replacepromotokens.awk" promouri="${promouri}" tagtitle="${tagtitle}" tagmetadesc="${tagmetadesc}" tagmetakeywords="${tagmetakeywords}" "$indexfile" > "$tmp"
 
 echo ${COL_GREEN}"done."${X}
