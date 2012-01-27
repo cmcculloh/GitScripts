@@ -18,7 +18,7 @@ popd  > /dev/null
 # harmless for normal use.
 if [ -n "$1" ] && [ "$1" == "--reset" -o "$1" == "-r" ] && [ -f "${flgitscripts_path}vars_reset.sh" ]; then
 	echo
-	source "${flgitscripts_path}vars_reset.sh"
+	source "${flgitscripts_path}fl-vars-reset.sh"
 fi
 
 

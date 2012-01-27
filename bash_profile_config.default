@@ -61,12 +61,25 @@ shopt -s checkwinsize
 
 
 # some more ls aliases
+if [ $SYSTEM_TYPE == "linux" ]; then
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias cd..="cd .."
 alias cls="clear"
-
+elif [ $SYSTEM_TYPE == "darwin" ]; then
+	alias ll='ls -alFG'
+	alias la='ls -AG'
+	alias l='ls -CFG'
+	alias cd..="cd .."
+	alias cls="clear"
+elif [ $SYSTEM_TYPE == "windows" ]; then
+	alias ll='ls -alF'
+	alias la='ls -A'
+	alias l='ls -CF'
+	alias cd..="cd .."
+	alias cls="clear"
+fi
 
 #########################################################################################################################
 #ssh shortcuts
@@ -111,6 +124,7 @@ alias mediahome="cd ${media_path}"
 alias naturaldocshome="cd ${naturaldocs_path}"
 alias promoeditorhome="cd ${promo_editor_path}"
 alias storehome="cd ${webappwar}"
+alias qahome="cd ${qa_path}"
 
 
 #########################################################################################################################
@@ -160,6 +174,7 @@ alias webapprefresh="ant ${ANT_ARGS} webapprefresh -buildfile ${finishline_path}
 alias webapprefreshminmerge="ant ${ANT_ARGS} webapprefreshminmerge -buildfile ${finishline_path}${myenvironment}.build.xml ;"
 alias wipeoutallexports="ant ${ANT_ARGS} all-wipeout-exports -buildfile ${builds_path}all-front-end.build.xml ;"
 alias zipexports="ant ${ANT_ARGS} promos-zip-up-exports -buildfile ${builds_path}staging-front-end.build.xml ;"
+alias fixlinefeedsflgitscripts="ant ${ANT_ARGS} fix-line-feeds-flgitscripts -buildfile ${builds_path}staging-front-end.build.xml ;"
 
 
 ###############################################################################
@@ -178,6 +193,18 @@ alias refresh_bash_profile="source ${flgitscripts_path}refresh_bash_profile.sh"
 #alias switchenv="${flgitscripts_path}/switchenvironment.sh"
 #alias syncmywork="/d/workspaces/helios_workspace/myscripts/syncmyapp.sh"
 alias synctree="${flgitscripts_path}synctree.sh"
-alias varsreset="source ${flgitscripts_path}vars_reset.sh"
+alias flvarsreset="source ${flgitscripts_path}fl-vars-reset.sh"
 #alias whichenv="${flgitscripts_path}/whichenvironment.sh"
 
+
+#QA project aliases
+alias updatedev="source ${qa_path}/utils/updateServer.sh dev dev"
+alias dev-update="source ${qa_path}/utils/updateServer.sh dev dev"
+alias updateqa="source ${qa_path}/utils/updateServer.sh qa qa"
+alias qa-update="source ${qa_path}/utils/updateServer.sh qa qa"
+alias addbranch="${qa_path}/utils/buildBranchList.sh $1 $2"
+alias addbranchqa="${qa_path}/utils/buildBranchList.sh qa $2"
+alias qa-addbranch="${qa_path}/utils/buildBranchList.sh qa $2"
+alias addbranchdev="${qa_path}/utils/buildBranchList.sh dev $2"
+alias dev-addbranch="${qa_path}/utils/buildBranchList.sh dev $2"
+alias qa="${qa_path}/utils/qa.sh"

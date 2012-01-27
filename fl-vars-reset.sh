@@ -16,4 +16,9 @@ export tempdir=""
 export tmp=""
 export flgitscripts_temp_bash_profile_path=""
 export development_root=""
+export qa_path=""
+
+
+
+
 echo "Variables reset!"

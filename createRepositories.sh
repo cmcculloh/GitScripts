@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 current_location=$(pwd)
 
@@ -54,7 +54,7 @@ read createRepos
 echo
 if [ -z $createRepos ] || [ $createRepos = "y" ]
 	then
-	git clone -o origin ssh://git@flgit.finishline.com/git/flgitscripts.git gitscripts
+	git clone -o origin ssh://git@flgit.finishline.com/git/flgitscripts.git flgitscripts
 	echo "cloned gitscripts"
 	git clone -o origin ssh://git@flgit.finishline.com/git/fl_deploy_scripts.git deploys
 	echo "cloned deploys"
@@ -72,6 +72,8 @@ if [ -z $createRepos ] || [ $createRepos = "y" ]
 	echo "cloned finishline_csr"
 	git clone -o origin ssh://git@flgit.finishline.com/git/naturaldocs.git naturaldocs
 	echo "cloned naturaldocs"
+	git clone -o origin ssh://git@flgit.finishline.com/git/qa.git qa
+	echo "cloned qa"
 fi
 
 echo

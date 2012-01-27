@@ -70,6 +70,7 @@ if [ -s "${flgitscripts_path}gitscripts/_gsinit.sh" ]; then
 	# We require protection on branches during merges
 	export protectmergefrom_path="${flgitscripts_path}input/_gs_protectmergefrom"
 	export protectmergeto_path="${flgitscripts_path}input/_gs_protectmergeto"
+	export protectpushto_path="${flgitscripts_path}input/_gs_protectpushto"
 
 	source "${flgitscripts_path}gitscripts/_gsinit.sh"
 else
@@ -156,6 +157,43 @@ if [ $SYSTEM_TYPE == "linux" ]; then
 
 elif [ $SYSTEM_TYPE == "darwin" ]; then
 	echo "We are on Darwin";
+	echo "We are on Linux";
+	PROGRAMS_ROOT=/usr/bin/
+
+	[ -n "$native_bash_profile_path" ] || native_bash_profile_path="${HOME}/.bashrc"
+	[ -n "$native_bash_profile_extras_path" ] || native_bash_profile_extras_path="${HOME}/.bash_extras.d/"
+	[ -n "$native_gitscripts_bash_profile_path" ] || native_gitscripts_bash_profile_path="${native_bash_profile_extras_path}gitscripts_profile"
+	export native_bash_profile_path
+	export native_bash_profile_extras_path
+	export native_gitscripts_bash_profile_path
+
+	type firefox &>/dev/null && {
+		echo "firefox found."; echo "No need to re-set.";
+	} || {
+		echo "firefox was NOT found.";
+		echo "Will check to see if command exists  and if not, we will set an alias.";
+
+		type -P firefox &>/dev/null && {
+			echo "firefox command found, no need to re-set.";
+		} || {
+			echo "firefox command was NOT found."; echo "We need to set it.";
+			[ -n "$firefox" ] || firefox="${PROGRAMS_ROOT}"firefox
+		}
+
+	}
+	[ -n "$chrome" ] || chrome="${PROGRAMS_ROOT}"google-chrome
+	[ -n "$chromium" ] || chromium="${PROGRAMS_ROOT}"chromium-browser
+	[ -n "$default_browser" ] || default_browser="${chrome}"
+	[ -n "$eclipse_home" ] || eclipse_home="${PROGRAMS_ROOT}"eclipse
+
+	# Workspace-specific
+	[ -n "$development_root" ] || export development_root="${HOME}/Development/workspaces/"
+	[ -n "$workspace_name" ] || export workspace_name="ubuntu_galileo_workspace"
+	[ -n "$myenvironment" ] || export myenvironment="workstation-ubuntu"
+	[ -n "$JAVA_DEV_HOME" ] || JAVA_DEV_HOME="${HOME}/Development/java_dev/"
+
+	# JBoss Settings
+	[ -n "$JBOSS" ] || JBOSS="${HOME}/Development/opt/jboss-4.0.5.GA/"
 
 elif [ $SYSTEM_TYPE == "windows" ]; then
 	echo "We are on Windows";
@@ -202,6 +240,7 @@ fi
 [ -n "$csr_path" ] || export csr_path="${workspace_path}finishline_csr/"
 [ -n "$promo_editor_path" ] || export promo_editor_path="${workspace_path}promo_editor/"
 [ -n "$naturaldocs_path" ] || export naturaldocs_path="${workspace_path}naturaldocs/"
+[ -n "$qa_path" ] || export qa_path="${workspace_path}qa/"
 [ -n "$inputdir" ] || export inputdir="${flgitscripts_path}input/"
 [ -n "$outputdir" ] || export outputdir="${flgitscripts_path}output/"
 [ -n "$awkdir" ] || export awkdir="${flgitscripts_path}awkscripts/"
