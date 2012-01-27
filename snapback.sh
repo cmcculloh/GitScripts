@@ -48,7 +48,7 @@ elif [ $result -eq 255 ]
 	exit -1
 fi
 
-touchpath="${webappwar}"
+touchpath="${webappwar_path}"
 
 
 find "$touchpath" -type f -print0 | xargs -0 touch  -m -d '1974-01-05 13:31:00'
