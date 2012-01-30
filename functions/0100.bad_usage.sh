@@ -31,7 +31,7 @@
 #	@file functions/0100.gslog.sh
 ## */
 function __bad_usage {
-	hcolor=${COL_MAG}
+	hcolor=${COL_MAGENTA}
 
 	case $# in
 		1)
@@ -80,7 +80,7 @@ function __bad_usage {
 	esac
 
 	echo
-	echo "Run gsman $fun? y (n)"
+	echo "Run \"${hcolor}gsman ${fun}${X}\"? y (n)"
 	read yn
 	if [ "$yn" = "y" ]
 		then
