@@ -68,7 +68,7 @@ function flgs-config {
 				if [ -n "$2" ]; then
 					# although not strictly necessary, the conditio
 					if [ $FLGS_CONFIG ]; then
-						cat $flgitscripts_config | awk -v key="$2" -f "${awkdir}config-parse-key.awk";
+						cat $flgitscripts_config | awk -v key="$2" -f "${awkscripts_path}config-parse-key.awk";
 					fi
 				else
 					__gslog "flgs-config: User must provide a key to search for!"
@@ -83,7 +83,7 @@ function flgs-config {
 					touch $tempfile
 					if flgs-config-search $2; then
 						# key found. will need to replace value.
-						cat $flgitscripts_config | awk -v key="$2" -v value="$3" -f "${awkdir}config-set-value.awk" > $tempfile
+						cat $flgitscripts_config | awk -v key="$2" -v value="$3" -f "${awkscripts_path}config-set-value.awk" > $tempfile
 
 					# the above condition will return false if the config file doesn't exist as well, so make sure it does.
 					elif [ $FLGS_CONFIG ]; then
