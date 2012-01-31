@@ -74,7 +74,7 @@ elif __branch_exists_remote "$1"; then
 	else
 		checkoutremotedecision="y"
 	fi
-	
+
 	if [ -z "$checkoutremotedecision" ] || [ "$checkoutremotedecision" = "y" ]; then
 		startingBranch="${_remote}/${1}"
 		checkoutremote=true
@@ -149,7 +149,7 @@ if  ! __parse_git_status clean; then
 				echo "$ git status"
 				git status
 				echo ${O}${H2HL}${X};;
-			
+
 			#commit changes and continue
 			3)
 				echo "Please enter a commit message"
@@ -169,6 +169,7 @@ if  ! __parse_git_status clean; then
 		echo ${E}"  Unable to determine a course of action. Aborting...  "${X}
 		exit 1
 	fi
+	choices=()
 fi
 
 #if the branch is not on the remote, allow them to create it
@@ -211,6 +212,7 @@ if [ ! $checkoutremote ]; then
 		echo ${E}"  Unable to determine a course of action. Aborting...  "${X}
 		exit 1
 	fi
+	choices=()
 fi
 
 echo "Base new branch off of ${B}\`${startingBranch}\`${X}"
