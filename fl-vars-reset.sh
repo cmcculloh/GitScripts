@@ -78,7 +78,7 @@ if [ -z "$yn" ] || [ "$yn" = "y" ] || [ "$yn" = "Y" ]; then
 
 	if [ -z "$yn" ] || [ "$yn" = "y" ] || [ "$yn" = "Y" ]; then
 		echo
-		source "${gitscripts_path}refresh_bash_profile.sh"
+		source "${gitscripts_path}varsreset.sh"
 	fi
 	
 fi

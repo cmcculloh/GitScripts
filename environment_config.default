@@ -194,6 +194,7 @@ elif [ $SYSTEM_TYPE == "darwin" ]; then
 
 	# JBoss Settings
 	[ -n "$JBOSS" ] || JBOSS="${HOME}/Development/opt/jboss-4.0.5.GA/"
+	export JAVA_HOME=`/usr/libexec/java_home`
 
 elif [ $SYSTEM_TYPE == "windows" ]; then
 	echo "We are on Windows";
