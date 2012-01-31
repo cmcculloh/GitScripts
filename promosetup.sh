@@ -1,9 +1,48 @@
 #!/bin/bash
-
-# This script is meant for three things:
-#	1. Create a new branch (on both fl and flmedia) with FL's ticket naming convention given a raw string
-#	2. Copy the webapp template promo directory to the uri-based directory name along with the files within it
-#	3. Copy the media template promo directory similarly to #2
+## /*
+#	@usage promosetup
+#
+#	@description
+#	For most landing pages, the same process is followed. This script follows
+#	that process:
+#
+#		1.) Collect data about the landing page. This includes the ticket
+#		    number and subject, the relative uri to store/global/promos,
+#		    and the promo HTML's title, meta description, and meta keywords
+#		    attributes.
+#		2.) Create Git branches based on the ticket information on fl and
+#		    flmedia if they don't already exist and switch to them for each
+#		    project.
+#		3.) Use the relative promo uri and the template folders in fl and
+#		    flmedia to create the landing page directories/files in:
+#		        /global/promos/<uri>
+#		        /global/promos/<uri>.jsp
+#		        /media/landing-pages/<uri>
+#		    If the directories already exist, you will be prompted to delete
+#		    them.
+#		4.) You will then be prompted to process the HTML for the promo. This
+#		    essentially calls @see processpromohtml. Before answering yes,
+#		    you must place the creative HTML file in the /store/global/<uri>
+#		    directory. This will extract the HTML and CSS and disperse them to
+#		    their appropriate locations.
+#	description@
+#
+#	@notes
+#	- The templates for the promos use tokens that get replaced with values
+#	  set based on input from the user. If these templates don't exist, you will
+#	  need to create them based on values in this script (view source).
+#	notes@
+#
+#	@dependencies
+#	*processpromohtml.sh
+#	awkscripts/fixbranch.awk
+#	awkscripts/replacepromotokens.awk
+#	*gitscripts/checkout.sh
+#	*gitscripts/new.sh
+#	gitscripts/functions/1000.parse_git_branch.sh
+#	gitscripts/functions/0400.in_array.sh
+#	dependencies@
+## */
 $loadfuncs
 
 
@@ -202,7 +241,7 @@ cp -ir "$mediatempdir" "${newpromomediadir}"
 if [ -d "${newpromomediadir}" ]; then
 	echo ${COL_GREEN}"done${X}."
 else
-	echo ${E}"failed to copy media template directory${X}."
+	echo ${E}"failed to copy media template directory${X}."${X}
 fi
 
 echo
