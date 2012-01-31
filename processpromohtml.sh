@@ -1,5 +1,34 @@
-#1/bin/bash
+#!/bin/bash
+## /*
+#	@usage processpromohtml <promo-name>
+#
+#	@description
+#	This script will take an HTML file placed in an existing promo directory
+#			e.g. /global/promos/<promo-name>
+#	and extract any css from an existing <style> tags and any HTML between
+#	the body tags. It places the HTML in the *.index_body.jsp and any css
+#	in a style.css file on the media server. It also corrects any links
+#	to images as well as links to the finishline.com home page by making
+#	them relative to the site root on flmedia and fl, respectively.
+#	description@
+#
+#	@notes
+#	- The awkscript which processes the promo relies on the html being wrapped
+#	  in <body></body> tags. Script will fail if they are missing.
+#	notes@
+#
+#	@examples
+#	1) processpromohtml college-hooded-sweatshirt
+#	examples@
+#
+#	@dependencies
+#	awkscripts/gethtml.awk
+#	awkscripts/getstyles.awk
+#	gitscripts/functions/0100.bad_usage.sh
+#	dependencies@
+## */
 $loadfuncs
+
 
 # Expects first parameter to be the name of the promo (uri).
 if [ -z "$1" ]; then
@@ -32,6 +61,14 @@ htmlfile="${promodir}/${html}"
 # consider namespacing the css -- haven't decided if this is a good use of time...
 # echo "If you'd like to namespace the css with a top-level id, type it now (without the #): "
 # read nsid
+
+
+# certain tags are required for successful processing. Make sure they are there...
+if ! grep -q "<body>" "$htmlfile"; then
+	echo
+	echo ${E}"  HTML is missing the <body> tag. Aborting processing...  "${X}
+	exit 2
+fi
 
 # process the html, changing srcs and hrefs as necessary
 echo -n "Processing html..."
