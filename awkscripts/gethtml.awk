@@ -1,12 +1,11 @@
 BEGIN {
-	mediasrc = " src=\"/media/landing-pages/" promouri "/"
+	mediasrc = "/media/landing-pages/" promouri "/"
 	mediaimgsrc = mediasrc "images/"
 	print "<link type=\"text/css\" rel=\"stylesheet\" href=\"/media/landing-pages/" promouri "/css/styles.css\"/>"
 }
 /<body/ {
 	endofhtml = "false"
-	while (endofhtml == "false") {
-		getline line
+	while (endofhtml == "false" && getline line) {
 		if (line ~ /<[/]body>/) {
 			endofhtml = "true"
 		}
@@ -14,8 +13,10 @@ BEGIN {
 			# replace unix line endings with windows...
 			gsub(/$/,"\r",line)
 
-			# make sure src's are pointing to the right place
-			gsub(/ src=\"/,mediasrc,line)
+			# make sure media urls are pointing to the right place
+			gsub(/ src="/," src=\"" mediasrc, line)
+			gsub(/url\(/,"url(" mediasrc, line)
+			gsub(/ background="/," background=\"" mediasrc, line)
 
 			# if the images directory wasn't already included, include it
 			if (line !~ mediaimgsrc) gsub(mediasrc,mediaimgsrc,line)

@@ -1,7 +1,6 @@
 /<style/ {
 	endofstyles = "false"
-	while (endofstyles == "false") {
-		getline line
+	while (endofstyles == "false" && getline line) {
 		if (line ~ /<[/]style>/) {
 			endofstyles = "true"
 		}
