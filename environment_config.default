@@ -187,8 +187,8 @@ elif [ $SYSTEM_TYPE == "darwin" ]; then
 
 	# Workspace-specific
 	[ -n "$development_root" ] || export development_root="${HOME}/Development/workspaces/"
-	[ -n "$workspace_name" ] || export workspace_name="ubuntu_galileo_workspace"
-	[ -n "$myenvironment" ] || export myenvironment="workstation-ubuntu"
+	[ -n "$workspace_name" ] || export workspace_name="mac_helios_workspace"
+	[ -n "$myenvironment" ] || export myenvironment="workstation-mac"
 	[ -n "$JAVA_DEV_HOME" ] || JAVA_DEV_HOME="${HOME}/Development/java_dev/"
 
 	# JBoss Settings
