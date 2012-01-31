@@ -49,7 +49,7 @@ if [ -z "${promouri}" ]; then
 	echo ${E}"  URI omitted. Aborting...  "${X}
 	exit 2
 fi
-echo ${O}${H2HL}${X}
+echo
 echo
 echo
 
@@ -65,7 +65,7 @@ read tagmetadesc
 echo
 echo ${I}"Enter the promo's <meta> keywords:"${X}
 read tagmetakeywords
-echo ${O}${H2HL}${X}
+echo
 
 # now that we gathered some info, some new vars need to be established...
 export newbranchname=$(awk -f "${awkscripts_path}fixbranch.awk" <<< "${rawbranch}")
@@ -106,13 +106,13 @@ branches=( `git branch | sed 's/\*//'` )
 # if branch already exists, check it out. otherwise, create it.
 if __in_array "$branch" "${branches[@]}"; then
 	if [ "$cb" = "$branch" ]; then
-		echo "Branch ${B}\`${branch}\`${X} is already checked out."
+		echo "Branch ${B}\`${branch}\`${X} is already checked out in ${COL_GREEN}fl${X}."
 	else
 		$gs_checkout "$branch"
 	fi
 else
 	echo
-	echo "Creating new ${COL_GREEN}fl${X} branch: ${branch} ..."
+	echo "Creating new ${COL_GREEN}fl${X} branch: \`${branch}\` ..."
 	$gs_new "$branch"
 fi
 
@@ -124,13 +124,13 @@ branches=( `git branch | sed 's/\*//'` )
 # if branch already exists, check it out. otherwise, create it.
 if __in_array "$branch" "${branches[@]}"; then
 	if [ "$cb" = "$branch" ]; then
-		echo "Branch ${B}\`${branch}\`${X} is already checked out."
+		echo "Branch ${B}\`${branch}\`${X} is already checked out in ${COL_GREEN}flmedia${X}."
 	else
 		$gs_checkout "$branch"
 	fi
 else
 	echo
-	echo "Creating new ${COL_GREEN}flmedia${X} branch: ${branch} ..."
+	echo "Creating new ${COL_GREEN}flmedia${X} branch: \`${branch}\` ..."
 	$gs_new "$branch"
 fi
 
@@ -139,7 +139,7 @@ echo
 # check for existing promo and prompt to delete if it exists
 if [ -d "$newpromowebappdir" ]; then
 
-	${Q}"This promo already exists in the app. ${A}Delete${Q} it and continue? (y) n"${X}
+	echo ${Q}"This promo already exists in the app. ${A}Delete${Q} it and continue? (y) n"${X}
 	read yn
 	if [ -n "$yn" ] && [ "$yn" != "y" ] && [ "$yn" != "Y" ]; then
 		echo
@@ -168,7 +168,7 @@ fi
 # check for exisiting promo MEDIA and delete it if it exists.
 if [ -d "$newpromomediadir" ]; then
 
-	${Q}"This promo's MEDIA already exists. ${A}Delete${Q} it and continue? (y) n"${X}
+	echo ${Q}"This promo's MEDIA already exists. ${A}Delete${Q} it and continue? (y) n"${X}
 	read yn
 	if [ -n "$yn" ] && [ "$yn" != "y" ] && [ "$yn" != "Y" ]; then
 		echo

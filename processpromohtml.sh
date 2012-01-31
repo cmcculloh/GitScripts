@@ -8,7 +8,7 @@ if [ -z "$1" ]; then
 fi
 
 promouri="$1"
-promodir="${promo_path}${promouri}"
+promodir="${promos_path}${promouri}"
 css="${mediaLandingPagesPath}${promouri}/css/styles.css"
 
 echo ${X}

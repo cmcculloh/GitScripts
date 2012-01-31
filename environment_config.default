@@ -292,8 +292,8 @@ fi
 [ -n "$JBOSS_HOME" ] || JBOSS_HOME="${JBOSS}bin/"
 [ -n "$JBOSS_LOGS" ] || JBOSS_LOGS="${JBOSS}server/finishline/log/"
 [ -n "$JBOSS_DEPLOY" ] || export JBOSS_DEPLOY="${JBOSS}server/finishline/deploy/"
-[ -n "$JBOSS_WEBAPPWAR" ] || export JBOSS_WEBAPPWAR="${JBOSS_DEPLOY}/finishline.ear/web-app.war/"
-[ -n "$JBOSS_MEDIAWAR" ] || export JBOSS_MEDIAWAR="${JBOSS_DEPLOY}/media.war/"
+[ -n "$JBOSS_WEBAPPWAR" ] || export JBOSS_WEBAPPWAR="${JBOSS_DEPLOY}finishline.ear/web-app.war/"
+[ -n "$JBOSS_MEDIAWAR" ] || export JBOSS_MEDIAWAR="${JBOSS_DEPLOY}media.war/"
 
 
 PATH="${PATH}:${JAVA_HOME}bin:${ANT_HOME}/bin:${YUI_COMPRESSOR_HOME}"
