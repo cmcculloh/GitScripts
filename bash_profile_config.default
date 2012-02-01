@@ -62,11 +62,11 @@ shopt -s checkwinsize
 
 # some more ls aliases
 if [ $SYSTEM_TYPE == "linux" ]; then
-	alias ll='ls -alF'
-	alias la='ls -A'
-	alias l='ls -CF'
-	alias cd..="cd .."
-	alias cls="clear"
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias cd..="cd .."
+alias cls="clear"
 elif [ $SYSTEM_TYPE == "darwin" ]; then
 	alias ll='ls -alFG'
 	alias la='ls -AG'
@@ -123,7 +123,7 @@ alias imagescriptshome="cd ${imagescripts_path}"
 alias mediahome="cd ${media_path}"
 alias naturaldocshome="cd ${naturaldocs_path}"
 alias promoeditorhome="cd ${promo_editor_path}"
-alias storehome="cd ${webappwar}"
+alias storehome="cd ${webappwar_path}"
 alias qahome="cd ${qa_path}"
 
 
@@ -138,7 +138,7 @@ alias createrepositories="source ${flgitscripts_path}createRepositories.sh"
 # Server interaction
 #########################################################################################################################
 alias startserver="source ${flgitscripts_path}startserver.sh"
-alias qstartserver="source ${flgitscripts_path}startserver.sh > /dev/null &"
+alias qstartserver="source ${flgitscripts_path}startserver.sh &> /dev/null &"
 alias stopserver="${JBOSS_HOME}shutdown.sh --shutdown"
 alias taillogs="source ${flgitscripts_path}tail_log.sh"
 alias modifygitexcludes="gedit .git/info/exclude"
@@ -188,21 +188,15 @@ alias makesprite="${gitscripts_path}swivel-images-maker.sh"
 # Utilities and Miscellaneous
 #########################################################################################################################
 alias fixbranch="${flgitscripts_path}fixbranch.sh"
-alias gsman="${gitscripts_path}gsman.sh"
-alias phone="${flgitscripts_path}phone.sh"
-
-# leave refresh_bash_profile as sourced, WITHOUT a shebang in the script, so sourced values are available immediately
-alias refresh_bash_profile="source ${flgitscripts_path}refresh_bash_profile.sh"
-
-alias switchenv="${flgitscripts_path}/switchenvironment.sh"
 alias flvarsreset="source ${flgitscripts_path}fl-vars-reset.sh"
-alias whichenv="${flgitscripts_path}/whichenvironment.sh"
-
+alias phone="${flgitscripts_path}phone.sh"
+alias promosetup="${flgitscripts_path}promosetup.sh"
+alias processpromohtml="${flgitscripts_path}processpromohtml.sh"
+alias refresh_bash_profile="source ${flgitscripts_path}refresh_bash_profile.sh"
+#alias switchenv="${flgitscripts_path}/switchenvironment.sh"
 #alias syncmywork="/d/workspaces/helios_workspace/myscripts/syncmyapp.sh"
-#alias synctree="/d/workspaces/helios_workspace/myscripts/synctree.sh"
-
-
-
+alias synctree="${flgitscripts_path}synctree.sh"
+#alias whichenv="${flgitscripts_path}/whichenvironment.sh"
 
 
 #QA project aliases

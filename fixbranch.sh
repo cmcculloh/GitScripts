@@ -32,7 +32,7 @@ if [ -z "$1" ]; then
 	exit 1
 fi
 
-result=$(echo "$@" | awk -f "${awkdir}fixbranch.awk")
+result=$(echo "$@" | awk -f "${awkscripts_path}fixbranch.awk")
 if [ -z "$result" ]; then
 	__bad_usage fixbranch
 else
