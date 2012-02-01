@@ -196,6 +196,7 @@ alias processpromohtml="${flgitscripts_path}processpromohtml.sh"
 alias refresh_bash_profile="source ${flgitscripts_path}refresh_bash_profile.sh"
 #alias switchenv="${flgitscripts_path}/switchenvironment.sh"
 #alias syncmywork="/d/workspaces/helios_workspace/myscripts/syncmyapp.sh"
+alias snaps="${flgitscripts_path}snaps.sh"
 alias synctree="${flgitscripts_path}synctree.sh"
 #alias whichenv="${flgitscripts_path}/whichenvironment.sh"
 
