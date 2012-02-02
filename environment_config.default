@@ -38,8 +38,6 @@ if [ "x$flgitscripts_path" = "x" ]; then
 fi
 export flgitscripts_path
 
-# Grab flgitscripts-specific functions.
-source "${flgitscripts_path}flgs-functions.sh"
 
 # OS specific support (must be 'true' or 'false').
 linux=false
@@ -115,7 +113,7 @@ if [ -z "$GIT_INSTALL" ] || [ -z "$GIT_ETC" ]; then
 fi
 
 
-
+# system-specific variables
 if [ $SYSTEM_TYPE == "linux" ]; then
 	echo "We are on Linux";
 	PROGRAMS_ROOT=/usr/bin/
@@ -242,6 +240,7 @@ fi
 [ -n "$promo_editor_path" ] || export promo_editor_path="${workspace_path}promo_editor/"
 [ -n "$naturaldocs_path" ] || export naturaldocs_path="${workspace_path}naturaldocs/"
 [ -n "$qa_path" ] || export qa_path="${workspace_path}qa/"
+[ -n "$flgitscripts_functions_path" ] || export flgitscripts_functions_path="${flgitscripts_path}functions/"
 [ -n "$inputdir" ] || export inputdir="${flgitscripts_path}input/"
 [ -n "$outputdir" ] || export outputdir="${flgitscripts_path}output/"
 [ -n "$awkscripts_path" ] || export awkscripts_path="${flgitscripts_path}awkscripts/"
@@ -251,25 +250,6 @@ fi
 [ -n "$flgitscripts_config_path" ] || export flgitscripts_config_path="${flgitscripts_path}cfg/"
 [ -n "$flgitscripts_config_defaults" ] || export flgitscripts_config_defaults="${flgitscripts_config_path}flgs.config.defaults"
 [ -n "$flgitscripts_config" ] || export flgitscripts_config="${flgitscripts_config_path}flgs.config"
-
-# Config is important. Set a flag if file exists.
-if [ ! -s "$flgitscripts_config" ]; then
-	if [ -s "$flgitscripts_config_defaults" ]; then
-		# config file isn't found. create it from default
-		tolog="flgs.config not found. Creating ${flgitscripts_config} from ${flgitscripts_config_defaults}..."
-		# find a way to add gscomment at top?
-		cp -f $flgitscripts_config_defaults $flgitscripts_config && { __gslog "${tolog}done."; export FLGS_CONFIG=true; } || {
-			__gslog "${tolog}failed!"
-			echo ${E}" There was an error creating the config file! "${X}
-			exit 1
-		}
-	else
-		echo ${E}" No config files found! "${X}
-		exit 1
-	fi
-else
-	export FLGS_CONFIG=true
-fi
 
 
 # Project-specific
@@ -308,3 +288,14 @@ export ANT_ARGS="${ANT_ARGS}"
 export ANT_OPTS="${ANT_OPTS}"
 export builds_path=${builds_path}
 export finishline_path=${finishline_path}
+
+
+# variable to load flgitscripts functions for scripts
+export flloadfuncs="source ${flgitscripts_path}fl-load-funcs.sh"
+$flloadfuncs
+
+# Config is important. Create it from default if file exists
+! flgs-config-exists && {
+	echo "	> Config file missing. Creating it from default..."
+	flgs-config --reset=quiet
+}

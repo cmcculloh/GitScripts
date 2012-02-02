@@ -15,3 +15,5 @@
 ## */
 
 ssh-hosts=false
+ftp.riddle=10.0.30.45
+ftp.user=
