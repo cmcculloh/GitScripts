@@ -38,6 +38,7 @@ if [ "x$flgitscripts_path" = "x" ]; then
 fi
 export flgitscripts_path
 
+
 # OS specific support (must be 'true' or 'false').
 linux=false
 darwin=false;
@@ -67,6 +68,10 @@ if [ -s "${flgitscripts_path}gitscripts/_gsinit.sh" ]; then
 	# We require protection on branches during merges
 	export protectmergefrom_path="${flgitscripts_path}input/_gs_protectmergefrom"
 	export protectmergeto_path="${flgitscripts_path}input/_gs_protectmergeto"
+	export protectpushto_path="${flgitscripts_path}input/_gs_protectpushto"
+
+	# documentation for flgitscripts. **paths must end with forward slash!
+	export gsman_paths_user="${flgitscripts_path} ${flgitscripts_path}functions/"
 
 	source "${flgitscripts_path}gitscripts/_gsinit.sh"
 else
@@ -111,7 +116,7 @@ if [ -z "$GIT_INSTALL" ] || [ -z "$GIT_ETC" ]; then
 fi
 
 
-
+# system-specific variables
 if [ $SYSTEM_TYPE == "linux" ]; then
 	echo "We are on Linux";
 	PROGRAMS_ROOT=/usr/bin/
@@ -153,6 +158,44 @@ if [ $SYSTEM_TYPE == "linux" ]; then
 
 elif [ $SYSTEM_TYPE == "darwin" ]; then
 	echo "We are on Darwin";
+	echo "We are on Linux";
+	PROGRAMS_ROOT=/usr/bin/
+
+	[ -n "$native_bash_profile_path" ] || native_bash_profile_path="${HOME}/.bashrc"
+	[ -n "$native_bash_profile_extras_path" ] || native_bash_profile_extras_path="${HOME}/.bash_extras.d/"
+	[ -n "$native_gitscripts_bash_profile_path" ] || native_gitscripts_bash_profile_path="${native_bash_profile_extras_path}gitscripts_profile"
+	export native_bash_profile_path
+	export native_bash_profile_extras_path
+	export native_gitscripts_bash_profile_path
+
+	type firefox &>/dev/null && {
+		echo "firefox found."; echo "No need to re-set.";
+	} || {
+		echo "firefox was NOT found.";
+		echo "Will check to see if command exists  and if not, we will set an alias.";
+
+		type -P firefox &>/dev/null && {
+			echo "firefox command found, no need to re-set.";
+		} || {
+			echo "firefox command was NOT found."; echo "We need to set it.";
+			[ -n "$firefox" ] || firefox="${PROGRAMS_ROOT}"firefox
+		}
+
+	}
+	[ -n "$chrome" ] || chrome="${PROGRAMS_ROOT}"google-chrome
+	[ -n "$chromium" ] || chromium="${PROGRAMS_ROOT}"chromium-browser
+	[ -n "$default_browser" ] || default_browser="${chrome}"
+	[ -n "$eclipse_home" ] || eclipse_home="${PROGRAMS_ROOT}"eclipse
+
+	# Workspace-specific
+	[ -n "$development_root" ] || export development_root="${HOME}/Development/workspaces/"
+	[ -n "$workspace_name" ] || export workspace_name="mac_helios_workspace"
+	[ -n "$myenvironment" ] || export myenvironment="workstation-mac"
+	[ -n "$JAVA_DEV_HOME" ] || JAVA_DEV_HOME="${HOME}/Development/java_dev/"
+
+	# JBoss Settings
+	[ -n "$JBOSS" ] || JBOSS="${HOME}/Development/opt/jboss-4.0.5.GA/"
+	export JAVA_HOME=`/usr/libexec/java_home`
 
 elif [ $SYSTEM_TYPE == "windows" ]; then
 	echo "We are on Windows";
@@ -199,26 +242,23 @@ fi
 [ -n "$csr_path" ] || export csr_path="${workspace_path}finishline_csr/"
 [ -n "$promo_editor_path" ] || export promo_editor_path="${workspace_path}promo_editor/"
 [ -n "$naturaldocs_path" ] || export naturaldocs_path="${workspace_path}naturaldocs/"
+[ -n "$qa_path" ] || export qa_path="${workspace_path}qa/"
+[ -n "$flgitscripts_functions_path" ] || export flgitscripts_functions_path="${flgitscripts_path}functions/"
 [ -n "$inputdir" ] || export inputdir="${flgitscripts_path}input/"
 [ -n "$outputdir" ] || export outputdir="${flgitscripts_path}output/"
-[ -n "$awkdir" ] || export awkdir="${flgitscripts_path}awkscripts/"
+[ -n "$awkscripts_path" ] || export awkscripts_path="${flgitscripts_path}awkscripts/"
 [ -n "$tempdir" ] || export tempdir="${flgitscripts_path}temp/"
 [ -n "$tmp" ] || export tmp="${tempdir}tmp"
 [ -n "$flgitscripts_temp_bash_profile_path" ] || export flgitscripts_temp_bash_profile_path="${tempdir}temp_bash_profile"
+[ -n "$flgitscripts_config_path" ] || export flgitscripts_config_path="${flgitscripts_path}cfg/"
+[ -n "$flgitscripts_config_defaults" ] || export flgitscripts_config_defaults="${flgitscripts_config_path}flgs.config.defaults"
+[ -n "$flgitscripts_config" ] || export flgitscripts_config="${flgitscripts_config_path}flgs.config"
 
 
 # Project-specific
-[ -n "$webappwar" ] || export webappwar="${finishline_path}modules/base/j2ee-apps/base/web-app.war/"
-[ -n "$promosdir" ] || export promosdir="${webappwar}global/promos/"
+[ -n "$webappwar_path" ] || export webappwar_path="${finishline_path}modules/base/j2ee-apps/base/web-app.war/"
+[ -n "$promos_path" ] || export promos_path="${webappwar_path}global/promos/"
 [ -n "$mediaLandingPagesPath" ] || export mediaLandingPagesPath="${workspace_path}${mediaprojectname}/media/landing-pages/"
-
-
-# Hosts referenced by other flgitscripts. Cannot be overwritten in overrides.
-export HOST_FLGITSCRIPTS="flgit.finishline.com"
-export HOST_RIDDLE="10.0.30.45"
-
-
-# Set up SSH Hosts file
 
 
 # Java and ANT Settings
@@ -236,8 +276,8 @@ export HOST_RIDDLE="10.0.30.45"
 [ -n "$JBOSS_HOME" ] || JBOSS_HOME="${JBOSS}bin/"
 [ -n "$JBOSS_LOGS" ] || JBOSS_LOGS="${JBOSS}server/finishline/log/"
 [ -n "$JBOSS_DEPLOY" ] || export JBOSS_DEPLOY="${JBOSS}server/finishline/deploy/"
-[ -n "$JBOSS_WEBAPPWAR" ] || export JBOSS_WEBAPPWAR="${JBOSS_DEPLOY}/finishline.ear/web-app.war/"
-[ -n "$JBOSS_MEDIAWAR" ] || export JBOSS_MEDIAWAR="${JBOSS_DEPLOY}/media.war/"
+[ -n "$JBOSS_WEBAPPWAR" ] || export JBOSS_WEBAPPWAR="${JBOSS_DEPLOY}finishline.ear/web-app.war/"
+[ -n "$JBOSS_MEDIAWAR" ] || export JBOSS_MEDIAWAR="${JBOSS_DEPLOY}media.war/"
 
 
 PATH="${PATH}:${JAVA_HOME}bin:${ANT_HOME}/bin:${YUI_COMPRESSOR_HOME}"
@@ -251,3 +291,14 @@ export ANT_ARGS="${ANT_ARGS}"
 export ANT_OPTS="${ANT_OPTS}"
 export builds_path=${builds_path}
 export finishline_path=${finishline_path}
+
+
+# variable to load flgitscripts functions for scripts
+export flloadfuncs="source ${flgitscripts_path}fl-load-funcs.sh"
+$flloadfuncs
+
+# Config is important. Create it from default if file exists
+! flgs-config-exists && {
+	echo "	> Config file missing. Creating it from default..."
+	flgs-config --reset=quiet
+}

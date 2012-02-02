@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 current_location=$(pwd)
 
@@ -48,13 +48,13 @@ fi
 	
 cd $location
 
-echo "Clone all wordkspace repositories here? ($location) "
+echo "Clone all workspace repositories here? ($location) "
 echo "nothing will be overwritten. (y) n"
 read createRepos
 echo
 if [ -z $createRepos ] || [ $createRepos = "y" ]
 	then
-	git clone -o origin ssh://git@flgit.finishline.com/git/flgitscripts.git gitscripts
+	git clone -o origin ssh://git@flgit.finishline.com/git/flgitscripts.git flgitscripts
 	echo "cloned gitscripts"
 	git clone -o origin ssh://git@flgit.finishline.com/git/fl_deploy_scripts.git deploys
 	echo "cloned deploys"
@@ -72,6 +72,14 @@ if [ -z $createRepos ] || [ $createRepos = "y" ]
 	echo "cloned finishline_csr"
 	git clone -o origin ssh://git@flgit.finishline.com/git/naturaldocs.git naturaldocs
 	echo "cloned naturaldocs"
+	git clone -o origin ssh://git@flgit.finishline.com/git/qa.git qa
+	echo "cloned qa"
+	git clone -o origin ssh://git@flgit.finishline.com/git/run.git MultiSiteStore
+	echo "cloned run.com -> MultiSiteStore"
+	git clone -o origin ssh://git@flgit.finishline.com/git/run_utilities.git run_utilities
+	echo "cloned run.com utilities -> run_utilities"
+	git clone -o origin ssh://git@flgit.finishline.com/git/run_endeca.git run_endeca
+	echo "cloned run.com endeca -> run_endeca"
 fi
 
 echo

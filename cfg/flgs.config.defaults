@@ -1,0 +1,49 @@
+## /*
+#	@description
+#	This file is not used for anything other than a template for the initial config file.
+#	The settings in this file are all of the initial FLGitScripts settings and there
+#	may be changes from this file to the flgs.config file in the same directory. This file
+#	is under source control, but the flgs.config is not, as it will change with each user's
+#	preferences.
+#	description@
+#
+#	@notes
+#	- Should the active config file (flgs.config) ever be deleted or reset, it will be
+#	re-created using this template.
+#	- Keep a trailing newline at the end of this file!
+#	notes@
+## */
+
+ssh-hosts=false
+
+ftp.riddle=10.0.30.45:22
+
+# SFTP information for the dev app/media servers
+ftp.dev.app.user=dynuser
+ftp.dev.app.pass=dynuser
+ftp.dev.app.host=172.17.2.101:22
+ftp.dev.app.path=/opt/jboss/server/08finishline/deploy/finishline.ear/web-app.war/
+ftp.dev.media.user=imgmgr
+ftp.dev.media.pass=3v1rtu@l
+ftp.dev.media.host=172.17.1.101:22
+ftp.dev.media.path=/var/www/html_finishline/media/
+
+# SFTP information for the qa app/media servers
+ftp.qa.app.user=dynuser
+ftp.qa.app.pass=dynuser
+ftp.qa.app.host=172.17.2.101:22
+ftp.qa.app.path=/opt/jboss/server/04finishline/deploy/finishline.ear/web-app.war/
+ftp.qa.media.user=imgmgr
+ftp.qa.media.pass=3v1rtu@l
+ftp.qa.media.host=172.17.1.101:22
+ftp.qa.media.path=/var/www/html_finishline/media/
+
+# SFTP information for the stage app/media servers
+ftp.stage.app.user=dynuser
+ftp.stage.app.pass=3v1rtu@l
+ftp.stage.app.host=172.16.2.211:22
+ftp.stage.app.path=/opt/jboss/server/03finishline/deploy/finishline.ear/web-app.war/
+ftp.stage.media.user=imgmgr
+ftp.stage.media.pass=3v1rtu@l
+ftp.stage.media.host=172.16.1.201:22
+ftp.stage.media.path=/var/www/html_finishline/media/
