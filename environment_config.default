@@ -70,6 +70,9 @@ if [ -s "${flgitscripts_path}gitscripts/_gsinit.sh" ]; then
 	export protectmergeto_path="${flgitscripts_path}input/_gs_protectmergeto"
 	export protectpushto_path="${flgitscripts_path}input/_gs_protectpushto"
 
+	# documentation for flgitscripts. **paths must end with forward slash!
+	export gsman_paths_user="${flgitscripts_path} ${flgitscripts_path}functions/"
+
 	source "${flgitscripts_path}gitscripts/_gsinit.sh"
 else
 	echo ${E}"####################################################################################"

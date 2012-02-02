@@ -9,7 +9,7 @@
 #	description@
 #
 #	@notes
-#	-Intended for use with conditionals as return values are specified.
+#	- Intended for use with conditionals as return values are specified.
 #	notes@
 #
 #	@examples
@@ -34,7 +34,7 @@ function flgs-config-search {
 			cat "$flgitscripts_config" | grep -q "^${1}="
 			return $?
 		else
-			__gslog "flgs-config-search: No config file found to search for key: $key"
+			__gslog "flgs-config-search: No config file found to search for key (${key})"
 			return 1
 		fi
 	else

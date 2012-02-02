@@ -1,6 +1,6 @@
 ## /* @function
-#	@usage flgs-config <-l|--list>
-#	@usage flgs-config <--reset[=quiet]>
+#	@usage flgs-config < -l|--list >
+#	@usage flgs-config < --reset[=quiet] >
 #	@usage flgs-config get <key>
 #	@usage flgs-config set <key> <value>
 #
@@ -35,6 +35,7 @@
 #	awkscripts/config-set-value.awk
 #	functions/1000.flgs-config-exists.sh
 #	functions/1100.flgs-config-search.sh
+#	gitscripts/functions/0200.gslog.sh
 #	dependencies@
 #
 #	@file functions/1200.flgs-config.sh
@@ -48,11 +49,18 @@ function flgs-config {
 	if [ -n "$1" ]; then
 		case "$1" in
 			# Retrieve a value given a key.
+			# Errors are logged since this output is usually captured.
 			get)
 				if [ -n "$2" ]; then
-					cat "$flgitscripts_config" | awk -v key="$2" -f "${awkscripts_path}config-parse-key.awk";
+					if flgs-config-search "$2"; then
+						cat "$flgitscripts_config" | awk -v key="$2" -f "${awkscripts_path}config-parse-key.awk";
+						return 0
+					else
+						__gslog "flgs-config: Key not found ($2)"
+						return 1
+					fi
 				else
-					echo ${E}"  flgs-config: User must provide a key to search for!  "${X}
+					__gslog "flgs-config: User did not provide a key to search for!"
 					return 1
 				fi;;
 
@@ -61,12 +69,16 @@ function flgs-config {
 				# As no output is expected, echoing the errors is OK.
 				if [ -n "$2" ] && [ -n "$3" ]; then
 					tempfile="${tempdir}config_temp"
-					if flgs-config-search "$2"; then
-						# key found. will need to replace value.
-						cat "$flgitscripts_config" | awk -v key="$2" -v value="$3" -f "${awkscripts_path}config-set-value.awk" > "$tempfile"
 
+					# find key. will need to replace value.
+					if flgs-config-search "$2"; then
+						# make sure awk processing errors are caught
+						if ! cat "$flgitscripts_config" | awk -v key="$2" -v value="$3" -f "${awkscripts_path}config-set-value.awk" > "$tempfile"; then
+							echo ${E}"  Error setting value in awk!  "${X}
+						fi
+
+					# key doesn't exist. we will append it to the config.
 					else
-						# key doesn't exist. we will append it to the config.
 						cat "$flgitscripts_config" > "$tempfile"
 						echo "${2}=${3}" >> "$tempfile"
 					fi

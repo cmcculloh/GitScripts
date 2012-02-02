@@ -7,7 +7,10 @@ BEGIN {
 		#exit 1
 	}
 }
+
+# for lines that begin with the given key followed by =, delete
+# key and = leaving only the value, then print it.
 $0 ~ patt {
-	gsub(keyEq, "")
+	sub(keyEq, "")
 	print
 }
