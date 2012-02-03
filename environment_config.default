@@ -298,7 +298,7 @@ export flloadfuncs="source ${flgitscripts_path}fl-load-funcs.sh"
 $flloadfuncs
 
 # Config is important. Create it from default if file exists
-! flgs-config-exists && {
+! __flgs_config_exists && {
 	echo "	> Config file missing. Creating it from default..."
-	flgs-config --reset=quiet
+	flgs_config --reset=quiet
 }

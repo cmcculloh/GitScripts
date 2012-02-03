@@ -25,7 +25,7 @@
 #
 #	@dependencies
 #	awkscripts/phone.awk
-#	functions/1000.flgs-config-exists.sh
+#	functions/1000.flgs_config_exists.sh
 #	gitscripts/functions/0100.bad_usage.sh
 #	input/_phoneList
 #	*input/_phoneList.batch
@@ -39,7 +39,7 @@ list="${inputdir}phoneList"
 touch $list
 
 function update_list {
-	if ! flgs-config-exists; then
+	if ! __flgs_config_exists; then
 		echo ${E}"  Unable to acquire ftp address! Check config settings and try again. "${X}
 		return 1
 	fi

@@ -14,13 +14,6 @@ export SCRIPT_PATH=`pwd`;
 export flgitscripts_path="${SCRIPT_PATH}/"
 popd  > /dev/null
 
-# user can optionally reset crucial variables. useful for development,
-# harmless for normal use.
-if [ -n "$1" ] && [ "$1" == "--reset" -o "$1" == "-r" ] && [ -f "${flgitscripts_path}vars_reset.sh" ]; then
-	echo
-	source "${flgitscripts_path}fl-vars-reset.sh"
-fi
-
 
 echo
 echo ${H2}"Running from:  ${flgitscripts_path}"${X}

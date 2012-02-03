@@ -1,5 +1,5 @@
 ## /* @function
-#	@usage show-tree <path>
+#	@usage __show_tree <path>
 #
 #	@output true
 #
@@ -12,14 +12,14 @@
 #	notes@
 #
 #	@examples
-#	1) show-tree ~/Documents
+#	1) __show_tree ~/Documents
 #	examples@
 #
 #	@file functions/0500.showtree.sh
 ## */
-function show-tree {
+function __show_tree {
 	if [ -z "$1" ]; then
-		echo ${E}"  show-tree: Path expected as first parameter.  "${X}
+		echo ${E}"  __show_tree: Path expected as first parameter.  "${X}
 		return 1
 	fi
 
@@ -29,13 +29,13 @@ function show-tree {
 			if [ -d "$entry" ]; then
 				grep -q '^\.' <<< "$entry" && continue
 				echo ${STYLE_BRIGHT}${COL_YELLOW}"${indent}+ ${entry}"${X}
-				show-tree "$entry"
+				__show_tree "$entry"
 			else
 				echo "${indent}- ${entry}"
 			fi
 		done
 	else
-		echo ${E}"  show-tree: Path given is not a directory.  "${X}
+		echo ${E}"  __show_tree: Path given is not a directory.  "${X}
 		return 1
 	fi
 }

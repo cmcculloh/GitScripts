@@ -1,8 +1,8 @@
 ## /* @function
-#	@usage flgs-config < -l|--list >
-#	@usage flgs-config < --reset[=quiet] >
-#	@usage flgs-config get <key>
-#	@usage flgs-config set <key> <value>
+#	@usage __flgs_config < -l|--list >
+#	@usage __flgs_config < --reset[=quiet] >
+#	@usage __flgs_config get <key>
+#	@usage __flgs_config set <key> <value>
 #
 #	@output true
 #
@@ -26,22 +26,22 @@
 #	notes@
 #
 #	@examples
-#	1) flgs-config get ssh-hosts
-#	2) flgs-config set ftp.user csmola
+#	1) __flgs_config get ssh-hosts
+#	2) __flgs_config set ftp.user csmola
 #	examples@
 #
 #	@dependencies
 #	awkscripts/config-parse-key.awk
 #	awkscripts/config-set-value.awk
-#	functions/1000.flgs-config-exists.sh
-#	functions/1100.flgs-config-search.sh
+#	functions/1000.__flgs_config_exists.sh
+#	functions/1100.__flgs_config_search.sh
 #	gitscripts/functions/0200.gslog.sh
 #	dependencies@
 #
-#	@file functions/1200.flgs-config.sh
+#	@file functions/1200.__flgs_config.sh
 ## */
-function flgs-config {
-	if ! flgs-config-exists && ! grep -q '^--reset' <<< "$1"; then
+function __flgs_config {
+	if ! __flgs_config-exists && ! grep -q '^--reset' <<< "$1"; then
 		echo ${E}"  Config file could not be found.  "${X}
 		return 1
 	fi
@@ -52,15 +52,15 @@ function flgs-config {
 			# Errors are logged since this output is usually captured.
 			get)
 				if [ -n "$2" ]; then
-					if flgs-config-search "$2"; then
+					if __flgs_config_search "$2"; then
 						cat "$flgitscripts_config" | awk -v key="$2" -f "${awkscripts_path}config-parse-key.awk";
 						return 0
 					else
-						__gslog "flgs-config: Key not found ($2)"
+						__gslog "__flgs_config: Key not found ($2)"
 						return 1
 					fi
 				else
-					__gslog "flgs-config: User did not provide a key to search for!"
+					__gslog "__flgs_config: User did not provide a key to search for!"
 					return 1
 				fi;;
 
@@ -71,7 +71,7 @@ function flgs-config {
 					tempfile="${tempdir}config_temp"
 
 					# find key. will need to replace value.
-					if flgs-config-search "$2"; then
+					if __flgs_config_search "$2"; then
 						# make sure awk processing errors are caught
 						if ! cat "$flgitscripts_config" | awk -v key="$2" -v value="$3" -f "${awkscripts_path}config-set-value.awk" > "$tempfile"; then
 							echo ${E}"  Error setting value in awk!  "${X}
@@ -120,7 +120,7 @@ function flgs-config {
 				fi
 
 				# make a backup of existing config
-				if flgs-config-exists; then
+				if __flgs_config_exists; then
 					[ $isQuiet ] || echo "Backing up config file to temp directory..."
 					cp -f "$flgitscripts_config" "${tempdir}flgs.config.bak"
 					: > "$flgitscripts_config"
@@ -136,21 +136,21 @@ function flgs-config {
 						return 0
 					} || {
 						__gslog "${tolog}failed!"
-						echo ${E}"  flgs-config: There was an error creating the flgs-config file from the default!  "${X}
+						echo ${E}"  __flgs_config: There was an error creating the __flgs_config file from the default!  "${X}
 						return 1
 					}
 				else
-					echo ${E}"  flgs-config: No default config file found!  "${X}
+					echo ${E}"  __flgs_config: No default config file found!  "${X}
 					return 1
 				fi;;
 
 			*)
-				echo ${E}"  flgs-config: Unrecognized parameter ($1).  "${X}
+				echo ${E}"  __flgs_config: Unrecognized parameter ($1).  "${X}
 				return 1;;
 		esac
 
 	else
-		echo ${E}"  flgs-config: You must provide a command to flgs-config.  "${X}
+		echo ${E}"  __flgs_config: You must provide a command to __flgs_config.  "${X}
 		return 1
 	fi
 }
