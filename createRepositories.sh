@@ -80,6 +80,8 @@ if [ -z $createRepos ] || [ $createRepos = "y" ]
 	echo "cloned run.com utilities -> run_utilities"
 	git clone -o origin ssh://git@flgit.finishline.com/git/run_endeca.git run_endeca
 	echo "cloned run.com endeca -> run_endeca"
+	git clone -o origin ssh://git@flgit.finishline.com/git/dashboard.git dashboard
+	echo "cloned WP Dashboard theme -> dashboard"
 fi
 
 echo
