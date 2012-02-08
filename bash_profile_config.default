@@ -187,6 +187,7 @@ alias makesprite="${gitscripts_path}swivel-images-maker.sh"
 #########################################################################################################################
 # Utilities and Miscellaneous
 #########################################################################################################################
+alias checkoutboth="${flgitscripts_path}checkout-both.sh"
 alias fixbranch="${flgitscripts_path}fixbranch.sh"
 alias flvarsreset="source ${flgitscripts_path}fl-vars-reset.sh"
 alias phone="${flgitscripts_path}phone.sh"
@@ -195,6 +196,7 @@ alias processpromohtml="${flgitscripts_path}processpromohtml.sh"
 alias refresh_bash_profile="source ${flgitscripts_path}refresh_bash_profile.sh"
 #alias switchenv="${flgitscripts_path}/switchenvironment.sh"
 #alias syncmywork="/d/workspaces/helios_workspace/myscripts/syncmyapp.sh"
+alias snaps="${flgitscripts_path}snaps.sh"
 alias synctree="${flgitscripts_path}synctree.sh"
 #alias whichenv="${flgitscripts_path}/whichenvironment.sh"
 

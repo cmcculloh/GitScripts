@@ -1,5 +1,4 @@
 #!/bin/bash
-
 ## /*
 #	@usage phone [options] [term]
 #
@@ -26,23 +25,34 @@
 #
 #	@dependencies
 #	awkscripts/phone.awk
+#	functions/1000.flgs_config_exists.sh
+#	gitscripts/functions/0100.bad_usage.sh
 #	input/_phoneList
+#	*input/_phoneList.batch
 #	dependencies@
 ## */
 $loadfuncs
+$flloadfuncs
 
 
 list="${inputdir}phoneList"
 touch $list
 
 function update_list {
+	if ! __flgs_config_exists; then
+		echo ${E}"  Unable to acquire ftp address! Check config settings and try again. "${X}
+		return 1
+	fi
+
 	local txtfile="${tempdir}numbers.txt"
+	local ftpaddr=$(flgs-config get ftp.riddle)
 	touch "$txtfile"
+
 	echo
 	echo "	Acquiring phone list via sftp..."
-	sftp -b "${inputdir}_phoneList.batch" et@10.0.30.45 1>/dev/null
+	sftp -b "${inputdir}_phoneList.batch" "et@${ftpaddr}" >/dev/null
 	if [ -s "$txtfile" ]; then
-		cat "$txtfile" | egrep '[-[:blank:]][0-9][0-9][0-9][0-9]$' > $tmp
+		cat "$txtfile" | egrep '[-[:blank:]][0-9][0-9][0-9][0-9]$' > "$tmp"
 		if [ -s "$tmp" ]; then
 			cp "$tmp" "$list"
 			echo ${COL_GREEN}"	Phone list has been updated!"${X}
@@ -52,7 +62,7 @@ function update_list {
 			echo ${E}"	There was a problem parsing the phone list for numbers."${X}
 		fi
 	else
-		__bad_usage phone "Unable to acquire updated phone list."
+		echo ${E}"  Unable to acquire updated phone list.  "${X}
 	fi
 }
 
@@ -62,6 +72,8 @@ case $# in
 		#search string given. default processing.
 		if [ "$1" == "-u" ]; then
 			update_list
+		elif grep -q '^-' <<< "$1"; then
+			__bad_usage phone "Unrecognized parameter ($1) given."
 		else
 			query="$1"
 		fi
@@ -90,3 +102,5 @@ esac
 
 #search the list
 cat "$list" | awk -v name="$query" -f "${awkscripts_path}phone.awk"
+
+exit
