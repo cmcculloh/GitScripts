@@ -102,7 +102,6 @@ if [ $flag ]; then
 					echo "$ git add -A"
 					git add -A
 					gitAddResult=$?
-					exit
 					echo ${O}${H2HL}${X}
 					if [ $gitAddResult -gt 0 ]; then
 						echo

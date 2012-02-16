@@ -117,7 +117,7 @@ if  ! __parse_git_status clean; then
 	choices[0]="${A}Stash${STYLE_MENU_OPTION} changes and and contiue "${X}
 	choices[1]="${A}Reset${STYLE_MENU_OPTION} (revert) all changes to ONLY tracked files and continue"${X}
 	choices[2]="${A}Commit${STYLE_MENU_OPTION} ALL changes and continue "${X}
-	choices[3]="${A}Just continue, I want to move all my changes to the new branch..."${X}
+	choices[3]="Just ${A}continue${STYLE_MENU_OPTION}, I want to move all my changes to the new branch..."${X}
 
 	if __menu "${choices[@]}"; then
 		echo ${X}
