@@ -124,7 +124,7 @@ alias mediahome="cd ${media_path}"
 alias naturaldocshome="cd ${naturaldocs_path}"
 alias promoeditorhome="cd ${promo_editor_path}"
 alias storehome="cd ${webappwar_path}"
-alias qahome="cd ${qa_path}"
+alias merhome="cd ${merginator_path}"
 
 
 #########################################################################################################################
@@ -199,4 +199,6 @@ alias refresh_bash_profile="source ${flgitscripts_path}refresh_bash_profile.sh"
 alias snaps="${flgitscripts_path}snaps.sh"
 alias synctree="${flgitscripts_path}synctree.sh"
 #alias whichenv="${flgitscripts_path}/whichenvironment.sh"
-alias qa="${qa_path}/utils/qa.sh"
+alias merginator="${merginator_path}/utils/merginator.sh"
+alias mer="${merginator_path}/utils/merginator.sh"
+

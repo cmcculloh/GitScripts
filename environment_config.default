@@ -242,7 +242,7 @@ fi
 [ -n "$csr_path" ] || export csr_path="${workspace_path}finishline_csr/"
 [ -n "$promo_editor_path" ] || export promo_editor_path="${workspace_path}promo_editor/"
 [ -n "$naturaldocs_path" ] || export naturaldocs_path="${workspace_path}naturaldocs/"
-[ -n "$qa_path" ] || export qa_path="${workspace_path}qa/"
+[ -n "$merginator_path" ] || export merginator_path="${workspace_path}merginator/"
 [ -n "$flgitscripts_functions_path" ] || export flgitscripts_functions_path="${flgitscripts_path}functions/"
 [ -n "$inputdir" ] || export inputdir="${flgitscripts_path}input/"
 [ -n "$outputdir" ] || export outputdir="${flgitscripts_path}output/"
