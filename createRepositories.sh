@@ -72,8 +72,8 @@ if [ -z $createRepos ] || [ $createRepos = "y" ]
 	echo "cloned finishline_csr"
 	git clone -o origin ssh://git@flgit.finishline.com/git/naturaldocs.git naturaldocs
 	echo "cloned naturaldocs"
-	git clone -o origin ssh://git@flgit.finishline.com/git/qa.git qa
-	echo "cloned qa"
+	git clone -o origin ssh://git@flgit.finishline.com/git/merginator.git merginator
+	echo "cloned merginator"
 	git clone -o origin ssh://git@flgit.finishline.com/git/run.git MultiSiteStore
 	echo "cloned run.com -> MultiSiteStore"
 	git clone -o origin ssh://git@flgit.finishline.com/git/run_utilities.git run_utilities
