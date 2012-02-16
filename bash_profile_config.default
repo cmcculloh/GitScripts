@@ -139,7 +139,7 @@ alias createrepositories="source ${flgitscripts_path}createRepositories.sh"
 #########################################################################################################################
 alias startserver="source ${flgitscripts_path}startserver.sh"
 alias qstartserver="source ${flgitscripts_path}startserver.sh &> /dev/null &"
-alias stopserver="${JBOSS_HOME}shutdown.sh --shutdown"
+alias stopserver="${JBOSS}bin/shutdown.sh --shutdown"
 alias taillogs="source ${flgitscripts_path}tail_log.sh"
 alias modifygitexcludes="gedit .git/info/exclude"
 

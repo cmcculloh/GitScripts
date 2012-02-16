@@ -48,11 +48,13 @@
 #
 #	@dependencies
 #	gitscripts/functions/0100.bad_usage.sh
+#	gitscripts/functions/0500.show_tree.sh
 #	gitscripts/functions/1000.parse_git_branch.sh
 #	gitscripts/functions/5000.parse_git_status.sh
 #	dependencies@
 ## */
 $loadfuncs
+$flloadfuncs
 
 
 echo ${X}
@@ -212,8 +214,15 @@ for (( i = 0; i < ${#servers[@]}; i++ )); do
 done
 
 # view files? maybe in the future...
-
 echo
-echo "Exporting ${COL_GREEN}complete${X}. Goodbye!"
+echo "Exporting ${COL_GREEN}complete${X}. Would you like to view the exports file tree? (y) n"
+read yn
+echo
+
+{ [ -z "$yn" ] || [ "$yn" = "y" ] || [ "$yn" = "Y" ]; } && {
+	__show_tree "${builds_path}build/front-end/exports" | less
+}
+
+echo "Goodbye!"
 
 exit
