@@ -301,5 +301,5 @@ $flloadfuncs
 # Config is important. Create it from default if file exists
 ! __flgs_config_exists && {
 	echo "	> Config file missing. Creating it from default..."
-	flgs_config --reset=quiet
+	__flgs_config --reset=quiet
 }
