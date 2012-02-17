@@ -3,10 +3,23 @@
 current_location=$(pwd)
 
 location="/d/workspaces/helios_workspace/"
-if [ -n $1 ] && [ "$1" != " " ] && [ "$1" != "" ]
+if [ -n "$1" ] && [ "$1" != " " ] && [ "$1" != "" ]
 	then
 	echo $1
 	location=$1
+else
+	echo "Defualt: $location"
+	echo "Current Directory: $current_location"
+	echo "Choose location to create repositories: (c)urrent directory, (d)efault, (e)nter new"
+	read answer
+	if [ -n "$answer" ]; then
+		if [ "$answer" = "c" ]; then
+			location=$curdir
+		elif [ "$answer" = "e" ]; then
+			echo "enter directory you would like to create repositories: "
+			read location
+		fi
+	fi
 fi
 
 # There is an alias set up to call this file with, use it like so:
@@ -24,7 +37,7 @@ echo "    /d/workspaces/helios_workspace/"
 echo "You have chosen: "
 echo "    $location"
 echo
-echo "When cloning, currently existing repos will not"
+echo "When cloning, existing local repositories will not"
 echo "be overwritten, however, they will throw \"fatal\""
 echo "errors. Please ignore these \"errors\""
 echo "----------------------------------------------------"
@@ -72,8 +85,8 @@ if [ -z $createRepos ] || [ $createRepos = "y" ]
 	echo "cloned finishline_csr"
 	git clone -o origin ssh://git@flgit.finishline.com/git/naturaldocs.git naturaldocs
 	echo "cloned naturaldocs"
-	git clone -o origin ssh://git@flgit.finishline.com/git/qa.git qa
-	echo "cloned qa"
+	git clone -o origin ssh://git@flgit.finishline.com/git/merginator.git merginator
+	echo "cloned merginator"
 	git clone -o origin ssh://git@flgit.finishline.com/git/run.git MultiSiteStore
 	echo "cloned run.com -> MultiSiteStore"
 	git clone -o origin ssh://git@flgit.finishline.com/git/run_utilities.git run_utilities
@@ -130,28 +143,37 @@ git config --global color.branch auto
 git config --global color.diff auto
 git config --global color.ui auto
 
-echo "Configure for windows? (y) n"
+echo "Configure git crlf settings for use on windows? (y) n"
 read configure
-if [ -n "$configure" ] || [ "$configure" = "y" ]
+if [ -z "$configure" ] || [ "$configure" = "y" ]
 	then
 	git config --global core.autocrlf true
 	git config --global core.safecrlf true
 fi
 
-echo "set global git config options"
-
-if [ -n "$2" ] && [ "$2" != " " ] && [ "$2" != "" ]
-	then
-	echo "$2"
-	git config --global user.name "$2"
-	
-	if [ -n "$3" ] && [ "$3" != " " ] && [ "$3" != "" ]
-		then
-		echo "$3"
-		git config --global user.email "$3"
+echo "set global git config options (username and email)? (y) n"
+read setoptions
+if [ -z "$setoptions" ] || [ "$setoptions" = "y" ]; then
+	if [ -n "$2" ] && [ "$2" != " " ] && [ "$2" != "" ]; then
+		username=$2
+	else
+		echo "Enter your name:"
+		read username
 	fi
-fi
 
+	git config --global user.name "$username"
+
+	if [ -n "$3" ] && [ "$3" != " " ] && [ "$3" != "" ]; then
+		email=$3
+	else
+		echo "Enter your e-mail:"
+		read email
+	fi
+
+	git config --global user.email "$email"
+fi
+echo
+echo
 echo "done!"
 
 cd $current_location
