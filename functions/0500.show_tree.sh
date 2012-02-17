@@ -26,10 +26,10 @@ function __show_tree {
 	if [ -d "$1" ]; then
 		local indent="$indent    "
 		for entry in `ls $1`; do
-			if [ -d "$entry" ]; then
+			if [ -d "$1/$entry" ]; then
 				grep -q '^\.' <<< "$entry" && continue
 				echo ${STYLE_BRIGHT}${COL_YELLOW}"${indent}+ ${entry}"${X}
-				__show_tree "$entry"
+				__show_tree "$1/$entry"
 			else
 				echo "${indent}- ${entry}"
 			fi
