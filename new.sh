@@ -274,13 +274,7 @@ git config branch.$1.merge refs/heads/$1
 
 # if a remote exists, push to it.
 if [ -n "$_remote" ] && [ "$autopushnewbranch" = "true" ]; then
-	echo
-	echo
-	echo "Finally, your new branch will be pushed up to the remote: ${COL_GREEN}${_remote}${COL_NORM}"
-	echo ${O}${H2HL}
-	echo "$ git push ${_remote} ${1}"
-	git push "$_remote" "$1"
-	echo ${O}${H2HL}${X}
+	"${gitscripts_path}"push.sh --quiet
 fi
 
 exit

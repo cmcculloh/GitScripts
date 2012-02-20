@@ -59,21 +59,19 @@ else
 		exit 1
 	}
 fi
+
 # check for protected branches
 if __is_branch_protected --push "$branch" && [ ! $isAdmin ]; then
 	[ ! $isQuiet ] && echo "  ${W}WARNING:${X} Pushing to ${B}\`${branch}\`${X} is not allowed. Aborting..."
 	exit 1
 fi
+
 # a remote is required to push to
 if ! __set_remote; then
 	echo ${E}"  Aborting...  "${X}
 	exit 1
 fi
 
-if [ ! ${_remote} ]
-	then
-	exit 1
-fi
 
 # setup default answers
 if [ "$pushanswer" == "y" ] || [ "$pushanswer" == "Y" ]; then
@@ -84,8 +82,11 @@ else
 	defA="n"
 fi
 
-echo ${Q}"Would you like to push ${B}\`${branch}\`${Q} to ${COL_GREEN}${_remote}${Q}?${defO}"${X}
-read yn
+# --quiet will use default answer
+if [ ! $isQuiet ]; then
+	echo ${Q}"Would you like to push ${B}\`${branch}\`${Q} to ${COL_GREEN}${_remote}${Q}?${defO}"${X}
+	read yn
+fi
 
 if [ -z "$yn" ]; then
 	yn=$defA
@@ -95,7 +96,7 @@ echo
 if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
 	if [ -n "$_remote" ]; then
 		echo
-		echo "Now pushing to:${X} ${COL_GREEN} ${_remote} ${X}"
+		echo "Now ${A}pushing${X} to:${X} ${COL_GREEN} ${_remote} ${X}"
 		echo ${O}${H2HL}
 		echo "$ git push ${_remote} ${branch}"
 		git push "${_remote}" "${branch}"
@@ -108,12 +109,11 @@ if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
 fi
 
 hasRemote=$(git config branch.$branch.remote 2> /dev/null)
-if [ -z "$hasRemote" ]
-	then
-	echo "Setup remote tracking of ${_remote} for $branch? (y) n"
+if [ -z "$hasRemote" ]; then
+	echo
+	echo ${Q}"Setup remote tracking of ${COL_GREEN}${_remote}${Q} for ${B}\`${branch}\`${Q}? (y) n"
 	read yn
-	if [ -z "$yn" ] || [ "$yn" = "y" ]
-		then
+	if [ -z "$yn" ] || [ "$yn" = "y" ]; then
 		git branch --set-upstream $branch $_remote/$branch
 	fi
 fi
