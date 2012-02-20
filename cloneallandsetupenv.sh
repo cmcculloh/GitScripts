@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo
+echo
+echo
+
 current_location=$(pwd)
 
 location="/d/workspaces/helios_workspace/"
@@ -11,6 +15,7 @@ else
 	if [ "$location" != "$current_location" ]; then
 		echo "Defualt: $location"
 		echo "Current Directory: $current_location"
+		echo
 		echo "Choose location to create repositories: (c)urrent directory, (d)efault, (e)nter new"
 		read answer
 		if [ -n "$answer" ]; then
@@ -28,6 +33,7 @@ else
 		fi
 	else
 		echo "Current Directory: $current_location"
+		echo
 		echo "Choose location to create repositories: (c)urrent directory, (e)nter new"
 		read answer
 		if [ -n "$answer" ]; then
@@ -70,9 +76,7 @@ echo "errors. Please ignore these \"errors\""
 echo "----------------------------------------------------"
 echo
 
-echo "Add remote hosts to hosts file? y (n)"
-echo "If this is the first time git was configured on this"
-echo "machine, you should probably answer y."
+echo "Add remote git hosts to local hosts file? y (n)"
 read doHosts
 echo
 if [ -n "$doHosts" ] && [ $doHosts = "y" ]
@@ -88,6 +92,7 @@ fi
 	
 cd $location
 
+echo
 echo "Clone all workspace repositories here? ($location) "
 echo "nothing will be overwritten. (y) n"
 read createRepos
