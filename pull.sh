@@ -1,6 +1,6 @@
 #!/bin/bash
 ## /*
-#	@usage pull [branch-name]
+#	@usage pull [branch-name] [-q, --quiet]
 #
 #	@description
 #	This is a quick script that pulls in changes from the current branch's remote
@@ -19,6 +19,17 @@
 ## */
 $loadfuncs
 
+# parse params
+numArgs=$#
+if (( numArgs > 0 && numArgs < 3 )); then
+	until [ -z "$1" ]; do
+		[ "$1" = "--admin" ] && [ "$ADMIN" = "true" ] && isAdmin=true
+		{ [ "$1" = "-q" ] ||  [ "$1" = "--quiet" ]; } && isQuiet=true
+		! echo "$1" | egrep -q "^-" && branch="$1"
+		shift
+	done
+fi
+
 
 cb=$(__parse_git_branch)
 pullBranch="$cb"
@@ -36,20 +47,22 @@ fi
 
 
 # if user specified a branch, fetch and pull it in.
-if [ -n "$1" ]; then
-	__branch_exists_remote "$1" && { pullBranch="$1"; } || {
-		echo ${E}"  The branch \`$1\` does not exist on the remote! Aborting...  "${X}
+if [ -n "$branch" ]; then
+	__branch_exists_remote "$branch" && { pullBranch="$branch"; } || {
+		echo ${E}"  The branch \`$branch\` does not exist on the remote! Aborting...  "${X}
 		exit 1
 	}
 fi
 
-# give the user an opportunity to abort
-echo ${Q}"Are you sure you want to ${A}pull${Q} changes from ${STYLE_NEWBRANCH}\`${_remote}/${pullBranch}\`${Q} into ${STYLE_OLDBRANCH}\`${cb}\`${Q}? (y) n"
-read yn
-echo
-if [ -n "$yn" ] && [ "$yn" != "y" ] && [ "$yn" != "Y" ]; then
-	echo "Better safe than sorry! Aborting..."
-	exit 0
+# give the user an opportunity to abort if no -q or --quiet flag passed
+if [ ! $isQuiet ]; then
+	echo ${Q}"Are you sure you want to ${A}pull${Q} changes from ${STYLE_NEWBRANCH}\`${_remote}/${pullBranch}\`${Q} into ${STYLE_OLDBRANCH}\`${cb}\`${Q}? (y) n"
+	read yn
+	echo
+	if [ -n "$yn" ] && [ "$yn" != "y" ] && [ "$yn" != "Y" ]; then
+		echo "Better safe than sorry! Aborting..."
+		exit 0
+	fi
 fi
 
 echo ${H1}${H1HL}
