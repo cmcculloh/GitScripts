@@ -8,18 +8,45 @@ if [ -n "$1" ] && [ "$1" != " " ] && [ "$1" != "" ]
 	echo $1
 	location=$1
 else
-	echo "Defualt: $location"
-	echo "Current Directory: $current_location"
-	echo "Choose location to create repositories: (c)urrent directory, (d)efault, (e)nter new"
-	read answer
-	if [ -n "$answer" ]; then
-		if [ "$answer" = "c" ]; then
-			location=$curdir
-		elif [ "$answer" = "e" ]; then
-			echo "enter directory you would like to create repositories: "
-			read location
+	if [ "$location" != "$current_location" ]; then
+		echo "Defualt: $location"
+		echo "Current Directory: $current_location"
+		echo "Choose location to create repositories: (c)urrent directory, (d)efault, (e)nter new"
+		read answer
+		if [ -n "$answer" ]; then
+			if [ "$answer" = "c" ]; then
+				location=$current_location
+			elif [ "$answer" = "d" ]; then
+				echo "Using default: $location"
+			elif [ "$answer" = "e" ]; then
+				echo "enter directory you would like to create repositories: "
+				read location
+			fi
+		else
+			echo "aborting..."
+			exit -1
+		fi
+	else
+		echo "Current Directory: $current_location"
+		echo "Choose location to create repositories: (c)urrent directory, (e)nter new"
+		read answer
+		if [ -n "$answer" ]; then
+			if [ "$answer" = "c" ]; then
+				location=$current_location
+			elif [ "$answer" = "e" ]; then
+				echo "enter directory you would like to create repositories: "
+				read location
+			fi
+		else
+			echo "aborting..."
+			exit -1
 		fi
 	fi
+fi
+
+if [ -z "$location" ]; then
+	echo "no location specified, aborting..."
+	exit -1
 fi
 
 # There is an alias set up to call this file with, use it like so:
@@ -43,12 +70,12 @@ echo "errors. Please ignore these \"errors\""
 echo "----------------------------------------------------"
 echo
 
-echo "Add remote hosts to hosts file? (y) n"
+echo "Add remote hosts to hosts file? y (n)"
 echo "If this is the first time git was configured on this"
 echo "machine, you should probably answer y."
 read doHosts
 echo
-if [ -z $doHosts ] || [ $doHosts = "y" ]
+if [ -n "$doHosts" ] && [ $doHosts = "y" ]
 	then
 	remotehost1="10.0.2.160	flgit.finishline.com"
 	remotehost2="10.0.2.160	flbuild.finishline.com"
@@ -65,7 +92,7 @@ echo "Clone all workspace repositories here? ($location) "
 echo "nothing will be overwritten. (y) n"
 read createRepos
 echo
-if [ -z $createRepos ] || [ $createRepos = "y" ]
+if [ -z "$createRepos" ] || [ $createRepos = "y" ]
 	then
 	git clone -o origin ssh://git@flgit.finishline.com/git/flgitscripts.git flgitscripts
 	echo "cloned gitscripts"
@@ -105,7 +132,7 @@ echo " 3  Clone etc to the current directory"
 echo " 4  Clone etc to the directory of my choice"
 read decision
 echo
-if [ -z $decision ] || [ $decision -eq 1 ]
+if [ -z "$decision" ] || [ $decision -eq 1 ]
 	then
 	echo
 	#do nothing
@@ -143,17 +170,19 @@ git config --global color.branch auto
 git config --global color.diff auto
 git config --global color.ui auto
 
-echo "Configure git crlf settings for use on windows? (y) n"
+echo
+echo "Configure git crlf settings for use on windows? y (n)"
 read configure
-if [ -z "$configure" ] || [ "$configure" = "y" ]
+if [ -n "$configure" ] && [ "$configure" = "y" ]
 	then
 	git config --global core.autocrlf true
 	git config --global core.safecrlf true
 fi
 
-echo "set global git config options (username and email)? (y) n"
+echo
+echo "set global git config options (username and email)? y (n)"
 read setoptions
-if [ -z "$setoptions" ] || [ "$setoptions" = "y" ]; then
+if [ -n "$setoptions" ] && [ "$setoptions" = "y" ]; then
 	if [ -n "$2" ] && [ "$2" != " " ] && [ "$2" != "" ]; then
 		username=$2
 	else
