@@ -223,7 +223,7 @@ elif [ $SYSTEM_TYPE == "windows" ]; then
 
 
 	# JBoss Settings
-	[ -n "$JBOSS" ] || JBOSS="/d/opt/jboss-4.0.5.GA/"
+	[ -n "$JBOSS" ] || JBOSS_HOME="/d/opt/jboss-4.0.5.GA/"
 fi
 
 
@@ -242,7 +242,7 @@ fi
 [ -n "$csr_path" ] || export csr_path="${workspace_path}finishline_csr/"
 [ -n "$promo_editor_path" ] || export promo_editor_path="${workspace_path}promo_editor/"
 [ -n "$naturaldocs_path" ] || export naturaldocs_path="${workspace_path}naturaldocs/"
-[ -n "$qa_path" ] || export qa_path="${workspace_path}qa/"
+[ -n "$merginator_path" ] || export merginator_path="${workspace_path}merginator/"
 [ -n "$flgitscripts_functions_path" ] || export flgitscripts_functions_path="${flgitscripts_path}functions/"
 [ -n "$inputdir" ] || export inputdir="${flgitscripts_path}input/"
 [ -n "$outputdir" ] || export outputdir="${flgitscripts_path}output/"
@@ -262,8 +262,8 @@ fi
 
 
 # Java and ANT Settings
-[ -n "$JDK_VERSION" ] || JDK_VERSION="jdk1.5.0_14"
-[ -n "$JAVA_HOME" ] || JAVA_HOME="${JAVA_DEV_HOME}jdk/${JDK_VERSION}/"
+[ -n "$JDK_VERSION" ] || export JDK_VERSION="jdk1.5.0_14"
+[ -n "$JAVA_HOME" ] || export JAVA_HOME="${JAVA_DEV_HOME}jdk/${JDK_VERSION}/"
 [ -n "$ANT_HOME" ] || export ANT_HOME="${JAVA_DEV_HOME}apache-ant-1.8.1"
 [ -n "$ANT_CONTRIB_HOME" ] || export ANT_CONTRIB_HOME="${JAVA_DEV_HOME}ant-contrib/"
 [ -n "$YUI_COMPRESSOR_HOME" ] || export YUI_COMPRESSOR_HOME="${JAVA_DEV_HOME}yuicompressor-2.4.2/build"
@@ -273,8 +273,9 @@ fi
 
 
 # JBoss Settings
-[ -n "$JBOSS_HOME" ] || JBOSS_HOME="${JBOSS}bin/"
-[ -n "$JBOSS_LOGS" ] || JBOSS_LOGS="${JBOSS}server/finishline/log/"
+# $JBOSS_HOME is used in JBoss's run.sh file. It has been deprecated in favor of $JBOSS
+# which points to the jboss folder, NOT the bin folder within.
+[ -n "$JBOSS_LOGS" ] || export JBOSS_LOGS="${JBOSS}server/finishline/log/"
 [ -n "$JBOSS_DEPLOY" ] || export JBOSS_DEPLOY="${JBOSS}server/finishline/deploy/"
 [ -n "$JBOSS_WEBAPPWAR" ] || export JBOSS_WEBAPPWAR="${JBOSS_DEPLOY}finishline.ear/web-app.war/"
 [ -n "$JBOSS_MEDIAWAR" ] || export JBOSS_MEDIAWAR="${JBOSS_DEPLOY}media.war/"
@@ -298,7 +299,7 @@ export flloadfuncs="source ${flgitscripts_path}fl-load-funcs.sh"
 $flloadfuncs
 
 # Config is important. Create it from default if file exists
-! flgs-config-exists && {
+! __flgs_config_exists && {
 	echo "	> Config file missing. Creating it from default..."
-	flgs-config --reset=quiet
+	__flgs_config --reset=quiet
 }

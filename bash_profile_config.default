@@ -124,7 +124,7 @@ alias mediahome="cd ${media_path}"
 alias naturaldocshome="cd ${naturaldocs_path}"
 alias promoeditorhome="cd ${promo_editor_path}"
 alias storehome="cd ${webappwar_path}"
-alias qahome="cd ${qa_path}"
+alias merhome="cd ${merginator_path}"
 
 
 #########################################################################################################################
@@ -139,7 +139,7 @@ alias createrepositories="source ${flgitscripts_path}createRepositories.sh"
 #########################################################################################################################
 alias startserver="source ${flgitscripts_path}startserver.sh"
 alias qstartserver="source ${flgitscripts_path}startserver.sh &> /dev/null &"
-alias stopserver="${JBOSS_HOME}shutdown.sh --shutdown"
+alias stopserver="${JBOSS}bin/shutdown.sh --shutdown"
 alias taillogs="source ${flgitscripts_path}tail_log.sh"
 alias modifygitexcludes="gedit .git/info/exclude"
 
@@ -199,16 +199,6 @@ alias refresh_bash_profile="source ${flgitscripts_path}refresh_bash_profile.sh"
 alias snaps="${flgitscripts_path}snaps.sh"
 alias synctree="${flgitscripts_path}synctree.sh"
 #alias whichenv="${flgitscripts_path}/whichenvironment.sh"
+alias merginator="${merginator_path}/utils/merginator.sh"
+alias mer="${merginator_path}/utils/merginator.sh"
 
-
-#QA project aliases
-alias updatedev="source ${qa_path}/utils/updateServer.sh dev dev"
-alias dev-update="source ${qa_path}/utils/updateServer.sh dev dev"
-alias updateqa="source ${qa_path}/utils/updateServer.sh qa qa"
-alias qa-update="source ${qa_path}/utils/updateServer.sh qa qa"
-alias addbranch="${qa_path}/utils/buildBranchList.sh $1 $2"
-alias addbranchqa="${qa_path}/utils/buildBranchList.sh qa $2"
-alias qa-addbranch="${qa_path}/utils/buildBranchList.sh qa $2"
-alias addbranchdev="${qa_path}/utils/buildBranchList.sh dev $2"
-alias dev-addbranch="${qa_path}/utils/buildBranchList.sh dev $2"
-alias qa="${qa_path}/utils/qa.sh"

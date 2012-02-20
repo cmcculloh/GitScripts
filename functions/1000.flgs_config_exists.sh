@@ -1,5 +1,5 @@
 ## /*
-#	@usage flgs-config-exists
+#	@usage __flgs_config_exists
 #
 #	@output false
 #
@@ -13,11 +13,11 @@
 #
 #	@examples
 #	# get the value associated with "mykey" in the config file
-#	flgs-config-exists && myvar=`flgs-config mykey`
+#	__flgs_config_exists && myvar=`flgs_config mykey`
 #	examples@
 #
-#	@file functions/1000.flgs-config-exists.sh
+#	@file functions/1000.__flgs_config_exists.sh
 ## */
-function flgs-config-exists {
+function __flgs_config_exists {
 	[ -s "${flgitscripts_config}" ]
 }

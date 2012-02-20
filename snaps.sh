@@ -48,11 +48,13 @@
 #
 #	@dependencies
 #	gitscripts/functions/0100.bad_usage.sh
+#	gitscripts/functions/0500.show_tree.sh
 #	gitscripts/functions/1000.parse_git_branch.sh
 #	gitscripts/functions/5000.parse_git_status.sh
 #	dependencies@
 ## */
 $loadfuncs
+$flloadfuncs
 
 
 echo ${X}
@@ -160,19 +162,30 @@ fi
 
 # touch file times in master back. already on flmedia!!
 echo
-echo "Check out ${B}\`master\`${X} on ${COL_GREEN}flmedia/fl${X} and touch file times back."
-echo "Then check out original branches."
+echo "${A}Checkout${X} ${B}\`master\`${X} on ${COL_GREEN}flmedia${X} and ${COL_GREEN}fl${X},"
+echo "${A}pull${X} down any updates, and ${A}touch${X} file times back. Then ${A}checkout${X}"
+echo "original branches."
 sleep 3
 echo ${O}${H2HL}
 echo "$ git checkout master"
 git checkout master
 echo ${O}
 echo
+echo "$ git pull flmedia master"
+git pull flmedia master
+echo ${O}
+echo
+echo "$ cd ${finishline_path}"
 eval "cd ${finishline_path}"
-echo ${O}${H2HL}
+echo
+echo
 echo "$ git checkout master"
 git checkout master
 echo ${O}
+echo
+echo "$ git pull fl master"
+git pull fl master
+echo ${O}${H2HL}
 echo
 echo "Running snapshot ANT task..."${X}
 ant ${ANT_ARGS} take-changed-files-snapshot -buildfile "${builds_path}"staging-front-end.build.xml ;
@@ -201,8 +214,15 @@ for (( i = 0; i < ${#servers[@]}; i++ )); do
 done
 
 # view files? maybe in the future...
-
 echo
-echo "Exporting ${COL_GREEN}complete${X}. Goodbye!"
+echo "Exporting ${COL_GREEN}complete${X}. Would you like to view the exports file tree? (y) n"
+read yn
+echo
+
+{ [ -z "$yn" ] || [ "$yn" = "y" ] || [ "$yn" = "Y" ]; } && {
+	__show_tree "${builds_path}build/front-end/exports" | less
+}
+
+echo "Goodbye!"
 
 exit

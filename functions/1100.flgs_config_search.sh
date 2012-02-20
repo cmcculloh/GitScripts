@@ -1,5 +1,5 @@
 ## /* @function
-#	@usage flgs-config-search <key>
+#	@usage __flgs_config_search <key>
 #
 #	@output false
 #
@@ -14,31 +14,31 @@
 #
 #	@examples
 #	# some operations may include uploading/downloading via (s)ftp
-#	if flgs-config-search ftp.user; then
-#	    user=$(flgs-config get ftp.user)
+#	if __flgs_config_search ftp.user; then
+#	    user=$(flgs_config get ftp.user)
 #	    # interact with ftp...
 #	fi
 #	examples@
 #
 #	@dependencies
-#	functions/1000.flgs-config-exists.sh
+#	functions/1000.flgs_config_exists.sh
 #	gitscripts/functions/0200.gslog.sh
 #	dependencies@
 #
-#	@file functions/1100.flgs-config-search.sh
+#	@file functions/1100.__flgs_config_search.sh
 ## */
-function flgs-config-search {
+function __flgs_config_search {
 	if [ -n "$1" ]; then
-		if flgs-config-exists; then
+		if __flgs_config_exists; then
 			# search for key.
 			cat "$flgitscripts_config" | grep -q "^${1}="
 			return $?
 		else
-			__gslog "flgs-config-search: No config file found to search for key (${key})"
+			__gslog "__flgs_config_search: No config file found to search for key (${key})"
 			return 1
 		fi
 	else
-		__gslog "flgs-config-search: No search key given! "${X}
+		__gslog "__flgs_config_search: No search key given! "${X}
 		return 1
 	fi
 }
