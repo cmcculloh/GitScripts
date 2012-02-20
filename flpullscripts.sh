@@ -1,16 +1,63 @@
-#!/bin/bash
+## /*
+#	@usage flpullscripts
+#
+#	@description
+#	Run this command to simultaneously update flgitscripts and the
+#	GitScripts submodule hash.
+#	description@
+#
+#	@notes
+#	- The alias _sources_ this file so that running refresh_bash_profile updates
+#	any variable references that were updated in the pull.
+#	notes@
+#	@dependencies
+#	gitscripts/functions/5000.parse_git_status.sh
+#	refresh_bash_profile.sh
+#	dependencies@
+#
+#	@file flpullscripts.sh
+## */
 $loadfuncs
 
-current_location=$(pwd)
-cd ${flgitscripts_path}
 
-current_branch=$(__parse_git_branch)
+echo ${X}
+echo ${H2}${H2HL}
+echo "  Updating scripts!  "
+echo ${H2HL}${X}
+echo
+echo
 
-git fetch --all --prune
-git checkout master
-git pull origin master
-git checkout $current_branch
 
-source refresh_bash_profile.sh
+# save current path
+pushd . > /dev/null
 
-cd $current_location
+cd "${flgitscripts_path}" > /dev/null
+
+if __parse_git_status clean; then
+	echo "${A}Checkout${X} ${B}\`master\` and then ${A}pull${X} in updates."
+	echo ${O}${H2HL}
+	echo "$ git checkout master"
+	git checkout master
+	echo ${O}
+	echo
+	echo "$ git pull origin master"
+	git pull origin master
+	echo ${O}${H2HL}${X}
+	echo
+	echo
+	echo "${A}Updating${X} the GitScripts submodule..."
+	echo ${O}${H2HL}
+	echo "$ git submodule update"
+	git submodule update
+	echo ${O}${H2HL}${X}
+	echo
+	echo
+	source refresh_bash_profile.sh
+fi
+
+echo
+echo ${COL_GREEN}"FLpullscripts complete!"${X}
+
+popd > /dev/null
+
+# no exit command since this file should eb sourced
