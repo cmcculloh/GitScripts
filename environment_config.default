@@ -236,6 +236,7 @@ fi
 [ -n "$project_workspace" ] || export project_workspace="${development_root}${workspace_name}"
 [ -n "$media_path" ] || export media_path="${workspace_path}${mediaprojectname}/"
 [ -n "$finishline_path" ] || export finishline_path="${workspace_path}${mainprojectname}/"
+[ -n "$merginator_finishline_path" ] || export merginator_finishline_path="${workspace_path}merginator_${mainprojectname}/"
 [ -n "$deploys_path" ] || export deploys_path="${workspace_path}deploys/"
 [ -n "$builds_path" ] || export builds_path="${workspace_path}${buildsprojectname}/"
 [ -n "$imagescripts_path" ] || export imagescripts_path="${workspace_path}image_scripts/"
