@@ -131,7 +131,7 @@ alias merhome="cd ${merginator_path}"
 #automation of grunt work
 #########################################################################################################################
 alias check-nike-track-club="${flgitscripts_path}check-nike-track-club.sh"
-alias createrepositories="source ${flgitscripts_path}createRepositories.sh"
+alias createrepositories="source ${flgitscripts_path}cloneallandsetupenv.sh"
 
 
 #########################################################################################################################
