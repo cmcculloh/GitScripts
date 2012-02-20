@@ -21,9 +21,9 @@ $loadfuncs
 
 
 echo ${X}
-echo ${H2}${H2HL}
-echo "  Updating scripts!  "
-echo ${H2HL}${X}
+echo ${H1}${H1HL}
+echo "  Updating scripts...  "
+echo ${H1HL}${X}
 echo
 echo
 
