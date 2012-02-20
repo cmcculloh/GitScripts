@@ -189,6 +189,7 @@ alias makesprite="${gitscripts_path}swivel-images-maker.sh"
 #########################################################################################################################
 alias checkoutboth="${flgitscripts_path}checkout-both.sh"
 alias fixbranch="${flgitscripts_path}fixbranch.sh"
+alias flpullscripts="source ${flgitscripts_path}flpullscripts.sh"
 alias flvarsreset="source ${flgitscripts_path}fl-vars-reset.sh"
 alias phone="${flgitscripts_path}phone.sh"
 alias promosetup="${flgitscripts_path}promosetup.sh"

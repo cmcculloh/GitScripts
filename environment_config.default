@@ -223,7 +223,7 @@ elif [ $SYSTEM_TYPE == "windows" ]; then
 
 
 	# JBoss Settings
-	[ -n "$JBOSS" ] || JBOSS_HOME="/d/opt/jboss-4.0.5.GA/"
+	[ -n "$JBOSS" ] || JBOSS="/d/opt/jboss-4.0.5.GA/"
 fi
 
 
@@ -301,5 +301,5 @@ $flloadfuncs
 # Config is important. Create it from default if file exists
 ! __flgs_config_exists && {
 	echo "	> Config file missing. Creating it from default..."
-	flgs_config --reset=quiet
+	__flgs_config --reset=quiet
 }
