@@ -235,6 +235,7 @@ fi
 [ -n "$workspace_path" ] || export workspace_path="${development_root}${workspace_name}/"
 [ -n "$project_workspace" ] || export project_workspace="${development_root}${workspace_name}"
 [ -n "$media_path" ] || export media_path="${workspace_path}${mediaprojectname}/"
+[ -n "$mediaActuallyUseful_path" ] || export mediaActuallyUseful_path="${workspace_path}${mediaprojectname}/media/"
 [ -n "$finishline_path" ] || export finishline_path="${workspace_path}${mainprojectname}/"
 [ -n "$merginator_finishline_path" ] || export merginator_finishline_path="${workspace_path}merginator_${mainprojectname}/"
 [ -n "$deploys_path" ] || export deploys_path="${workspace_path}deploys/"
@@ -259,7 +260,7 @@ fi
 # Project-specific
 [ -n "$webappwar_path" ] || export webappwar_path="${finishline_path}modules/base/j2ee-apps/base/web-app.war/"
 [ -n "$promos_path" ] || export promos_path="${webappwar_path}global/promos/"
-[ -n "$mediaLandingPagesPath" ] || export mediaLandingPagesPath="${workspace_path}${mediaprojectname}/media/landing-pages/"
+[ -n "$mediaLandingPagesPath" ] || export mediaLandingPagesPath="${workspace_path}${mediaActuallyUseful_path}/landing-pages/"
 
 
 # Java and ANT Settings
