@@ -246,6 +246,7 @@ fi
 [ -n "$naturaldocs_path" ] || export naturaldocs_path="${workspace_path}naturaldocs/"
 [ -n "$merginator_path" ] || export merginator_path="${workspace_path}merginator/"
 [ -n "$flgitscripts_functions_path" ] || export flgitscripts_functions_path="${flgitscripts_path}functions/"
+[ -n "$flgitscripts_bash_scripts_path" ] || export flgitscripts_bash_scripts_path="${flgitscripts_path}bash_scripts/"
 [ -n "$inputdir" ] || export inputdir="${flgitscripts_path}input/"
 [ -n "$outputdir" ] || export outputdir="${flgitscripts_path}output/"
 [ -n "$awkscripts_path" ] || export awkscripts_path="${flgitscripts_path}awkscripts/"
