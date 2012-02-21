@@ -203,6 +203,6 @@ alias xfm="${flgitscripts_bash_scripts_path}rsync-media-to-war.sh"
 alias snaps="${flgitscripts_path}snaps.sh"
 alias synctree="${flgitscripts_path}synctree.sh"
 #alias whichenv="${flgitscripts_path}/whichenvironment.sh"
-alias merginator="${merginator_path}/utils/merginator.sh"
-alias mer="${merginator_path}/utils/merginator.sh"
+alias merginator="${merginator_path}utils/merginator.sh"
+alias mer="${merginator_path}utils/merginator.sh"
 
