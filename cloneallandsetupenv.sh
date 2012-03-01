@@ -129,6 +129,8 @@ if [ -z "$createRepos" ] || [ $createRepos = "y" ]
 	echo "cloned run.com endeca -> run_endeca"
 	git clone -o origin ssh://git@flgit.finishline.com/git/dashboard.git dashboard
 	echo "cloned WP Dashboard theme -> dashboard"
+	git clone -o origin ssh://git@flgit.finishline.com/git/photoroompicker.git photoroompicker
+	echo "cloned Photoroom picker standalone scripts"
 fi
 
 echo
