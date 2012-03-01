@@ -47,14 +47,59 @@ if [ ! $_branch_selection ]; then
 	exit 1
 fi
 
-# prompt to checkout branch
+
+
+
+
+
+
+
+
+
+
+
+# setup default answers
+if [ "$checkoutforbranchanswer" == "y" ] || [ "$checkoutforbranchanswer" == "Y" ]; then
+	defO=" (y) n"
+	defA="y"
+else
+	defO=" y (n)"
+	defA="n"
+fi
+
+# --quiet will use default answer
+if [ ! $isQuiet ]; then
+	echo ${Q}"Would you like to ${A}checkout${X}${Q} the branch ${B}\`${_branch_selection}\`${X}${Q}?${defO}"${X}
+	read yn
+fi
+
+if [ -z "$yn" ]; then
+	yn=$defA
+fi
+
 echo
-echo ${Q}"  ${A}Checkout${X} ${B}\`${_branch_selection}\`${Q}? y (n)  "${X}
-read yn
-if [ "$yn" = "y" ] || [ "$yn" = "Y" ]; then
+
+if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
 	echo
+	echo "Will now ${A}checkout${X} ${B}\`${_branch_selection}\` ${X}"
 	"${gitscripts_path}"checkout.sh "$_branch_selection"
 fi
+
+
+
+
+
+
+
+
+# prompt to checkout branch
+# echo
+# echo ${Q}"  ${A}Checkout${X} ${B}\`${_branch_selection}\`${Q}? y (n)  "${X}
+# read yn
+# if [ "$yn" = "y" ] || [ "$yn" = "Y" ]; then
+# 	echo
+# 	"${gitscripts_path}"checkout.sh "$_branch_selection"
+# fi
 
 
 exit
