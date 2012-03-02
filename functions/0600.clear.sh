@@ -10,6 +10,7 @@
 ## */
 function __clear {
 	echo
+
 	if [ "$clearscreenanswer" == "n" ] || [ "$clearscreenanswer" == "N" ]; 	then
 		defO=" y (n)"
 		defA="n"
@@ -18,14 +19,18 @@ function __clear {
 		defA="y"
 	fi
 
-	echo ${Q}"${A}Clear${Q} screen?"${defO}${X};
-	read yn
+	if [ "$defA" == "y"] || [ "$autochoosedefclsa" == "n" ] || [ "$autochoosedefclsa" == "N" ]; then
+		echo ${Q}"${A}Clear${Q} screen?"${defO}${X};
+		read yn
+	fi
 
 	if [ -z "$yn" ]; then
 		yn=$defA
 	fi
 
+
 	if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
 		clear
 	fi
+
 }

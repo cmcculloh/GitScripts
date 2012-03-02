@@ -19,6 +19,9 @@
 # [vars] It's important that I clean up after major operations...
 export clearscreenanswer="y"
 
+# [vars] Auto choose your default clear screen answer? (helpful if you *never* choose "y")
+export autochoosedefclsa="y"
+
 # [vars] My workflow is such that I require some extra protections...
 # These files contain the names of branches that require protection, one on each line.
 export protectmergefrom_path="~/gs_protectmergefrom.txt"
