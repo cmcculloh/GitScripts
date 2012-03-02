@@ -53,11 +53,13 @@ if __parse_git_status clean; then
 	echo
 	echo
 	source refresh_bash_profile.sh
+	echo
+	echo ${COL_GREEN}"FLpullscripts complete!"${X}
+else
+	echo ${E}"  Please make sure your flgitscripts_path is clean before running flpullscripts again.  "
+	echo "  Aborting..."${X}
 fi
-
-echo
-echo ${COL_GREEN}"FLpullscripts complete!"${X}
 
 popd > /dev/null
 
-# no exit command since this file should eb sourced
+# no exit command since this file should be sourced
