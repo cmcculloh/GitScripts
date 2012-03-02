@@ -19,7 +19,7 @@ function __clear {
 		defA="y"
 	fi
 
-	if [ "$defA" == "y"] || [ "$autochoosedefclsa" == "n" ] || [ "$autochoosedefclsa" == "N" ]; then
+	if [ "$defA" == "y" ] || [ "$autochoosedefclsa" == "n" ] || [ "$autochoosedefclsa" == "N" ]; then
 		echo ${Q}"${A}Clear${Q} screen?"${defO}${X};
 		read yn
 	fi
