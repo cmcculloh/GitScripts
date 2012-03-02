@@ -48,16 +48,6 @@ if [ ! $_branch_selection ]; then
 fi
 
 
-
-
-
-
-
-
-
-
-
-
 # setup default answers
 if [ "$checkoutforbranchanswer" == "y" ] || [ "$checkoutforbranchanswer" == "Y" ]; then
 	defO=" (y) n"
@@ -69,7 +59,8 @@ fi
 
 # --quiet will use default answer
 if [ ! $isQuiet ]; then
-	echo ${Q}"Would you like to ${A}checkout${X}${Q} the branch ${B}\`${_branch_selection}\`${X}${Q}?${defO}"${X}
+	echo
+	echo ${Q}"Would you like to ${A}checkout${Q} the branch ${B}\`${_branch_selection}\`${Q}?${defO}"${X}
 	read yn
 fi
 
