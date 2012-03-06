@@ -80,8 +80,8 @@ function __get_branch {
 
 	# grab and parse meta from branches
 	[ $query ] && [ ! $isQuiet ] && { echo "Searching ${O}${listType}${X} branches for branch names like: ${STYLE_BRIGHT}${COL_YELLOW}${query}"${X}; echo; }
-	[ $query ] && query=*"$query"*
-	branchArr=( `git branch $flag --list --no-color $query | awk '$0 !~ /.+ -> .+/ { sub(/^(\*|remotes\/)/,""); print; }'` )
+	[ $query ] && query="$query"
+	branchArr=( `git branch $flag --list --no-color | grep --ignore-case ${query} | awk '$0 !~ /.+ -> .+/ { sub(/^(\*|remotes\/)/,""); print; }'` )
 
 	# if viewing local, create a shortcut for viewing remotes
 	if [ $getLocal ]; then
