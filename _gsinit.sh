@@ -41,6 +41,7 @@ export SCRIPT_PATH=`pwd`;
 export gitscripts_path="${SCRIPT_PATH}/"
 popd  > /dev/null
 export gitscripts_cfg_path="${gitscripts_path}cfg/"
+export gitscripts_temp_path="${gitscripts_path}temp/"
 
 
 # load user overrides.
