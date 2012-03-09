@@ -16,67 +16,67 @@ for file in "${gitscripts_functions_path}"*; do
 
 done
 
-cd ${gitscripts_path}
+# cd ${gitscripts_path}
 
-LAST_UPDATE_DATE=`git log -1 --pretty="tformat:%ai"`
-LAST_UPDATE_HASH=`git log -1 --pretty="tformat:%h"`
-LAST_UPDATE_AUTHOR=`git log -1 --pretty="tformat:%an"`
-
-
-LAST_UPDATE_DATE=$(date -d '2011-12-31 17:30:24' '+%Y-%m-%d %T')
+# LAST_UPDATE_DATE=`git log -1 --pretty="tformat:%ai"`
+# LAST_UPDATE_HASH=`git log -1 --pretty="tformat:%h"`
+# LAST_UPDATE_AUTHOR=`git log -1 --pretty="tformat:%an"`
 
 
-MPHR=60    # Minutes per hour.
-HPD=24     # Hours per day.
-
-diff () {
-        printf '%s' $(( $(date -u -d"$TARGET" +%s) -
-                        $(date -u -d"$CURRENT" +%s)))
-#                       %d = day of month.
-}
+# LAST_UPDATE_DATE=$(date -d '2011-12-31 17:30:24' '+%Y-%m-%d %T')
 
 
-echo "Last Updated Date: " $LAST_UPDATE_DATE
+# MPHR=60    # Minutes per hour.
+# HPD=24     # Hours per day.
 
-# __set_remote
-
-# localHash=( `git rev-parse --verify HEAD` )
-# remoteHash=( `git rev-parse --verify $_remote/master` )
-
-       LAST_UPDATED=$(date --date="$LAST_UPDATE_DATE" '+%Y-%m-%d %T')
-  LAST_UPDATED_YEAR=$(date --date="$LAST_UPDATE_DATE" '+%Y')
- LAST_UPDATED_MONTH=$(date --date="$LAST_UPDATE_DATE" '+%-m')
-   LAST_UPDATED_DAY=$(date --date="$LAST_UPDATE_DATE" '+%-d')
-  LAST_UPDATED_HOUR=$(date --date="$LAST_UPDATE_DATE" '+%-H')
-LAST_UPDATED_MINUTE=$(date --date="$LAST_UPDATE_DATE" '+%-M')
+# diff () {
+#         printf '%s' $(( $(date -u -d"$TARGET" +%s) -
+#                         $(date -u -d"$CURRENT" +%s)))
+# #                       %d = day of month.
+# }
 
 
-        NOW=$(date '+%Y-%m-%d %T')
-   NOW_YEAR=$(date '+%Y')
-  NOW_MONTH=$(date '+%-m')
-    NOW_DAY=$(date '+%-d')
-   NOW_HOUR=$(date '+%-H')
- NOW_MINUTE=$(date '+%-M')
-# NOW=$(date +"%Y-%m-%d %T")
-# NOW=$(date +"%m-%d-%Y")
+# echo "Last Updated Date: " $LAST_UPDATE_DATE
 
-echo "LAST_UPDATED: " + $LAST_UPDATED
-echo "LAST_UPDATED_YEAR: " + $LAST_UPDATED_YEAR
-echo "LAST_UPDATED_MONTH: " + $LAST_UPDATED_MONTH
-echo "LAST_UPDATED_DAY: " + $LAST_UPDATED_DAY
-echo "LAST_UPDATED_HOUR: " + $LAST_UPDATED_HOUR
-echo "LAST_UPDATED_MINUTE: " + $LAST_UPDATED_MINUTE
+# # __set_remote
+
+# # localHash=( `git rev-parse --verify HEAD` )
+# # remoteHash=( `git rev-parse --verify $_remote/master` )
+
+#        LAST_UPDATED=$(date --date="$LAST_UPDATE_DATE" '+%Y-%m-%d %T')
+#   LAST_UPDATED_YEAR=$(date --date="$LAST_UPDATE_DATE" '+%Y')
+#  LAST_UPDATED_MONTH=$(date --date="$LAST_UPDATE_DATE" '+%-m')
+#    LAST_UPDATED_DAY=$(date --date="$LAST_UPDATE_DATE" '+%-d')
+#   LAST_UPDATED_HOUR=$(date --date="$LAST_UPDATE_DATE" '+%-H')
+# LAST_UPDATED_MINUTE=$(date --date="$LAST_UPDATE_DATE" '+%-M')
 
 
-echo "NOW: " + $NOW
-echo "NOW_YEAR: " + $NOW_YEAR
-echo "NOW_MONTH: " + $NOW_MONTH
-echo "NOW_DAY: " + $NOW_DAY
-echo "NOW_HOUR: " + $NOW_HOUR
-echo "NOW_MINUTE: " + $NOW_MINUTE
+#         NOW=$(date '+%Y-%m-%d %T')
+#    NOW_YEAR=$(date '+%Y')
+#   NOW_MONTH=$(date '+%-m')
+#     NOW_DAY=$(date '+%-d')
+#    NOW_HOUR=$(date '+%-H')
+#  NOW_MINUTE=$(date '+%-M')
+# # NOW=$(date +"%Y-%m-%d %T")
+# # NOW=$(date +"%m-%d-%Y")
 
-TEMPNAME="${gitscripts_temp_path}gitscripts_auto_updated_last"
-echo $LAST_UPDATE_DATE > $TEMPNAME
+# echo "LAST_UPDATED: " + $LAST_UPDATED
+# echo "LAST_UPDATED_YEAR: " + $LAST_UPDATED_YEAR
+# echo "LAST_UPDATED_MONTH: " + $LAST_UPDATED_MONTH
+# echo "LAST_UPDATED_DAY: " + $LAST_UPDATED_DAY
+# echo "LAST_UPDATED_HOUR: " + $LAST_UPDATED_HOUR
+# echo "LAST_UPDATED_MINUTE: " + $LAST_UPDATED_MINUTE
+
+
+# echo "NOW: " + $NOW
+# echo "NOW_YEAR: " + $NOW_YEAR
+# echo "NOW_MONTH: " + $NOW_MONTH
+# echo "NOW_DAY: " + $NOW_DAY
+# echo "NOW_HOUR: " + $NOW_HOUR
+# echo "NOW_MINUTE: " + $NOW_MINUTE
+
+# TEMPNAME="${gitscripts_temp_path}gitscripts_auto_updated_last"
+# echo $LAST_UPDATE_DATE > $TEMPNAME
 
 
 # y=$(date --date '03 Oct' +%j)
@@ -107,7 +107,7 @@ echo $LAST_UPDATE_DATE > $TEMPNAME
 
 
 
-diffdate "${NOW} ${LAST_UPDATE_DATE}"
+# diffdate "${NOW} ${LAST_UPDATE_DATE}"
 
 
 # TARGET=$(date -d '2017-09-01 17:30:24' '+%Y-%m-%d %T')
