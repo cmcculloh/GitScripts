@@ -58,6 +58,9 @@ if [ -n "$_remote" ]; then
 	echo "$ git status"
 	git status
 	echo
+
+	echo "Checking or updates to the submodule"
+
 	"${gitscripts_path}"push.sh "$1"
 	echo ${O}${H2HL}${X}
 	echo
