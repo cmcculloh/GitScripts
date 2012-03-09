@@ -34,16 +34,15 @@ pushd . > /dev/null
 cd "${flgitscripts_path}" > /dev/null
 
 if __parse_git_status clean; then
-	echo ${O}
-	echo "$ git fetch --all --prune"
-	git fetch --all --prune
-	echo
-	echo
 
 	echo "${A}Checkout${X} ${B}\`master\` and then ${A}pull${X} in updates."
 	echo ${O}${H2HL}
 	echo "$ git checkout master"
 	git checkout master
+	echo
+	echo ${O}
+	echo "$ git fetch --all --prune"
+	git fetch --all --prune
 	echo ${O}
 	echo
 	echo "$ git pull origin master"
