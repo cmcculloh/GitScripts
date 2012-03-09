@@ -74,8 +74,7 @@ if [ "$cb" = "$branch" ]; then
 
 # ...and hopefully the branch exists SOMEWHERE.
 elif [ ! $onlocal ] && [ ! $onremote ]; then
-	echo ${E}"  The branch \`${branch}\` does not exist! Aborting...  "${X}
-	exit 1
+	"${gitscripts_path}"branch.sh "$branch"
 fi
 
 
