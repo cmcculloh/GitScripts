@@ -69,10 +69,7 @@ __branch_exists_local "$branch" && onlocal=true
 
 # Don't try checking out a branch you are already on...
 cb=$(__parse_git_branch)
-if [ "$cb" = "$branch" ]; then
-	echo ${E}"  You are already on branch \`${branch}\`! Aborting...  "${X}
-	exit 1
-elif [ ! $onlocal ] && [ ! $onremote ]; then
+if [ ! $onlocal ] && [ ! $onremote ]; then
 	# ...and hopefully the branch exists SOMEWHERE.
 	"${gitscripts_path}"branch.sh "$branch"
 	exit

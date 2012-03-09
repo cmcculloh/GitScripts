@@ -39,6 +39,10 @@ $loadfuncs
 echo ${X}
 
 # send params through to __get_branch
+echo ${O}${H2HL}
+echo "Choose a branch to check out:"
+echo ${O}${H2HL}${X}
+echo
 __get_branch $@
 
 # if no selection was made or no branch could be found, exit.
@@ -47,34 +51,9 @@ if [ ! $_branch_selection ]; then
 	exit 1
 fi
 
-
-# setup default answers
-if [ "$checkoutforbranchanswer" == "y" ] || [ "$checkoutforbranchanswer" == "Y" ]; then
-	defO=" (y) n"
-	defA="y"
-else
-	defO=" y (n)"
-	defA="n"
-fi
-
-# --quiet will use default answer
-if [ ! $isQuiet ]; then
-	echo
-	echo ${Q}"Would you like to ${A}checkout${Q} the branch ${B}\`${_branch_selection}\`${Q}?${defO}"${X}
-	read yn
-fi
-
-if [ -z "$yn" ]; then
-	yn=$defA
-fi
-
 echo
-
-if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
-	echo
-	echo "Will now ${A}checkout${X} ${B}\`${_branch_selection}\` ${X}"
-	"${gitscripts_path}"checkout.sh "$_branch_selection"
-fi
+echo "Will now ${A}checkout${X} ${B}\`${_branch_selection}\` ${X}"
+"${gitscripts_path}"checkout.sh "$_branch_selection"
 
 
 
