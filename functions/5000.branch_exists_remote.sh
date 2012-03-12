@@ -31,5 +31,5 @@ function __branch_exists_remote {
 		return 1
 	fi
 
-	git branch -r | egrep -q "^[\*]* *$1$" 2>/dev/null
+	git branch -r | egrep -q "^[* ]*$1$" 2>/dev/null
 }
