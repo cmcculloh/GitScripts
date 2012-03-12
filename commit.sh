@@ -171,7 +171,6 @@ git status
 echo ${O}${H2HL}${X}
 echo
 
-echo "startingBranch: $startingBranch"
 # wrap up...
 if [ $isAdmin ]; then
 	"${gitscripts_path}"push.sh --admin "$startingBranch"
