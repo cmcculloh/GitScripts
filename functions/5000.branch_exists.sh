@@ -35,11 +35,11 @@ function __branch_exists {
 		return 1
 	fi
 
-	local locally=$(git branch | egrep "^$1$")
+	local locally=$(git branch | egrep "^[\*]* *$1$")
 	if [ -n "$locally" ]; then
 		return 0
 	else
-		local remotely=$(git branch -r | egrep "^$1$")
+		local remotely=$(git branch -r | egrep "^[\*]* *$1$")
 		if [ -n "$remotely" ]; then
 			return 0
 		fi
