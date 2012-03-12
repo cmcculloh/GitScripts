@@ -39,6 +39,7 @@ function __set_remote {
 
 		# if no remotes are configured there's no reason to continue processing.
 		if [ -z "$remotes" ]; then
+			export _remote=$remotes
 			return 1
 		fi
 

@@ -67,7 +67,6 @@ onlocal=
 __branch_exists_remote "$branch" && onremote=true
 __branch_exists_local "$branch" && onlocal=true
 
-# Don't try checking out a branch you are already on...
 cb=$(__parse_git_branch)
 if [ ! $onlocal ] && [ ! $onremote ]; then
 	# ...and hopefully the branch exists SOMEWHERE.
