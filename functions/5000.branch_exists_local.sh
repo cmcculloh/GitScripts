@@ -30,5 +30,5 @@ function __branch_exists_local {
 		return 1
 	fi
 
-	git branch | egrep -q "^^[* ]*$1$" 2>/dev/null
+	git branch | egrep -q "^[* ]*$1$" 2>/dev/null
 }
