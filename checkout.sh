@@ -60,22 +60,18 @@ fi
 patt="[^/]*\/"
 branch=${1/$patt/}
 
-
 # If the user made it this far, they have passed the branch name as the first parameter to
 # the script. Additional processing occurs. Begin by establishing where the branch exists.
+onremote=
+onlocal=
 __branch_exists_remote "$branch" && onremote=true
 __branch_exists_local "$branch" && onlocal=true
 
-# Don't try checking out a branch you are already on...
 cb=$(__parse_git_branch)
-if [ "$cb" = "$branch" ]; then
-	echo ${E}"  You are already on branch \`${branch}\`! Aborting...  "${X}
-	exit 1
-
-# ...and hopefully the branch exists SOMEWHERE.
-elif [ ! $onlocal ] && [ ! $onremote ]; then
-	echo ${E}"  The branch \`${branch}\` does not exist! Aborting...  "${X}
-	exit 1
+if [ ! $onlocal ] && [ ! $onremote ]; then
+	# ...and hopefully the branch exists SOMEWHERE.
+	"${gitscripts_path}"branch.sh "$branch"
+	exit
 fi
 
 

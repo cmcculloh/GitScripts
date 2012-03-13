@@ -48,7 +48,7 @@ fi
 # set pushing branch if specified, otherwise...
 if [ -n "$branch" ]; then
 	if ! __branch_exists_local "$branch"; then
-		echo ${E}"  The branch \`${1}\` does not exist locally! Aborting...  "${X}
+		echo ${E}"  The branch \`${branch}\` does not exist locally! Aborting...  "${X}
 		exit 1
 	fi
 # ...grab current branch and validate
