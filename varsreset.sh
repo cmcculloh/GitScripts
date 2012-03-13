@@ -21,6 +21,16 @@ export clearscreenanswer="n"
 export pushanswer="y"
 export checkoutforbranchanswer="y"
 
+# Flagged Actions defaults
+export REPLACE_MOTD=true
+export USE_GS_PROMPT=true
+export IMPORT_BASHMARKS=true
+export IMPORT_GIT_ALIASES=true
+
+# other default booleans
+export showremotestate="n"
+export autopushnewbranch=false
+
 # Bash colors
 export CFG_NORM=""
 export CFG_BRIGHT=""
