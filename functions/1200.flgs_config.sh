@@ -41,7 +41,7 @@
 #	@file functions/1200.__flgs_config.sh
 ## */
 function __flgs_config {
-	if ! __flgs_config-exists && ! grep -q '^--reset' <<< "$1"; then
+	if ! __flgs_config_exists && ! grep -q '^--reset' <<< "$1"; then
 		echo ${E}"  Config file could not be found.  "${X}
 		return 1
 	fi
