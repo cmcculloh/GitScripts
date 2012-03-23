@@ -182,8 +182,8 @@ alias fixlinefeedsflgitscripts="ant ${ANT_ARGS} fix-line-feeds-flgitscripts -bui
 ###############################################################################
 # 360 Image Scripts
 ###############################################################################
-alias swivelimagemaker="${gitscripts_path}swivel-images-maker.sh"
-alias makesprite="${gitscripts_path}swivel-images-maker.sh"
+alias swivelimagemaker="${flgitscripts_path}swivel-images-maker.sh"
+alias makesprite="${flgitscripts_path}swivel-images-maker.sh"
 
 
 #########################################################################################################################
