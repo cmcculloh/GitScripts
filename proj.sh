@@ -11,12 +11,16 @@ case "$1" in
 		if [ -n "$which" ]; then
 			proj_file="${inputdir}${which}${ext}"
 			echo
-			echo "  Adding: $2"
-			if ! grep -q "$2" "$proj_file"; then
-				echo "$2" >> "$proj_file"
-			else
-				echo ${E}"  Data already exists in project.  "${X}
-			fi
+			shift
+			while [ -n "$1" ]; do
+				echo "  Adding: ${B}\`$1\`${X}"
+				if ! grep -q "$1" "$proj_file"; then
+					echo "$1" >> "$proj_file"
+				else
+					echo ${E}"  Data already exists in project.  "${X}
+				fi
+				shift
+			done
 		else
 			echo
 			echo ${E}"  No opened project. You must open a project before you can add to it.  "${X}
@@ -61,16 +65,36 @@ case "$1" in
 				git config branch.$which.merge refs/heads/$which
 			fi
 
-			# do the merge
+			# do the merge. check for squash option
+			[ "$2" = "--squash" ] && squash="--squash"
 			(( isOK == 0 )) && { while read line; do
+				lines="$lines\n$line"
 				echo
 				echo
 				echo "Merging: $line"
 				echo ${O}${H2HL}
-				echo "$ git merge $line"
-				git merge "$line"
+				echo "$ git merge $squash $line"
+				git merge $squash "$line"
+				result=$?
 				echo ${O}${H2HL}${X}
+
+				if (( result != 0 )); then
+					echo
+					echo ${E}"  Merge failed. Perhaps there was a conflict. Please resolve and try again.  "
+					exit
+				fi
 			done <"${inputdir}${which}${ext}"; }
+
+			# make squashed commit
+			if [ $squash ]; then
+				echo
+				echo
+				echo ${A}Committing${X} squashed branches...
+				echo ${O}${H2HL}
+				echo -e "$ git commit -m \"(${which}) Included branches:${lines}\""
+				git commit -m "`echo -e "(${which}) Included branches:${lines}"`"
+				echo ${O}${H2HL}${X}
+			fi
 
 			echo
 			echo
