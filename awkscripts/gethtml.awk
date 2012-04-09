@@ -6,7 +6,7 @@ BEGIN {
 /<body/ {
 	endofhtml = "false"
 	while (endofhtml == "false" && getline line) {
-		if (line ~ /<[/]body>/) {
+		if (line ~ /<[\/]body>/) {
 			endofhtml = "true"
 		}
 		else {
@@ -22,7 +22,7 @@ BEGIN {
 			if (line !~ mediaimgsrc) gsub(mediasrc,mediaimgsrc,line)
 
 			# make sure anchor urls are relative to root
-			gsub(/href=\"http:[/]+www\.finishline\.com/,"href=\"",line)
+			gsub(/href=\"http:[\/]+www\.finishline\.com/,"href=\"",line)
 
 			print line
 		}
