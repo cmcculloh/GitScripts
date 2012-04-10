@@ -14,24 +14,24 @@
 #	it retains a list of branches and then merges them together on command. Essentially
 #	a "proj" is a wrapping branch. It comes with the following commands:
 #
-#	add		Add a branch name to the project. You can add multiple branches at once. If
-#	........the keyword "this" is used, the branch the current repo points to will be added
-#	........to the currently opened project.
-#	delete	Delete a project. If no project is specified, a menu allows you to choose
-#	........from a list of all your projects.
-#	merge	Delete the branch with the same name as your open project if it exists. Create
-#	........a branch with the same name as your open project, and then merge all of the
-#	........branches listed in the project. If the --squash option is specified, a commit
-#	........will not occur until all of the branches have been merged together. This
-#	........makes the history appear as if all work in all branches was done in one commit.
-#	new		Create a new project and open it.
-#	open	Open an existing project. If no project-name is specified, a menu will appear
-#	........allowing you to choose from a list of all your projects.
-#	rm		Remove a branch-name from the currently open project. If no branch-name is
-#	........specified, a menu will appear allowing you to choose from all branches included
-#	........in the project.
-#	view	View a list of all branch names in the currently open project.
-#	which	View the name of the currently open project.
+#	add......| Add a branch name to the project. You can add multiple branches at once. If
+#	.........| the keyword "this" is used, the branch the current repo points to will be added
+#	.........| to the currently opened project.
+#	delete...| Delete a project. If no project is specified, a menu allows you to choose
+#	.........| from a list of all your projects.
+#	merge....| Delete the branch with the same name as your open project if it exists. Create
+#	.........| a branch with the same name as your open project, and then merge all of the
+#	.........| branches listed in the project. If the --squash option is specified, a commit
+#	.........| will not occur until all of the branches have been merged together. This
+#	.........| makes the history appear as if all work in all branches was done in one commit.
+#	new......| Create a new project and open it.
+#	open.....| Open an existing project. If no project-name is specified, a menu will appear
+#	.........| allowing you to choose from a list of all your projects.
+#	rm.......| Remove a branch-name from the currently open project. If no branch-name is
+#	.........| specified, a menu will appear allowing you to choose from all branches included
+#	.........| in the project.
+#	view.....| View a list of all branch names in the currently open project.
+#	which....| View the name of the currently open project.
 #	description@
 #
 #	@notes
