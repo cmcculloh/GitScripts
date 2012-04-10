@@ -67,7 +67,7 @@ function __flgs_config {
 			# Reset a value to a current key or set a new key=value pair.
 			set)
 				# As no output is expected, echoing the errors is OK.
-				if [ -n "$2" ] && [ -n "$3" ]; then
+				if [ -n "$2" ]; then
 					tempfile="${tempdir}config_temp"
 
 					# find key. will need to replace value.
