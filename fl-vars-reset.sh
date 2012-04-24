@@ -46,27 +46,33 @@ export awkscripts_path=
 export buildsprojectname=
 export builds_path=
 export development_root=
+export finishline_path=
 export flgitscripts_config=
 export flgitscripts_config_defaults=
 export flgitscripts_config_path=
 export flgitscripts_path=
 export flgitscripts_temp_bash_profile_path=
+export flgitscriptsprojectname=
 export gitscripts_motd_path=
 export gitscripts_path=
 export inputdir=
 export mainprojectname=
+export mediaActuallyUseful_path=
+export mediaLandingPagesPath=
 export mediaprojectname=
+export merginator_finishline_path=
+export merginator_path=
 export myenvironment=
 export native_bash_profile_path=
 export native_motd_path=
 export outputdir=
 export project_workspace=
 export promos_path=
-export merginator_path=
 export tempdir=
 export tmp=
 export webappwar_path=
 export workspace_name=
+export workspace_path=
 
 
 
