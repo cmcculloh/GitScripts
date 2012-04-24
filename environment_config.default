@@ -228,7 +228,7 @@ fi
 
 
 # Workspace-specific
-[ -n "$buildsprojectname" ] || export buildsprojectname="builds"
+[ -n "$buildsprojectname" ] || export buildsprojectname="finishline_build"
 [ -n "$mainprojectname" ] || export mainprojectname="finishline"
 [ -n "$mediaprojectname" ] || export mediaprojectname="finishline_media"
 [ -n "$flgitscriptsprojectname" ] || export flgitscriptsprojectname="flgitscripts"

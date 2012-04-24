@@ -43,6 +43,8 @@ export ANT_ARGS=
 
 export awkdir=
 export awkscripts_path=
+export buildsprojectname=
+export builds_path=
 export development_root=
 export flgitscripts_config=
 export flgitscripts_config_defaults=
@@ -52,6 +54,8 @@ export flgitscripts_temp_bash_profile_path=
 export gitscripts_motd_path=
 export gitscripts_path=
 export inputdir=
+export mainprojectname=
+export mediaprojectname=
 export myenvironment=
 export native_bash_profile_path=
 export native_motd_path=
