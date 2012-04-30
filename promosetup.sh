@@ -186,7 +186,7 @@ if [ -d "$newpromowebappdir" ]; then
 		exit 0
 	fi
 
-	if rm --recursive "$newpromowebappdir"; then
+	if rm -R "$newpromowebappdir"; then
 		# ...and the jsp...
 		[ -s "${newpromowebappdir}.jsp" ] && rm "${newpromowebappdir}.jsp"
 		echo ${COL_GREEN}"Delete succeeded!"${X}
@@ -216,7 +216,7 @@ if [ -d "$newpromomediadir" ]; then
 	fi
 
 	# try the delete
-	if rm --recursive "$newpromomediadir"; then
+	if rm -R "$newpromomediadir"; then
 		echo ${COL_GREEN}"Delete succeeded!"${X}
 	else
 		echo ${E}"  Delete failed!  "${X}

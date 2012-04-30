@@ -158,7 +158,6 @@ if [ $SYSTEM_TYPE == "linux" ]; then
 
 elif [ $SYSTEM_TYPE == "darwin" ]; then
 	echo "We are on Darwin";
-	echo "We are on Linux";
 	PROGRAMS_ROOT=/usr/bin/
 
 	[ -n "$native_bash_profile_path" ] || native_bash_profile_path="${HOME}/.bashrc"

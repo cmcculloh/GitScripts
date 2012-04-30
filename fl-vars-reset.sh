@@ -21,6 +21,7 @@ echo
 export GIT_INSTALL=
 export GIT_BIN=
 export GIT_ETC=
+export GIT_EXEC=
 
 # must remain in this order
 export JBOSS_HOME=

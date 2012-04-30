@@ -102,11 +102,11 @@ alias sshgit="ssh git@10.0.2.160"
 #########################################################################################################################
 #programs -- make windows bash see them
 #########################################################################################################################
-findprograms=(eclipse notepad++ textpad sublime_text ant)
+findprograms=(ant bbedit eclipse java lassoc lessc node notepad++ python ruby subl sublime_text textpad )
 echo "Use bash_profile_config.overrides to set an alias for any of the following, if desired."
 for prog in ${findprograms[@]}; do
 	type -P $prog &>/dev/null && {
-		echo "    Found ${COL_GREEN}${prog}${X}."
+		echo "    Found ${COL_GREEN}${prog}${X} (${STYLE_PROMPT_PATH}`which $prog`)${X}"
 	} || {
 		echo "    "${E}" Could not find ${prog}! "${X}
 	}
