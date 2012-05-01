@@ -46,7 +46,12 @@ echo ${O}${H2HL}
 echo "$ git diff --name-status $hashFrom..$hashTo"
 echo
 echo "git diff --name-status ${hashFrom}..${hashTo}"
-git diff --name-status $hashFrom..$hashTo
+while read STATUS ADDR
+do
+    echo "  # $ADDR  ($STATUS)"
+done  < <(git diff --name-status ${hashFrom}..${hashTo})
+
+# git diff --name-status $hashFrom..$hashTo
 echo
 echo "git diff -w $hashFrom..$hashTo"
 echo ${H2HL}${X}
