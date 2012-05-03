@@ -26,7 +26,7 @@ if [ "$2" != " " ] && [ "$2" != "" ]
 		fi
 fi
 
-MEDIAFILEDUMP="/home/csc/Development/workspaces/ubuntu_galileo_workspace/finishline_media/media/images/swivel-images"
+MEDIAFILEDUMP="/home/pjc/Development/workspaces/ubuntu_galileo_workspace/finishline_media/media/images/swivel-images"
 if [ "$3" != " " ] && [ "$3" != "" ]
 	then
 		
