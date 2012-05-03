@@ -5,7 +5,7 @@ BEGIN {
 /<style/ {
 	endofstyles = "false"
 	while (endofstyles == "false" && getline line) {
-		if (line ~ /<[/]style>/) {
+		if (line ~ /<[\/]style>/) {
 			endofstyles = "true"
 		}
 		else {

@@ -28,7 +28,7 @@ function __show_tree {
 		for entry in `ls $1`; do
 			if [ -d "$1/$entry" ]; then
 				grep -q '^\.' <<< "$entry" && continue
-				echo ${STYLE_BRIGHT}${COL_YELLOW}"${indent}+ ${entry}"${X}
+				echo "${indent}+ ${entry}"
 				__show_tree "$1/$entry"
 			else
 				echo "${indent}- ${entry}"

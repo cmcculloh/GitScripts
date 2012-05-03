@@ -29,6 +29,11 @@ echo ${X}
 echo
 
 
+########################################################
+#  Custom tabbed completion for flgitscripts commands  #
+########################################################
+source ${flgitscripts_path}bash_completion
+
 
 
 #########################################################################################################################
@@ -97,11 +102,11 @@ alias sshgit="ssh git@10.0.2.160"
 #########################################################################################################################
 #programs -- make windows bash see them
 #########################################################################################################################
-findprograms=(eclipse notepad++ textpad sublime_text ant)
+findprograms=(ant bbedit eclipse java lassoc lessc node notepad++ python ruby subl sublime_text textpad )
 echo "Use bash_profile_config.overrides to set an alias for any of the following, if desired."
 for prog in ${findprograms[@]}; do
 	type -P $prog &>/dev/null && {
-		echo "    Found ${COL_GREEN}${prog}${X}."
+		echo "    Found ${COL_GREEN}${prog}${X} (${STYLE_PROMPT_PATH}`which $prog`)${X}"
 	} || {
 		echo "    "${E}" Could not find ${prog}! "${X}
 	}
@@ -131,7 +136,7 @@ alias merhome="cd ${merginator_path}"
 #automation of grunt work
 #########################################################################################################################
 alias check-nike-track-club="${flgitscripts_path}check-nike-track-club.sh"
-alias createrepositories="source ${flgitscripts_path}createRepositories.sh"
+alias createrepositories="source ${flgitscripts_path}cloneallandsetupenv.sh"
 
 
 #########################################################################################################################
@@ -160,6 +165,8 @@ alias devuploadexports="ant ${ANT_ARGS} upload-code-and-media-exports-to-remote 
 alias min="ant ${ANT_ARGS} min -buildfile ${finishline_path}${myenvironment}.build.xml;"
 alias mincss="ant ${ANT_ARGS} merge-css-files -buildfile ${finishline_path}${myenvironment}.build.xml;"
 alias normalbuild="ant ${ANT_ARGS} build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
+alias quickbuild="ant ${ANT_ARGS} quick-build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
+alias qb="ant ${ANT_ARGS} quick-build -buildfile ${finishline_path}${myenvironment}.build.xml ;"
 alias promosimportstouch="ant ${ANT_ARGS} set-mod-dates-of-imports-to-now -buildfile ${builds_path}staging-front-end.build.xml ;"
 alias promosinit="ant ${ANT_ARGS} initpromos -buildfile ${builds_path}staging-front-end.build.xml ;"
 alias promosliteremerge="ant ${ANT_ARGS} git-checkout-mergey-thing-lite -buildfile ${builds_path}staging-front-end.build.xml ;"
@@ -180,25 +187,30 @@ alias fixlinefeedsflgitscripts="ant ${ANT_ARGS} fix-line-feeds-flgitscripts -bui
 ###############################################################################
 # 360 Image Scripts
 ###############################################################################
-alias swivelimagemaker="${gitscripts_path}swivel-images-maker.sh"
-alias makesprite="${gitscripts_path}swivel-images-maker.sh"
+alias swivelimagemaker="${flgitscripts_path}swivel-images-maker.sh"
+alias makesprite="${flgitscripts_path}swivel-images-maker.sh"
 
 
 #########################################################################################################################
 # Utilities and Miscellaneous
 #########################################################################################################################
+#alias switchenv="${flgitscripts_path}/switchenvironment.sh"
+#alias whichenv="${flgitscripts_path}/whichenvironment.sh"
 alias checkoutboth="${flgitscripts_path}checkout-both.sh"
 alias fixbranch="${flgitscripts_path}fixbranch.sh"
+alias flpullscripts="source ${flgitscripts_path}flpullscripts.sh"
 alias flvarsreset="source ${flgitscripts_path}fl-vars-reset.sh"
+alias mer="${merginator_path}utils/merginator.sh"
+alias merginator="${merginator_path}utils/merginator.sh"
 alias phone="${flgitscripts_path}phone.sh"
-alias promosetup="${flgitscripts_path}promosetup.sh"
 alias processpromohtml="${flgitscripts_path}processpromohtml.sh"
+alias proj="${flgitscripts_path}proj.sh"
+alias promosetup="${flgitscripts_path}promosetup.sh"
 alias refresh_bash_profile="source ${flgitscripts_path}refresh_bash_profile.sh"
-#alias switchenv="${flgitscripts_path}/switchenvironment.sh"
-#alias syncmywork="/d/workspaces/helios_workspace/myscripts/syncmyapp.sh"
 alias snaps="${flgitscripts_path}snaps.sh"
+alias syncmyapp="${flgitscripts_path}syncmyapp.sh"
 alias synctree="${flgitscripts_path}synctree.sh"
-#alias whichenv="${flgitscripts_path}/whichenvironment.sh"
-alias merginator="${merginator_path}/utils/merginator.sh"
-alias mer="${merginator_path}/utils/merginator.sh"
+alias xall="${flgitscripts_bash_scripts_path}rsync-webapp-and-media-to-wars.sh"
+alias xfl="${flgitscripts_bash_scripts_path}rsync-webapp-to-war.sh"
+alias xfm="${flgitscripts_bash_scripts_path}rsync-media-to-war.sh"
 

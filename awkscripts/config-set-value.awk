@@ -1,5 +1,5 @@
 BEGIN {
-	if (length(key) == 0 || length(value) == 0) {
+	if (length(key) == 0) {
 		exit 1
 	} else {
 		keyEq = key "="

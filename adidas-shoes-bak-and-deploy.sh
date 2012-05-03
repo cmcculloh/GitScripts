@@ -14,7 +14,7 @@ if [ $thisHostname = "flqap102.finishline.com" ]; then
 else
 	echo "We are not at 102";
 	instancename="alt_finishline"
-	JBOSS_LOG_FILE="/home/csc/Development/opt/jboss-4.0.5.GA/server/${instancename}/log/server.log"
+	JBOSS_LOG_FILE="/home/pjc/Development/opt/jboss-4.0.5.GA/server/${instancename}/log/server.log"
 	# import developer workstation settings
 	source "${flgitscripts_path}refresh_bash_profile.sh"
 fi
@@ -95,18 +95,18 @@ echo "${instancename} instance stopped."
 
 
 # backup the old ear
-cd /home/csc/Development/opt/jboss-4.0.5.GA/server/"${instancename}"/deploy
+cd /home/pjc/Development/opt/jboss-4.0.5.GA/server/"${instancename}"/deploy
 echo "Creating ear backup zip file in ${back_file}";
 rm -rf ${back_file}
 zip -q -r ${back_file} finishline.ear/
 
 
 # cp the ear into place
-ear_path="/home/csc/Development/opt/jboss-4.0.5.GA/server/${instancename}/deploy/finishline.ear"
+ear_path="/home/pjc/Development/opt/jboss-4.0.5.GA/server/${instancename}/deploy/finishline.ear"
 echo "Removing old ear directory at ${ear_path}";
 rm -rf ${ear_path};
 echo "Extracting new ear at ${ear_path}";
-cd /home/csc/Development/opt/jboss-4.0.5.GA/server/${instancename}/deploy
+cd /home/pjc/Development/opt/jboss-4.0.5.GA/server/${instancename}/deploy
 unzip -q /tmp/finishline.ear.102.zip
 echo "Changing ownership of the ear directory";
 #chown -R dynuser:dynuser ${ear_path}

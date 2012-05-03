@@ -26,7 +26,7 @@ if [ "$2" != " " ] && [ "$2" != "" ]
 		fi
 fi
 
-MEDIAFILEDUMP="/home/csc/Development/workspaces/ubuntu_galileo_workspace/finishline_media/media/images/swivel-images"
+MEDIAFILEDUMP="/home/pjc/Development/workspaces/ubuntu_galileo_workspace/finishline_media/media/images/swivel-images"
 if [ "$3" != " " ] && [ "$3" != "" ]
 	then
 		
@@ -168,7 +168,11 @@ echo "Going to make directory: $FINALFILEDUMP"
 mkdir -vp "$FINALFILEDUMP"
 
 
+
+
 for Zindex in 1200 800 500 255 150 75 48   # Five lines.
+# for Zindex in 800 # Five lines.
+# for Zindex in 150    # Five lines.
 #for Zindex in 75 32    # Five lines.
 do
 
@@ -192,8 +196,28 @@ do
 		fi
 		new_file="/$IMAGEBASENAME""__x-""$XindexPadded""__y-""$Yindex""__z-""$Zindex.jpg"
 		cp $file "$THISFILEDUMP""$new_file"
+
+		targetImageWidth=`gm identify -format "%w" "$THISFILEDUMP""$new_file"`
+		targetImageHeight=`gm identify -format "%h" "$THISFILEDUMP""$new_file"`
+		echo "Zindex:  $Zindex";
+		echo "targetImageWidth:  $targetImageWidth";
+		echo "targetImageHeight: $targetImageHeight";
+
+
+
+
+		echo "scale=10; ( $targetImageHeight / $targetImageWidth * $Zindex )"|bc;
+		newHeight=`echo "scale=10; ( $targetImageHeight / $targetImageWidth * $Zindex )"|bc`;
+		newHeightRounded=`printf %0.f $newHeight`;
+		
+
+		echo "New width: $Zindex";
+		echo "New height: $newHeight";
+		echo "New height rounded: $newHeightRounded";
+
 		# gm convert -draw 'text 200,200 "'$Xindex'"' -pointsize 56 -fill "#000000" "$TEMPFILEDUMP/$new_file" "$TEMPFILEDUMP/$new_file" 
-		gm convert -thumbnail $Zindexx$Zindex "$THISFILEDUMP""$new_file"  -gravity center -extent $Zindexx$Zindex "$THISFILEDUMP""$new_file"
+		gm convert -thumbnail $Zindexx$newHeightRounded "$THISFILEDUMP""$new_file"  -gravity center -resize $Zindex  "$THISFILEDUMP""$new_file"
+		# gm convert -thumbnail $Zindexx$Zindex "$THISFILEDUMP""$new_file"  -gravity center -extent $Zindexx$Zindex "$THISFILEDUMP""$new_file"
 		echo "Done with file: $THISFILEDUMP$new_file"
 
 		Xindex=$(($Xindex+1))
@@ -201,6 +225,8 @@ do
 	lastImage="$THISFILEDUMP$new_file"
 	lastImageWidth=`gm identify -format "%w" "$lastImage"`
 	lastImageHeight=`gm identify -format "%h" "$lastImage"`
+	echo "lastImageWidth:  $lastImageWidth";
+	echo "lastImageHeight: $lastImageHeight";
 
 	cd "$THISFILEDUMP"
 	#gm convert *jpg +append -draw 'text 100,100 "%m:%f %wx%h"'  -fill "#000000" "$TEMPFILEDUMP/""$IMAGEBASENAME""__x-sprite""__y-""$Yindex""__z-""$Zindex.jpg"
