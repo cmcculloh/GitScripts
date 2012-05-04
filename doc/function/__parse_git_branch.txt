@@ -1,23 +1,23 @@
-  [36m @usage [0;20;39m __parse_git_branch
-  
-  [36m @output [0;20;39m true
-  
-  [36m @description [0;20;39m
-  Determine which branch the current repository (working tree) has checked out.
-  The function call will fail silently if working directory is not a git
-  repository.
-  
-  
-  [36m @notes [0;20;39m
-  - When using this function, capture the output (the branch name, if any).
-  
-  
-  [36m @examples [0;20;39m
-  cb=$(__parse_git_branch)
-  
-  
-  [36m @dependencies [0;20;39m
-  functions/0500.is_repo.sh
-  
-  
-  [36m @file [0;20;39m functions/1000.parse_git_status.sh
+[0;20;39m[36m 	@usage [0;20;39m __parse_git_branch
+[0;20;39m
+[0;20;39m[36m 	@output [0;20;39m true
+[0;20;39m
+[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m	Determine which branch the current repository (working tree) has checked out.
+[0;20;39m	The function call will fail silently if working directory is not a git
+[0;20;39m	repository.
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@notes [0;20;39m
+[0;20;39m	- When using this function, capture the output (the branch name, if any).
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@examples [0;20;39m
+[0;20;39m	cb=$(__parse_git_branch)
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@dependencies [0;20;39m
+[0;20;39m	functions/0500.is_repo.sh
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@file [0;20;39m functions/1000.parse_git_status.sh

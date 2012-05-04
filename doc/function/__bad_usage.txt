@@ -1,30 +1,30 @@
-  [36m @usage [0;20;39m __bad_usage [options] [command_name [message]]
-  
-  [36m @output [0;20;39m true
-  
-  [36m @description [0;20;39m
-  Makes error messages a little easier to read. They are prefixed with the command name,
-  include coloring, and direct the user to use the GS Manual. However, if the user wishes
-  to use this function with a command that has no gsman entry, option -o can be used
-  and the reference to the gsman entry will be omitted.
-  
-  
-  [36m @options [0;20;39m
-  -o	Omit the reference to gsman for usage instructions. If this option is given, only the
-  command_name is used. Any further parameters are ignored.
-  
-  
-  [36m @notes [0;20;39m
-  - A message cannot be given without a command name.
-  
-  
-  [36m @examples [0;20;39m
-  1) __bad_usage checkout "That branch name does not exist."
-  >> checkout: That branch name does not exist. Use "gsman checkout" for usage instructions.
-  2) __bad_usage -o merge
-  >> merge: Invalid usage.
-  3) __bad_usage
-  >> Error: Invalid usage. Use "gsman <command>" for usage instructions.
-  
-  
-  [36m @file [0;20;39m functions/0100.gslog.sh
+[0;20;39m[36m 	@usage [0;20;39m __bad_usage [options] [command_name [message]]
+[0;20;39m
+[0;20;39m[36m 	@output [0;20;39m true
+[0;20;39m
+[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m	Makes error messages a little easier to read. They are prefixed with the command name,
+[0;20;39m	include coloring, and direct the user to use the GS Manual. However, if the user wishes
+[0;20;39m	to use this function with a command that has no gsman entry, option -o can be used
+[0;20;39m	and the reference to the gsman entry will be omitted.
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@options [0;20;39m
+[0;20;39m	-o	Omit the reference to gsman for usage instructions. If this option is given, only the
+[0;20;39m		command_name is used. Any further parameters are ignored.
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@notes [0;20;39m
+[0;20;39m	- A message cannot be given without a command name.
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@examples [0;20;39m
+[0;20;39m	1) __bad_usage checkout "That branch name does not exist."
+[0;20;39m		>> checkout: That branch name does not exist. Use "gsman checkout" for usage instructions.
+[0;20;39m	2) __bad_usage -o merge
+[0;20;39m		>> merge: Invalid usage.
+[0;20;39m	3) __bad_usage
+[0;20;39m		>> Error: Invalid usage. Use "gsman <command>" for usage instructions.
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@file [0;20;39m functions/0100.gslog.sh

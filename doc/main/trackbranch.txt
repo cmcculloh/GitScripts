@@ -1,32 +1,32 @@
-  [36m @usage [0;20;39m trackbranch [<branch_name>]
-  
-  [36m @description [0;20;39m
-  This script allows an easy way to set the upstream for an existing branch.
-  
-  If there is a remote branch of the same name in existance, it will choose it.
-  
-  If it does not find a remote branch it will push the <branch_name> to the remote.
-  
-  It will then set the upstream for the local branch to the remote branch of the same name.
-  
-  
-  [36m @notes [0;20;39m
-  - It uses the git command git branch --set-upstream foo upstream/foo
-  
-  
-  [36m @examples [0;20;39m
-  1) trackbranch
-  2) trackbranch foo
-  
-  
-  [36m @dependencies [0;20;39m
-  *checkout.sh
-  clear-screen.sh
-  functions/5000.branch_merge_set.sh
-  functions/5000.branch_exists_local.sh
-  functions/5000.branch_exists_remote.sh
-  functions/5000.parse_git_branch.sh
-  functions/5000.set_remote.sh
-  
-  
-  [36m @file [0;20;39m trackbranch.sh
+[0;20;39m[36m 	@usage [0;20;39m trackbranch [<branch_name>]
+[0;20;39m
+[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m	This script allows an easy way to set the upstream for an existing branch.
+[0;20;39m
+[0;20;39m	If there is a remote branch of the same name in existance, it will choose it.
+[0;20;39m
+[0;20;39m	If it does not find a remote branch it will push the <branch_name> to the remote.
+[0;20;39m
+[0;20;39m	It will then set the upstream for the local branch to the remote branch of the same name.
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@notes [0;20;39m
+[0;20;39m	- It uses the git command git branch --set-upstream foo upstream/foo
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@examples [0;20;39m
+[0;20;39m	1) trackbranch
+[0;20;39m	2) trackbranch foo
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@dependencies [0;20;39m
+[0;20;39m	*checkout.sh
+[0;20;39m	clear-screen.sh
+[0;20;39m	functions/5000.branch_merge_set.sh
+[0;20;39m	functions/5000.branch_exists_local.sh
+[0;20;39m	functions/5000.branch_exists_remote.sh
+[0;20;39m	functions/5000.parse_git_branch.sh
+[0;20;39m	functions/5000.set_remote.sh
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@file [0;20;39m trackbranch.sh

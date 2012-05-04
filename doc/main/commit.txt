@@ -1,37 +1,37 @@
-  [36m @usage [0;20;39m commit <message> [-aA]
-  
-  [36m @description [0;20;39m
-  Commits already-staged work to a branch with a few extra benefits. The branch name
-  is prepended to the commit message so that all commits are easily associated with
-  their branch. The commit summary message is also automatically suppressed.
-  
-  Non-staged work can be staged via the available options, which are described below.
-  
-  
-  [36m @options [0;20;39m
-  -a	Automatically stage modified and deleted files before committing.
-  -A	Automatically stage ALL tracked/untracked files before committing.
-  
-  
-  [36m @notes [0;20;39m
-  - The options for this command must come AFTER the message since the -m
-  option is automatically passed to git commit during processing.
-  - If there are untracked files in the working tree and the user passes the -a
-  option, he/she will be prompted to add the untracked files as well.
-  
-  
-  [36m @examples [0;20;39m
-  1) commit "I know I added some untracked files, so I'll pass the right option" -A
-  
-  
-  [36m @dependencies [0;20;39m
-  clear-screen.sh
-  functions/0100.bad_usage.sh
-  functions/5000.branch_exists.sh
-  functions/5000.is_branch_protected.sh
-  functions/5000.parse_git_branch.sh
-  functions/5000.parse_git_status.sh
-  functions/5000.set_remote.sh
-  
-  
-  [36m @file [0;20;39m commit.sh
+[0;20;39m[36m 	@usage [0;20;39m commit <message> [-aA]
+[0;20;39m
+[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m	Commits already-staged work to a branch with a few extra benefits. The branch name
+[0;20;39m	is prepended to the commit message so that all commits are easily associated with
+[0;20;39m	their branch. The commit summary message is also automatically suppressed.
+[0;20;39m
+[0;20;39m	Non-staged work can be staged via the available options, which are described below.
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@options [0;20;39m
+[0;20;39m	-a	Automatically stage modified and deleted files before committing.
+[0;20;39m	-A	Automatically stage ALL tracked/untracked files before committing.
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@notes [0;20;39m
+[0;20;39m	- The options for this command must come AFTER the message since the -m
+[0;20;39m	option is automatically passed to git commit during processing.
+[0;20;39m	- If there are untracked files in the working tree and the user passes the -a
+[0;20;39m	option, he/she will be prompted to add the untracked files as well.
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@examples [0;20;39m
+[0;20;39m	1) commit "I know I added some untracked files, so I'll pass the right option" -A
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@dependencies [0;20;39m
+[0;20;39m	clear-screen.sh
+[0;20;39m	functions/0100.bad_usage.sh
+[0;20;39m	functions/5000.branch_exists.sh
+[0;20;39m	functions/5000.is_branch_protected.sh
+[0;20;39m	functions/5000.parse_git_branch.sh
+[0;20;39m	functions/5000.parse_git_status.sh
+[0;20;39m	functions/5000.set_remote.sh
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@file [0;20;39m commit.sh

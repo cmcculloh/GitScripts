@@ -1,26 +1,26 @@
-  [36m @usage [0;20;39m push [branch-name]
-  
-  [36m @description [0;20;39m
-  This is a quick script that pushes a specified branch or the current branch to
-  the remote, if it exists. To push a specific branch, simply include it as the
-  first parameter when using this script.
-  
-  
-  [36m @options [0;20;39m
-  -q, --quiet	Suppress the "Pushing not allowed" warning message and silently exit.
-  
-  
-  [36m @examples [0;20;39m
-  1) push
-  # pushes current branch
-  2) push some-other-branch
-  # pushes some-other-branch...
-  
-  
-  [36m @dependencies [0;20;39m
-  functions/5000.branch_exists_local.sh
-  functions/5000.parse_git_branch.sh
-  functions/5000.set_remote.sh
-  
-  
-  [36m @file [0;20;39m push.sh
+[0;20;39m[36m 	@usage [0;20;39m push [branch-name]
+[0;20;39m
+[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m	This is a quick script that pushes a specified branch or the current branch to
+[0;20;39m	the remote, if it exists. To push a specific branch, simply include it as the
+[0;20;39m	first parameter when using this script.
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@options [0;20;39m
+[0;20;39m	-q, --quiet	Suppress the "Pushing not allowed" warning message and silently exit.
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@examples [0;20;39m
+[0;20;39m	1) push
+[0;20;39m	   # pushes current branch
+[0;20;39m	2) push some-other-branch
+[0;20;39m	   # pushes some-other-branch...
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@dependencies [0;20;39m
+[0;20;39m	functions/5000.branch_exists_local.sh
+[0;20;39m	functions/5000.parse_git_branch.sh
+[0;20;39m	functions/5000.set_remote.sh
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@file [0;20;39m push.sh

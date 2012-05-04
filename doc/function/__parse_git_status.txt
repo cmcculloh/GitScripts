@@ -1,42 +1,42 @@
-  [36m @usage [0;20;39m __parse_git_status <state_flag>
-  
-  [36m @output [0;20;39m false
-  
-  [36m @description [0;20;39m
-  Determine various states of files in your current working tree and your current
-  repository. Currently supported <state_flag> values are below.
-  (see __parse_git_branch_state function definition for how states are determined)
-  
-  ahead, behind, clean, deleted, modified, newfile, onremote, renamed, staged,
-  *tracking, untracked
-  
-  
-  [36m @notes [0;20;39m
-  - If no parameter or an invalid parameter is given, the failure is logged and the
-  the function returns status 1.
-  - The output of the egrep command is intentionally suppressed as this function
-  is intended to be used as a boolean in conditional expressions.
-  - The data parsed is git status with the --short and -b flags included. This
-  format will remain constant through Git versions and was intended for script
-  parsing.
-  
-  
-  [36m @examples [0;20;39m
-  # ... user makes some changes and attempts to switch branches ...
-  
-  if __parse_git_status modified; then
-  echo "Are you sure you want to change branches? You have uncommitted changes."
-  read answer
-  # ... parse answer and act accordingly ...
-  fi
-  
-  # ...
-  
-  
-  [36m @dependencies [0;20;39m
-  functions/0200.gslog.sh
-  functions/0500.is_repo.sh
-  functions/1000.parse_git_branch.sh
-  
-  
-  [36m @file [0;20;39m functions/5000.parse_git_status.sh
+[0;20;39m[36m 	@usage [0;20;39m __parse_git_status <state_flag>
+[0;20;39m
+[0;20;39m[36m 	@output [0;20;39m false
+[0;20;39m
+[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m	Determine various states of files in your current working tree and your current
+[0;20;39m	repository. Currently supported <state_flag> values are below.
+[0;20;39m	(see __parse_git_branch_state function definition for how states are determined)
+[0;20;39m
+[0;20;39m	ahead, behind, clean, deleted, modified, newfile, onremote, renamed, staged,
+[0;20;39m	*tracking, untracked
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@notes [0;20;39m
+[0;20;39m	- If no parameter or an invalid parameter is given, the failure is logged and the
+[0;20;39m	the function returns status 1.
+[0;20;39m	- The output of the egrep command is intentionally suppressed as this function
+[0;20;39m	is intended to be used as a boolean in conditional expressions.
+[0;20;39m	- The data parsed is git status with the --short and -b flags included. This
+[0;20;39m	format will remain constant through Git versions and was intended for script
+[0;20;39m	parsing.
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@examples [0;20;39m
+[0;20;39m	# ... user makes some changes and attempts to switch branches ...
+[0;20;39m
+[0;20;39m	if __parse_git_status modified; then
+[0;20;39m		echo "Are you sure you want to change branches? You have uncommitted changes."
+[0;20;39m		read answer
+[0;20;39m		# ... parse answer and act accordingly ...
+[0;20;39m	fi
+[0;20;39m
+[0;20;39m	# ...
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@dependencies [0;20;39m
+[0;20;39m	functions/0200.gslog.sh
+[0;20;39m	functions/0500.is_repo.sh
+[0;20;39m	functions/1000.parse_git_branch.sh
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@file [0;20;39m functions/5000.parse_git_status.sh

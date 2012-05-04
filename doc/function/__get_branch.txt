@@ -1,45 +1,45 @@
-  [36m @usage [0;20;39m __get_branch [options] [search-string]
-  
-  [36m @output [0;20;39m true
-  
-  [36m @vars [0;20;39m
-  $_branch_selection
-  
-  
-  [36m @description [0;20;39m
-  This is a handy tool to filter local and/or remote branch names in your repository.
-  If you pass this function a search string, it will search for branch names which
-  contain that string anywhere in the name (even in the remote name). It shows all
-  branches as a menu and allows you to choose the branch by index.
-  
-  Default behavior is to show BOTH local and remote branches. To filter further, use
-  one of the filter options described below. After a selection is made, it is made available
-  in the variable $_branch_selection.
-  
-  
-  [36m @options [0;20;39m
-  -l, --local     Show only local branches.
-  -q, --quiet     Do not show the informational message containing search query.
-  -r, --remote    Show only remote branches.
-  
-  
-  [36m @notes [0;20;39m
-  - Search string CANNOT begin with a hyphen!
-  - Passing both -l and -r options above will result in showing ALL branches as expected.
-  
-  
-  [36m @examples [0;20;39m
-  1) __get_branch --local part-of-bran
-  # filters local branches that match "part-of-bran" anywhere in the branch name
-  2) __get_branch -r
-  # shows ALL remote branches
-  3) __get_branch -q
-  # shows both local and remote branches without displaying informational message before
-  # the menu is displayed
-  
-  
-  [36m @dependencies [0;20;39m
-  functions/0300.menu.sh
-  
-  
-  [36m @file [0;20;39m functions/5000.get_branch.sh
+[0;20;39m[36m 	@usage [0;20;39m __get_branch [options] [search-string]
+[0;20;39m
+[0;20;39m[36m 	@output [0;20;39m true
+[0;20;39m
+[0;20;39m[36m 	@vars [0;20;39m
+[0;20;39m	$_branch_selection
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m	This is a handy tool to filter local and/or remote branch names in your repository.
+[0;20;39m	If you pass this function a search string, it will search for branch names which
+[0;20;39m	contain that string anywhere in the name (even in the remote name). It shows all
+[0;20;39m	branches as a menu and allows you to choose the branch by index.
+[0;20;39m
+[0;20;39m	Default behavior is to show BOTH local and remote branches. To filter further, use
+[0;20;39m	one of the filter options described below. After a selection is made, it is made available
+[0;20;39m	in the variable $_branch_selection.
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@options [0;20;39m
+[0;20;39m	-l, --local     Show only local branches.
+[0;20;39m	-q, --quiet     Do not show the informational message containing search query.
+[0;20;39m	-r, --remote    Show only remote branches.
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@notes [0;20;39m
+[0;20;39m	- Search string CANNOT begin with a hyphen!
+[0;20;39m	- Passing both -l and -r options above will result in showing ALL branches as expected.
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@examples [0;20;39m
+[0;20;39m	1) __get_branch --local part-of-bran
+[0;20;39m	   # filters local branches that match "part-of-bran" anywhere in the branch name
+[0;20;39m	2) __get_branch -r
+[0;20;39m	   # shows ALL remote branches
+[0;20;39m	3) __get_branch -q
+[0;20;39m	   # shows both local and remote branches without displaying informational message before
+[0;20;39m	   # the menu is displayed
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@dependencies [0;20;39m
+[0;20;39m	functions/0300.menu.sh
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@file [0;20;39m functions/5000.get_branch.sh

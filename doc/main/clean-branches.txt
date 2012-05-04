@@ -1,26 +1,26 @@
-  [36m @usage [0;20;39m clean-branches [--base=<branch-name>]
-  
-  [36m @description [0;20;39m
-  This script iterates through your local branches and prompts you to delete
-  branches that are fully merged into master.
-  
-  
-  [36m @options [0;20;39m
-  --base=<branch-name>    By default, the base branch for merged branches is
-  master. It can be changed using this option.
-  
-  
-  [36m @notes [0;20;39m
-  - You will end on the same branch you started out on.
-  - To see which branches are already merged into the branch you’re on, you
-  can run git branch --merged.
-  - To see all the branches that contain work you haven’t yet merged in, you
-  can run git branch --no-merged.
-  
-  
-  [36m @dependencies [0;20;39m
-  *delete.sh
-  functions/5000.parse_git_branch.sh
-  
-  
-  [36m @file [0;20;39m clean-branches.sh
+[0;20;39m[36m 	@usage [0;20;39m clean-branches [--base=<branch-name>]
+[0;20;39m
+[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m	This script iterates through your local branches and prompts you to delete
+[0;20;39m	branches that are fully merged into master.
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@options [0;20;39m
+[0;20;39m	--base=<branch-name>    By default, the base branch for merged branches is
+[0;20;39m	                        master. It can be changed using this option.
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@notes [0;20;39m
+[0;20;39m	- You will end on the same branch you started out on.
+[0;20;39m	- To see which branches are already merged into the branch you’re on, you
+[0;20;39m	  can run git branch --merged.
+[0;20;39m	- To see all the branches that contain work you haven’t yet merged in, you
+[0;20;39m	  can run git branch --no-merged.
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@dependencies [0;20;39m
+[0;20;39m	*delete.sh
+[0;20;39m	functions/5000.parse_git_branch.sh
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@file [0;20;39m clean-branches.sh

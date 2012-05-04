@@ -1,32 +1,32 @@
-  [36m @usage [0;20;39m checkout [branch-name]
-  
-  [36m @description [0;20;39m
-  This script assists with checking out a branch in several ways. Firstly, if you
-  don't know the specific name of the branch for whatever reason, you can omit the
-  branch name as the first parameter to view a list of all branches, even branches
-  on the remote, if any. Secondly, You are automatically prompted to merge master into
-  the branch which you are checking out to keep it current. In addition, safeguards
-  are in place to prevent unnecessary processing if, for instance, you are already
-  on the branch you are trying to checkout or the branch doesn't exist locally,
-  remotely, or at all.
-  
-  
-  
-  [36m @examples [0;20;39m
-  1) checkout
-  # Will show a list of branches available for checkout.
-  2) checkout my-big-project-changes
-  # checks out my-big-project-changes and will attempt to merge master into it
-  # or rebase it onto master.
-  
-  
-  [36m @dependencies [0;20;39m
-  functions/0300.menu.sh
-  functions/5000.branch_exists_remote.sh
-  functions/5000.branch_exists_local.sh
-  functions/5000.parse_git_branch.sh
-  functions/5000.parse_git_status.sh
-  functions/5000.set_remote.sh
-  
-  
-  [36m @file [0;20;39m checkout.sh
+[0;20;39m[36m 	@usage [0;20;39m checkout [branch-name]
+[0;20;39m
+[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m	This script assists with checking out a branch in several ways. Firstly, if you
+[0;20;39m	don't know the specific name of the branch for whatever reason, you can omit the
+[0;20;39m	branch name as the first parameter to view a list of all branches, even branches
+[0;20;39m	on the remote, if any. Secondly, You are automatically prompted to merge master into
+[0;20;39m	the branch which you are checking out to keep it current. In addition, safeguards
+[0;20;39m	are in place to prevent unnecessary processing if, for instance, you are already
+[0;20;39m	on the branch you are trying to checkout or the branch doesn't exist locally,
+[0;20;39m	remotely, or at all.
+[0;20;39m
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@examples [0;20;39m
+[0;20;39m	1) checkout
+[0;20;39m	   # Will show a list of branches available for checkout.
+[0;20;39m	2) checkout my-big-project-changes
+[0;20;39m	   # checks out my-big-project-changes and will attempt to merge master into it
+[0;20;39m	   # or rebase it onto master.
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@dependencies [0;20;39m
+[0;20;39m	functions/0300.menu.sh
+[0;20;39m	functions/5000.branch_exists_remote.sh
+[0;20;39m	functions/5000.branch_exists_local.sh
+[0;20;39m	functions/5000.parse_git_branch.sh
+[0;20;39m	functions/5000.parse_git_status.sh
+[0;20;39m	functions/5000.set_remote.sh
+[0;20;39m
+[0;20;39m
+[0;20;39m[36m 	@file [0;20;39m checkout.sh
