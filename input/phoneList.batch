@@ -1,0 +1,3 @@
+cd /workspaces/dev_proj
+get numbers.txt /Users/cos/Development/workspaces/mac_helios_workspace/flgitscripts/temp/numbers.txt
+exit

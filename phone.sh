@@ -36,21 +36,26 @@ $flloadfuncs
 
 
 list="${inputdir}phoneList"
-touch $list
 
 function update_list {
-	if ! __flgs_config_exists; then
-		echo ${E}"  Unable to acquire ftp address! Check config settings and try again. "${X}
-		return 1
-	fi
 
 	local txtfile="${tempdir}numbers.txt"
-	local ftpaddr=$(flgs-config get ftp.riddle)
+	local batchfile="${inputdir}phoneList.batch"
+	# local ftpaddr=$(flgs-config get ftp.riddle)
+	local ftpaddr="flgit.finishline.com"
+	local ftpuser="git"
 	touch "$txtfile"
+
+	# build batch file according to user paths
+	cat > "${batchfile}" <<BATCHINPUT
+cd /workspaces/dev_proj
+get numbers.txt $txtfile
+exit
+BATCHINPUT
 
 	echo
 	echo "	Acquiring phone list via sftp..."
-	sftp -b "${inputdir}_phoneList.batch" "et@${ftpaddr}" >/dev/null
+	sftp -b "${batchfile}" "${ftpuser}@${ftpaddr}" >/dev/null
 	if [ -s "$txtfile" ]; then
 		cat "$txtfile" | egrep '[-[:blank:]][0-9][0-9][0-9][0-9]$' > "$tmp"
 		if [ -s "$tmp" ]; then
@@ -70,12 +75,15 @@ function update_list {
 case $# in
 	1)
 		#search string given. default processing.
-		if [ "$1" == "-u" ]; then
+		if [ "$1" = "-u" ]; then
 			update_list
 		elif grep -q '^-' <<< "$1"; then
 			__bad_usage phone "Unrecognized parameter ($1) given."
 		else
 			query="$1"
+
+			# check that the list isn't empty
+			[ ! -f "$list" ] && [ "$1" != "-u" ] && update_list
 		fi
 		;;
 
@@ -101,6 +109,7 @@ case $# in
 esac
 
 #search the list
-cat "$list" | awk -v name="$query" -f "${awkscripts_path}phone.awk"
+echo
+[ -n "$query" ] && cat "$list" | awk -v name="$query" -f "${awkscripts_path}phone.awk"
 
 exit
