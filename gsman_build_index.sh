@@ -82,7 +82,7 @@ for (( i = 0; i < ${#paths[@]}; i++ )); do
 					# all other lines are the gsman comments
 					elif [ -n "$rFileName" ]; then
 						[ $j -eq 2 ] && : > "$fileName"
-						echo "  $line" >> "$fileName"
+						echo "$line" >> "$fileName"
 
 					fi
 
