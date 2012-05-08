@@ -1,35 +1,35 @@
-[0;20;39m[36m 	@usage [0;20;39m __is_branch_protected <keyword> <branch-name>
-[0;20;39m
-[0;20;39m[36m 	@output [0;20;39m false
-[0;20;39m
-[0;20;39m[36m 	@description [0;20;39m
-[0;20;39m	Making basic checks for protected branches is an integral part of keeping
-[0;20;39m	team projects as safe as possible. It's also helpful just to protect you
-[0;20;39m	from yourself sometimes. This function provides those checks.
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@options [0;20;39m
-[0;20;39m	--all			Checks to see if branch is protected ANYWHERE.
-[0;20;39m	--merge-from	Checks for protected branches that merge into other branches.
-[0;20;39m	--merge-to		Checks for protected branches that shouldn't be merged into.
-[0;20;39m	--push			Checks for protected branches that cannot be pushed to.
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@notes [0;20;39m
-[0;20;39m	- This function returns SUCCESS on error as the safest option is to
-[0;20;39m	protect the branch if something goes wrong. FAILURE is returned if
-[0;20;39m	the branch is not protected.
-[0;20;39m	- Paths with spaces will cause a SUCCESS.
-[0;20;39m	- Echoing an error is preferred to logging it with __gslog to better debug
-[0;20;39m	script errors.
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@examples [0;20;39m
-[0;20;39m	if __is_branch_protected --push master; then
-[0;20;39m		echo "Sorry, you can't push to master."
-[0;20;39m	else
-[0;20;39m		eval "${gitscripts_path}push.sh master"
-[0;20;39m	fi
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@file [0;20;39m functions/5000.is_branch_protected.sh
+[0;20;39m[0;20;39m[36m 	@usage [0;20;39m __is_branch_protected <keyword> <branch-name>
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@output [0;20;39m false
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m[0;20;39m	Making basic checks for protected branches is an integral part of keeping
+[0;20;39m[0;20;39m	team projects as safe as possible. It's also helpful just to protect you
+[0;20;39m[0;20;39m	from yourself sometimes. This function provides those checks.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@options [0;20;39m
+[0;20;39m[0;20;39m	--all			Checks to see if branch is protected ANYWHERE.
+[0;20;39m[0;20;39m	--merge-from	Checks for protected branches that merge into other branches.
+[0;20;39m[0;20;39m	--merge-to		Checks for protected branches that shouldn't be merged into.
+[0;20;39m[0;20;39m	--push			Checks for protected branches that cannot be pushed to.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@notes [0;20;39m
+[0;20;39m[0;20;39m	- This function returns SUCCESS on error as the safest option is to
+[0;20;39m[0;20;39m	protect the branch if something goes wrong. FAILURE is returned if
+[0;20;39m[0;20;39m	the branch is not protected.
+[0;20;39m[0;20;39m	- Paths with spaces will cause a SUCCESS.
+[0;20;39m[0;20;39m	- Echoing an error is preferred to logging it with __gslog to better debug
+[0;20;39m[0;20;39m	script errors.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@examples [0;20;39m
+[0;20;39m[0;20;39m	if __is_branch_protected --push master; then
+[0;20;39m[0;20;39m		echo "Sorry, you can't push to master."
+[0;20;39m[0;20;39m	else
+[0;20;39m[0;20;39m		eval "${gitscripts_path}push.sh master"
+[0;20;39m[0;20;39m	fi
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@file [0;20;39m functions/5000.is_branch_protected.sh

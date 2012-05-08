@@ -16,6 +16,8 @@
 #	@notes
 #	- This script is not intended to be used on it's own.
 #	notes@
+#
+#	@file gsman_build_index.sh
 ## */
 
 declare -a paths
@@ -35,6 +37,7 @@ fi
 
 docPath="${gitscripts_doc_path}"
 tmp="${gitscripts_temp_path}gsmantemp"
+[ ! -d "${gitscripts_temp_path}" ] && mkdir "${gitscripts_temp_path}"
 
 echo ${X}
 echo ${H1}${H1HL}

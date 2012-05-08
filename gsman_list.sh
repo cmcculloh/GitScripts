@@ -12,6 +12,8 @@
 #	@dependencies
 #	functions/0300.menu.sh
 #	dependencies@
+#
+#	@file gsman_list.sh
 ## */
 $loadfuncs
 

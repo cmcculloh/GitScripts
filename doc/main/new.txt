@@ -1,33 +1,33 @@
-[0;20;39m[36m 	@usage [0;20;39m new <branch_name> [from <existing_branch>]
-[0;20;39m
-[0;20;39m[36m 	@description [0;20;39m
-[0;20;39m	This script provides several ways to create a new branch. You will be able to create a branch
-[0;20;39m	based off of:
-[0;20;39m		1. Specified <existing_branch>
-[0;20;39m		2. The current branch you are on
-[0;20;39m		3. The master branch
-[0;20;39m
-[0;20;39m	In addition, the branches will automatically be tracked and pushed up to any remotes you have
-[0;20;39m	configured. Don't worry, you will get the option to choose which remote you want the branch
-[0;20;39m	pushed to if you have configured more than one.
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@notes [0;20;39m
-[0;20;39m	- You will end on the new branch. That is, it will be the currently checked out branch.
-[0;20;39m	- The stash and reset options in the initial menu currently only work when your
-[0;20;39m	starting branch is the master branch.
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@examples [0;20;39m
-[0;20;39m	1) new some-work
-[0;20;39m	2) new some-work from old-work
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@dependencies [0;20;39m
-[0;20;39m	functions/0100.bad_usage.sh
-[0;20;39m	functions/5000.branch_exists.sh
-[0;20;39m	functions/5000.parse_git_status.sh
-[0;20;39m	functions/5000.set_remote.sh
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@file [0;20;39m new.sh
+[0;20;39m[0;20;39m[36m 	@usage [0;20;39m new <branch_name> [from <existing_branch>]
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m[0;20;39m	This script provides several ways to create a new branch. You will be able to create a branch
+[0;20;39m[0;20;39m	based off of:
+[0;20;39m[0;20;39m		1. Specified <existing_branch>
+[0;20;39m[0;20;39m		2. The current branch you are on
+[0;20;39m[0;20;39m		3. The master branch
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m	In addition, the branches will automatically be tracked and pushed up to any remotes you have
+[0;20;39m[0;20;39m	configured. Don't worry, you will get the option to choose which remote you want the branch
+[0;20;39m[0;20;39m	pushed to if you have configured more than one.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@notes [0;20;39m
+[0;20;39m[0;20;39m	- You will end on the new branch. That is, it will be the currently checked out branch.
+[0;20;39m[0;20;39m	- The stash and reset options in the initial menu currently only work when your
+[0;20;39m[0;20;39m	  starting branch is the master branch.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@examples [0;20;39m
+[0;20;39m[0;20;39m	1) new some-work
+[0;20;39m[0;20;39m	2) new some-work from old-work
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@dependencies [0;20;39m
+[0;20;39m[0;20;39m	functions/0100.bad_usage.sh
+[0;20;39m[0;20;39m	functions/5000.branch_exists.sh
+[0;20;39m[0;20;39m	functions/5000.parse_git_status.sh
+[0;20;39m[0;20;39m	functions/5000.set_remote.sh
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@file [0;20;39m new.sh

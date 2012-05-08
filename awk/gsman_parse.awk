@@ -49,7 +49,7 @@ $0 ~ gsmStart {
 				gsub(tagText, "", data)
 			}
 
-			print data
+			print tagX data
 		}
 
 		i++

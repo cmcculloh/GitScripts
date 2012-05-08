@@ -1,13 +1,13 @@
-[0;20;39m[36m 	@usage [0;20;39m seecolors [test-text]
-[0;20;39m
-[0;20;39m[36m 	@description [0;20;39m
-[0;20;39m	This file echoes a bunch of color codes to the terminal to demonstrate what's available.  Each
-[0;20;39m	line is the color code of one foreground color, out of 17 (default + 16 escapes), followed by a
-[0;20;39m	test use of that color on all nine background colors (default + 8 escapes).
-[0;20;39m
-[0;20;39m	Each table cell has the same text within to get a sense of comparison. This text can be
-[0;20;39m	specified as the only parameter when calling this script. The script specifying numbers is
-[0;20;39m	followed by another color script which does not have numbers specified.
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@file [0;20;39m see-colors.sh
+[0;20;39m[0;20;39m[36m 	@usage [0;20;39m seecolors [test-text]
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m[0;20;39m	This file echoes a bunch of color codes to the terminal to demonstrate what's available.  Each
+[0;20;39m[0;20;39m	line is the color code of one foreground color, out of 17 (default + 16 escapes), followed by a
+[0;20;39m[0;20;39m	test use of that color on all nine background colors (default + 8 escapes).
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m	Each table cell has the same text within to get a sense of comparison. This text can be
+[0;20;39m[0;20;39m	specified as the only parameter when calling this script. The script specifying numbers is
+[0;20;39m[0;20;39m	followed by another color script which does not have numbers specified.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@file [0;20;39m see-colors.sh

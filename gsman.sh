@@ -64,6 +64,8 @@
 #	gsman_parse.sh
 #	functions/0100.bad_usage.sh
 #	dependencies@
+#
+#	@file gsman.sh
 ## */
 $loadfuncs
 

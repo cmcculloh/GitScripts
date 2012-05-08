@@ -15,6 +15,8 @@
 #	functions/0100.bad_usage.sh
 #	functions/0200.gslog.sh
 #	dependencies@
+#
+#	@file gsman_parse.sh
 ## */
 $loadfuncs
 

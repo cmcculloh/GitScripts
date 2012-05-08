@@ -1,64 +1,66 @@
-[0;20;39m[36m 	@usage [0;20;39m gsman <[options] | [keyword]>
-[0;20;39m
-[0;20;39m[36m 	@description [0;20;39m
-[0;20;39m	The GitScripts MANual is to GitScripts as the Man Pages are to Unix commands.
-[0;20;39m	The information for gsman entries can be as extensive as the user wishes. The
-[0;20;39m	gsman essentially looks for files in the gitscripts directory matching the
-[0;20;39m	given command name. It then parses those files for gsman comment blocks. These
-[0;20;39m	blocks take the form:
-[0;20;39m
-[0;20;39m		## /*[36m  @category [0;20;39m (optional)
-[0;20;39m		#[36m 	@oneLineTag [0;20;39m lorem ipsum
-[0;20;39m		#
-[0;20;39m		#[36m 	@tagBlock [0;20;39m
-[0;20;39m		#	Lorem ipsum blah blah....
-[0;20;39m		#
-[0;20;39m		## */
-[0;20;39m
-[0;20;39m	where the start of the comment is two pound signs (#) followed by a forward
-[0;20;39m	slash and asterisk, and the closing of the comment is two pound signs followed
-[0;20;39m	by an asterisk and a forward slash. This syntax closesly resembles block-style
-[0;20;39m	comments in CSS and other web languages. Tag names begin with the "at" symbol (@)
-[0;20;39m	and are followed by one or more letters of the alphabet. Common tags used are:
-[0;20;39m
-[0;20;39m[36m 		@usage [0;20;39m		<< This tag MUST be on the first line for the file to be gsman-compatible!
-[0;20;39m[36m 		@file [0;20;39m
-[0;20;39m[36m 		@output [0;20;39m
-[0;20;39m[36m 		@description [0;20;39m
-[0;20;39m[36m 		@options [0;20;39m
-[0;20;39m[36m 		@notes [0;20;39m
-[0;20;39m[36m 		@examples [0;20;39m
-[0;20;39m[36m 		@dependencies [0;20;39m
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@options [0;20;39m
-[0;20;39m	--build-index[=main|user]    Build the files which are used for outputting gsman comments
-[0;20;39m	                             in an easy-to-read format. Also build command index files.
-[0;20;39m	                             If "user" is specified, only build the user index/help. If
-[0;20;39m	                             "main" is specified, only build the gitscripts core index/help.
-[0;20;39m	--list[=user|all),           Show a list of all the files which contain gsman comments
-[0;20;39m	                             and are accessible using the gsman command. If "user" is
-[0;20;39m	                             specified, only show commands that have been indexed from
-[0;20;39m	                             paths set in the $gitscripts_paths_user variable. If "all" is
-[0;20;39m	                             specified, show both user AND GitScripts native command lists.
-[0;20;39m	-h, --help                   Same as --list.
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@notes [0;20;39m
-[0;20;39m	- The[36m  @usage [0;20;39m tag MUST be included on the first line (under ## /*) for the comments
-[0;20;39m	  to be available in gsman!
-[0;20;39m	- If an option is given, omit the keyword. Both should not be used simultaneously.
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@examples [0;20;39m
-[0;20;39m	1) gsman phone
-[0;20;39m	2) gsman --help
-[0;20;39m	3) gsman --list=all    # get a list of all commands that have gsman-available help
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@dependencies [0;20;39m
-[0;20;39m	gsman_build_index.sh
-[0;20;39m	gsman_list.sh
-[0;20;39m	gsman_parse.sh
-[0;20;39m	functions/0100.bad_usage.sh
-[0;20;39m
+[0;20;39m[0;20;39m[36m 	@usage [0;20;39m gsman <[options] | [keyword]>
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m[0;20;39m	The GitScripts MANual is to GitScripts as the Man Pages are to Unix commands.
+[0;20;39m[0;20;39m	The information for gsman entries can be as extensive as the user wishes. The
+[0;20;39m[0;20;39m	gsman essentially looks for files in the gitscripts directory matching the
+[0;20;39m[0;20;39m	given command name. It then parses those files for gsman comment blocks. These
+[0;20;39m[0;20;39m	blocks take the form:
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m		## /*[36m  @category [0;20;39m (optional)
+[0;20;39m[0;20;39m		#[36m 	@oneLineTag [0;20;39m lorem ipsum
+[0;20;39m[0;20;39m		#
+[0;20;39m[0;20;39m		#[36m 	@tagBlock [0;20;39m
+[0;20;39m[0;20;39m		#	Lorem ipsum blah blah....
+[0;20;39m[0;20;39m		#
+[0;20;39m[0;20;39m		## */
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m	where the start of the comment is two pound signs (#) followed by a forward
+[0;20;39m[0;20;39m	slash and asterisk, and the closing of the comment is two pound signs followed
+[0;20;39m[0;20;39m	by an asterisk and a forward slash. This syntax closesly resembles block-style
+[0;20;39m[0;20;39m	comments in CSS and other web languages. Tag names begin with the "at" symbol (@)
+[0;20;39m[0;20;39m	and are followed by one or more letters of the alphabet. Common tags used are:
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 		@usage [0;20;39m		<< This tag MUST be on the first line for the file to be gsman-compatible!
+[0;20;39m[0;20;39m[36m 		@file [0;20;39m
+[0;20;39m[0;20;39m[36m 		@output [0;20;39m
+[0;20;39m[0;20;39m[36m 		@description [0;20;39m
+[0;20;39m[0;20;39m[36m 		@options [0;20;39m
+[0;20;39m[0;20;39m[36m 		@notes [0;20;39m
+[0;20;39m[0;20;39m[36m 		@examples [0;20;39m
+[0;20;39m[0;20;39m[36m 		@dependencies [0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@options [0;20;39m
+[0;20;39m[0;20;39m	--build-index[=main|user]    Build the files which are used for outputting gsman comments
+[0;20;39m[0;20;39m	                             in an easy-to-read format. Also build command index files.
+[0;20;39m[0;20;39m	                             If "user" is specified, only build the user index/help. If
+[0;20;39m[0;20;39m	                             "main" is specified, only build the gitscripts core index/help.
+[0;20;39m[0;20;39m	--list[=user|all),           Show a list of all the files which contain gsman comments
+[0;20;39m[0;20;39m	                             and are accessible using the gsman command. If "user" is
+[0;20;39m[0;20;39m	                             specified, only show commands that have been indexed from
+[0;20;39m[0;20;39m	                             paths set in the $gitscripts_paths_user variable. If "all" is
+[0;20;39m[0;20;39m	                             specified, show both user AND GitScripts native command lists.
+[0;20;39m[0;20;39m	-h, --help                   Same as --list.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@notes [0;20;39m
+[0;20;39m[0;20;39m	- The[36m  @usage [0;20;39m tag MUST be included on the first line (under ## /*) for the comments
+[0;20;39m[0;20;39m	  to be available in gsman!
+[0;20;39m[0;20;39m	- If an option is given, omit the keyword. Both should not be used simultaneously.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@examples [0;20;39m
+[0;20;39m[0;20;39m	1) gsman phone
+[0;20;39m[0;20;39m	2) gsman --help
+[0;20;39m[0;20;39m	3) gsman --list=all    # get a list of all commands that have gsman-available help
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@dependencies [0;20;39m
+[0;20;39m[0;20;39m	gsman_build_index.sh
+[0;20;39m[0;20;39m	gsman_list.sh
+[0;20;39m[0;20;39m	gsman_parse.sh
+[0;20;39m[0;20;39m	functions/0100.bad_usage.sh
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@file [0;20;39m gsman.sh

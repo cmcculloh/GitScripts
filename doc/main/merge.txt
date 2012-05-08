@@ -1,42 +1,42 @@
-[0;20;39m[36m 	@usage [0;20;39m merge [<branch_name> [into <branch_name2>]]
-[0;20;39m
-[0;20;39m[36m 	@description [0;20;39m
-[0;20;39m	This script is a helpful wrapper for merging one branch into another.
-[0;20;39m
-[0;20;39m	If you have merge conflicts and you want to resolve them, running this command will get that
-[0;20;39m	started as long as you have your mergetool configured [TODO: Add documentation or link to
-[0;20;39m	documentation. For now, here is a link that I have not read the contents of, but this might
-[0;20;39m	get you started: http://www.davesquared.net/2009/02/setting-up-diff-and-merge-tools-for-git.html]
-[0;20;39m
-[0;20;39m	If you are trying to initiate a merge of two branches, this script will do that too. The command
-[0;20;39m	is more intuitive (than "git merge") because it uses "into" to clearly distinguish merge direction.
-[0;20;39m
-[0;20;39m	There are some helpful safeties included as well. Referenced branches
-[0;20;39m	are checked for existence before the script gets too far along, protected branches are checked,
-[0;20;39m	and merge conflicts are determined after the merge. If merge conflicts should arise, the
-[0;20;39m	user is prompted to resolve them using the native git mergetool.
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@notes [0;20;39m
-[0;20;39m	- If specifying both branches in the merge, the second parameter (which should be "into") is
-[0;20;39m	not explicitly checked. Technically, a user could successfully merge two branches with the
-[0;20;39m	command "merge branch1 flapjack branch2".
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@examples [0;20;39m
-[0;20;39m	1) merge                             # Runs your pre-configured merge tool (because McCulloh can't remember how to make it run otherwise)
-[0;20;39m	2) merge master                     # Merges master into current branch
-[0;20;39m	3) merge my-branch into master      # Merges my-branch into master (unless master is a protected branch)
-[0;20;39m	4) merge my-branch another-branch   # This will fail. The second "action" parameter (into) must be included.
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@dependencies [0;20;39m
-[0;20;39m	checkout.sh
-[0;20;39m	clear-screen.sh
-[0;20;39m	functions/0100.bad_usage.sh
-[0;20;39m	functions/5000.branch_exists.sh
-[0;20;39m	functions/5000.parse_git_branch.sh
-[0;20;39m	functions/5000.set_remote.sh
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@file [0;20;39m merge.sh
+[0;20;39m[0;20;39m[36m 	@usage [0;20;39m merge [<branch_name> [into <branch_name2>]]
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m[0;20;39m	This script is a helpful wrapper for merging one branch into another.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m	If you have merge conflicts and you want to resolve them, running this command will get that
+[0;20;39m[0;20;39m	started as long as you have your mergetool configured [TODO: Add documentation or link to
+[0;20;39m[0;20;39m	documentation. For now, here is a link that I have not read the contents of, but this might
+[0;20;39m[0;20;39m	get you started: http://www.davesquared.net/2009/02/setting-up-diff-and-merge-tools-for-git.html]
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m	If you are trying to initiate a merge of two branches, this script will do that too. The command
+[0;20;39m[0;20;39m	is more intuitive (than "git merge") because it uses "into" to clearly distinguish merge direction.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m	There are some helpful safeties included as well. Referenced branches
+[0;20;39m[0;20;39m	are checked for existence before the script gets too far along, protected branches are checked,
+[0;20;39m[0;20;39m	and merge conflicts are determined after the merge. If merge conflicts should arise, the
+[0;20;39m[0;20;39m	user is prompted to resolve them using the native git mergetool.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@notes [0;20;39m
+[0;20;39m[0;20;39m	- If specifying both branches in the merge, the second parameter (which should be "into") is
+[0;20;39m[0;20;39m	not explicitly checked. Technically, a user could successfully merge two branches with the
+[0;20;39m[0;20;39m	command "merge branch1 flapjack branch2".
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@examples [0;20;39m
+[0;20;39m[0;20;39m	1) merge                            # Runs your pre-configured merge tool (because McCulloh can't remember how to make it run otherwise)
+[0;20;39m[0;20;39m	2) merge master                     # Merges master into current branch
+[0;20;39m[0;20;39m	3) merge my-branch into master      # Merges my-branch into master (unless master is a protected branch)
+[0;20;39m[0;20;39m	4) merge my-branch another-branch   # This will fail. The second "action" parameter (into) must be included.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@dependencies [0;20;39m
+[0;20;39m[0;20;39m	checkout.sh
+[0;20;39m[0;20;39m	clear-screen.sh
+[0;20;39m[0;20;39m	functions/0100.bad_usage.sh
+[0;20;39m[0;20;39m	functions/5000.branch_exists.sh
+[0;20;39m[0;20;39m	functions/5000.parse_git_branch.sh
+[0;20;39m[0;20;39m	functions/5000.set_remote.sh
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@file [0;20;39m merge.sh

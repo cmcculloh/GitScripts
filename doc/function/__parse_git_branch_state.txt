@@ -1,44 +1,44 @@
-[0;20;39m[36m 	@usage [0;20;39m __parse_git_branch_state
-[0;20;39m
-[0;20;39m[36m 	@output [0;20;39m true
-[0;20;39m
-[0;20;39m[36m 	@description [0;20;39m
-[0;20;39m	Outputs flags of the current branch state. Currently flagged states are:
-[0;20;39m
-[0;20;39m	ahead, behind, deleted files, modified, new files, no remote, renamed, staged, untracked
-[0;20;39m
-[0;20;39m	origin of work http://henrik.nyh.se/2008/12/git-dirty-prompt
-[0;20;39m	These are the character codes we use for the different states. States with the same codes
-[0;20;39m	have been set to differ in color by default.
-[0;20;39m
-[0;20;39m	 + (ahead)           Local branch is ahead (contains additional commits) of remote branch
-[0;20;39m	 - (behind)          Local branch is behind (missing commits) that are on the remote branch
-[0;20;39m	!* (deleted files)   A tracked file has been identified as being deleted. Applies to staged/unstaged.
-[0;20;39m	>> (modified)        Tracked files have been modified
-[0;20;39m	 * (new files)       A new file has been staged (if unstaged the file is considered untracked).
-[0;20;39m	X> (no remote)       (optional) The branch is not tracking a remote branch
-[0;20;39m	 > (renamed files)   A tracked file has been identified as being renamed. Applies to staged/unstaged.
-[0;20;39m	++ (staged)          A file has been staged for the next commit.
-[0;20;39m	?? (untracked)       One or more untracked files have been identified.
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@examples [0;20;39m
-[0;20;39m	- Assume a tracked file has been staged, another has been modified, and a new file has been
-[0;20;39m	created in the working tree. Consider the following snippet:
-[0;20;39m
-[0;20;39m		source ${gitscripts_lib_path}source_files.sh
-[0;20;39m		export branch_state=$(__parse_git_branch_state)
-[0;20;39m		echo "The current branch has the following state(s):"
-[0;20;39m		echo "${branch_state}"
-[0;20;39m
-[0;20;39m		# output:
-[0;20;39m		# The current branch has the following state(s):
-[0;20;39m		#  >> (modified)  ++ (staged)  ?? (untracked)
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@dependencies [0;20;39m
-[0;20;39m	functions/0500.is_repo.sh
-[0;20;39m	functions/5000.parse_git_status.sh
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@file [0;20;39m functions/5000.parse_git_branch_state.sh
+[0;20;39m[0;20;39m[36m 	@usage [0;20;39m __parse_git_branch_state
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@output [0;20;39m true
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m[0;20;39m	Outputs flags of the current branch state. Currently flagged states are:
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m	ahead, behind, deleted files, modified, new files, no remote, renamed, staged, untracked
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m	origin of work http://henrik.nyh.se/2008/12/git-dirty-prompt
+[0;20;39m[0;20;39m	These are the character codes we use for the different states. States with the same codes
+[0;20;39m[0;20;39m	have been set to differ in color by default.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m	 + (ahead)           Local branch is ahead (contains additional commits) of remote branch
+[0;20;39m[0;20;39m	 - (behind)          Local branch is behind (missing commits) that are on the remote branch
+[0;20;39m[0;20;39m	!* (deleted files)   A tracked file has been identified as being deleted. Applies to staged/unstaged.
+[0;20;39m[0;20;39m	>> (modified)        Tracked files have been modified
+[0;20;39m[0;20;39m	 * (new files)       A new file has been staged (if unstaged the file is considered untracked).
+[0;20;39m[0;20;39m	X> (no remote)       (optional) The branch is not tracking a remote branch
+[0;20;39m[0;20;39m	 > (renamed files)   A tracked file has been identified as being renamed. Applies to staged/unstaged.
+[0;20;39m[0;20;39m	++ (staged)          A file has been staged for the next commit.
+[0;20;39m[0;20;39m	?? (untracked)       One or more untracked files have been identified.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@examples [0;20;39m
+[0;20;39m[0;20;39m	- Assume a tracked file has been staged, another has been modified, and a new file has been
+[0;20;39m[0;20;39m	created in the working tree. Consider the following snippet:
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m		source ${gitscripts_lib_path}source_files.sh
+[0;20;39m[0;20;39m		export branch_state=$(__parse_git_branch_state)
+[0;20;39m[0;20;39m		echo "The current branch has the following state(s):"
+[0;20;39m[0;20;39m		echo "${branch_state}"
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m		# output:
+[0;20;39m[0;20;39m		# The current branch has the following state(s):
+[0;20;39m[0;20;39m		#  >> (modified)  ++ (staged)  ?? (untracked)
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@dependencies [0;20;39m
+[0;20;39m[0;20;39m	functions/0500.is_repo.sh
+[0;20;39m[0;20;39m	functions/5000.parse_git_status.sh
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@file [0;20;39m functions/5000.parse_git_branch_state.sh

@@ -1,19 +1,19 @@
-[0;20;39m[36m 	@usage [0;20;39m __gslog <data>
-[0;20;39m
-[0;20;39m[36m 	@output [0;20;39m file
-[0;20;39m
-[0;20;39m[36m 	@description [0;20;39m
-[0;20;39m	A custom logger for GitScripts. Usually failure messages that aren't useful to the user, but may be to
-[0;20;39m	a developer will be put here as opposed to echoed to standard output.
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@notes [0;20;39m
-[0;20;39m	- Appends to log file only if a parameter is given and log file exists.
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@examples [0;20;39m
-[0;20;39m	1) __gslog "starting my script..."
-[0;20;39m	2) if [ $myage -lt 40 ]; then __gslog "You've still got time..."; fi
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@file [0;20;39m functions/0200.gslog.sh
+[0;20;39m[0;20;39m[36m 	@usage [0;20;39m __gslog <data>
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@output [0;20;39m file
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m[0;20;39m	A custom logger for GitScripts. Usually failure messages that aren't useful to the user, but may be to
+[0;20;39m[0;20;39m	a developer will be put here as opposed to echoed to standard output.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@notes [0;20;39m
+[0;20;39m[0;20;39m	- Appends to log file only if a parameter is given and log file exists.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@examples [0;20;39m
+[0;20;39m[0;20;39m	1) __gslog "starting my script..."
+[0;20;39m[0;20;39m	2) if [ $myage -lt 40 ]; then __gslog "You've still got time..."; fi
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@file [0;20;39m functions/0200.gslog.sh

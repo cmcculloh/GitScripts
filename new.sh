@@ -17,7 +17,7 @@
 #	@notes
 #	- You will end on the new branch. That is, it will be the currently checked out branch.
 #	- The stash and reset options in the initial menu currently only work when your
-#	starting branch is the master branch.
+#	  starting branch is the master branch.
 #	notes@
 #
 #	@examples

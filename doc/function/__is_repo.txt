@@ -1,14 +1,14 @@
-[0;20;39m[36m 	@usage [0;20;39m __is_repo
-[0;20;39m
-[0;20;39m[36m 	@output [0;20;39m false
-[0;20;39m
-[0;20;39m[36m 	@description [0;20;39m
-[0;20;39m	A quick check to see if the current working directory is in the path
-[0;20;39m	of a git repository.
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@notes [0;20;39m
-[0;20;39m	- Intended to be used in conditional statements.
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@file [0;20;39m functions/0500.is_repo.sh
+[0;20;39m[0;20;39m[36m 	@usage [0;20;39m __is_repo
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@output [0;20;39m false
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m[0;20;39m	A quick check to see if the current working directory is in the path
+[0;20;39m[0;20;39m	of a git repository.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@notes [0;20;39m
+[0;20;39m[0;20;39m	- Intended to be used in conditional statements.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@file [0;20;39m functions/0500.is_repo.sh

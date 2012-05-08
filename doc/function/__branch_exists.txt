@@ -1,29 +1,29 @@
-[0;20;39m[36m 	@usage [0;20;39m __branch_exists <branch_name>
-[0;20;39m
-[0;20;39m[36m 	@output [0;20;39m false
-[0;20;39m
-[0;20;39m[36m 	@description [0;20;39m
-[0;20;39m	Determine if the given branch exists either locally or remotely. If it exists locally,
-[0;20;39m	skip checking for the remote branch.
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@notes [0;20;39m
-[0;20;39m	- Since this function does not echo anything to be captured, it is most useful if
-[0;20;39m	used directly in conditional statements. See example below.
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@examples [0;20;39m
-[0;20;39m	# ...
-[0;20;39m
-[0;20;39m	if __branch_exists master; then
-[0;20;39m		echo "Branch 'master' exists!"
-[0;20;39m	fi
-[0;20;39m
-[0;20;39m	#...
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@dependencies [0;20;39m
-[0;20;39m	functions/0200.gslog.sh
-[0;20;39m
-[0;20;39m
-[0;20;39m[36m 	@file [0;20;39m functions.5000.branch_exists.sh
+[0;20;39m[0;20;39m[36m 	@usage [0;20;39m __branch_exists <branch_name>
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@output [0;20;39m false
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m[0;20;39m	Determine if the given branch exists either locally or remotely. If it exists locally,
+[0;20;39m[0;20;39m	skip checking for the remote branch.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@notes [0;20;39m
+[0;20;39m[0;20;39m	- Since this function does not echo anything to be captured, it is most useful if
+[0;20;39m[0;20;39m	used directly in conditional statements. See example below.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@examples [0;20;39m
+[0;20;39m[0;20;39m	# ...
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m	if __branch_exists master; then
+[0;20;39m[0;20;39m		echo "Branch 'master' exists!"
+[0;20;39m[0;20;39m	fi
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m	#...
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@dependencies [0;20;39m
+[0;20;39m[0;20;39m	functions/0200.gslog.sh
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@file [0;20;39m functions.5000.branch_exists.sh
