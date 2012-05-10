@@ -1,25 +1,25 @@
-  [36m @usage [0;20;39m __branch_exists_remote <branch_name>
-  
-  [36m @output [0;20;39m on error
-  
-  [36m @description [0;20;39m
-  Determine if the given branch exists on the remote.
-  
-  
-  [36m @notes [0;20;39m
-  - Since this function does not echo anything to be captured, it is most useful if
-  used directly in conditional statements. See example below.
-  - Calling scripts are responsible for running `git fetch --all`.
-  
-  
-  [36m @examples [0;20;39m
-  # ...
-  
-  if __branch_exists_remote master; then
-  echo "remote branch 'master' exists!"
-  fi
-  
-  #...
-  
-  
-  [36m @file [0;20;39m functions/5000.branch_exists_remote.sh
+[0;20;39m[0;20;39m[36m 	@usage [0;20;39m __branch_exists_remote <branch_name>
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@output [0;20;39m on error
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m[0;20;39m	Determine if the given branch exists on the remote.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@notes [0;20;39m
+[0;20;39m[0;20;39m	- Since this function does not echo anything to be captured, it is most useful if
+[0;20;39m[0;20;39m	used directly in conditional statements. See example below.
+[0;20;39m[0;20;39m	- Calling scripts are responsible for running `git fetch --all`.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@examples [0;20;39m
+[0;20;39m[0;20;39m	# ...
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m	if __branch_exists_remote master; then
+[0;20;39m[0;20;39m		echo "remote branch 'master' exists!"
+[0;20;39m[0;20;39m	fi
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m	#...
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@file [0;20;39m functions/5000.branch_exists_remote.sh

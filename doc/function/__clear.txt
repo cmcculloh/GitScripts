@@ -1,8 +1,8 @@
-  [36m @usage [0;20;39m __clear
-  
-  [36m @description [0;20;39m
-  Gives the user an option to clear screen. Will check for the variable $clearscreenanswer
-  to alter the default answer. This variable can be set in user.overrides.
-  
-  
-  [36m @file [0;20;39m functions/0600.clear.sh
+[0;20;39m[0;20;39m[36m 	@usage [0;20;39m __clear
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m[0;20;39m	Gives the user an option to clear screen. Will check for the variable $clearscreenanswer
+[0;20;39m[0;20;39m	to alter the default answer. This variable can be set in user.overrides.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@file [0;20;39m functions/0600.clear.sh

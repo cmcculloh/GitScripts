@@ -1,32 +1,32 @@
-  [36m @usage [0;20;39m branch [options] [search-string]
-  
-  [36m @description [0;20;39m
-  This is a handy tool to filter local and/or remote branch names in your repository.
-  It leverages the __get_branch function to let the user choose a branch. For more
-  information on that part of the process,[36m  @see [0;20;39m functions/5000.get_branch.sh.
-  
-  
-  [36m @options [0;20;39m
-  -l, --local     Show only local branches.
-  -q, --quiet     Do not show the informational message containing search query.
-  -r, --remote    Show only remote branches.
-  
-  
-  [36m @notes [0;20;39m
-  - Search string CANNOT begin with a hyphen!
-  - Passing both options above will result in showing ALL branches as expected.
-  
-  
-  [36m @examples [0;20;39m
-  1) branch --local part-of-bran
-  # filters local branches that match "part-of-bran"
-  2) branch -r
-  # shows ALL remote branches
-  
-  
-  [36m @dependencies [0;20;39m
-  *checkout.sh
-  functions/5000.get_branch.sh
-  
-  
-  [36m @file [0;20;39m branch.sh
+[0;20;39m[0;20;39m[36m 	@usage [0;20;39m branch [options] [search-string]
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m[0;20;39m	This is a handy tool to filter local and/or remote branch names in your repository.
+[0;20;39m[0;20;39m	It leverages the __get_branch function to let the user choose a branch. For more
+[0;20;39m[0;20;39m	information on that part of the process,[36m  @see [0;20;39m functions/5000.get_branch.sh.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@options [0;20;39m
+[0;20;39m[0;20;39m	-l, --local     Show only local branches.
+[0;20;39m[0;20;39m	-q, --quiet     Do not show the informational message containing search query.
+[0;20;39m[0;20;39m	-r, --remote    Show only remote branches.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@notes [0;20;39m
+[0;20;39m[0;20;39m	- Search string CANNOT begin with a hyphen!
+[0;20;39m[0;20;39m	- Passing both options above will result in showing ALL branches as expected.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@examples [0;20;39m
+[0;20;39m[0;20;39m	1) branch --local part-of-bran
+[0;20;39m[0;20;39m	   # filters local branches that match "part-of-bran"
+[0;20;39m[0;20;39m	2) branch -r
+[0;20;39m[0;20;39m	   # shows ALL remote branches
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@dependencies [0;20;39m
+[0;20;39m[0;20;39m	*checkout.sh
+[0;20;39m[0;20;39m	functions/5000.get_branch.sh
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@file [0;20;39m branch.sh

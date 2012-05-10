@@ -1,22 +1,22 @@
-  [36m @usage [0;20;39m gitdiff [base-branch-name]
-  
-  [36m @description [0;20;39m
-  This script is used to get a quick look at all the files that have been added,
-  modified, and/or deleted in the current branch's latest commit and either a
-  specified branch (the first parameter) or the master branch (default).
-  
-  
-  [36m @notes [0;20;39m
-  - If your project does not have a master branch, you will need to pass the first
-  parameter for each use.
-  
-  
-  [36m @examples [0;20;39m
-  1) gitdiff stage      # Shows file changes between the stage branch and HEAD
-  
-  
-  [36m @dependencies [0;20;39m
-  functions/5000.branch_exists.sh
-  
-  
-  [36m @file [0;20;39m gitdiff.sh
+[0;20;39m[0;20;39m[36m 	@usage [0;20;39m gitdiff [base-branch-name]
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m[0;20;39m	This script is used to get a quick look at all the files that have been added,
+[0;20;39m[0;20;39m	modified, and/or deleted in the current branch's latest commit and either a
+[0;20;39m[0;20;39m	specified branch (the first parameter) or the master branch (default).
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@notes [0;20;39m
+[0;20;39m[0;20;39m	- If your project does not have a master branch, you will need to pass the first
+[0;20;39m[0;20;39m	parameter for each use.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@examples [0;20;39m
+[0;20;39m[0;20;39m	1) gitdiff stage      # Shows file changes between the stage branch and HEAD
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@dependencies [0;20;39m
+[0;20;39m[0;20;39m	functions/5000.branch_exists.sh
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@file [0;20;39m gitdiff.sh

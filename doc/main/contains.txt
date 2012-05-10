@@ -1,25 +1,25 @@
-  [36m @usage [0;20;39m contains [--not] <branch-name>
-  
-  [36m @description [0;20;39m
-  Checks to see which other branches the branch you specify has merged into it. If
-  no branch is specified, the current branch is used.
-  
-  
-  [36m @options [0;20;39m
-  --not	Pass this option to view a list of all branches which do NOT contain
-  the specified (or current) branch.
-  
-  
-  [36m @examples [0;20;39m
-  1) contains --not my-branch
-  # will display all branches that don't contain my-branch
-  2) contains
-  # will display all branches which contain the current branch
-  
-  
-  [36m @dependencies [0;20;39m
-  functions/5000.branch_exists_local.sh
-  functions/5000.parse_git_branch.sh
-  
-  
-  [36m @file [0;20;39m contains.sh
+[0;20;39m[0;20;39m[36m 	@usage [0;20;39m contains [--not] <branch-name>
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m[0;20;39m	Checks to see which other branches the branch you specify has merged into it. If
+[0;20;39m[0;20;39m	no branch is specified, the current branch is used.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@options [0;20;39m
+[0;20;39m[0;20;39m	--not	Pass this option to view a list of all branches which do NOT contain
+[0;20;39m[0;20;39m	     	the specified (or current) branch.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@examples [0;20;39m
+[0;20;39m[0;20;39m	1) contains --not my-branch
+[0;20;39m[0;20;39m	    # will display all branches that don't contain my-branch
+[0;20;39m[0;20;39m	2) contains
+[0;20;39m[0;20;39m	    # will display all branches which contain the current branch
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@dependencies [0;20;39m
+[0;20;39m[0;20;39m	functions/5000.branch_exists_local.sh
+[0;20;39m[0;20;39m	functions/5000.parse_git_branch.sh
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@file [0;20;39m contains.sh

@@ -1,14 +1,14 @@
-  [36m @usage [0;20;39m varsreset
-  
-  [36m @description [0;20;39m
-  This script resets a handful of vars that should be reset to see changes immediately
-  The intended purpose is for use in development, but it could also be used when
-  running gs_refresh. After the reset, the user can choose to also refresh GitScripts.
-  
-  
-  [36m @notes [0;20;39m
-  - The gitscripts_path variable should not be included as it is determined programmatically
-  by the location of the _gsinit.sh file.
-  
-  
-  [36m @file [0;20;39m varsreset.sh
+[0;20;39m[0;20;39m[36m 	@usage [0;20;39m varsreset
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m[0;20;39m	This script resets a handful of vars that should be reset to see changes immediately
+[0;20;39m[0;20;39m	The intended purpose is for use in development, but it could also be used when
+[0;20;39m[0;20;39m	running gs_refresh. After the reset, the user can choose to also refresh GitScripts.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@notes [0;20;39m
+[0;20;39m[0;20;39m	- The gitscripts_path variable should not be included as it is determined programmatically
+[0;20;39m[0;20;39m	by the location of the _gsinit.sh file.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@file [0;20;39m varsreset.sh

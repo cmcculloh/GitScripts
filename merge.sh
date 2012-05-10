@@ -26,7 +26,7 @@
 #	notes@
 #
 #	@examples
-#	1) merge                             # Runs your pre-configured merge tool (because McCulloh can't remember how to make it run otherwise)
+#	1) merge                            # Runs your pre-configured merge tool (because McCulloh can't remember how to make it run otherwise)
 #	2) merge master                     # Merges master into current branch
 #	3) merge my-branch into master      # Merges my-branch into master (unless master is a protected branch)
 #	4) merge my-branch another-branch   # This will fail. The second "action" parameter (into) must be included.

@@ -1,30 +1,30 @@
-  [36m @usage [0;20;39m __set_remote
-  
-  [36m @output [0;20;39m on error
-  
-  [36m @vars [0;20;39m
-  $_remote
-  
-  
-  [36m @description [0;20;39m
-  This script sets a variable that represents the name of a configured git remote repository.
-  It first checks to see if the current branch is tracking a remote repository. If so, it
-  "chooses" that remote. If not, it searches all the remotes for a git project and will present a menu
-  to choose one if multiple remotes have been configured. If only one remote has been configured
-  it will bypass the menu process and simply return that remote string. If no remotes are
-  configured, the $_remote variable will not be set.
-  
-  
-  [36m @notes [0;20;39m
-  - This file must be SOURCED to get access to the variable ($_remote) which is set for use.
-  - This file is intended to be used for it's output, not in conditionals.
-  
-  
-  [36m @examples [0;20;39m
-  ...
-  __set_remote
-  git push $_remote branch-name-to-push
-  ...
-  
-  
-  [36m @file [0;20;39m functions/1000.set_remote.sh
+[0;20;39m[0;20;39m[36m 	@usage [0;20;39m __set_remote
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@output [0;20;39m on error
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@vars [0;20;39m
+[0;20;39m[0;20;39m	$_remote
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m[0;20;39m	This script sets a variable that represents the name of a configured git remote repository.
+[0;20;39m[0;20;39m	It first checks to see if the current branch is tracking a remote repository. If so, it
+[0;20;39m[0;20;39m	"chooses" that remote. If not, it searches all the remotes for a git project and will present a menu
+[0;20;39m[0;20;39m	to choose one if multiple remotes have been configured. If only one remote has been configured
+[0;20;39m[0;20;39m	it will bypass the menu process and simply return that remote string. If no remotes are
+[0;20;39m[0;20;39m	configured, the $_remote variable will not be set.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@notes [0;20;39m
+[0;20;39m[0;20;39m	- This file must be SOURCED to get access to the variable ($_remote) which is set for use.
+[0;20;39m[0;20;39m	- This file is intended to be used for it's output, not in conditionals.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@examples [0;20;39m
+[0;20;39m[0;20;39m	...
+[0;20;39m[0;20;39m	__set_remote
+[0;20;39m[0;20;39m	git push $_remote branch-name-to-push
+[0;20;39m[0;20;39m	...
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@file [0;20;39m functions/1000.set_remote.sh

@@ -34,9 +34,7 @@ $0 ~ gsmStart {
 
 		mtch = match(ln, gsmStop)
 		if (mtch == 0) {
-			# kill leading spaces
-			data = substr(ln, 2)
-			sub(/^[[:blank:]]*/, "", data)
+			data = tagX substr(ln, 2)
 
 			# color open tags
 			if (match(data, tagStart) > 0) {
@@ -51,7 +49,7 @@ $0 ~ gsmStart {
 				gsub(tagText, "", data)
 			}
 
-			print data
+			print tagX data
 		}
 
 		i++
