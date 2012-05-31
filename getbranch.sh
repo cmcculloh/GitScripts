@@ -28,7 +28,7 @@ echo ${X}
 branch=$(__parse_git_branch)
 
 echo "Your current branch is: ${B}\`${branch}\`${X}."
-echo $branch | pbcopy
+echo -n $branch | pbcopy
 echo "It has been copied to your clipboard."
 echo
 echo ${X}
