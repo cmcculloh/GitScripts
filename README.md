@@ -1,4 +1,4 @@
-A series of shell scripts that simplify and streamline the use of Git.
+A series of shell scripts that simplify and streamline the use of Git. Works across all major OSes (Win/Mac/Linux).
 
 # Installation
 
