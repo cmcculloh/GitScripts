@@ -3,7 +3,7 @@ GitScripts Read Me
 
 A series of shell scripts that simplify and streamline the use of Git.
 
-source _gsinit.sh in your bash.rc (if one does not exist, create it in your home (~/) directory)
+source _gsinit.sh in your .bash_profile or .bashrc (if neither exists, create one in your home (~/) directory)
 
 Basic Components
 ----------------
