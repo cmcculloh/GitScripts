@@ -6,22 +6,20 @@ A series of shell scripts that simplify and streamline the use of Git.
 
 
 Installation
-============
+------------
 
-Installation is easy!
-
-1) Clone down the repo somewhere on your machine:
+# Clone down the repo somewhere on your machine:
     git clone git://github.com/cmcculloh/GitScripts.git
-2) Modify your .bash_profile or .bashrc file. One of these should be in your home (~/) directory. If not, just create one (flip a coin to decide which ;) ). Add the following line to the file:
+# Modify your .bash_profile or .bashrc file. One of these should be in your home (~/) directory. If not, just create one (flip a coin to decide which ;) ). Add the following line to the file:
     source [path to your local version of the GitScripts repo]/_gsinit.sh
 
     So, if your local GitScripts repo is in ~/Dev/GitScripts, the line would look like this:
     ~/Dev/GitScripts/.bashrc
-3) Restart your terminal, BAM! your DONE!
+# Restart your terminal, BAM! your DONE!
 
 
 Configuration Notes
-===================
+-------------------
 
 GitScripts comes with some intelligent defaults, so, this is for those that are just not satisfied with defaults.
 
@@ -34,7 +32,7 @@ This file is ignored by default, so, mod away!
 
 
 GSMAN
-=====
+-----
 
 GitScripts comes with a nifty little used documentation center called "gsman".
 
@@ -49,7 +47,7 @@ Before you can actually *use* this system, you have to configure it, by issuing 
 
 
 Usage
-===========
+-----
 
 GitScripts helps make git more user friendly and more user safe. It is a set of bash scripts that will make your life much easier and streamline your use of Git.
 
