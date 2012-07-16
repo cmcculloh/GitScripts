@@ -12,7 +12,7 @@ Modify your .bash_profile or .bashrc file. One of these should be in your home (
 
 So, if your local GitScripts repo is in ~/Dev/GitScripts, the line would look like this:
 
-	~/Dev/GitScripts/.bashrc
+	source ~/Dev/GitScripts/_gsinit.sh
 
 Restart your terminal, BAM! your DONE!
 
