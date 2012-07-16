@@ -1,5 +1,7 @@
 A series of shell scripts that simplify and streamline the use of Git. Works across all major OSes (Win/Mac/Linux).
 
+GitScripts does not replace Git. It's kind of a wrapper for Git, or more, an extension to Git's built in shell scripts. If you install GitScripts, you can still access all of your git commands exactly the same way you used to. However, now you have an extra library of commands at your disposal.
+
 # Installation
 
 Clone down the repo somewhere on your machine:
@@ -47,6 +49,9 @@ Before you can actually *use* this system, you have to configure it, by issuing 
 
 GitScripts helps make git more user friendly and more user safe. It is a set of bash scripts that will make your life much easier and streamline your use of Git.
 
+
+## Status
+
 The most basic example is as follows. To see which files have changes, you would normally type:
 
     git status
@@ -55,6 +60,8 @@ With GitScripts you can just do:
 
 	status
 
+
+## Commit
 
 Say you have changes to 5 tracked files that you want to commit. Normally you would have to do the following:
 
@@ -67,6 +74,8 @@ With GitScripts you can just do:
 
 I know, these doesn't seem much different. But it *did* save just a little bit of time. Two paper cuts (in a world of Windows, that's two paper cuts less in the death by a thousand paper cuts that you suffer every day).
 
+
+## New Branch
 
 Here's where the real magic happens though. Let's say you want to create a new branch. Normally you would have to do all of the following (if being safe):
 
@@ -85,6 +94,8 @@ Whew! OK, with gitscripts, you just do:
 
 That's it. It jumps into an intelligent guided numeric menu driven process that does everything that you would normally have to do by hand with nominal intervention from you only when absolutely necessary with intelligent defaults so that 90% of the time you are just hitting "Enter".
 
+
+## Merge
 
 Let's say you want to merge two branches. Normally you would have to do all of the following (if being safe):
 
@@ -108,4 +119,4 @@ Yikes! Again, GitScripts to the rescue! Here's what you would do in GitScripts:
 
 :D
 
-GitScripts does not replace Git. It's kind of a wrapper for Git, or more, an extension to Git's built in shell scripts. If you install GitScripts, you can still access all of your git commands exactly the same way you used to. However, now you have an extra library of commands at your disposal.
+
