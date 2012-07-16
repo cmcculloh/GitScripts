@@ -1,6 +1,7 @@
 A series of shell scripts that simplify and streamline the use of Git. Works across all major OSes (Win/Mac/Linux).
 
 GitScripts gains you:
+
 1. Indicator flags on your shell that let you know if you are ahead of/behind the remote etc
 2. Simplified commands and automation for common, often complex, tasks (commit, status, merge, checkout, branch creation, etc)
 3. Ability to enforce branch protection (ie. Never allow merge from QA to Dev, or Dev to master, etc)
