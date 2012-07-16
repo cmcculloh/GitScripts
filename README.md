@@ -17,7 +17,7 @@ So, if your local GitScripts repo is in ~/Dev/GitScripts, the line would look li
 Restart your terminal, BAM! your DONE!
 
 
-## Configuration Notes
+### Configuration Notes
 
 GitScripts comes with some intelligent defaults, so, this is for those that are just not satisfied with defaults.
 
@@ -29,7 +29,7 @@ This file is ignored by default, so, mod away!
 
 
 
-## GSMAN
+### GSMAN
 
 GitScripts comes with a nifty little used documentation center called "gsman".
 
