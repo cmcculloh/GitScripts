@@ -26,7 +26,7 @@
 #	notes@
 #
 #	@examples
-#	1) merge                            # Runs your pre-configured merge tool (because McCulloh can't remember how to make it run otherwise)
+#	1) merge                            # Runs your pre-configured merge tool
 #	2) merge master                     # Merges master into current branch
 #	3) merge my-branch into master      # Merges my-branch into master (unless master is a protected branch)
 #	4) merge my-branch another-branch   # This will fail. The second "action" parameter (into) must be included.
@@ -53,7 +53,7 @@ $loadfuncs
 [ $# -eq 3 ] && threeArg=true
 [ $# -eq 4 ] && [ "$4" = "--admin" ] && [ $ADMIN ] && threeArg=true && isAdmin=true
 
-# McCulloh just wants to run the merge tool
+# just run the merge tool
 if [ $runmergetool ]; then
 	echo "Run merge tool? (y) n"
 	read yn
@@ -109,25 +109,10 @@ echo ${H1}${H1HL}
 echo "  Beginning merge from ${H1B}\`${mergeBranch}\`${H1} into ${H1B}\`${baseBranch}\`${H1}  "
 echo ${H1HL}${X}
 echo
-echo
-echo "This tells your local git about all changes on the remote..."
-echo ${O}${H2HL}
-echo "$ git fetch --all --prune"
-git fetch --all --prune
-echo ${O}${H2HL}${X}
-echo
-echo
-echo "This checks out the ${B}\`${mergeBranch}\`${X} branch..."
-echo ${O}${H2HL}
-echo "$ checkout ${mergeBranch}"
-"${gitscripts_path}"checkout.sh "$mergeBranch"
-echo ${X}
-echo
-echo "This checks out the ${B}\`${baseBranch}\`${X} branch..."
-echo ${O}${H2HL}
-echo "$ checkout $baseBranch"
-"${gitscripts_path}"checkout.sh "$baseBranch"
-echo ${X}
+checkout $mergeBranch
+
+checkout $baseBranch
+
 echo
 echo "This merges from ${B}\`${mergeBranch}\`${X} into ${B}\`${baseBranch}\`${X}..."
 echo ${O}${H2HL}
