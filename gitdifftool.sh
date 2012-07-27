@@ -47,6 +47,7 @@ echo "$ git diff --name-status $hashFrom..$hashTo"
 echo
 echo "git diff --name-status ${hashFrom}..${hashTo}"
 
+
 if [ $SYSTEM_TYPE == "windows" ]; then
 	git diff --name-status $hashFrom..$hashTo
 else 
@@ -59,13 +60,13 @@ fi
 
 
 echo
-echo "git diff -w $hashFrom..$hashTo"
+echo "git difftool -w $hashFrom..$hashTo"
 echo ${H2HL}${X}
 echo
 echo ${Q}"Do diff? y (n)"${X}
 read yn
 if [ "$yn" = "y" ] || [ "$yn" = "Y" ]; then
-	git diff -w $hashFrom..$hashTo
+	git difftool -w $hashFrom..$hashTo
 fi
 
 exit
