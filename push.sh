@@ -67,7 +67,7 @@ if __is_branch_protected --push "$branch" && [ ! $isAdmin ]; then
 fi
 
 # a remote is required to push to
-if ! __set_remote; then
+if ! __choose_remote; then
 	echo ${E}"  Aborting...  "${X}
 	exit 1
 fi
