@@ -103,16 +103,22 @@ if [ ! $isAdmin ] && __is_branch_protected --merge-to "$baseBranch"; then
 	exit 1
 fi
 
+
 # do the merge
 echo
 echo ${H1}${H1HL}
 echo "  Beginning merge from ${H1B}\`${mergeBranch}\`${H1} into ${H1B}\`${baseBranch}\`${H1}  "
 echo ${H1HL}${X}
 echo
-checkout $mergeBranch
+echo "Make sure each branch is up to date? y (n)"
+read update
+if [ "$update" = "y" ] || [ "$update" = "Y" ]; then
+	checkout $mergeBranch
 
-checkout $baseBranch
-
+	checkout $baseBranch
+else
+	git checkout $baseBranch
+fi
 echo
 echo "This merges from ${B}\`${mergeBranch}\`${X} into ${B}\`${baseBranch}\`${X}..."
 echo ${O}${H2HL}
