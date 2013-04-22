@@ -26,12 +26,24 @@ echo ${X}
 
 # parse arguments
 numArgs=$#
-if (( numArgs > 0 && numArgs < 3 )); then
+
+forceDelete=false
+deletePhrase="Deleting branch"
+
+if (( numArgs > 0 && numArgs < 4 )); then
 	until [ -z "$1" ]; do
 		deleteBranch="$1"
+
+		# echo "Param is currently: ${1}"
+		[ "$1" = "--force" -o "$1" = "-f" -o "$1" = "-F" ] && forceDelete=true
+
 		shift
 	done
 fi
+
+
+# echo "We would force delete: ${forceDelete}"
+
 
 # make sure branch name was included
 if [ -z "$deleteBranch" ]; then
@@ -42,18 +54,24 @@ else
 	__set_remote && __branch_exists_remote "$deleteBranch" && isRemote=true
 fi
 
-# give the user a chance to cancel
-echo ${Q}"Are you sure you want to ${A}delete${Q} branch ${B}\`${deleteBranch}\`${Q}? y (n)"${X}
-read yn
-echo
-if [ "$yn" != "y" ] && [ "$yn" != "Y" ]; then
-	echo "You got it. Aborting ${A}delete${X}..."
-	exit 1
+if [ $forceDelete == false ]; then
+	# give the user a chance to cancel
+	echo ${Q}"Are you sure you want to ${A}delete${Q} branch ${B}\`${deleteBranch}\`${Q}? y (n)"${X}
+	read yn
+	echo
+	if [ "$yn" != "y" ] && [ "$yn" != "Y" ]; then
+		echo "You got it. Aborting ${A}delete${X}..."
+		exit 1
+	fi
+fi
+
+if [ $forceDelete == true ]; then
+	deletePhrase="Force deleting branch"
 fi
 
 echo
 echo ${H1}${H1HL}
-echo "  Deleting branch: ${H1B}\`${deleteBranch}\`${H1}  "
+echo "  ${deletePhrase}: ${H1B}\`${deleteBranch}\`${H1}  "
 echo ${H1HL}${X}
 echo
 echo
@@ -123,21 +141,44 @@ if [ $isLocal ]; then
 
 	#Determine if your local copy is behind remote
 	if [ $isRemote ] && git branch -v --abbrev=7 | egrep -q "$deleteBranch.*\[behind\ [0-9]*\]"; then
-		echo ${W}"Your local copy of this \`${deleteBranch}\` is behind the remote."
-		echo "Continue anyways? (y) n"${X}
-		read yn
-		if [ -n "$yn" ] && { [ "$yn" != "y" ] || [ "$yn" != "Y" ]; }; then
-			echo
-			echo "Aborting delete of ${B}\`${deleteBranch}\`"${X}
-			exit 1
+		if [ $forceDelete == false ]; then
+			echo ${W}"Your local copy of this \`${deleteBranch}\` is behind the remote."
+			echo "Continue anyways? (y) n"${X}
+			read yn
+			if [ -n "$yn" ] && { [ "$yn" != "y" ] || [ "$yn" != "Y" ]; }; then
+				echo
+				echo "Aborting delete of ${B}\`${deleteBranch}\`"${X}
+				exit 1
+			fi
+		else
+			if ! git branch -D $deleteBranch; then
+				echo ${E}"  Force delete failed! Exiting... "${X}
+				exit 1
+			else
+				echo ${COL_GREEN}"Force delete succeeded!"${X}
+				echo
+				echo "Exiting..."
+				exit 0
+			fi
 		fi
 	fi
 
 	if ! git branch -d "$deleteBranch" > /dev/null; then
-		echo ${W}"Delete failed! Would you like to force-delete the branch?  y (n)"${X}
-		read yn
-		echo
-		if [ "$yn" = "y" ] || [ "$yn" = "Y" ]; then
+
+		if [ $forceDelete == false]; then
+			echo ${W}"Delete failed! Would you like to force-delete the branch?  y (n)"${X}
+			read yn
+			echo
+			if [ "$yn" = "y" ] || [ "$yn" = "Y" ]; then
+				if ! git branch -D $deleteBranch; then
+					echo ${E}"  Force delete failed! Exiting... "${X}
+					exit 1
+				else
+					echo ${COL_GREEN}"Force delete succeeded!"${X}
+					echo
+				fi
+			fi
+		else
 			if ! git branch -D $deleteBranch; then
 				echo ${E}"  Force delete failed! Exiting... "${X}
 				exit 1
@@ -146,6 +187,7 @@ if [ $isLocal ]; then
 				echo
 			fi
 		fi
+
 	else
 		echo ${COL_GREEN}"Delete succeeded!"${X}
 		echo

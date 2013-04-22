@@ -18,6 +18,7 @@
 #	functions/1000.parse_git_branch.sh
 #	functions/1000.set_remote.sh
 #	functions/5000.merge_master.sh
+#	functions/5000.merge_development.sh
 #	push.sh
 #	dependencies@
 #

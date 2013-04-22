@@ -32,8 +32,8 @@ function __merge_master {
 		echo
 		echo "${A}Merging${X} ${B}\`${_remote}/master\`${X} into ${B}\`${branch}\`${X} ..."
 		echo ${O}${H2HL}
-		echo "$ git merge ${_remote}/master"
-		git merge "${_remote}/master"
+		echo "$ git merge --ff ${_remote}/master"
+		git merge --ff "${_remote}/master"
 		echo ${O}
 		echo
 	else

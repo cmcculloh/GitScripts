@@ -27,6 +27,9 @@ export USE_GS_PROMPT=true
 export IMPORT_BASHMARKS=true
 export IMPORT_GIT_ALIASES=true
 
+# Native Git variables
+export GIT_MERGE_AUTOEDIT=""
+
 # other default booleans
 export showremotestate="n"
 export autopushnewbranch=false
@@ -62,7 +65,6 @@ export COL_MAGENTA=""
 export COL_CYAN=""
 export COL_WHITE=""
 export COL_NORM=""
-export GIT_MERGE_AUTOEDIT=""
 export STYLE_ACTION=""
 export STYLE_ERROR=""
 export STYLE_H1=""

@@ -109,8 +109,10 @@ fi
 echo
 echo "This merges from ${B}\`${mergeBranch}\`${X} into ${B}\`${baseBranch}\`${X}..."
 echo ${O}${H2HL}
-echo "$ git merge --no-ff ${mergeBranch}"
-git merge --no-ff $mergeBranch
+# echo "$ git merge --no-ff ${mergeBranch}"
+# git merge --no-ff $mergeBranch
+echo "$ git merge --ff ${mergeBranch}"
+git merge --ff $mergeBranch
 
 # check for merge conflicts
 if git status | grep -q "Unmerged paths"; then
