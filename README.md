@@ -5,7 +5,6 @@ GitScripts gains you:
 1. Indicator flags on your shell that let you know if you are ahead of/behind the remote etc
 1. Simplified commands and automation for common, often complex, tasks (commit, status, merge, checkout, branch creation, etc)
 1. Ability to enforce branch protection (ie. Never allow merge from QA to Dev, or Dev to master, etc)
-1. Ability to set users as "admin" (default is non-admin, this ties in with branch protection, you can make it so that only admin users can push to certain branches)
 1. A more colorful prompt
 
 GitScripts does not replace Git. It's kind of a wrapper for Git, or more, an extension to Git's built in shell scripts. If you install GitScripts, you can still access all of your git commands exactly the same way you used to. However, now you have an extra library of commands at your disposal.

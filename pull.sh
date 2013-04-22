@@ -23,7 +23,6 @@ $loadfuncs
 numArgs=$#
 if (( numArgs > 0 && numArgs < 3 )); then
 	until [ -z "$1" ]; do
-		[ "$1" = "--admin" ] && [ "$ADMIN" = "true" ] && isAdmin=true
 		{ [ "$1" = "-q" ] ||  [ "$1" = "--quiet" ]; } && isQuiet=true
 		! echo "$1" | egrep -q "^-" && branch="$1"
 		shift

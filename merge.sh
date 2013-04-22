@@ -49,9 +49,7 @@ $loadfuncs
 # check for minimum requirements
 [ $# -eq 0 ] && runmergetool=true
 [ $# -eq 1 ] && oneArg=true
-[ $# -eq 2 ] && [ "$2" = "--admin" ] && [ $ADMIN ] && oneArg=true && isAdmin=true
 [ $# -eq 3 ] && threeArg=true
-[ $# -eq 4 ] && [ "$4" = "--admin" ] && [ $ADMIN ] && threeArg=true && isAdmin=true
 
 # just run the merge tool
 if [ $runmergetool ]; then
@@ -91,17 +89,6 @@ fi
 current_branch=$(__parse_git_branch)
 mergeBranch=$1
 [ $oneArg ] && { baseBranch=$current_branch; } || { baseBranch=$3; }
-
-# check protected branches
-if [ ! $isAdmin ] && __is_branch_protected --merge-from "$mergeBranch"; then
-	echo "  ${W}WARNING:${X} Merging ${COL_YELLOW}from${COL_NORM} ${B}\`$1\`${X} not allowed. Aborting..."
-	exit 1
-fi
-
-if [ ! $isAdmin ] && __is_branch_protected --merge-to "$baseBranch"; then
-	echo "  ${W}WARNING:${X} Merging ${COL_YELLOW}into${COL_NORM} ${B}\`$3\`${X} not allowed. Aborting..."
-	exit 1
-fi
 
 
 # do the merge
@@ -157,11 +144,7 @@ echo
 echo
 
 # wrapping up...
-if [ $isAdmin ]; then
-	"${gitscripts_path}"push.sh --admin "$baseBranch"
-else
-	"${gitscripts_path}"push.sh "$baseBranch"
-fi
+"${gitscripts_path}"push.sh "$baseBranch"
 
 # user may wish to return to original branch
 if [ "$current_branch" != "$baseBranch" ]; then

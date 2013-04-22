@@ -28,8 +28,7 @@ echo ${X}
 numArgs=$#
 if (( numArgs > 0 && numArgs < 3 )); then
 	until [ -z "$1" ]; do
-		[ "$1" = "--admin" ] && [ "$ADMIN" = "true" ] && isAdmin=true
-		[ "$1" != "--admin" ] && deleteBranch="$1"
+		deleteBranch="$1"
 		shift
 	done
 fi
@@ -41,10 +40,6 @@ if [ -z "$deleteBranch" ]; then
 else
 	__branch_exists_local "$deleteBranch" && isLocal=true
 	__set_remote && __branch_exists_remote "$deleteBranch" && isRemote=true
-	[ ! $isLocal ] && [ ! $isAdmin ] && {
-		echo ${E}"  The branch \`${deleteBranch}\` does not exist locally! Aborting...  "${X}
-		exit 1
-	}
 fi
 
 # give the user a chance to cancel
@@ -150,52 +145,44 @@ if [ $isLocal ]; then
 				echo ${COL_GREEN}"Force delete succeeded!"${X}
 				echo
 			fi
-		elif [ ! $isAdmin ]; then
-			echo "Exiting..."
-			exit 0
 		fi
 	else
 		echo ${COL_GREEN}"Delete succeeded!"${X}
 		echo
 	fi
-
-else
-	[ ! $isAdmin ] && echo ${E}"  Branch does not exist locally. Skipping delete...  "${X}
 fi
 
-if [ $isAdmin ]; then
-	if [ $isRemote ]; then
-		echo
-		echo ${Q}"Delete ${B}\`${_remote}/${deleteBranch}\`${Q}? y (n)"${X}
-		read yn
-		echo
+if [ $isRemote ]; then
+	echo
+	echo ${Q}"Delete ${B}\`${_remote}/${deleteBranch}\`${Q}? y (n)"${X}
+	read yn
+	echo
 
-		if [ "$yn" = "y" ] || [ "$yn" = "Y" ]; then
+	if [ "$yn" = "y" ] || [ "$yn" = "Y" ]; then
 
-			if __is_branch_protected --all "$deleteBranch"; then
-				echo ${W}"WARNING: \`${deleteBranch}\` is a protected branch."
-				echo "Are you SURE you want to delete the remote copy? yes (n)${X}"${X}
-				read yn
-				if [ -z "$yn" ] || [ "$yn" != "yes" ]; then
-					echo "Aborting delete of remote branch..."
-					exit 1
-				fi
+		if __is_branch_protected --all "$deleteBranch"; then
+			echo ${W}"WARNING: \`${deleteBranch}\` is a protected branch."
+			echo "Are you SURE you want to delete the remote copy? yes (n)${X}"${X}
+			read yn
+			if [ -z "$yn" ] || [ "$yn" != "yes" ]; then
+				echo "Aborting delete of remote branch..."
+				exit 1
 			fi
-
-			echo
-			echo "Deleting ${B}\`${_remote}/${deleteBranch}\`${X} ..."
-			echo ${O}${H2HL}
-			echo "$ git push ${remote} :${deleteBranch}"
-			git push "$remote" :"$deleteBranch"
-			echo ${H2HL}${X}
-		else
-			echo "Delete aborted. Exiting..."
-			exit 1
 		fi
+
+		echo
+		echo "Deleting ${B}\`${_remote}/${deleteBranch}\`${X} ..."
+		echo ${O}${H2HL}
+		echo "$ git push ${remote} :${deleteBranch}"
+		git push "$remote" :"$deleteBranch"
+		echo ${H2HL}${X}
 	else
-		echo "Branch \`${deleteBranch}\` is not on a remote. Now exiting..."
+		echo "Delete aborted. Exiting..."
 		exit 1
 	fi
+else
+	echo "Branch \`${deleteBranch}\` is not on a remote. Now exiting..."
+	exit 1
 fi
 
 exit

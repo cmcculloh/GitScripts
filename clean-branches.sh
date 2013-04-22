@@ -33,7 +33,6 @@ $loadfuncs
 # parse args
 if [ $# -lt 3 ]; then
 	until [ -z "$1" ]; do
-		[ "$1" == "--admin" ] && [ $ADMIN ] && aFlag="--admin"
 		grep -q '^--base=' <<< "$1" && target="${1:7}"
 		shift
 	done
@@ -103,7 +102,7 @@ fi
 
 # let's get this party started...
 for (( i = 0; i < ${#branchNames[@]}; i++ )); do
-	"${gitscripts_path}"delete.sh $aFlag "${branchNames[$i]}"
+	"${gitscripts_path}"delete.sh "${branchNames[$i]}"
 done
 
 exit

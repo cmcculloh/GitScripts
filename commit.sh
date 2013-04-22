@@ -47,7 +47,6 @@ numArgs=$#
 # parse arguments
 if (( numArgs > 0 && numArgs < 4 )); then
 	until [ -z "$1" ]; do
-		[ "$1" == "--admin" ] && [ $ADMIN ] && isAdmin=true
 		{ [ "$1" == "-a" ] || [ "$1" == "-A" ]; } && flag=$1
 		! echo "$1" | egrep -q "^-" && msg="$1"
 		shift
@@ -172,11 +171,7 @@ echo ${O}${H2HL}${X}
 echo
 
 # wrap up...
-if [ $isAdmin ]; then
-	"${gitscripts_path}"push.sh --admin "$startingBranch"
-else
-	"${gitscripts_path}"push.sh "$startingBranch"
-fi
+"${gitscripts_path}"push.sh "$startingBranch"
 
 __clear
 
