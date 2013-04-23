@@ -165,7 +165,7 @@ if [ $isLocal ]; then
 
 	if ! git branch -d "$deleteBranch" > /dev/null; then
 
-		if [ $forceDelete == false]; then
+		if [ $forceDelete == false ]; then
 			echo ${W}"Delete failed! Would you like to force-delete the branch?  y (n)"${X}
 			read yn
 			echo
