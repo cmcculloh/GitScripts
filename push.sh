@@ -114,7 +114,7 @@ if [ -z "$hasRemote" ]; then
 	echo ${Q}"Setup remote tracking of ${COL_GREEN}${_remote}${Q} for ${B}\`${branch}\`${Q}? (y) n"
 	read yn
 	if [ -z "$yn" ] || [ "$yn" = "y" ]; then
-		git branch --set-upstream-to=$_remote $branch
+		git branch --set-upstream-to=$_remote/$branch $branch
 	fi
 fi
 
