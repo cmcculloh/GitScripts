@@ -12,7 +12,7 @@
 [0;20;39m[0;20;39m	is more intuitive (than "git merge") because it uses "into" to clearly distinguish merge direction.
 [0;20;39m[0;20;39m
 [0;20;39m[0;20;39m	There are some helpful safeties included as well. Referenced branches
-[0;20;39m[0;20;39m	are checked for existence before the script gets too far along, protected branches are checked,
+[0;20;39m[0;20;39m	are checked for existence before the script gets too far along,
 [0;20;39m[0;20;39m	and merge conflicts are determined after the merge. If merge conflicts should arise, the
 [0;20;39m[0;20;39m	user is prompted to resolve them using the native git mergetool.
 [0;20;39m[0;20;39m
@@ -24,9 +24,9 @@
 [0;20;39m[0;20;39m
 [0;20;39m[0;20;39m
 [0;20;39m[0;20;39m[36m 	@examples [0;20;39m
-[0;20;39m[0;20;39m	1) merge                            # Runs your pre-configured merge tool (because McCulloh can't remember how to make it run otherwise)
+[0;20;39m[0;20;39m	1) merge                            # Runs your pre-configured merge tool
 [0;20;39m[0;20;39m	2) merge master                     # Merges master into current branch
-[0;20;39m[0;20;39m	3) merge my-branch into master      # Merges my-branch into master (unless master is a protected branch)
+[0;20;39m[0;20;39m	3) merge my-branch into master      # Merges my-branch into master
 [0;20;39m[0;20;39m	4) merge my-branch another-branch   # This will fail. The second "action" parameter (into) must be included.
 [0;20;39m[0;20;39m
 [0;20;39m[0;20;39m

@@ -28,7 +28,6 @@
 [0;20;39m[0;20;39m	clear-screen.sh
 [0;20;39m[0;20;39m	functions/0100.bad_usage.sh
 [0;20;39m[0;20;39m	functions/5000.branch_exists.sh
-[0;20;39m[0;20;39m	functions/5000.is_branch_protected.sh
 [0;20;39m[0;20;39m	functions/5000.parse_git_branch.sh
 [0;20;39m[0;20;39m	functions/5000.parse_git_status.sh
 [0;20;39m[0;20;39m	functions/5000.set_remote.sh

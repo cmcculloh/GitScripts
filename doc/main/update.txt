@@ -16,6 +16,7 @@
 [0;20;39m[0;20;39m	functions/1000.parse_git_branch.sh
 [0;20;39m[0;20;39m	functions/1000.set_remote.sh
 [0;20;39m[0;20;39m	functions/5000.merge_master.sh
+[0;20;39m[0;20;39m	functions/5000.merge_development.sh
 [0;20;39m[0;20;39m	push.sh
 [0;20;39m[0;20;39m
 [0;20;39m[0;20;39m
