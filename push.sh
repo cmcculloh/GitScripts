@@ -37,7 +37,6 @@ echo ${X}
 numArgs=$#
 if (( numArgs > 0 && numArgs < 3 )); then
 	until [ -z "$1" ]; do
-		[ "$1" = "--admin" ] && [ "$ADMIN" = "true" ] && isAdmin=true
 		{ [ "$1" = "-q" ] ||  [ "$1" = "--quiet" ]; } && isQuiet=true
 		! echo "$1" | egrep -q "^-" && branch="$1"
 		shift
@@ -60,14 +59,9 @@ else
 	}
 fi
 
-# check for protected branches
-if __is_branch_protected --push "$branch" && [ ! $isAdmin ]; then
-	[ ! $isQuiet ] && echo "  ${W}WARNING:${X} Pushing to ${B}\`${branch}\`${X} is not allowed. Aborting..."
-	exit 1
-fi
 
 # a remote is required to push to
-if ! __set_remote; then
+if ! __choose_remote; then
 	echo ${E}"  Aborting...  "${X}
 	exit 1
 fi
@@ -114,7 +108,7 @@ if [ -z "$hasRemote" ]; then
 	echo ${Q}"Setup remote tracking of ${COL_GREEN}${_remote}${Q} for ${B}\`${branch}\`${Q}? (y) n"
 	read yn
 	if [ -z "$yn" ] || [ "$yn" = "y" ]; then
-		git branch --set-upstream $branch $_remote/$branch
+		git branch --set-upstream-to=$_remote $branch
 	fi
 fi
 
