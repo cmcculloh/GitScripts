@@ -202,16 +202,6 @@ if [ $isRemote ]; then
 
 	if [ "$yn" = "y" ] || [ "$yn" = "Y" ]; then
 
-		if __is_branch_protected --all "$deleteBranch"; then
-			echo ${W}"WARNING: \`${deleteBranch}\` is a protected branch."
-			echo "Are you SURE you want to delete the remote copy? yes (n)${X}"${X}
-			read yn
-			if [ -z "$yn" ] || [ "$yn" != "yes" ]; then
-				echo "Aborting delete of remote branch..."
-				exit 1
-			fi
-		fi
-
 		echo
 		echo "Deleting ${B}\`${_remote}/${deleteBranch}\`${X} ..."
 		echo ${O}${H2HL}

@@ -14,7 +14,7 @@
 #	is more intuitive (than "git merge") because it uses "into" to clearly distinguish merge direction.
 #
 #	There are some helpful safeties included as well. Referenced branches
-#	are checked for existence before the script gets too far along, protected branches are checked,
+#	are checked for existence before the script gets too far along,
 #	and merge conflicts are determined after the merge. If merge conflicts should arise, the
 #	user is prompted to resolve them using the native git mergetool.
 #	description@
@@ -28,7 +28,7 @@
 #	@examples
 #	1) merge                            # Runs your pre-configured merge tool
 #	2) merge master                     # Merges master into current branch
-#	3) merge my-branch into master      # Merges my-branch into master (unless master is a protected branch)
+#	3) merge my-branch into master      # Merges my-branch into master
 #	4) merge my-branch another-branch   # This will fail. The second "action" parameter (into) must be included.
 #	examples@
 #

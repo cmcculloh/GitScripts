@@ -32,7 +32,10 @@
 ## */
 
 function __set_remote {
-	remote=$(git config branch.$(__parse_git_branch).remote 2> /dev/null)
+	#This actually doesn't work properly if you have multiple remotes. If you are on a branch that targets one remote
+	#and want to checkout a branch that only exists on the other remote, this will grab the remote from the branch you
+	#are on, target it for the checkout, and then the checkout will fail because it is pointing at the wrong remote
+	#remote=$(git config branch.$(__parse_git_branch).remote 2> /dev/null)
 
 	if [ ! $remote ]; then
 		remotes=$(git remote)

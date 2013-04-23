@@ -28,7 +28,6 @@ __branch_exists_local:doc/function/__branch_exists_local.txt
 __branch_exists_remote:doc/function/__branch_exists_remote.txt
 __branch_merge_set:doc/function/__branch_merge_set.txt
 __get_branch:doc/function/__get_branch.txt
-__is_branch_protected:doc/function/__is_branch_protected.txt
 __merge_master:doc/function/__merge_master.txt
 __parse_git_branch_state:doc/function/__parse_git_branch_state.txt
 __parse_git_status:doc/function/__parse_git_status.txt

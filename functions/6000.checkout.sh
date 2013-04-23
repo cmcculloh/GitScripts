@@ -80,63 +80,6 @@ checkout(){
 	echo
 	echo
 
-	# make sure branch exists
-	if __branch_exists "$branch"; then
-
-		# check that the branch is not a protected branch (meaning, one you should always
-		# delete to protect against forced updates) by looking for the optional nomerge*
-		# paths set by the user.
-		if __is_branch_protected --merge "$branch" && [ $onlocal ]; then
-			echo ${Q}"Would you like to ${A}delete${Q} your local copy of ${B}\`${branch}\`${Q} and ${A}pull${Q}"
-			echo "down the newest version to protect against forced updates? (y) n"${X}
-			read deletelocal
-			if [ -z "$deletelocal" ] || [ "$decision" == "y" ] || [ "$decision" == "Y" ]; then
-				trydelete=`git branch -d "$branch" 2>&1 | grep "error"`
-				if [ -n "$trydelete" ]; then
-					echo ${E}"Delete failed!"
-					echo "$trydelete"${X}
-					echo
-					echo ${Q}"Force ${A}delete${Q} ${B}\`${branch}\`${Q}? y (n)"${X}
-					read forcedelete
-					if [ "$forcedelete" = "y" ] || [ "$forcedelete" = "Y" ]; then
-						trydelete=`git branch -D "$branch" 2>&1 | grep "error"`
-						if [ -n "$trydelete" ]; then
-							echo
-							echo ${E}"Force delete failed!"
-							echo "$trydelete"${X}
-							echo
-							echo ${Q}"Continue anyways? y (n)"${X}
-							read continueanyways
-							if [ "$continueanyways" != "y" ] && [ "$continueanyways" != "Y" ]; then
-								exit
-							fi
-						else
-							echo
-							echo ${COL_GREEN}"Force delete succeeded!"${X}
-							echo
-						fi
-					else
-						echo
-						echo ${Q}"Continue checking out ${B}\`${branch}\`${Q}? y (n)"${X}
-						read continueanyways
-						if [ "$continueanyways" != "y" ] && [ "$continueanyways" != "Y" ]; then
-							exit
-						fi
-					fi
-				else
-					echo
-					echo ${COL_GREEN}"Delete succeeded!"${X}
-					echo
-				fi
-			else
-				echo
-				echo "Keeping your local copy of ${B}\`${branch}\`${X} ..."
-				echo
-			fi
-		fi
-		echo
-	fi
-
 	# check for "dirty" working directory and provide options if that is the case.
 	if ! __parse_git_status clean; then
 		echo
@@ -275,7 +218,8 @@ checkout(){
 		git checkout "$branch"
 		echo ${O}${H2HL}${X}
 	else
-		${gitscripts_path}new.sh "$branch" from "${_remote}/$branch" --no-questions
+		echo "Creating new local branch..."
+		${gitscripts_path}new.sh "$branch" from "${_remote}/$branch"
 	fi
 
 

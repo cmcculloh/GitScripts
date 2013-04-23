@@ -55,6 +55,8 @@ echo
 echo "Configuring remotes, if any..."
 __set_remote
 
+echo "Remote set to ${_remote}"
+
 #no reason to continue if user is trying to create a branch that already exists
 if __branch_exists_local "$1"; then
 	echo
