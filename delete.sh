@@ -32,23 +32,23 @@ deletePhrase="Deleting branch"
 
 if (( numArgs > 0 && numArgs < 4 )); then
 	until [ -z "$1" ]; do
-		
+
 		# echo "Param is currently: ${1}"
-		
+
 		[ "$1" = "--admin" -o "$1" = "-a" -o "$1" = "-A" ] && [ "$ADMIN" = "true" ] && isAdmin=true
 		[ "$1" = "--force" -o "$1" = "-f" -o "$1" = "-F" ] && [ "$ADMIN" = "true" ] && forceDelete=true
-		
+
 		# catch multiple flags
 		[ "$1" = "-fa" -o "$1" = "-af" -o "$1" = "-AF" -o "$1" = "-FA" ] && [ "$ADMIN" = "true" ] && forceDelete=true && isAdmin=true
-		
+
 		[ "$1" != "--admin" -a "$1" != "-A"  -a "$1" != "-a" -a "$1" != "--force" -a "$1" != "-F" -a "$1" != "-f" -a "$1" != "-fa" -a "$1" != "-af" -a "$1" != "-AF" -a "$1" != "-FA" ] && [ "$ADMIN" = "true" ] && deleteBranch="$1"
-		
+
 		shift
 	done
 fi
 
 
-# echo "We would force delete: ${forceDelete}" 
+# echo "We would force delete: ${forceDelete}"
 
 
 # make sure branch name was included
@@ -160,7 +160,7 @@ if [ $isLocal ]; then
 				echo "Aborting delete of ${B}\`${deleteBranch}\`"${X}
 				exit 1
 			fi
-		else 
+		else
 			if ! git branch -D $deleteBranch; then
 				echo ${E}"  Force delete failed! Exiting... "${X}
 				exit 1
@@ -174,8 +174,8 @@ if [ $isLocal ]; then
 	fi
 
 	if ! git branch -d "$deleteBranch" > /dev/null; then
-		
-		if [ $forceDelete == false]; then
+
+		if [ $forceDelete == false ]; then
 			echo ${W}"Delete failed! Would you like to force-delete the branch?  y (n)"${X}
 			read yn
 			echo
@@ -200,7 +200,7 @@ if [ $isLocal ]; then
 				echo
 			fi
 		fi
-		
+
 	else
 		echo ${COL_GREEN}"Delete succeeded!"${X}
 		echo
