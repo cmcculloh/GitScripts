@@ -5,6 +5,7 @@ commit:doc/main/commit.txt
 contains:doc/main/contains.txt
 delete:doc/main/delete.txt
 gitdiff:doc/main/gitdiff.txt
+gitdiff:doc/main/gitdiff.txt
 gsman:doc/main/gsman.txt
 merge:doc/main/merge.txt
 new:doc/main/new.txt
@@ -29,6 +30,7 @@ __branch_exists_remote:doc/function/__branch_exists_remote.txt
 __branch_merge_set:doc/function/__branch_merge_set.txt
 __get_branch:doc/function/__get_branch.txt
 __is_branch_protected:doc/function/__is_branch_protected.txt
+__merge_development:doc/function/__merge_development.txt
 __merge_master:doc/function/__merge_master.txt
 __parse_git_branch_state:doc/function/__parse_git_branch_state.txt
 __parse_git_status:doc/function/__parse_git_status.txt
