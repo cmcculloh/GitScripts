@@ -60,12 +60,6 @@ else
 	}
 fi
 
-# check for protected branches
-if __is_branch_protected --push "$branch" && [ ! $isAdmin ]; then
-	[ ! $isQuiet ] && echo "  ${W}WARNING:${X} Pushing to ${B}\`${branch}\`${X} is not allowed. Aborting..."
-	exit 1
-fi
-
 # a remote is required to push to
 if ! __set_remote; then
 	echo ${E}"  Aborting...  "${X}
