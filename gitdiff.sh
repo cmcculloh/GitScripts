@@ -43,18 +43,22 @@ hashFrom=$(git rev-parse --short $branch)
 hashTo=$(git rev-parse --short HEAD)
 
 echo ${O}${H2HL}
-echo "$ git diff --name-status $hashFrom..$hashTo"
-echo
-echo "git diff --name-status ${hashFrom}..${hashTo}"
+echo $ git --no-pager log --oneline $hashFrom..$hashTo
+git --no-pager log --oneline $hashFrom..$hashTo
 
-if [ $SYSTEM_TYPE == "windows" ]; then
+echo
+echo
+echo "$ git diff --name-status $hashFrom..$hashTo"
+
+if [ "$SYSTEM_TYPE" == "windows" ]; then
 	git diff --name-status $hashFrom..$hashTo
-else 
+else
 	while read STATUS ADDR
 	do
 	    echo "  # $ADDR  ($STATUS)"
 	done  < <(git diff --name-status ${hashFrom}..${hashTo})
 fi
+
 
 
 
