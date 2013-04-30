@@ -61,11 +61,11 @@ function __in_array {
 	local needle="$1"
 	local i=0
 	declare -a arr
-	shift
+	shift 1
 	until [ -z "$1" ]; do
 		arr[$i]="$1"
 		((i++))
-		shift
+		shift 1
 	done
 
 	# reset the exported variable before use

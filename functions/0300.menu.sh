@@ -108,17 +108,17 @@ __menu() {
 		if [ $k ]; then
 			until [ "$1" = "-k" ]; do
 				items[${#items[@]}]="$1"
-				shift
+				shift 1
 			done
-			shift
+			shift 1
 			until [ -z "$1" ]; do
 				extraItems[${#extraItems[@]}]="$1"
-				shift
+				shift 1
 			done
 		else
 			until [ -z "$1" ]; do
 				items[${#items[@]}]="$1"
-				shift
+				shift 1
 			done
 		fi
 	fi

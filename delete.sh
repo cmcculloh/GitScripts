@@ -37,7 +37,7 @@ if (( numArgs > 0 && numArgs < 4 )); then
 		# echo "Param is currently: ${1}"
 		[ "$1" = "--force" -o "$1" = "-f" -o "$1" = "-F" ] && forceDelete=true
 
-		shift
+		shift 1
 	done
 fi
 

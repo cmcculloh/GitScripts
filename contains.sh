@@ -35,7 +35,7 @@ echo ${X}
 until [ -z "$1" ]; do
 	[ "$1" = "--not" ] && isNot=true && frag=" do NOT"
 	[ "$1" != "--not" ] && branch="$1"
-	shift
+	shift 1
 done
 
 if [ -z "$branch" ]; then

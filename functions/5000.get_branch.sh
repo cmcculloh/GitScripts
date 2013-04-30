@@ -66,7 +66,7 @@ function __get_branch {
 			{ [ "$1" = "-r" ] || [ "$1" = "--remote" ]; } && getRemote=true
 			{ [ "$1" = "-q" ] || [ "$1" = "--quiet" ]; } && isQuiet=true
 			! echo "$1" | egrep -q "^-" && query="$1"
-			shift
+			shift 1
 		done
 
 		if [ $getLocal ] && [ ! $getRemote ]; then

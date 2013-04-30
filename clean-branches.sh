@@ -34,7 +34,7 @@ $loadfuncs
 if [ $# -lt 3 ]; then
 	until [ -z "$1" ]; do
 		grep -q '^--base=' <<< "$1" && target="${1:7}"
-		shift
+		shift 1
 	done
 else
 	__bad_usage clean-branches "Invalid number of parameters."

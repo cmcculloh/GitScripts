@@ -25,7 +25,7 @@ if (( numArgs > 0 && numArgs < 3 )); then
 	until [ -z "$1" ]; do
 		{ [ "$1" = "-q" ] ||  [ "$1" = "--quiet" ]; } && isQuiet=true
 		! echo "$1" | egrep -q "^-" && branch="$1"
-		shift
+		shift 1
 	done
 fi
 

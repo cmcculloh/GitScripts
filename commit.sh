@@ -48,7 +48,7 @@ if (( numArgs > 0 && numArgs < 4 )); then
 	until [ -z "$1" ]; do
 		{ [ "$1" == "-a" ] || [ "$1" == "-A" ]; } && flag=$1
 		! echo "$1" | egrep -q "^-" && msg="$1"
-		shift
+		shift 1
 	done
 else
 	__bad_usage commit "Invalid number of parameters."

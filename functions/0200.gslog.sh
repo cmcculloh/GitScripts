@@ -26,7 +26,7 @@ function __gslog {
 		echo >> $gitscripts_log
 		until [ -z "$1" ]; do
 			echo "$1" >> $gitscripts_log
-			shift
+			shift 1
 		done
 		echo >> $gitscripts_log
 		echo >> $gitscripts_log
