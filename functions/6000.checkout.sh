@@ -69,16 +69,12 @@ checkout(){
 	fi
 
 	if $isQuickCheckout ; then
-		echo "is quick checkout $quickCheckoutFlag"
-	else
-		echo "is NOT quick checkout $quickCheckoutFlag"
+		echo ${W}"Doing a quick checkout does not fetch, pull or merge in remote or master"${X}
 	fi
 
 	# set the branch that the script will be using
 	patt="[^/]*\/"
 	branch=${_branch_selection/$patt/}
-
-	echo "$branch accertained from $_branch_selection"
 
 	# If the user made it this far, they have passed the branch name as the first parameter to
 	# the script. Additional processing occurs. Begin by establishing where the branch exists.
