@@ -248,14 +248,10 @@ elif [ $checkoutremote ]; then
 else
 	echo
 	echo
-	echo "You are about to ${A}checkout${X} branch ${B}\`${startingBranch}\`${X} in order to create a new"
-	echo "branch named ${B}\`$1\`${X}. Do not do this unless you truly know what you are doing, and why!"
-	echo "The only reason to do this is if your new branch relies on branch ${B}\`${startingBranch}\`${X}."
-	echo "Please type '${I}I understand${X}' (${W}case sensitive!${X}) and hit enter to continue. Any other input"
-	echo "will abort this process:"
-	read iunderstand
+	echo "Create ${B}\`$1\`${X} from ${B}\`${startingBranch}\`${X}? (y) n"
+	read branchNonMaster
 
-	if [ "$iunderstand" == "I understand" ]; then
+	if [ -z "$branchNonMaster" ] || [ "$branchNonMaster" = "y" ] || [ "$branchNonMaster" = "Y" ]; then
 		echo
 		echo
 		echo "This branches ${B}\`${startingBranch}\`${X} to create a new branch named ${B}\`$1\`${X}"
@@ -265,7 +261,7 @@ else
 		echo ${O}${H2HL}${X}
 	else
 		echo
-		echo 'You have chosen...wisely. Exiting script...'
+		echo 'Aborting'
 		exit 0
 	fi
 fi
