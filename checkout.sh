@@ -30,6 +30,6 @@
 ## */
 $loadfuncs
 
-checkout $1
+checkout "$@"
 
 exit

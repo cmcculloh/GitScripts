@@ -20,6 +20,10 @@
 #	2) checkout my-big-project-changes
 #	   # checks out my-big-project-changes and will attempt to merge master into it
 #	   # or rebase it onto master.
+#	3) checkout some-branch -f
+#	   # Quickly checks out your branch without attempting to update it with latest
+#	   # from master or remote. Mostly useful if you are jumping back and forth
+#	   # between a bunch of different branches quickly and are tired of answer questions
 #	examples@
 #
 #	@dependencies
@@ -36,27 +40,45 @@
 checkout(){
 	echo ${X}
 
+	isQuickCheckout=false
+	quickCheckoutFlag=""
 
-	# If no branch name is provided as the first parameter, a list of branches from the
+	while (( "$#" )); do
+		if [ "$1" = "--force" ] || [ "$1" = "-f" ] || [ "$1" = "-F" ] ; then
+			isQuickCheckout=true;
+			quickCheckoutFlag="$1"
+		elif [ -n "$1" ]; then
+			_branch_selection="$1"
+		fi
+
+		shift 1
+	done
+
+	# If no branch name is provided, a list of branches from the
 	# user's local repository are shown, giving them a choice of which to checkout. Users may
 	# also view remote branches if desired.
-	if [ -z "$1" ]; then
-		echo ${W}"WARNING: Checkout requires a branch name                                            "${X}
-		echo
-
+	if [ -z "$_branch_selection" ]; then
 		if ! __get_branch -l; then
 			echo
-			echo ${E}"  No branch chosen. Aborting...  "${X}
+			echo ${E}"  Checkout requires a branch name. No branch chosen or provided; Aborting...  "${X}
 			exit 1
 		else
-			"${gitscripts_path}"checkout.sh "$_branch_selection"
+			"${gitscripts_path}"checkout.sh "$_branch_selection" "$quickCheckoutFlag"
 			exit
 		fi
 	fi
 
+	if $isQuickCheckout ; then
+		echo "is quick checkout $quickCheckoutFlag"
+	else
+		echo "is NOT quick checkout $quickCheckoutFlag"
+	fi
+
 	# set the branch that the script will be using
 	patt="[^/]*\/"
-	branch=${1/$patt/}
+	branch=${_branch_selection/$patt/}
+
+	echo "$branch accertained from $_branch_selection"
 
 	# If the user made it this far, they have passed the branch name as the first parameter to
 	# the script. Additional processing occurs. Begin by establishing where the branch exists.
@@ -81,7 +103,7 @@ checkout(){
 	echo
 
 	# check for "dirty" working directory and provide options if that is the case.
-	if ! __parse_git_status clean; then
+	if ! $isQuickCheckout && ! __parse_git_status clean ; then
 		echo
 		echo ${O}${H2HL}
 		echo "$ git status"
@@ -184,47 +206,57 @@ checkout(){
 			echo ${E}"  Unable to determine branch to checkout. Aborting...  "${X}
 			exit 1
 		fi
-
-	else
+	elif ! $isQuickCheckout ; then
 		echo "Working directory is ${COL_GREEN}clean${COL_NORM}."
 		echo
 	fi
 	# END - uncommitted changes/untracked files
 
 
-	# Configure the remote if one or more exists
-	echo "Configuring remote(s), if any..."
-	__set_remote
-	echo
-
-	# Get up-to-date info from the remote, if any
-	if [ $_remote ]; then
-		echo
-		echo "This tells your local git about all changes on ${COL_GREEN}${_remote}${COL_NORM}..."
-		echo ${O}${H2HL}
-		echo "$ git fetch --all --prune"
-		git fetch --all --prune
-		echo ${O}${H2HL}${X}
-		echo
-		echo
-	fi
-
-
 	# Checkout the chosen branch if possible.
 	echo "This checks out the ${B}\`${branch}\`${X} branch."
 	echo ${O}${H2HL}${X}
-	if __branch_exists_local $branch; then
+	if $onlocal; then
 		echo ${O}"$ git checkout $branch"
 		git checkout "$branch"
 		echo ${O}${H2HL}${X}
 	else
 		echo "Creating new local branch..."
+
+		if [ ! $_remote ]; then
+			# Configure the remote if one or more exists
+			echo "Configuring remote(s), if any..."
+			__set_remote
+			echo
+		else
+			echo "remote $_remote"
+		fi
+
+		# Get up-to-date info from the remote, if any
+		if [ $_remote ]; then
+			echo
+			echo "This tells your local git about all changes on ${COL_GREEN}${_remote}${COL_NORM}..."
+			echo ${O}${H2HL}
+			echo "$ git fetch --all --prune"
+			git fetch --all --prune
+			echo ${O}${H2HL}${X}
+			echo
+			echo
+		fi
+
 		${gitscripts_path}new.sh "$branch" from "${_remote}/$branch"
 	fi
 
+	#only configure remote if it isn't already set
+	if ! $isQuickCheckout && [ ! $_remote ] ; then
+		# Configure the remote if one or more exists
+		echo "Configuring remote(s), if any..."
+		__set_remote
+		echo
+	fi
 
 	# Get updated changes from the remote (there should rarely be any for personal branches)
-	if [ $onremote ]; then
+	if ! $isQuickCheckout && $onremote ; then
 		echo
 		echo
 		echo "Get updated branch changes from ${COL_GREEN}${_remote}${COL_NORM}, if any."
@@ -237,7 +269,7 @@ checkout(){
 	# MERGE master into branch to keep it up to date
 	echo
 	echo
-	if [ "$branch" != "master" ]; then
+	if ! $isQuickCheckout && [ "$branch" != "master" ]; then
 		if [ $onremote ]; then
 			__merge_master
 
