@@ -20,7 +20,7 @@ item=${_menu_sel_value/M--/}
 item=${item/-M-/}
 item=${item/D--/}
 item=${item/-D-/}
-item=${item/??-/}
+#item=${item/??-/}
 
 echo
 echo
