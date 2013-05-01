@@ -16,7 +16,7 @@ then
 fi
 
 # clean the flags out of the file name
-shopt -s extglob
+shopt -s extglob #http://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
 item=${_menu_sel_value/@(M--|-M-|D--|-D-|\?\?-)/}
 
 echo
