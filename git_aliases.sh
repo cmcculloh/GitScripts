@@ -1,5 +1,4 @@
 # Git command-specific aliases, these do not call .sh files, but rather, are just shortcuts for basic git commands
-alias add="git add"
 alias addall="git add -A"
 alias fetch="git fetch --all --prune"
 alias move="git mv"
