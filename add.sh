@@ -16,11 +16,8 @@ then
 fi
 
 # clean the flags out of the file name
-item=${_menu_sel_value/M--/}
-item=${item/-M-/}
-item=${item/D--/}
-item=${item/-D-/}
-#item=${item/??-/}
+shopt -s extglob
+item=${_menu_sel_value/@(M--|-M-|D--|-D-|\?\?-)/}
 
 echo
 echo
