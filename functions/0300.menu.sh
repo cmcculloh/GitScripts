@@ -53,7 +53,7 @@
 #	# --------------------------------------------
 #	# this is a message:
 #
-#	echo "You selected: ${_menu_selection}"
+#	echo "You selected: ${_menu_sel_index}"
 #
 #	### ...OR we could add an extra option... ###
 #
