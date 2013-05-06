@@ -10,6 +10,7 @@
 #
 #	@options
 #	-q, --quiet	Suppress the "Pushing not allowed" warning message and silently exit.
+#	--tags ALSO pushes tags to remote
 #	options@
 #
 #	@examples
@@ -17,6 +18,8 @@
 #	   # pushes current branch
 #	2) push some-other-branch
 #	   # pushes some-other-branch...
+#	3) push --tags
+#	   # pushes current branch -AND- pushes any tags
 #	examples@
 #
 #	@dependencies
@@ -39,6 +42,7 @@ if (( numArgs > 0 && numArgs < 3 )); then
 	until [ -z "$1" ]; do
 		[ "$1" = "--admin" ] && [ "$ADMIN" = "true" ] && isAdmin=true
 		{ [ "$1" = "-q" ] ||  [ "$1" = "--quiet" ]; } && isQuiet=true
+		[ "$1" = "--tags" ] && pushTags=true
 		! echo "$1" | egrep -q "^-" && branch="$1"
 		shift 1
 	done
@@ -100,6 +104,14 @@ if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
 		echo ${E}"  No remote could be found. Push aborted.  "${X}
 		exit 1
 	fi
+fi
+
+if [ $pushTags ]; then
+	echo
+	echo "Now ${A}pushing${X} tags to: ${COL_GREEN} ${_remote} ${X}"
+	echo "$ git push --tags ${_remote}"
+	git push --tags ${_remote}
+	echo ${O}${H2HL}${X}
 fi
 
 hasRemote=$(git config branch.$branch.remote 2> /dev/null)

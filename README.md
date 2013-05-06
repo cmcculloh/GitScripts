@@ -79,7 +79,7 @@ With GitScripts you can just do:
 	commit "my comments on my changes" -a
 
 
-I know, these doesn't seem much different. But it *did* save just a little bit of time. Two paper cuts (in a world of Windows, that's two paper cuts less in the death by a thousand paper cuts that you suffer every day).
+I know, these doesn't seem much different. But it *did* save just a little bit of time. Two paper cuts.
 
 
 ### New Branch
@@ -87,10 +87,15 @@ I know, these doesn't seem much different. But it *did* save just a little bit o
 Here's where the real magic happens though. Let's say you want to create a new branch. Normally you would have to do all of the following (if being safe):
 
 	git status
-	git stash (or) git add -A, git commit -m "your commit"
-	git push origin branch
+	#if you have changes
+	    git stash (or) git add -A, git commit -m "your commit"
+	    git push origin branch
+	#check out the branch you want to fork
 	git checkout master
+	#make sure it is up to date
 	git fetch --all --prune
+	git pull origin master
+	#now, finally, make the branch
 	git checkout -b newbranch
 
 
@@ -107,14 +112,17 @@ That's it. It jumps into an intelligent guided numeric menu driven process that 
 Let's say you want to merge two branches. Normally you would have to do all of the following (if being safe):
 
 	git status
-	git stash (or) git add -A, git commit -m "your commit"
-	git push origin branch
+	#if you have changes
+	    git stash (or) git add -A, git commit -m "your commit"
+	    git push origin branch
+	#make sure both branches are up to date
 	git fetch --all --prune
 	git checkout branchtomergefrom
 	git pull origin branchtomergefrom
 	git checkout branchtomergeto
 	git pull origin branchtomergeto
-	git merge branchtomergefrom
+	git merge --ff branchtomergefrom
+	#resolve conflicts and then
 	git add .
 	git commit -m "merging branchtomergefrom"
 	git push origin branchtomergeto
@@ -123,6 +131,28 @@ Yikes! Again, GitScripts to the rescue! Here's what you would do in GitScripts:
 
 	merge branchtomergefrom into branchtomergeto
 
+
+### More
+
+There are many other things that GitScripts does for you. Here is an incomplete list of commands:
+
+* add [filename] - Will determine if git add or git rm needs run, and then runs it for the provided file. If no file provided, presents you with a menu of unstaged files.
+* branch - Will present a numbered list of all branches. Optionally allows you to select a branch to checkout
+* checkout [branchname] - Supports tab completion on branch names. Will present a numbered list of branches for you to select one to checkout. Auto-merges master and pulls latest from remote.
+* clean-branches - determine which branches are already merged with master and prompt for you to delete them
+* commit - Commit with implicit -m flag, prompts for -a or -A, pushes changes to remote
+* contains [branch]- Searches through branches to determine which ones contain do/don't contain the branch (defaults to current branch)
+* cpafter - Allows you to specify date and to/from directories. Will copy all files modified after specified date in specified directory to specified directory
+* delete <branch> - Deletes branch and prompts for deletion on remote
+* gitdiff [branch] - shows all differences between current branch and specified branch in concise manner and then prompts for verbose manner
+* gitdifftool [branch] - same as gitdiff, but, runs your gitdiff tool to show differences
+* merge <branch> [into branch] - Merges master into both, pulls remotes for both, then merges the first into the second and prompts for push to remote
+* new <branch> [from branch] - Creates new branch from master or from specified branch. Updates the starting branch first. Prompts for push after
+* pull [branch] - Pull changes form remote for specified branch as well as merges latest version of master
+* pullscripts - updates gitscripts!
+* push - Pushes changes from current branch up to remote
+* trackbranch <branch> [upstream/branch] - Allows you to set the upstream (remote repo) for a branch
+* update - Pulls changes from remote and merges master
 
 :D
 
