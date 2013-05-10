@@ -10,7 +10,6 @@
 #
 #	@options
 #	-q, --quiet	Suppress the "Pushing not allowed" warning message and silently exit.
-#	--tags ALSO pushes tags to remote
 #	options@
 #
 #	@examples
@@ -18,8 +17,6 @@
 #	   # pushes current branch
 #	2) push some-other-branch
 #	   # pushes some-other-branch...
-#	3) push --tags
-#	   # pushes current branch -AND- pushes any tags
 #	examples@
 #
 #	@dependencies
@@ -42,7 +39,6 @@ if (( numArgs > 0 && numArgs < 3 )); then
 	until [ -z "$1" ]; do
 		[ "$1" = "--admin" ] && [ "$ADMIN" = "true" ] && isAdmin=true
 		{ [ "$1" = "-q" ] ||  [ "$1" = "--quiet" ]; } && isQuiet=true
-		[ "$1" = "--tags" ] && pushTags=true
 		! echo "$1" | egrep -q "^-" && branch="$1"
 		shift 1
 	done
@@ -106,21 +102,13 @@ if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
 	fi
 fi
 
-if [ $pushTags ]; then
-	echo
-	echo "Now ${A}pushing${X} tags to: ${COL_GREEN} ${_remote} ${X}"
-	echo "$ git push --tags ${_remote}"
-	git push --tags ${_remote}
-	echo ${O}${H2HL}${X}
-fi
-
 hasRemote=$(git config branch.$branch.remote 2> /dev/null)
 if [ -z "$hasRemote" ]; then
 	echo
 	echo ${Q}"Setup remote tracking of ${COL_GREEN}${_remote}${Q} for ${B}\`${branch}\`${Q}? (y) n"
 	read yn
 	if [ -z "$yn" ] || [ "$yn" = "y" ]; then
-		git branch --set-upstream-to=$_remote/$branch $branch
+		git branch --set-upstream $_remote/$branch $branch
 	fi
 fi
 
