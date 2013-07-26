@@ -52,7 +52,7 @@ fi
 
 echo
 echo
-echo "Configuring remotes, if any..."
+echo "Configuring remote(s), if any..."
 __set_remote
 
 echo "Remote set to ${_remote}"
@@ -67,7 +67,14 @@ if __branch_exists_local "$1"; then
 	fi
 	#don't create new branch since we checked the local copy out, just exit...
 	exit 1
-elif __branch_exists_remote "$1"; then
+elif __branch_exists_remote "${_remote}/$1"; then
+	
+	
+	echo "branch_exists_remote: ${1}";
+	__branch_exists_remote "$1";
+	echo "branch_exists_remote: master";
+	__branch_exists_remote master;
+	
 	if [ "$4" != "--no-questions" ]; then
 		echo
 		echo ${E}"  Branch \`$1\` already exists on the remote!  "${X}
