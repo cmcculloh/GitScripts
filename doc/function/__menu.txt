@@ -52,7 +52,7 @@
 [0;20;39m[0;20;39m	# --------------------------------------------
 [0;20;39m[0;20;39m	# this is a message:
 [0;20;39m[0;20;39m
-[0;20;39m[0;20;39m	echo "You selected: ${_menu_selection}"
+[0;20;39m[0;20;39m	echo "You selected: ${_menu_sel_index}"
 [0;20;39m[0;20;39m
 [0;20;39m[0;20;39m	### ...OR we could add an extra option... ###
 [0;20;39m[0;20;39m

@@ -1,0 +1,23 @@
+[0;20;39m[0;20;39m[36m 	@usage [0;20;39m add [file-name]
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@description [0;20;39m
+[0;20;39m[0;20;39m	This script makes staging files for commit much easier. It fully supports
+[0;20;39m[0;20;39m	tab completion in a way that the built in git add does not. Also, if you
+[0;20;39m[0;20;39m	prefer to use a menu over tab completion, it supports that too.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@examples [0;20;39m
+[0;20;39m[0;20;39m	1) add
+[0;20;39m[0;20;39m	   # Will show a list of files available for staging.
+[0;20;39m[0;20;39m	2) add fi[tab]
+[0;20;39m[0;20;39m	   # tab completes the rest of the file name
+[0;20;39m[0;20;39m	3) add file-path/file.sh
+[0;20;39m[0;20;39m	   # deduces if you are doing an add or rm and then does the operation.
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@dependencies [0;20;39m
+[0;20;39m[0;20;39m	functions/0300.menu.sh
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m
+[0;20;39m[0;20;39m[36m 	@file [0;20;39m add.sh
