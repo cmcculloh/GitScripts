@@ -37,6 +37,12 @@ Any config adjustments you want to make should be made in a file that you create
 This file is ignored by default, so, mod away!
 
 
+### Git & XCode on Mac
+
+If you are on Mac with XCode installed, and if you independantly install a newer version of Git than XCode installs by default, you will need to adjust your path to point to the version of git you installed. Open ~/.bash_profile and adjust your path to look for your manually installed version of git before it looks for the xcode installed version of git. You will have to do something like this:
+
+	export PATH=/usr/local/git/bin:$PATH
+
 
 ### GSMAN
 
