@@ -1,3 +1,4 @@
+add:doc/main/add.txt
 branch:doc/main/branch.txt
 checkout:doc/main/checkout.txt
 clean-branches:doc/main/clean-branches.txt
