@@ -68,13 +68,13 @@ if __branch_exists_local "$1"; then
 	#don't create new branch since we checked the local copy out, just exit...
 	exit 1
 elif __branch_exists_remote "${_remote}/$1"; then
-	
-	
+
+
 	echo "branch_exists_remote: ${1}";
 	__branch_exists_remote "$1";
 	echo "branch_exists_remote: master";
 	__branch_exists_remote master;
-	
+
 	if [ "$4" != "--no-questions" ]; then
 		echo
 		echo ${E}"  Branch \`$1\` already exists on the remote!  "${X}
@@ -237,12 +237,15 @@ if [ "$startingBranch" = "master" ]; then
 		echo "to get all updates (if available) to ${B}\`master\`${X} as well."
 		echo ${O}${H2HL}
 
-		echo "$ git checkout -b $1 $_remote/master"
-		git checkout -b "$1" "$_remote"/master
-	else
-		echo "$ git checkout -b $1"
-		git checkout -b "$1"
+		echo "$ git checkout master"
+		git checkout master
+		echo "$ git pull $_remote master"
+		git pull "$_remote" master
+
 	fi
+	echo "$ git checkout -b $1"
+	git checkout -b "$1"
+
 	echo ${O}${H2HL}${X}
 elif [ $checkoutremote ]; then
 	echo
