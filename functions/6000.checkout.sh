@@ -212,7 +212,7 @@ checkout(){
 	# Checkout the chosen branch if possible.
 	echo "This checks out the ${B}\`${branch}\`${X} branch."
 	echo ${O}${H2HL}${X}
-	if $onlocal; then
+	if [ $onlocal ]; then
 		echo ${O}"$ git checkout $branch"
 		git checkout "$branch"
 		echo ${O}${H2HL}${X}
@@ -252,7 +252,7 @@ checkout(){
 	fi
 
 	# Get updated changes from the remote (there should rarely be any for personal branches)
-	if ! $isQuickCheckout && $onremote ; then
+	if ! $isQuickCheckout && [ $onremote ] ; then
 		echo
 		echo
 		echo "Get updated branch changes from ${COL_GREEN}${_remote}${COL_NORM}, if any."
