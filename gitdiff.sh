@@ -1,23 +1,36 @@
 #!/bin/bash
 ## /*
-#   @usage gitdiff [base-branch-name]
+#   @usage gitdiff [-am] [base-branch]
 #
 #   @description
 #   This script is used to get a quick look at all the files that have been added,
 #   modified, and/or deleted in the current branch's latest commit and either a
-#   specified branch (the first parameter) or the master branch (default).
+#   specified branch (the first parameter) or the master branch (default; from remote).
+#   You can optionally specify that you only want to view currently modified files
+#   or commits AND modified files.
 #   description@
+#
+#   @options
+#   -a      Show the diff between the base-branch and HEAD, including any currently
+#           modified files in the working tree.
+#   -m      Only show a diff of HEAD with any currently modified/deleted/renamed
+#           files in the working tree.
+#   options@
 #
 #   @notes
 #   - If your project does not have a master branch, you will need to pass the first
 #   parameter for each use.
+#   - You may specify a hash as an argument instead of a base-branch name.
 #   notes@
 #
 #   @examples
-#   1) gitdiff stage      # Shows file changes between the stage branch and HEAD
+#   $ gitdiff stage      # Shows diff between the stage branch and HEAD
+#   $ gitdiff 3bdaf1     # Shows diff between commit 3bdaf1 and HEAD
+#   $ gitdiff -m         # Shows diff between HEAD and any dirty files in the working tree.
 #   examples@
 #
 #   @dependencies
+#   functions/1000.set_remote.sh
 #   functions/5000.branch_exists.sh
 #   dependencies@
 #
@@ -71,9 +84,9 @@ fi
 grep -q '\.' <<< "$hashes" && hasRange=true || hasRange=
 
 echo ${O}${H2HL}
-if [ ! $hashesSame ] && [ $hasRange ]; then
-    echo "$ git --no-pager log --oneline ${hashes}"
-    git --no-pager log --oneline $hashes
+if [ ! $hashesSame ] && [ ! $showModified ]; then
+    echo "$ git --no-pager log --oneline -30 ${hashFrom}..${hashTo}"
+    git --no-pager log --oneline -30 ${hashFrom}..${hashTo}
 
     echo
     echo
