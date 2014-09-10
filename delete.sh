@@ -33,7 +33,8 @@ deletePhrase="Deleting branch"
 if (( numArgs > 0 && numArgs < 4 )); then
 	until [ -z "$1" ]; do
 
-		# echo "Param is currently: ${1}"
+		echo "Param is currently: ${1}"
+		echo "Admin?: ${ADMIN}"
 
 		[ "$1" = "--admin" -o "$1" = "-a" -o "$1" = "-A" ] && [ "$ADMIN" = "true" ] && isAdmin=true
 		[ "$1" = "--force" -o "$1" = "-f" -o "$1" = "-F" ] && [ "$ADMIN" = "true" ] && forceDelete=true
@@ -41,7 +42,8 @@ if (( numArgs > 0 && numArgs < 4 )); then
 		# catch multiple flags
 		[ "$1" = "-fa" -o "$1" = "-af" -o "$1" = "-AF" -o "$1" = "-FA" ] && [ "$ADMIN" = "true" ] && forceDelete=true && isAdmin=true
 
-		[ "$1" != "--admin" -a "$1" != "-A"  -a "$1" != "-a" -a "$1" != "--force" -a "$1" != "-F" -a "$1" != "-f" -a "$1" != "-fa" -a "$1" != "-af" -a "$1" != "-AF" -a "$1" != "-FA" ] && [ "$ADMIN" = "true" ] && deleteBranch="$1"
+		[ "$1" != "--admin" -a "$1" != "-A"  -a "$1" != "-a" -a "$1" != "--force" -a "$1" != "-F" -a "$1" != "-f" -a "$1" != "-fa" -a "$1" != "-af" -a "$1" != "-AF" -a "$1" != "-FA" ] && deleteBranch="$1"
+		# [ "$1" != "--admin" -a "$1" != "-A"  -a "$1" != "-a" -a "$1" != "--force" -a "$1" != "-F" -a "$1" != "-f" -a "$1" != "-fa" -a "$1" != "-af" -a "$1" != "-AF" -a "$1" != "-FA" ] && [ "$ADMIN" = "true" ] && deleteBranch="$1"
 
 		shift
 	done
@@ -49,7 +51,6 @@ fi
 
 
 # echo "We would force delete: ${forceDelete}"
-
 
 # make sure branch name was included
 if [ -z "$deleteBranch" ]; then
