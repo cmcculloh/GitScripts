@@ -102,8 +102,6 @@ if [ $flag ]; then
 				local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES=true;
 				echo "branch name!"
 				echo "local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES: ${local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES}"
-
-
 			;;
 
 		"-a")
