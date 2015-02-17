@@ -52,3 +52,5 @@ alias wip="${gitscripts_path}commit.sh -A WIP"
 # Wheter to prepend the branchname onto commit messages when using the commit tool in GitScripts (default: true)
 # export PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES=true
 export PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES=false
+
+
