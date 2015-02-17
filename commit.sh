@@ -14,6 +14,7 @@
 #	-a	Automatically stage modified and deleted files before committing.
 #	-A	Automatically stage ALL tracked/untracked files before committing.
 #	--no-branch-name Do not automatically prepend the commit message with the current branch name
+#	--branch-name Prepend the commit message with the current branch name, regardless of user overrides settings.
 #	options@
 #
 #	@notes
@@ -93,6 +94,10 @@ if [ $flag ]; then
 	case $flag in
 		"--no-branch-name")
 				local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES=false;
+			;;
+
+		"--branch-name")
+				local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES=true;
 			;;
 
 		"-a")
