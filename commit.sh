@@ -89,6 +89,8 @@ echo ${O}${H2HL}${X}
 
 local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES=$PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES;
 
+echo "local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES: ${local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES}"
+
 # check to see if user wants to add all modified/deleted files
 if [ $flag ]; then
 	case $flag in
