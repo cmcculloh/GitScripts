@@ -45,11 +45,16 @@ $loadfuncs
 
 echo ${X}
 numArgs=$#
+local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES=$PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES;
+
+
 
 # parse arguments
 if (( numArgs > 0 && numArgs < 4 )); then
 	until [ -z "$1" ]; do
 		[ "$1" == "--admin" ] && [ $ADMIN ] && isAdmin=true
+		[ "$1" == "--branch-name" ]  && local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES=true
+		[ "$1" == "--no-branch-name" ]  && local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES=false
 		{ [ "$1" == "-a" ] || [ "$1" == "-A" ]; } && flag=$1
 		! echo "$1" | egrep -q "^-" && msg="$1"
 		shift
@@ -87,7 +92,6 @@ echo "$ git status"
 git status
 echo ${O}${H2HL}${X}
 
-local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES=$PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES;
 
 echo "PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES: ${PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES}"
 echo "local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES: ${local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES}"
@@ -95,16 +99,6 @@ echo "local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES: ${local_PREPEND_BRANCHNAME_TO
 # check to see if user wants to add all modified/deleted files
 if [ $flag ]; then
 	case $flag in
-		"--no-branch-name")
-				local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES=false;
-			;;
-
-		"--branch-name")
-				local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES=true;
-				echo "branch name!"
-				echo "local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES: ${local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES}"
-			;;
-
 		"-a")
 			if __parse_git_status untracked; then
 				echo
