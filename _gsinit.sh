@@ -43,8 +43,42 @@ popd  > /dev/null
 export gitscripts_cfg_path="${gitscripts_path}cfg/"
 
 
+
+
+
+# ensure all submodules are initialized and updated
+fshSourceme="${gitscripts_path}/lib/functionsh/SOURCEME"
+if [ ! -f "${fshSourceme}" ]; then
+    cd "$gitscripts_path"
+    git submodule update --init &> /dev/null
+fi
+if [ ! -f "${fshSourceme}" ]; then
+    echo "${E} ERROR: ${X} could not initialize \`functionsh\` library."
+    return 2
+fi
+
+
+# source all functions (including libraries)
+source "$fshSourceme" > /dev/null
+if ! type -t __source_all &> /dev/null; then
+    echo "${E} ERROR: ${X} Unable to load dependency libraries."
+    return 4
+fi
+__source_all -x "${gitscripts_path}/functions"
+unset fshSourceme
+
+
+# set up variables to distinguish environment. thanks functionsh!
+__get_env
+
+
+
+
+
 # load user overrides.
 if [ -f "${gitscripts_cfg_path}user.overrides" ]; then
+	echo "gitscripts_cfg_path: ${gitscripts_cfg_path}"
+	echo "Will source: ${gitscripts_cfg_path}user.overrides"
 	source "${gitscripts_cfg_path}user.overrides"
 fi
 

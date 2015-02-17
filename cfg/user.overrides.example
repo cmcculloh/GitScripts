@@ -44,3 +44,13 @@ export IMPORT_GIT_ALIASES=false
 # [ -n "$workspace_name" ] || export workspace_name="coda_workspace"
 
 
+# Some shortcuts right to GitScripts commands
+alias bname=__copy_branch_name_to_clipboard
+alias branchname=__copy_branch_name_to_clipboard
+alias wip="${gitscripts_path}commit.sh -A WIP"
+
+# Wheter to prepend the branchname onto commit messages when using the commit tool in GitScripts (default: true)
+# export PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES=true
+export PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES=false
+
+
