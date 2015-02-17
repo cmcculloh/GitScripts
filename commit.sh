@@ -163,13 +163,10 @@ fi
 
 startingBranchPrefix="(${startingBranch}) ";
 
-echo "startingBranchPrefix: ${startingBranchPrefix}";
 
 
 if test $local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES = false; then
 	startingBranchPrefix="";
-	echo "local is false"
-	echo "startingBranchPrefix: ${startingBranchPrefix}";
 fi
 
 echo
