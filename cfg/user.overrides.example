@@ -44,3 +44,8 @@ export IMPORT_GIT_ALIASES=false
 # [ -n "$workspace_name" ] || export workspace_name="coda_workspace"
 
 
+# Some shortcuts right to GitScripts commands
+alias bname=__copy_branch_name_to_clipboard
+alias branchname=__copy_branch_name_to_clipboard
+alias wip="${gitscripts_path}commit.sh -A WIP"
+
