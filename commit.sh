@@ -13,6 +13,7 @@
 #	@options
 #	-a	Automatically stage modified and deleted files before committing.
 #	-A	Automatically stage ALL tracked/untracked files before committing.
+#	--no-branch-name Do not automatically prepend the commit message with the current branch name
 #	options@
 #
 #	@notes
@@ -85,9 +86,16 @@ echo "$ git status"
 git status
 echo ${O}${H2HL}${X}
 
+local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES=$PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES;
+
+
 # check to see if user wants to add all modified/deleted files
 if [ $flag ]; then
 	case $flag in
+		"--no-branch-name")
+				local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES=false;
+			;;
+
 		"-a")
 			if __parse_git_status untracked; then
 				echo
@@ -150,13 +158,18 @@ if [ $flag ]; then
 	esac
 fi
 
+startingBranchPrefix="(${startingBranch}) ";
+
+if test $local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES = false; then
+	startingBranchPrefix="";
+fi
 
 echo
 echo
 echo "Committing and displaying branch changes..."
 echo ${O}${H2HL}
-echo "$ git commit -q -m \"(${startingBranch}) $msg\" $flag"
-git commit -q -m "(${startingBranch}) $msg" $flag
+echo "$ git commit -q -m \"${startingBranchPrefix}$msg\" $flag"
+git commit -q -m "${startingBranchPrefix}$msg" $flag
 echo ${O}
 echo
 echo "$ git diff-tree --stat HEAD"
