@@ -48,17 +48,22 @@ if [ -n "$_remote" ]; then
 	echo "${A}Pull${X} in changes from this branch and then from ${B}\`master\`${X},"
 	echo "check our status, and then optionally ${A}push${X} the updates back up."
 	echo ${O}${H2HL}${X}
-	
+
 
 	if [ "${cb}" != "master" ]; then
 		echo "$ git pull ${_remote} ${cb}"
 		git pull ${_remote} $cb
 	fi
 	echo ${O}
+
 	echo
-	echo "$ git pull ${_remote} master"
-	git pull ${_remote} master
-	echo ${O}
+	echo "Attempt to pull ${B}\'${_remote} master\'${X}? (y) n"
+	read yn
+	if [ -z "$yn" ] || [ "$yn" = "y" ]; then
+		echo "$ git pull ${_remote} master"
+		git pull ${_remote} master
+		echo ${O}
+	fi
 
 	if __parse_git_status modified; then
 		echo "Potential submodule changes detected. ${A}Update submodule${O}? (y) n"
