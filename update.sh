@@ -57,7 +57,7 @@ if [ -n "$_remote" ]; then
 	echo ${O}
 
 	echo
-	echo "Attempt to pull ${B}\'${_remote} master\'${X}? (y) n"
+	echo "Attempt to pull ${B}\`${_remote} master\`${X}? (y) n"
 	read yn
 	if [ -z "$yn" ] || [ "$yn" = "y" ]; then
 		echo "$ git pull ${_remote} master"
