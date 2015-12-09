@@ -153,8 +153,17 @@ echo
 echo
 echo "Committing and displaying branch changes..."
 echo ${O}${H2HL}
-echo "$ git commit -q -m \"(${startingBranch}) $msg\" $flag"
-git commit -q -m "(${startingBranch}) $msg" $flag
+
+dashIndex=$(echo ${startingBranch} | sed -n "s/--.*//p" | wc -c)
+#decrement by 1 so we don't also include the '-' in the commit message
+((dashIndex--))
+if (( $dashIndex > 7 || $dashIndex < 0)); then
+	dashIndex=7
+fi
+ticketNumber=${startingBranch:0:$dashIndex}
+
+echo "$ git commit -q -m \"($ticketNumber) $msg\" $flag"
+git commit -q -m "($ticketNumber) $msg" $flag
 echo ${O}
 echo
 echo "$ git diff-tree --stat HEAD"
