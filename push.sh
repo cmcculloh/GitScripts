@@ -36,13 +36,16 @@ $loadfuncs
 # reset styles
 echo ${X}
 
+force=""
+
 # parse params
 numArgs=$#
-if (( numArgs > 0 && numArgs < 3 )); then
+if (( numArgs > 0 && numArgs < 6 )); then
 	until [ -z "$1" ]; do
 		[ "$1" = "--admin" ] && [ "$ADMIN" = "true" ] && isAdmin=true
 		{ [ "$1" = "-a" ] ||  [ "$1" = "--all" ]; } && pushToAll=true
 		{ [ "$1" = "-q" ] ||  [ "$1" = "--quiet" ]; } && isQuiet=true
+		{ [ "$1" = "-f" ] ||  [ "$1" = "--force" ]; } && force="-f"
 		[ "$1" = "--tags" ] && pushTags=true
 		! echo "$1" | egrep -q "^-" && branch="$1"
 		shift 1
@@ -106,7 +109,7 @@ else
 
 	# --quiet will use default answer
 	if [ ! $isQuiet ]; then
-		echo ${Q}"Would you like to push ${B}\`${branch}\`${Q} to ${COL_GREEN}${_remote}${Q}?${defO}"${X}
+		echo ${Q}"Would you like to $force push ${B}\`${branch}\`${Q} to ${COL_GREEN}${_remote}${Q}?${defO}"${X}
 		read yn
 	fi
 
@@ -118,10 +121,10 @@ else
 	if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
 		if [ -n "$_remote" ]; then
 			echo
-			echo "Now ${A}pushing${X} to:${X} ${COL_GREEN} ${_remote} ${X}"
+			echo "Now $force ${A}pushing${X} to:${X} ${COL_GREEN} ${_remote} ${X}"
 			echo ${O}${H2HL}
-			echo "$ git push ${_remote} ${branch}"
-			git push "${_remote}" "${branch}"
+			echo "$ git push $force ${_remote} ${branch}"
+			git push $force "${_remote}" "${branch}"
 			echo ${O}${H2HL}${X}
 			echo
 		else
