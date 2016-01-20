@@ -72,6 +72,7 @@ unset fshSourceme
 __get_env
 
 
+source "${gitscripts_cfg_path}colors.cfg"
 
 
 
