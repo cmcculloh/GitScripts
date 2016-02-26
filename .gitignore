@@ -2,5 +2,6 @@
 *.log
 *.overrides
 *.sublime-project
+*.sublime-workspace
 temp/*
 doc/user
