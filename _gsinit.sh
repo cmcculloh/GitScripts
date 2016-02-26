@@ -78,7 +78,7 @@ source "${gitscripts_cfg_path}colors.cfg"
 
 # load user overrides.
 if [ -f "${gitscripts_cfg_path}user.overrides" ]; then
-	echo "gitscripts_cfg_path: ${gitscripts_cfg_path}"
+	# echo "gitscripts_cfg_path: ${gitscripts_cfg_path}"
 	echo "Will source: ${gitscripts_cfg_path}user.overrides"
 	source "${gitscripts_cfg_path}user.overrides"
 fi
