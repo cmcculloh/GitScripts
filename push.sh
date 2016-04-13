@@ -10,6 +10,7 @@
 #
 #	@options
 #	-q, --quiet	Suppress the "Pushing not allowed" warning message and silently exit.
+#	--tags ALSO pushes tags to remote
 #	options@
 #
 #	@examples
@@ -17,6 +18,8 @@
 #	   # pushes current branch
 #	2) push some-other-branch
 #	   # pushes some-other-branch...
+#	3) push --tags
+#	   # pushes current branch -AND- pushes any tags
 #	examples@
 #
 #	@dependencies
@@ -33,14 +36,19 @@ $loadfuncs
 # reset styles
 echo ${X}
 
+force=""
+
 # parse params
 numArgs=$#
-if (( numArgs > 0 && numArgs < 3 )); then
+if (( numArgs > 0 && numArgs < 6 )); then
 	until [ -z "$1" ]; do
 		[ "$1" = "--admin" ] && [ "$ADMIN" = "true" ] && isAdmin=true
+		{ [ "$1" = "-a" ] ||  [ "$1" = "--all" ]; } && pushToAll=true
 		{ [ "$1" = "-q" ] ||  [ "$1" = "--quiet" ]; } && isQuiet=true
+		{ [ "$1" = "-f" ] ||  [ "$1" = "--force" ]; } && force="-f"
+		[ "$1" = "--tags" ] && pushTags=true
 		! echo "$1" | egrep -q "^-" && branch="$1"
-		shift
+		shift 1
 	done
 fi
 
@@ -60,62 +68,89 @@ else
 	}
 fi
 
-# check for protected branches
-if __is_branch_protected --push "$branch" && [ ! $isAdmin ]; then
-	[ ! $isQuiet ] && echo "  ${W}WARNING:${X} Pushing to ${B}\`${branch}\`${X} is not allowed. Aborting..."
-	exit 1
-fi
+if [ $pushToAll ]; then
+	# if --all flag was passed, just push to all remotes. Otherwise, see if they want to choose a remote to push it to.
+	# run loop. reads from temp file.
+	# send branch data to temp file
+	tmp="${gitscripts_temp_path}remotes"
+	git remote > $tmp
 
-# a remote is required to push to
-if ! __set_remote; then
-	echo ${E}"  Aborting...  "${X}
-	exit 1
-fi
+	# run loop. reads from temp file.
+	declare -a remoteNames
+	while read remote; do
+		pieces=( $remote )
+		remoteNames[${#remoteNames[@]}]="${pieces[0]}"
+	done <"$tmp"
 
+	# temp file no longer necessary
+	rm "$tmp"
 
-# setup default answers
-if [ "$pushanswer" == "y" ] || [ "$pushanswer" == "Y" ]; then
-	defO=" (y) n"
-	defA="y"
+	# let's get this party started...
+	for (( i = 0; i < ${#remoteNames[@]}; i++ )); do
+		echo "$ git push ${remoteNames[$i]} ${branch}"
+		git push "${remoteNames[$i]}" "${branch}"
+	done
 else
-	defO=" y (n)"
-	defA="n"
-fi
-
-# --quiet will use default answer
-if [ ! $isQuiet ]; then
-	echo ${Q}"Would you like to push ${B}\`${branch}\`${Q} to ${COL_GREEN}${_remote}${Q}?${defO}"${X}
-	read yn
-fi
-
-if [ -z "$yn" ]; then
-	yn=$defA
-fi
-
-echo
-if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
-	if [ -n "$_remote" ]; then
-		echo
-		echo "Now ${A}pushing${X} to:${X} ${COL_GREEN} ${_remote} ${X}"
-		echo ${O}${H2HL}
-		echo "$ git push ${_remote} ${branch}"
-		git push "${_remote}" "${branch}"
-		echo ${O}${H2HL}${X}
-		echo
-	else
-		echo ${E}"  No remote could be found. Push aborted.  "${X}
+	# a remote is required to push to
+	if ! __set_remote; then
+		echo ${E}"  Aborting...  "${X}
 		exit 1
 	fi
-fi
 
-hasRemote=$(git config branch.$branch.remote 2> /dev/null)
-if [ -z "$hasRemote" ]; then
+
+	# setup default answers
+	if [ "$pushanswer" == "y" ] || [ "$pushanswer" == "Y" ]; then
+		defO=" (y) n"
+		defA="y"
+	else
+		defO=" y (n)"
+		defA="n"
+	fi
+
+	# --quiet will use default answer
+	if [ ! $isQuiet ]; then
+		echo ${Q}"Would you like to $force push ${B}\`${branch}\`${Q} to ${COL_GREEN}${_remote}${Q}?${defO}"${X}
+		read yn
+	fi
+
+	if [ -z "$yn" ]; then
+		yn=$defA
+	fi
+
 	echo
-	echo ${Q}"Setup remote tracking of ${COL_GREEN}${_remote}${Q} for ${B}\`${branch}\`${Q}? (y) n"
-	read yn
-	if [ -z "$yn" ] || [ "$yn" = "y" ]; then
-		git branch --set-upstream $_remote/$branch $branch
+	if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
+		if [ -n "$_remote" ]; then
+			echo
+			echo "Now $force ${A}pushing${X} to:${X} ${COL_GREEN} ${_remote} ${X}"
+			echo ${O}${H2HL}
+			echo "$ git push $force ${_remote} ${branch}"
+			git push $force "${_remote}" "${branch}"
+			echo ${O}${H2HL}${X}
+			echo
+		else
+			echo ${E}"  No remote could be found. Push aborted.  "${X}
+			exit 1
+		fi
+	fi
+
+	if [ $pushTags ]; then
+		echo
+		echo "Now ${A}pushing${X} tags to: ${COL_GREEN} ${_remote} ${X}"
+		echo "$ git push --tags ${_remote}"
+		git push --tags ${_remote}
+		echo ${O}${H2HL}${X}
+	fi
+
+	hasRemote=$(git config branch.$branch.remote 2> /dev/null)
+	if [ -z "$hasRemote" ]; then
+		echo
+		echo ${Q}"Setup remote tracking of ${COL_GREEN}${_remote}${Q} for ${B}\`${branch}\`${Q}? (y) n"
+		read yn
+		if [ -z "$yn" ] || [ "$yn" = "y" ]; then
+			git branch --set-upstream-to $_remote/$branch $branch
+		fi
 	fi
 fi
+
 
 exit
