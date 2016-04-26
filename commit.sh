@@ -154,13 +154,28 @@ echo
 echo "Committing and displaying branch changes..."
 echo ${O}${H2HL}
 
-dashIndex=$(echo ${startingBranch} | sed -n "s/--.*//p" | wc -c)
-#decrement by 1 so we don't also include the '-' in the commit message
-((dashIndex--))
-if (( $dashIndex > 7 || $dashIndex < 0)); then
-	dashIndex=7
+doubleDashIndex=$(echo ${startingBranch} | sed -n "s/--.*//p" | wc -c)
+# decrement by 1 so we don't also include the '-' in the commit message
+((doubleDashIndex--))
+if (($doubleDashIndex < 0)); then
+	doubleDashIndex=0
 fi
-ticketNumber=${startingBranch:0:$dashIndex}
+
+dashIndex=$(echo ${startingBranch} | sed -n "s/-.*//p" | wc -c)
+echo "dash index: $dashIndex"
+if (( $dashIndex > $doubleDashIndex || $dashIndex < 0)); then
+	dashIndex=0
+fi
+
+# find the offset between the two to get just the text between them
+ticketRange=$doubleDashIndex-$dashIndex;
+
+# make sure the range isn't huge
+if (( $ticketRange > 7 || $ticketRange < 0 )); then
+	ticketRange=7
+fi
+
+ticketNumber=${startingBranch:$dashIndex:$ticketRange}
 
 echo "$ git commit -q -m \"($ticketNumber) $msg\" $flag"
 git commit -q -m "($ticketNumber) $msg" $flag
