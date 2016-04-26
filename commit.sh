@@ -155,6 +155,7 @@ echo "Committing and displaying branch changes..."
 echo ${O}${H2HL}
 
 doubleDashIndex=$(echo ${startingBranch} | sed -n "s/--.*|__.*//p" | wc -c)
+echo "double dash index: $doubleDashIndex"
 # decrement by 1 so we don't also include the '-' in the commit message
 ((doubleDashIndex--))
 if (($doubleDashIndex < 0)); then
