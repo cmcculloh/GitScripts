@@ -29,14 +29,33 @@ $loadfuncs
 
 echo ${X}
 
+numArgs=$#
+
 _file_selection=
-while (( "$#" )); do
-	_file_selection=$1
-
-	shift 1
-done
-
 gitcommand="add"
+_whitespace_only=false
+# parse arguments
+if (( numArgs > 0 && numArgs < 4 )); then
+	until [ -z "$1" ]; do
+		{ [ "$1" == "-a" ] || [ "$1" == "-A" ] || [ "$1" == "-w" ]; } && _file_selection=$1
+		! echo "$1" | egrep -q "^-" && msg="$1"
+
+		if [ "$1" == "-a" ]; then
+			_file_selection="."
+		fi
+
+		if [ "$1" == "-w" ]; then
+			_file_selection="-A"
+			_whitespace_only=true
+		fi
+
+		shift 1
+	done
+else
+	__bad_usage commit "Invalid number of parameters."
+	exit 1
+fi
+
 list=($(git status --porcelain | tr " " -))
 #clean the list up so already added files aren't options
 list=( ${list[@]/M--*/} )
@@ -58,7 +77,7 @@ if [ -z "$_file_selection" ]; then
 	shopt -s extglob #http://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
 	_file_selection=${_menu_sel_value/@(M--|-M-|D--|-D-|\?\?-)/}
 else
-	#they passed in the branch, now determine if we need to do an add or a delete
+	#they passed in the file pattern, now determine if we need to do an add or a delete
 	for e in "${list[@]}"; do
 		if [[ "$e" =~ "$_file_selection" ]]; then
 			if [[ "$e" =~ D ]]; then
@@ -75,6 +94,12 @@ echo "Staging file ${COL_GREEN}${_file_selection}${COL_NORM} for commit."
 echo ${O}${H2HL}
 echo "$ git ${gitcommand} ${_file_selection}"
 git ${gitcommand} ${_file_selection}
+
+if ( $_whitespace_only ) ; then
+	echo "git diff --cached -w | git apply --cached -R"
+	git diff --cached -w | git apply --cached -R
+fi
+
 echo ${O}${H2HL}${X}
 echo
 echo
