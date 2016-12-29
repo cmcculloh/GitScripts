@@ -1,0 +1,3 @@
+[submodule "lib/functionsh"]
+	path = lib/functionsh
+	url = git@github.com:Smolations/functionsh

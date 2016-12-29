@@ -32,18 +32,22 @@ deletePhrase="Deleting branch"
 
 if (( numArgs > 0 && numArgs < 4 )); then
 	until [ -z "$1" ]; do
+
+		echo "Param is currently: ${1}"
+
+		[ "$1" = "--force" -o "$1" = "-f" -o "$1" = "-F" ] && [ "$ADMIN" = "true" ] && forceDelete=true
+
+		# catch multiple flags
 		deleteBranch="$1"
 
-		# echo "Param is currently: ${1}"
-		[ "$1" = "--force" -o "$1" = "-f" -o "$1" = "-F" ] && forceDelete=true
+		[ "$1" != "--force" -a "$1" != "-F" -a "$1" != "-f" ] && deleteBranch="$1"
 
-		shift 1
+		shift
 	done
 fi
 
 
 # echo "We would force delete: ${forceDelete}"
-
 
 # make sure branch name was included
 if [ -z "$deleteBranch" ]; then

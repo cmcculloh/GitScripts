@@ -13,6 +13,8 @@
 #	@options
 #	-a	Automatically stage modified and deleted files before committing.
 #	-A	Automatically stage ALL tracked/untracked files before committing.
+#	--no-branch-name Do not automatically prepend the commit message with the current branch name
+#	--branch-name Prepend the commit message with the current branch name, regardless of user overrides settings.
 #	options@
 #
 #	@notes
@@ -42,10 +44,15 @@ $loadfuncs
 
 echo ${X}
 numArgs=$#
+local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES=$PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES;
+
+
 
 # parse arguments
 if (( numArgs > 0 && numArgs < 4 )); then
 	until [ -z "$1" ]; do
+		[ "$1" == "--branch-name" ]  && local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES=true
+		[ "$1" == "--no-branch-name" ]  && local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES=false
 		{ [ "$1" == "-a" ] || [ "$1" == "-A" ]; } && flag=$1
 		! echo "$1" | egrep -q "^-" && msg="$1"
 		shift 1
@@ -82,6 +89,10 @@ echo ${O}${H2HL}
 echo "$ git status"
 git status
 echo ${O}${H2HL}${X}
+
+
+echo "PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES: ${PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES}"
+echo "local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES: ${local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES}"
 
 # check to see if user wants to add all modified/deleted files
 if [ $flag ]; then
@@ -176,10 +187,14 @@ if (( $ticketRange > 7 || $ticketRange < 0 )); then
 	ticketRange=7
 fi
 
-ticketNumber=${startingBranch:$dashIndex:$ticketRange}
+ticketNumber="(${startingBranch:$dashIndex:$ticketRange})"
 
-echo "$ git commit -q -m \"($ticketNumber) $msg\" $flag"
-git commit -q -m "($ticketNumber) $msg" $flag
+if test $local_PREPEND_BRANCHNAME_TO_COMMIT_MESSAGES = false; then
+	$ticketNumber="";
+fi
+
+echo "$ git commit -q -m \"$ticketNumber $msg\" $flag"
+git commit -q -m "$ticketNumber $msg" $flag
 echo ${O}
 echo
 echo "$ git diff-tree --stat HEAD"
