@@ -11,6 +11,10 @@
 [0;20;39m[0;20;39m[36m 	@options [0;20;39m
 [0;20;39m[0;20;39m	-a	Automatically stage modified and deleted files before committing.
 [0;20;39m[0;20;39m	-A	Automatically stage ALL tracked/untracked files before committing.
+[0;20;39m[0;20;39m	--no-branch-name Do not automatically prepend the commit message with the current branch name
+[0;20;39m[0;20;39m	--branch-name Prepend the commit message with the current branch name, regardless of user overrides settings.
+[0;20;39m[0;20;39m	--no-branch-number Do not automatically prepend the commit message with the current branch number
+[0;20;39m[0;20;39m	--branch-number (takes precedence over --branch-name) Prepend the commit message with the current branch number, regardless of user overrides settings.
 [0;20;39m[0;20;39m
 [0;20;39m[0;20;39m
 [0;20;39m[0;20;39m[36m 	@notes [0;20;39m

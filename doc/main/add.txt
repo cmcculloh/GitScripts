@@ -14,6 +14,12 @@
 [0;20;39m[0;20;39m	   # tab completes the rest of the file name
 [0;20;39m[0;20;39m	3) add file-path/file.sh
 [0;20;39m[0;20;39m	   # deduces if you are doing an add or rm and then does the operation.
+[0;20;39m[0;20;39m	4) add -w
+[0;20;39m[0;20;39m	   # adds all files with only whitespace changes
+[0;20;39m[0;20;39m	5) add -a
+[0;20;39m[0;20;39m	   # adds all tracked files for commit
+[0;20;39m[0;20;39m	5) add -A
+[0;20;39m[0;20;39m	   # adds ALL files for commit
 [0;20;39m[0;20;39m
 [0;20;39m[0;20;39m
 [0;20;39m[0;20;39m[36m 	@dependencies [0;20;39m

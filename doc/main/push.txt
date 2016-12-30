@@ -8,6 +8,7 @@
 [0;20;39m[0;20;39m
 [0;20;39m[0;20;39m[36m 	@options [0;20;39m
 [0;20;39m[0;20;39m	-q, --quiet	Suppress the "Pushing not allowed" warning message and silently exit.
+[0;20;39m[0;20;39m	--tags ALSO pushes tags to remote
 [0;20;39m[0;20;39m
 [0;20;39m[0;20;39m
 [0;20;39m[0;20;39m[36m 	@examples [0;20;39m
@@ -15,6 +16,8 @@
 [0;20;39m[0;20;39m	   # pushes current branch
 [0;20;39m[0;20;39m	2) push some-other-branch
 [0;20;39m[0;20;39m	   # pushes some-other-branch...
+[0;20;39m[0;20;39m	3) push --tags
+[0;20;39m[0;20;39m	   # pushes current branch -AND- pushes any tags
 [0;20;39m[0;20;39m
 [0;20;39m[0;20;39m
 [0;20;39m[0;20;39m[36m 	@dependencies [0;20;39m

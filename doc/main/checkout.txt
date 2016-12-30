@@ -18,6 +18,10 @@
 [0;20;39m[0;20;39m	2) checkout my-big-project-changes
 [0;20;39m[0;20;39m	   # checks out my-big-project-changes and will attempt to merge master into it
 [0;20;39m[0;20;39m	   # or rebase it onto master.
+[0;20;39m[0;20;39m	3) checkout some-branch -f
+[0;20;39m[0;20;39m	   # Quickly checks out your branch without attempting to update it with latest
+[0;20;39m[0;20;39m	   # from master or remote. Mostly useful if you are jumping back and forth
+[0;20;39m[0;20;39m	   # between a bunch of different branches quickly and are tired of answer questions
 [0;20;39m[0;20;39m
 [0;20;39m[0;20;39m
 [0;20;39m[0;20;39m[36m 	@dependencies [0;20;39m
