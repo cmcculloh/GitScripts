@@ -41,10 +41,18 @@ _file_selection=
 gitcommand="add"
 _whitespace_only=false
 # parse arguments
-if (( numArgs < 4 )); then
+# Can only pass -a, -A, or single file name, plus the -w flag. Two possible max.
+if (( numArgs < 3 )); then
 	until [ -z "$1" ]; do
 		{ [ "$1" == "-a" ] || [ "$1" == "-A" ] || [ "$1" == "-w" ]; } && _file_selection=$1
 		! echo "$1" | egrep -q "^-" && msg="$1"
+
+		# if they pass a file name, make sure to detect it!
+		# fixes bug where passing filename resulted in menu showing
+		selection_length=`echo "$_file_selection" | egrep '(-a|-A|-w)'`
+		if [[ ${#len} == 0 ]]; then
+			_file_selection=$1
+		fi
 
 		if [ "$1" == "-a" ]; then
 			_file_selection="."
@@ -68,8 +76,23 @@ list=( ${list[@]/M--*/} )
 list=( ${list[@]/D--*/} )
 list=( ${list[@]/A--*/} )
 
+# make sure they did not pass a partial filename, if so, strip it to bring up menu
+_passed_partial=true
+for e in "${list[@]}"; do
+	# $e at this point has the funny -M- prepended to it, ignore that stuff
+	if [[ "${e:3}" == "$_file_selection" ]]; then
+		# found the file, they did not pass a partial
+		_passed_partial=false
+	fi
+done
+
+if ( $_passed_partial ); then
+	# trash the selection. Maybe someday we can par the list down by partial matches instead...
+	_file_selection=''
+fi
+
 #no file specified, show menu
-if [ -z "$_file_selection" ]; then
+if [ -z "$_file_selection" ] && ( $_passed_partial ); then
 	msg="Please choose a file to stage."
 	__menu --prompt="$msg" ${list[@]}
 
