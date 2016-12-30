@@ -35,7 +35,7 @@ _file_selection=
 gitcommand="add"
 _whitespace_only=false
 # parse arguments
-if (( numArgs > 0 && numArgs < 4 )); then
+if (( numArgs < 4 )); then
 	until [ -z "$1" ]; do
 		{ [ "$1" == "-a" ] || [ "$1" == "-A" ] || [ "$1" == "-w" ]; } && _file_selection=$1
 		! echo "$1" | egrep -q "^-" && msg="$1"
