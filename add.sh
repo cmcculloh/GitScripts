@@ -68,8 +68,7 @@ if [ -z "$_file_selection" ]; then
 	__menu --prompt="$msg" ${list[@]}
 
 	#determine if we are adding or deleting
-	if [[ "$_menu_sel_value" =~ D ]]
-	then
+	if [[ "$_menu_sel_value" == "D-"* ]] || [[ "$_menu_sel_value" == "-D"* ]]; then
 		gitcommand="rm"
 	fi
 
@@ -80,7 +79,7 @@ else
 	#they passed in the file pattern, now determine if we need to do an add or a delete
 	for e in "${list[@]}"; do
 		if [[ "$e" =~ "$_file_selection" ]]; then
-			if [[ "$e" =~ D ]]; then
+			if [[ "$e" == "D-"* ]] || [[ "$e" == "-D"* ]]; then
 				gitcommand="rm"
 			fi
 		fi
