@@ -16,6 +16,12 @@
 #	   # tab completes the rest of the file name
 #	3) add file-path/file.sh
 #	   # deduces if you are doing an add or rm and then does the operation.
+#	4) add -w
+#	   # adds all files with only whitespace changes
+#	5) add -a
+#	   # adds all tracked files for commit
+#	5) add -A
+#	   # adds ALL files for commit
 #	examples@
 #
 #	@dependencies
