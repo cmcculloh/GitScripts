@@ -73,8 +73,9 @@ if [ -z "$_file_selection" ]; then
 	msg="Please choose a file to stage."
 	__menu --prompt="$msg" ${list[@]}
 
-	#determine if we are adding or deleting
-	if [[ "$_menu_sel_value" == "D-"* ]] || [[ "$_menu_sel_value" == "-D"* ]]; then
+	# determine if we are adding or deleting by looking for the D flag at the beginning
+	# of the menu selection (eg: -D--add.sh)
+	if [[ "${_menu_sel_value:0:2}" =~ D ]]; then
 		gitcommand="rm"
 	fi
 
@@ -85,7 +86,7 @@ else
 	#they passed in the file pattern, now determine if we need to do an add or a delete
 	for e in "${list[@]}"; do
 		if [[ "$e" =~ "$_file_selection" ]]; then
-			if [[ "$e" == "D-"* ]] || [[ "$e" == "-D"* ]]; then
+			if [[ "${e:0:2}" =~ D ]]; then
 				gitcommand="rm"
 			fi
 		fi
