@@ -40,7 +40,7 @@ if (( numArgs < 2 )); then
 		shift 1
 	done
 else
-	__bad_usage commit "Invalid number of parameters."
+	__bad_usage ignore "Invalid number of parameters."
 	exit 1
 fi
 
@@ -79,8 +79,8 @@ else
 	_file_status=($(git status $_file_selection --porcelain))
 fi
 
-# determine if we are adding or deleting by looking for the D flag at the beginning
-# of the menu selection (eg: -D--add.sh)
+# determine which strategy we are using by looking for the ?? flag at the beginning
+# of the menu selection (eg: ??--untracked.sh)
 if [[ "${_file_status:0:2}" =~ "??" ]]; then
 	_ignore_strategy="gitignore"
 else
