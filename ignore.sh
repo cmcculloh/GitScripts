@@ -31,7 +31,6 @@ _file_selection=
 _ignore_strategy=
 _whitespace_only=false
 # parse arguments
-# Can only pass -a, -A, or single file name, plus the -w flag. Two possible max.
 if (( numArgs < 2 )); then
 	until [ -z "$1" ]; do
 		if [[ ${#len} == 0 ]]; then
@@ -74,14 +73,18 @@ if [ -z "$_file_selection" ] && ( $_passed_partial ); then
 	# clean the flags out of the file name
 	shopt -s extglob #http://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
 	_file_selection=${_menu_sel_value/@(M--|-M-|D--|-D-|\?\?-)/}
+	_file_status=$_menu_sel_value
 
-	# determine if we are adding or deleting by looking for the D flag at the beginning
-	# of the menu selection (eg: -D--add.sh)
-	if [[ "${_menu_sel_value:0:2}" =~ "??" ]]; then
-		_ignore_strategy="gitignore"
-	else
-		_ignore_strategy="update-index"
-	fi
+else
+	_file_status=($(git status $_file_selection --porcelain))
+fi
+
+# determine if we are adding or deleting by looking for the D flag at the beginning
+# of the menu selection (eg: -D--add.sh)
+if [[ "${_file_status:0:2}" =~ "??" ]]; then
+	_ignore_strategy="gitignore"
+else
+	_ignore_strategy="update-index"
 fi
 
 echo
