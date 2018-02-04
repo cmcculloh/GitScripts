@@ -96,7 +96,7 @@ echo ${Q}"Would you like to begin deleting branches? y (n)"${X}
 read yn
 echo
 if [ "$yn" != "y" ] && [ "$yn" != "Y" ]; then
-	echo "  Right on. Exiting..."
+	echo "  Exiting..."
 	exit 0
 fi
 
